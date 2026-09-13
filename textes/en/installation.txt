@@ -1,7 +1,3 @@
-## While Windows installs
-Local account, no Microsoft account: Shift+F10 on the sign-in screen, then:
-> start ms-cxh:localonly
-
 ## Right after the first desktop
 Before installing anything. It cannot be done afterwards.
 @BtnFsutil

@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # Noyau : où on est, élévation, détection machine, outils d'écriture avec retour arrière.
 # ---------------------------------------------------------------------------
-$Depot = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main'
+$Depot = 'https://bagarre.mtsu.dev'   # un Worker Cloudflare (worker/) qui rend le dépôt GitHub : "/" = bagarre.ps1, le reste tel quel
 $Version = '8.0'
 $ErrorActionPreference = 'Continue'
 

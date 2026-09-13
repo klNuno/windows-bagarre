@@ -11,8 +11,6 @@ This pack removes what runs for nothing and sets what matters for gaming. Fresh 
 Every line says what it changes and what you lose. If you do not understand a line, do not tick it.
 Everything the script changes is written to C:\ProgramData\bagarre. "Restore everything" puts exactly those values back.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
-To reopen bagarre later, the same line in a Terminal:
-> irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
 '@
 $Textes['en']['amd'] = @'
 Your card is an AMD: no NVCleanstall and no NVIDIA Control Panel here. The driver comes from AMD's site, Adrenalin is its settings panel, and everything below happens inside it.
@@ -209,10 +207,6 @@ Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnApplisInstallees
 '@
 $Textes['en']['installation'] = @'
-## While Windows installs
-Local account, no Microsoft account: Shift+F10 on the sign-in screen, then:
-> start ms-cxh:localonly
-
 ## Right after the first desktop
 Before installing anything. It cannot be done afterwards.
 @BtnFsutil
@@ -318,8 +312,6 @@ Ce pack enlève ce qui tourne pour rien et règle ce qui compte pour jouer. Wind
 Chaque ligne dit ce qu'elle change et ce que tu perds. Tu ne comprends pas une ligne, tu ne la coches pas.
 Tout ce que le script modifie est noté dans C:\ProgramData\bagarre. "Tout remettre comme avant" restaure exactement ces valeurs.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
-Pour rouvrir bagarre plus tard, la même ligne dans un Terminal :
-> irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
 '@
 $Textes['fr']['amd'] = @'
 Ta carte est une AMD : pas de NVCleanstall ni de Panneau NVIDIA ici. Le pilote vient du site AMD, Adrenalin est son panneau de réglages, et tout ce qui suit se fait dedans.
@@ -516,10 +508,6 @@ Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnApplisInstallees
 '@
 $Textes['fr']['installation'] = @'
-## Pendant l'installation de Windows
-Compte local, sans compte Microsoft : Maj+F10 à l'écran de connexion, puis :
-> start ms-cxh:localonly
-
 ## Juste après le premier bureau
 Avant d'installer quoi que ce soit, ça ne se rattrape pas après.
 @BtnFsutil
@@ -648,7 +636,7 @@ $Logos['stop-it'] = 'R0lGODlh3ADcAPcAAAcEDQwECw4KDw8LFhMRGRcRHxkRGRoICxoQEhoWIiM
 # ---------------------------------------------------------------------------
 # Noyau : où on est, élévation, détection machine, outils d'écriture avec retour arrière.
 # ---------------------------------------------------------------------------
-$Depot = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main'
+$Depot = 'https://bagarre.mtsu.dev'   # un Worker Cloudflare (worker/) qui rend le dépôt GitHub : "/" = bagarre.ps1, le reste tel quel
 $Version = '8.0'
 $ErrorActionPreference = 'Continue'
 
@@ -2014,7 +2002,7 @@ if ($EstAmd) {
 $Boutons = @{
     BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
     BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
-    BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot/bagarre.ps1 | iex"); Log $Bagarre.L.commandeCopiee } }
+    BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot | iex"); Log $Bagarre.L.commandeCopiee } }
 
     BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
     BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }

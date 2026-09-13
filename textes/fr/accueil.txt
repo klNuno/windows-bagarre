@@ -2,5 +2,3 @@ Ce pack enlève ce qui tourne pour rien et règle ce qui compte pour jouer. Wind
 Chaque ligne dit ce qu'elle change et ce que tu perds. Tu ne comprends pas une ligne, tu ne la coches pas.
 Tout ce que le script modifie est noté dans C:\ProgramData\bagarre. "Tout remettre comme avant" restaure exactement ces valeurs.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
-Pour rouvrir bagarre plus tard, la même ligne dans un Terminal :
-> irm {{DEPOT}}/bagarre.ps1 | iex

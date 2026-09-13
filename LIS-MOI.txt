@@ -3,7 +3,7 @@ WINDOWS BAGARRE EDITION
 Tu viens de réinstaller Windows 11. Ouvre un Terminal (clic droit sur Démarrer > Terminal),
 colle cette ligne, Entrée, accepte la fenêtre d'administrateur :
 
-  irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
+  irm https://bagarre.mtsu.dev | iex
 
 Une fenêtre s ouvre avec tout le pack dedans, dans la langue de ton Windows (les drapeaux en haut à droite changent) :
 les étapes dans l ordre, les boutons qui installent ou lancent les outils, le script à cocher, le test DNS, l audit IA.
@@ -18,6 +18,7 @@ Ce dépôt, c'est le code source de cette fenêtre :
   outils/       SetTimerResolution.exe et MeasureSleep.exe (GPL, dépôt valleyofdoom/TimerResolution)
   images/       les captures (carte réseau, NVCleanstall, Panneau NVIDIA), logos/ pour les boutons et les drapeaux, stop-it.gif
   build.ps1     assemble src/ et textes/ en bagarre.ps1
+  worker/       le Worker Cloudflare derrière bagarre.mtsu.dev : il rend ce dépôt tel quel, "/" donne bagarre.ps1
 
 Modifier quelque chose : édite src/ ou textes/, lance build.ps1, commite bagarre.ps1 avec.
 Tester sans rien appliquer (le fichier est en UTF-8 sans BOM, d où cette forme plutôt que -File) :

@@ -1,7 +1,3 @@
-## Pendant l'installation de Windows
-Compte local, sans compte Microsoft : Maj+F10 à l'écran de connexion, puis :
-> start ms-cxh:localonly
-
 ## Juste après le premier bureau
 Avant d'installer quoi que ce soit, ça ne se rattrape pas après.
 @BtnFsutil

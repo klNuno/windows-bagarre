@@ -2,5 +2,3 @@ This pack removes what runs for nothing and sets what matters for gaming. Fresh 
 Every line says what it changes and what you lose. If you do not understand a line, do not tick it.
 Everything the script changes is written to C:\ProgramData\bagarre. "Restore everything" puts exactly those values back.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
-To reopen bagarre later, the same line in a Terminal:
-> irm {{DEPOT}}/bagarre.ps1 | iex
