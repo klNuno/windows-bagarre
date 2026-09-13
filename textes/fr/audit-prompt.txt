@@ -14,7 +14,7 @@ Ce PC a suivi le pack "windows bagarre edition" :
   et AFMF coupés, FreeSync + cap RTSS, relecture instantanée et overlay Adrenalin coupés.
 - Script à cocher bagarre.ps1 : services inutiles (télémétrie, fax, démo, Edge update...), télémétrie, CEIP et rapports
   d erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés, Game DVR et PresenceWriter coupés,
-  GlobalTimerResolutionRequests=1, timer 0,507 ms via une tâche planifiée SetTimerResolution, accélération souris coupée,
+  GlobalTimerResolutionRequests=1, accélération souris coupée,
   veille prolongée et démarrage rapide coupés, suspension USB, USB3 LPM, ASPM PCIe et minuteurs de réveil coupés,
   pilotes exclus de Windows Update, Continuous Innovation refusé, menu F8, AutoRun coupé, ARSO coupé, carte réseau
   (alimentation, EEE, LLDP/topologie décochés, Interrupt Moderation Medium), confort (menu clic droit classique,
@@ -53,7 +53,7 @@ TA MISSION, DANS CET ORDRE
    - Pourquoi : le mécanisme en deux phrases, pas "ça optimise".
    - Ce que tu perds : la contrepartie, même petite. "Rien" est rarement vrai.
    - Source : doc constructeur, doc Microsoft, dépôt maintenu, avec le nom et l'année. Pas de vidéo, pas de "on dit".
-   - Gain attendu : mesurable ou pas, et comment le mesurer (RivaTuner temps d'image, MeasureSleep, ping, LatencyMon).
+   - Gain attendu : mesurable ou pas, et comment le mesurer (RivaTuner temps d'image, ping, LatencyMon).
    - Réversible : comment revenir en arrière.
    Classe-les : FAIRE (gain net, sans risque) / TESTER (une à la fois, mesurer) / NON (placebo ou nuisible, dis pourquoi).
 

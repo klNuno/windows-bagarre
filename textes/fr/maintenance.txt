@@ -3,7 +3,7 @@ Des mois après l'installation, quand le PC a vécu.
 ## Ce qui se lance tout seul
 @BtnAutoruns, BtnGeek
 Autoruns : Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas (launchers, updaters). Décoche, ne supprime pas.
-Suites constructeur à virer : Nahimic, Killer Intelligence Center, Armoury Crate, MSI Center, Sonic Studio. Chacune pose un service et un overlay.
+Ventilos et LED sans la suite du constructeur, si tu préfères :
 @BtnFan, BtnRgb
 
 ## Nettoyage disque, dans l'ordre
@@ -31,7 +31,7 @@ Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
 Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. Jamais tout le disque.
 
 ## Mesurer avant / après
-@BtnMeasure, BtnCapframe
+@BtnCapframe
 - Même jeu, même scène, même résolution.
 - Une passe de chauffe, puis 3 passes de 60 s avant, 3 après.
 - Médiane, 1 % low, p99 du temps d'image. Jamais la moyenne.

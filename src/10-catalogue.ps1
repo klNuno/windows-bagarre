@@ -238,18 +238,8 @@ Ajouter $G 'jeu-svchost' ("Regrouper les services système (SvcHostSplitThreshol
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control' 'SvcHostSplitThresholdInKB' ($RamGo * 1024 * 1024)
 }
 Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (GlobalTimerResolutionRequests)' `
-    'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. C est ce que Process Lasso ou un outil de timer resolution exploite.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
+    'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. Un jeu qui demande un timer fin le garde même quand une autre fenêtre passe devant.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
-}
-Ajouter $G 'jeu-timer-demarrage' 'Timer à 0,507 ms au démarrage (SetTimerResolution en tâche planifiée)' `
-    'Le complément de la clé du dessus : un programme de 40 lignes (SetTimerResolution, open source, GPL) demande un timer à 0,507 ms dès l ouverture de session et reste en mémoire. C est exactement ce que fait Process Lasso, sans les 30 secondes d attente de la version gratuite. 0,507 plutôt que 0,500 : mesuré sur plus de 30 machines, le réveil tombe pile sur le tick. Vérifie avec MeasureSleep (onglet Maintenance).' (-not $EstPortable) 'Consommation au repos un peu plus haute. Sur portable, laisse décoché.' {
-    $exe = Outil-Obtenir 'SetTimerResolution.exe'
-    if (-not $exe) { Log 'timer     SetTimerResolution.exe indisponible (pas de réseau ?), ignoré'; return }
-    $dest = $Dossier
-    Memoriser 'cmd|timer' @{ existait = [bool](Get-ScheduledTask -TaskName 'bagarre timer' -ErrorAction SilentlyContinue) }
-    schtasks /Create /TN 'bagarre timer' /TR "`"$dest\SetTimerResolution.exe`" --resolution 5070 --no-console" /SC ONLOGON /RL HIGHEST /F | Out-Null
-    Start-Process -FilePath (Join-Path $dest 'SetTimerResolution.exe') -ArgumentList '--resolution 5070 --no-console' -WindowStyle Hidden
-    Log 'timer     tâche "bagarre timer" créée (0,507 ms au logon) et lancée'
 }
 Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
     'Avec l accélération, la distance parcourue par le curseur dépend de la vitesse du geste : le même mouvement de main ne donne jamais le même mouvement à l écran. Ta mémoire musculaire ne peut rien apprendre. Tout joueur la coupe, c est la première chose à faire.' $true 'Le curseur demande un peu plus de mouvement de main sur le bureau. Monte le DPI de la souris si besoin.' {
@@ -468,7 +458,7 @@ Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE), PC fi
     Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
 }
 Ajouter $G 'adv-dyntick' 'Couper le tick dynamique (bcdedit disabledynamictick)' `
-    'Le noyau arrête son horloge quand rien ne se passe et la relance à la demande. Avec un timer à 0,5 ms ça peut dériver. À cocher seulement si MeasureSleep montre une résolution instable après le timer.' $false 'Consommation au repos un peu plus haute.' {
+    'Le noyau arrête son horloge quand rien ne se passe et la relance à la demande. Avec un timer à 0,5 ms ça peut dériver. À cocher seulement si tu vois des micro-saccades que RivaTuner confirme, et à décocher si ça ne change rien.' $false 'Consommation au repos un peu plus haute.' {
     Memoriser 'cmd|dyntick' @{ valeur = ((bcdedit /enum '{current}') | Select-String 'disabledynamictick') -replace '.*disabledynamictick\s+', '' }
     bcdedit /set '{current}' disabledynamictick yes | Out-Null
     Log 'boot      disabledynamictick = yes'
@@ -505,7 +495,7 @@ if ($EstNvidia) {
 # Ce que fait la case une fois cochée, affiché en étiquette devant chaque ligne : 'off' (coupe le truc, le défaut),
 # 'on' (l'ajoute ou l'autorise), 'set' (change une valeur). Un item absent d'ici est 'off'.
 $Actions = @{
-    'jeu-timer' = 'on'; 'jeu-timer-demarrage' = 'on'; 'jeu-f8' = 'on'
+    'jeu-timer' = 'on'; 'jeu-f8' = 'on'
     'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
     'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
     'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'; 'conf-ducking' = 'set'
@@ -517,7 +507,6 @@ function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'o
 # fonctions d'écriture comparent au lieu d'écrire. Les items qui lancent une commande directe ont leur test ici,
 # ils ne doivent JAMAIS être rejoués en simulation (bcdedit, powercfg /h, schtasks, explorer relancé).
 $Verifs = @{
-    'jeu-timer-demarrage' = { [bool](Get-ScheduledTask -TaskName 'bagarre timer' -ErrorAction SilentlyContinue) }
     'jeu-hiber' = { (Reg-Lire 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' 'HibernateEnabled') -eq 0 }
     'jeu-f8' = { [bool]((bcdedit /enum '{current}' 2>$null) -match 'bootmenupolicy\s+Legacy') }
     'net-alim' = {

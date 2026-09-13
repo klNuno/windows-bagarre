@@ -1,28 +1,26 @@
 Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
 
-## 1. Vérifier le timer 0,507 ms
-@BtnMeasureDur, BtnOptiTimer, BtnPlanificateur, BtnTimerDepot
-Le script a créé la tâche "bagarre timer". MeasureSleep doit afficher environ 0,5 ms.
-Il montre 1 ms ou 15,6 ms : recoche la case du timer dans le script, ou regarde la tâche "bagarre timer" dans le Planificateur.
-
-## 2. Souris
-@BtnSouris, BtnOptiSouris
+## 1. Souris
+@BtnSouris
 Accélération coupée par le script. Ensuite : 1000 Hz dans le logiciel de la souris, DPI natif (400 / 800 / 1600), sensibilité dans le jeu, jamais dans Windows (6/11).
 La case RawMouseThrottleDuration du script : seulement à 4000 Hz et plus.
 
-## 3. Trois cases Avancé du script, une à la fois
-@BtnOptiAvance
+## 2. Trois cases Avancé du script, une à la fois
 - Win32PrioritySeparation 0x26 : aide un jeu CPU-bound avec Discord et un navigateur derrière. Peut faire crépiter l'audio.
 - Nagle (TcpAckFrequency) : quelques ms sur un jeu en TCP (MMO). Zéro effet sur un FPS en UDP.
 - Boost CPU Aggressive : PC fixe Intel seulement. Sur AMD la clé ne fait rien, sur portable ça chauffe pour rien.
+
+## 3. Priorité et cœurs par jeu, facultatif
+@BtnThreadPilot
+ThreadPilot fait ce qu'on demandait à Process Lasso, en open source et sans nag : par programme, une priorité, des cœurs (utile sur un Ryzen à deux CCD ou un Intel avec des E-cores), un plan d'alimentation. Windows 11 seulement, et ses règles ne tiennent que quand il tourne : mets-le au démarrage.
+! Il ne remplace pas ProBalance (Lasso baissait tout seul la priorité de ce qui pompe). Si tu n'as pas de saccades, tu n'en as pas besoin.
 
 ## 4. Mémoire : 16 Go et des jeux récents
 @BtnIslc
 ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go, ça évite les saccades de swap. 32 Go et plus : inutile. La compression mémoire de Windows reste activée.
 
 ## 5. Stockage
-@BtnCompact
-Les jeux DirectStorage sur le NVMe. Jamais de compression NTFS sur un dossier de jeu, CompactGUI c'est pour les vieux jeux 2D. Le cache de shaders ne se "nettoie" pas : le vider fait tout recompiler.
+Les jeux DirectStorage sur le NVMe. Jamais de compression NTFS sur un dossier de jeu. Le cache de shaders ne se "nettoie" pas : le vider fait tout recompiler.
 
 ## 6. Le cœur de l'interruption GPU, facultatif
 @BtnAutoGpu
@@ -37,4 +35,5 @@ Suspendre jusqu'à 5 semaines quand une grosse version sort (25H2, 26H1), le tem
 - Nettoyeur de registre : rien à gagner, tout à casser.
 - Plan "Ultimate performance" : identique à Hautes performances depuis 1903.
 - Windows Update, Defender, pare-feu coupés : non.
+- Un outil qui force le timer à 0,5 ms en permanence : à laisser tourner en fond pour rien, les jeux le demandent eux-mêmes (case GlobalTimerResolutionRequests).
 - Prefetch, "débrider les 20 % de bande passante", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled : rien de mesurable ou nuisible.

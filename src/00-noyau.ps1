@@ -12,9 +12,9 @@ $ErrorActionPreference = 'Continue'
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
 $Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null; Cartes = @() }
 
-# Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
-# Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
-$Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'outils'))) { Split-Path -Parent $PSCommandPath } else { $null }
+# Lancé depuis un clone (powershell -File bagarre.ps1) : les images sont à côté.
+# Lancé par "irm ... | iex" : $Here est vide, elles sont ouvertes depuis $Depot.
+$Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'images'))) { Split-Path -Parent $PSCommandPath } else { $null }
 
 # Admin et thread STA (la fenêtre en a besoin). Sinon on se relance élevé, et on rend la main.
 # -Liste et -Capture (modes de test) tournent sans admin.
@@ -59,16 +59,16 @@ $Messages = @{
         restaure = 'restauré  {0}'; echecRestauration = 'ÉCHEC restauration {0} : {1}'; finRestauration = 'Terminé. Redémarre pour que tout reprenne effet.'
         rienCoche = 'Rien de coché.'; application = 'Application de {0} réglages...'; echecItem = 'ÉCHEC {0} : {1}'
         finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
-        telecharge = 'téléchargé {0} dans {1}'; echecTelechargement = 'ÉCHEC téléchargement de {0} : {1}'
         rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
+        consoleOk = 'Terminé sans erreur, cette console se ferme.'; consoleErreur = 'Il y a eu une erreur, lis ce qui est au-dessus. Entrée pour fermer.'
     }
     en = @{
         rienRestaurer = 'Nothing to restore: bagarre-avant.json is empty.'; restauration = 'Restoring {0} settings...'
         restaure = 'restored  {0}'; echecRestauration = 'FAILED restore {0}: {1}'; finRestauration = 'Done. Reboot so everything takes effect again.'
         rienCoche = 'Nothing checked.'; application = 'Applying {0} settings...'; echecItem = 'FAILED {0}: {1}'
         finApplication = 'Done. The previous values are in {0}, the detail in {1}. Reboot the PC.'
-        telecharge = 'downloaded {0} to {1}'; echecTelechargement = 'FAILED download of {0}: {1}'
         rapportEcrit = 'Report written: {0} ({1} KB)'; fenetreFermee = 'window closed'
+        consoleOk = 'Finished without error, this console closes.'; consoleErreur = 'Something failed, read what is above. Enter to close.'
     }
 }
 function Msg($cle) { $Messages[$Bagarre.Langue][$cle] }
@@ -110,12 +110,13 @@ function Log($texte) {
     $ligne = "{0}  {1}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $texte
     Add-Content -Path $LogFichier -Value $ligne
     Write-Host "   $texte" -ForegroundColor DarkGray
-    if ($Journal) { $Journal.AppendText("$texte`r`n"); $Journal.ScrollToEnd(); Rafraichir }
+    Rafraichir
 }
 
-# Laisse la fenêtre se redessiner pendant une action longue (tout tourne sur le thread de la fenêtre).
+# Laisse la fenêtre se redessiner pendant une action longue (tout tourne sur le thread de la fenêtre). Sans ça, passé 5 s
+# Windows la déclare "ne répond pas" et affiche une copie figée par-dessus. À appeler dans toute boucle qui dure.
 function Rafraichir {
-    if ($Fenetre) { $Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
+    if ($Fenetre -and $Fenetre.IsLoaded) { $Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
 }
 
 function Memoriser($cle, $valeur) {
@@ -256,20 +257,8 @@ function Powercfg-Regler($sousGroupe, $reglage, $valeur, $description) {
 
 
 # ---------------------------------------------------------------------------
-# Fichiers du dépôt (outils, images) et lancement de commandes dans leur propre console
+# Fichiers du dépôt (images) et lancement de commandes dans leur propre console
 # ---------------------------------------------------------------------------
-# Rend le chemin local d'un outil du dossier outils/ : copié depuis le clone, ou téléchargé depuis $Depot.
-function Outil-Obtenir($nom) {
-    $dest = Join-Path $Dossier $nom
-    if ($Here -and (Test-Path (Join-Path $Here "outils\$nom"))) { Copy-Item (Join-Path $Here "outils\$nom") $dest -Force; return $dest }
-    if (Test-Path $dest) { return $dest }
-    try {
-        Invoke-WebRequest -Uri "$Depot/outils/$nom" -OutFile $dest -UseBasicParsing -ErrorAction Stop
-        Log ((Msg 'telecharge') -f $nom, $Dossier)
-        return $dest
-    } catch { Log ((Msg 'echecTelechargement') -f $nom, $_); return $null }
-}
-
 function Ouvrir($url) { Start-Process $url | Out-Null }
 
 function Image-Ouvrir($nom) {
@@ -292,20 +281,43 @@ function Logo-Image($nom) {
     $bi
 }
 
-# Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.
+# Lance une commande PowerShell dans une console à part (visible, admin comme nous).
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
+# Par défaut la console reste ouverte (commandes dont on lit le résultat : powercfg, DISM analyse, rapport Defender).
+# -Fermer (installations) : elle se ferme toute seule si tout s'est bien passé, et reste ouverte sur une erreur
+# (exception PowerShell, ou code de sortie non nul d'un exe ; la commande pose $Echec = $true pour le reste).
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
 $Bagarre.ConsoleN = 0
-function Console-Lancer($titre, $commande) {
+function Console-Lancer($titre, $commande, [switch]$Fermer) {
     $Bagarre.ConsoleN++
-    $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`nWrite-Host ''`r`nWrite-Host '  $titre' -ForegroundColor Cyan`r`nWrite-Host ''`r`n$commande`r`n"
+    $fin = if ($Fermer) {
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleOk')' -ForegroundColor Green; Start-Sleep 2 }"
+    } else {
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }"
+    }
+    $texte = @"
+`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'
+Write-Host ''
+Write-Host '  $titre' -ForegroundColor Cyan
+Write-Host ''
+`$Echec = `$false
+try {
+$commande
+} catch { Write-Host `$_ -ForegroundColor Red; `$Echec = `$true }
+if (`$LASTEXITCODE) { `$Echec = `$true }
+$fin
+"@
     $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $Bagarre.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$fichier`"" | Out-Null
+    $sortie = if ($Fermer) { '' } else { '-NoExit ' }
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass $sortie-File `"$fichier`"" | Out-Null
     Log "console   $titre"
 }
 
-function Winget-Installer($titre, [string[]]$ids) {
-    $cmd = ($ids | ForEach-Object { "winget install --id '$_' -e --accept-package-agreements --accept-source-agreements" }) -join '; '
-    Console-Lancer $titre $cmd
+# Une console par installation, fermée si winget a réussi. Le code -1978335189 (0x8A15002B) veut dire
+# "déjà installé, pas de mise à jour disponible" : pas une erreur pour nous.
+function Winget-Installer($titre, [string[]]$ids, $source) {
+    $src = if ($source) { " --source $source" } else { '' }
+    $cmd = ($ids | ForEach-Object { "winget install --id '$_' -e$src --accept-package-agreements --accept-source-agreements; if (`$LASTEXITCODE -and `$LASTEXITCODE -ne -1978335189) { `$Echec = `$true }; `$global:LASTEXITCODE = 0" }) -join "`r`n"
+    Console-Lancer $titre $cmd -Fermer
 }

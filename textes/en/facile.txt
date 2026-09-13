@@ -15,8 +15,5 @@ Without them a game crashes with "VCRUNTIME140.dll not found".
 
 ## 4. Sound, it avoids crackling
 - Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
-@BtnOptiSon
 - Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
 @BtnSon
-- Nahimic, Sonic Studio, Realtek Audio Console: uninstall, the bare driver is enough.
-@BtnApplisInstallees

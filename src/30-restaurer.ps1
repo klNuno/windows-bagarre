@@ -34,7 +34,8 @@ function Tout-Restaurer {
                 'cmd|corbeille' {
                     if (-not $v.existait) { Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{645FF040-5081-101B-9F08-00AA002F954E}' -Recurse -Force -ErrorAction SilentlyContinue }
                 }
-                'cmd|timer' {
+                'cmd|timer' {   # l'item n'existe plus (retiré le 2026-09-14), on garde le retour arrière pour ceux qui l'avaient coché
+
                     if (-not $v.existait) { schtasks /Delete /TN 'bagarre timer' /F 2>$null | Out-Null }
                     Get-Process SetTimerResolution -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
                 }

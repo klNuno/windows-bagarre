@@ -6,7 +6,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 $Admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 $sb = New-Object System.Text.StringBuilder
-function Titre($t) { [void]$sb.AppendLine(''); [void]$sb.AppendLine("=== $t ==="); Write-Host "  $t" }
+function Titre($t) { [void]$sb.AppendLine(''); [void]$sb.AppendLine("=== $t ==="); Write-Host "  $t"; Rafraichir }
 function Ligne($t) { [void]$sb.AppendLine([string]$t) }
 function Bloc($obj) { if ($null -ne $obj) { ($obj | Out-String -Width 200).TrimEnd() -split "`r?`n" | ForEach-Object { Ligne $_ } } }
 function Reg($chemin, $nom) {

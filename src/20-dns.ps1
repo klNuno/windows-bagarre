@@ -28,6 +28,7 @@ function Dns-Mesurer($adapt) {
             foreach ($d in $noms) {
                 $t = Measure-Command { try { Resolve-DnsName -Name $d -Server $serveur -Type A -DnsOnly -NoHostsFile -ErrorAction Stop | Out-Null } catch {} }
                 $temps += $t.TotalMilliseconds
+                Rafraichir
             }
         }
         $tri = $temps | Sort-Object

@@ -14,7 +14,7 @@ This PC went through the "windows bagarre edition" pack:
   and AFMF off, FreeSync + RTSS cap, instant replay and the Adrenalin overlay off.
 - Checkbox script bagarre.ps1: useless services (telemetry, fax, demo, Edge update...), telemetry, CEIP and error
   reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI cut, Game DVR and PresenceWriter off,
-  GlobalTimerResolutionRequests=1, 0.507 ms timer via a scheduled task SetTimerResolution, mouse acceleration off,
+  GlobalTimerResolutionRequests=1, mouse acceleration off,
   hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off,
   drivers excluded from Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card
   (power management, EEE, LLDP/topology unchecked, Interrupt Moderation Medium), comfort (classic right-click menu,
@@ -53,7 +53,7 @@ YOUR MISSION, IN THIS ORDER
    - Why: the mechanism in two sentences, not "it optimizes things".
    - What you lose: the tradeoff, even a small one. "Nothing" is rarely true.
    - Source: manufacturer doc, Microsoft doc, maintained repo, with the name and the year. No videos, no "people say".
-   - Expected gain: measurable or not, and how to measure it (RivaTuner frame time, MeasureSleep, ping, LatencyMon).
+   - Expected gain: measurable or not, and how to measure it (RivaTuner frame time, ping, LatencyMon).
    - Reversible: how to roll it back.
    Sort them: DO (clear gain, no risk) / TEST (one at a time, measure) / NO (placebo or harmful, say why).
 

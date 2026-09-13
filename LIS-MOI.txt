@@ -15,7 +15,6 @@ Ce dépôt, c'est le code source de cette fenêtre :
   bagarre.ps1   le script assemblé, celui que la commande télécharge
   src/          ses morceaux : noyau, catalogue des optis (fr) et sa traduction (en), DNS, restauration, collecte, fenêtre
   textes/       les tutos affichés dans chaque onglet, fr/ et en/
-  outils/       SetTimerResolution.exe et MeasureSleep.exe (GPL, dépôt valleyofdoom/TimerResolution)
   images/       les captures (carte réseau, NVCleanstall, Panneau NVIDIA), logos/ pour les boutons et les drapeaux, stop-it.gif
   build.ps1     assemble src/ et textes/ en bagarre.ps1
   worker/       le Worker Cloudflare derrière bagarre.mtsu.dev : il rend ce dépôt tel quel, "/" donne bagarre.ps1

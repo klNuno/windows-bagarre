@@ -1,5 +1,5 @@
 // bagarre.mtsu.dev : miroir du dépôt GitHub, sans rien d'autre.
-// "/" rend bagarre.ps1, tout autre chemin (outils/, images/) rend le fichier du dépôt.
+// "/" rend bagarre.ps1, tout autre chemin (images/) rend le fichier du dépôt.
 // Déploiement : wrangler deploy, depuis ce dossier.
 
 const DEPOT = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main';

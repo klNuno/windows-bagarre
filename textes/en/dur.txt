@@ -1,28 +1,26 @@
 One thing at a time. You change it, you play half an hour with RivaTuner open, you keep it or put it back. A tweak you cannot measure does not exist.
 
-## 1. Check the 0.507 ms timer
-@BtnMeasureDur, BtnOptiTimer, BtnPlanificateur, BtnTimerDepot
-The script created the "bagarre timer" task. MeasureSleep should show about 0.5 ms.
-It shows 1 ms or 15.6 ms: re-tick the timer box in the script, or look at the "bagarre timer" task in Task Scheduler.
-
-## 2. Mouse
-@BtnSouris, BtnOptiSouris
+## 1. Mouse
+@BtnSouris
 Acceleration turned off by the script. Then: 1000 Hz in the mouse software, native DPI (400 / 800 / 1600), sensitivity in the game, never in Windows (6/11).
 The RawMouseThrottleDuration box in the script: only at 4000 Hz and above.
 
-## 3. Three Advanced boxes in the script, one at a time
-@BtnOptiAvance
+## 2. Three Advanced boxes in the script, one at a time
 - Win32PrioritySeparation 0x26: helps a CPU-bound game with Discord and a browser behind. Can make the audio crackle.
 - Nagle (TcpAckFrequency): a few ms on a TCP game (MMO). Zero effect on a UDP shooter.
 - CPU boost Aggressive: desktop Intel only. On AMD the key does nothing, on a laptop it heats up for nothing.
+
+## 3. Priority and cores per game, optional
+@BtnThreadPilot
+ThreadPilot does what people used Process Lasso for, open source and without the nag: per program, a priority, a set of cores (useful on a two-CCD Ryzen or an Intel with E-cores), a power plan. Windows 11 only, and its rules only hold while it runs: set it to start with Windows.
+! It does not replace ProBalance (Lasso lowered the priority of whatever hogged the CPU on its own). If you have no stutter, you do not need it.
 
 ## 4. Memory: 16 GB and recent games
 @BtnIslc
 ISLC empties the standby list when free RAM drops under 1 GB, which avoids swap stutter. 32 GB and more: useless. Windows memory compression stays on.
 
 ## 5. Storage
-@BtnCompact
-DirectStorage games on the NVMe. Never NTFS compression on a game folder, CompactGUI is for old 2D games. The shader cache does not get "cleaned": emptying it recompiles everything.
+DirectStorage games on the NVMe. Never NTFS compression on a game folder. The shader cache does not get "cleaned": emptying it recompiles everything.
 
 ## 6. The GPU interrupt core, optional
 @BtnAutoGpu
@@ -37,4 +35,5 @@ Pause up to 5 weeks when a big version ships (25H2, 26H1), until drivers and ant
 - Registry cleaner: nothing to gain, everything to break.
 - "Ultimate performance" plan: identical to High performance since 1903.
 - Windows Update, Defender, firewall off: no.
+- A tool that forces the 0.5 ms timer all the time: something to keep running in the background for nothing, games request it themselves (GlobalTimerResolutionRequests box).
 - Prefetch, "unlock the reserved 20% bandwidth", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled: nothing measurable or harmful.
