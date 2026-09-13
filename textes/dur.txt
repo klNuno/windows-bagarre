@@ -1,0 +1,85 @@
+DUR (20 min) : lis tout avant de toucher
+
+Ici tu changes une chose à la fois, tu joues 30 minutes, tu regardes le graphe de temps d'image
+de RivaTuner, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
+Le protocole de mesure propre est dans l onglet Maintenance ("Mesurer avant / après").
+
+1) Timer 0,507 ms
+   Le script à cocher a créé la tâche "bagarre timer" (SetTimerResolution.exe, open source GPL,
+   dépôt valleyofdoom/TimerResolution). Vérifie avec MeasureSleep (bouton, onglet Maintenance) : environ 0,5 ms attendu.
+   Si MeasureSleep montre 1 ms ou 15,6 ms : la clé GlobalTimerResolutionRequests n'est pas posée
+   (case jeu-timer du script) ou la tâche n'a pas démarré (Planificateur de tâches, "bagarre timer").
+   Process Lasso n'est plus dans le pack : 30 s d'attente au démarrage en gratuit, timer payant
+   après un mois. ThreadPilot (AGPL) existe pour l'affinité par processus, sans ProBalance ni timer,
+   curiosité seulement.
+
+6) Souris
+   Accélération coupée par le script. Ensuite : 1000 Hz dans le logiciel de la souris,
+   DPI natif (400 / 800 / 1600), sensibilité réglée dans le jeu, pas dans Windows (6/11 = 1:1).
+   RawMouseThrottleDuration (case adv-rawmouse) : à tester seulement à 4000 Hz et plus, et souvent
+   déjà à 8 par défaut sur Windows 11 récent (la valeur d avant est dans bagarre.log, bouton de l onglet 3).
+
+7) Win32PrioritySeparation (case adv-priosep)
+   0x26 = quantum court, variable, boost x3 au premier plan. Peut aider un jeu CPU-bound avec Discord
+   et un navigateur derrière. Peut aussi faire crépiter l'audio. Mesure.
+
+8) Mémoire
+   16 Go de RAM et des jeux récents : ISLC (Intelligent Standby List Cleaner, Wagnardsoft) vide la
+   liste d'attente quand la RAM libre passe sous 1 Go, ça évite les saccades de swap. 32 Go et plus :
+   inutile. La compression mémoire de Windows reste activée dans tous les cas (la couper fait swapper
+   plus tôt).
+
+9) Cœurs pour le jeu (AutoGpuAffinity, facultatif)
+   Un script qui teste sur quel cœur poser l'interruption GPU et donne le meilleur. Long (1 h), à faire
+   sur un PC déjà stable. Dépôt valleyofdoom/AutoGpuAffinity.
+   MSI Util v3 : pour REGARDER que la carte graphique est bien en MSI (NVCleanstall l'a fait), pas
+   pour écrire. Son pilote inpoutx64.sys est bloqué par Windows depuis KB5121003 (2026) : si l'outil
+   ne se lance plus, c'est ça, et tu n'en as pas besoin.
+
+10) Stockage
+   DirectStorage (Forspoken, Ratchet & Clank, Starfield) : le jeu sur le NVMe, pas sur un SATA, et
+   la compression NTFS jamais sur un dossier de jeu (CompactGUI : uniquement les vieux jeux 2D).
+   Le cache de shaders (%LOCALAPPDATA%\NVIDIA\DXCache) ne se "nettoie" pas : le vider fait
+   recompiler tous les shaders à la partie suivante.
+
+11) Boost CPU (case à cocher dans powercfg, PC fixe Intel uniquement, facultatif)
+   powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PERFBOOSTMODE 2 (Aggressive) puis
+   powercfg /setactive SCHEME_CURRENT. Le processeur monte plus vite en fréquence. Sur AMD le boost
+   est géré par le firmware, la clé ne fait rien. Sur portable, non : chauffe pour rien.
+
+12) Si tu es en AMD (une page suffit)
+   Pilote via le site AMD, installation "pilote seul" (pas Adrenalin complet) ou Radeon Software
+   Slimmer (open source). Anti-Lag 2 activé par jeu si dispo. AFMF (génération d'images) off en
+   compétitif. Sur un Ryzen X3D, laisse le core parking : c'est lui qui garde le jeu sur le CCD avec
+   le cache. Tout le reste du pack s'applique pareil.
+
+13) Mises à jour de fonctionnalités
+   Paramètres > Windows Update > Options avancées : suspendre jusqu'à 5 semaines quand une grosse
+   version (25H2, 26H1) sort, le temps que les pilotes et anti-cheats suivent. Pas plus : les
+   correctifs de sécurité en dépendent. Le "Xbox Mode" / mode plein écran Xbox n'apporte rien sur un
+   PC fixe, c'est pour les consoles portables.
+
+Les vidéos du pack précédent (chaîne Khorvie Tech), retrouvées via la Wayback Machine :
+- "BOOST PC PERFORMANCE | Win32 Priority Separation Benchmarks" (mai 2024, 3 min) : passée en privé.
+  Benchmark sur une seule machine, une seule scène. Retenu comme case Avancé décochée, pas plus.
+- "Debunk'd Mouse and Keyboard Data Queue Sizes" (juillet 2024) : supprimée. Concluait que le tweak
+  des files d'attente souris / clavier ne change rien. Pas dans le pack.
+- "The ONLY Windows PC OPTIMIZATION Guide 2024" (avril 2024, 40 min, 1,6 M de vues) : passée en privé.
+  Les timecodes du pack tombaient dans "network tweaks" (21:35). Ce qui était utile est dans
+  le groupe Carte réseau du script, avec l'explication. Le reste (unpark CPU via outil tiers,
+  "win tweaker") est couvert par le script ou volontairement absent.
+
+Ce qu'on ne fait pas, et pourquoi :
+- HVCI / intégrité de la mémoire off : les anti-cheats le demandent, les mises à jour d'octobre 2026
+  la réactivent de toute façon, et le gain est de 1 à 3 %.
+- Nettoyeur de registre : rien à gagner, tout à casser.
+- Plan "Ultimate performance" : identique à Hautes performances sur un fixe depuis 1903.
+- Désactiver le service Windows Update, Defender, le pare-feu : non.
+- Tweaks de prefetch / superfetch : le SSD s'en moque, SysMain aide sur HDD.
+- "Débrider" la bande passante (20 % réservée) : mythe, la clé n'a jamais fait ça.
+- HPET / useplatformclock, TdrLevel, DisablePreemption, MouseDataQueueSize, NetworkThrottlingIndex,
+  SystemResponsiveness=0, IPv6 off, C-states off, Interrupt Moderation "Disabled" : testés par
+  d'autres, rien de mesurable ou nuisible. Renommer GameBarPresenceWriter.exe : le script le coupe
+  proprement (clé ActivationType), jamais en renommant.
+- Lossless Scaling, ExplorerPatcher, ViveTool, ParkControl, HIDUSBF : soit payants, soit cassés à
+  chaque mise à jour, soit couverts par le script.

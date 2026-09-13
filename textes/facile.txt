@@ -1,0 +1,51 @@
+FACILE (15 min) : deux commandes et deux installeurs
+
+Les deux boutons du haut ouvrent chaque outil dans sa propre console, en administrateur.
+Ils téléchargent la version du jour, rien à mettre à jour ici. Les commandes sont notées pour info.
+
+1) Win11Debloat (bouton) : enlever ce que Windows a installé sans demander
+   & ([scriptblock]::Create((irm "https://debloat.raphi.re/")))
+   Mode par défaut. Retire les applis sponsorisées, Copilot, les pubs du menu Démarrer,
+   la télémétrie, et demande avant chaque groupe. Mis à jour plusieurs fois par mois, connaît 24H2 et 25H2.
+   OneDrive : il propose de le désinstaller. Dis oui si tu ne t'en sers pas, mais AVANT vérifie que
+   Documents / Images ne sont pas "dans OneDrive" (clic droit > Propriétés > Emplacement) : sinon
+   ils partent avec.
+
+2) WinUtil de Chris Titus (bouton) : installer tes programmes d un coup
+   irm https://christitus.com/win | iex
+   Onglet Install : coche Steam, Discord, navigateur, 7-Zip, VLC, il installe tout via winget.
+   Onglet Tweaks : preset "Standard" seulement. Pas l'onglet Advanced, le script à cocher
+   de l onglet 3 fait pareil en expliquant chaque ligne.
+   Jamais la version "windev" (branche de développement).
+   Pour refaire la même install sur un autre PC : "winget export -o mes-applis.json" ici,
+   "winget import mes-applis.json" là-bas.
+
+3) DirectX et Visual C++ : les librairies que les jeux réclament
+   Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
+   - DirectX : bouton ci-dessus (winget Microsoft.DirectX). Pour les vieux jeux.
+   - Visual C++ : bouton ci-dessus. Ce qu il lance, si tu préfères le taper dans un Terminal admin :
+
+   '2005','2008','2010','2012','2013' | ForEach-Object {
+     winget install --id "Microsoft.VCRedist.$_.x86" -e --accept-package-agreements --accept-source-agreements
+     winget install --id "Microsoft.VCRedist.$_.x64" -e --accept-package-agreements --accept-source-agreements
+   }
+   winget install --id 'Microsoft.VCRedist.2015+.x86' -e --accept-package-agreements --accept-source-agreements
+   winget install --id 'Microsoft.VCRedist.2015+.x64' -e --accept-package-agreements --accept-source-agreements
+
+   Vient de Microsoft, se met à jour avec "winget upgrade --all".
+
+4) Petits trucs de clavier et de recherche
+   - Touche Copilot sur un clavier récent : Paramètres > Personnalisation > Saisie de texte >
+     "Personnaliser la touche Copilot" (depuis KB5124010) pour en faire une recherche ou une appli.
+     Sinon PowerToys > Gestionnaire de clavier.
+   - Si tu as installé Gemini ou Copilot en appli : leur overlay se colle sur Alt+Espace. Coupe-le
+     dans leurs réglages, ou tu l'auras en plein jeu.
+   - Si tu as coupé l'indexation (case svc-recherche du script) : Everything (voidtools, gratuit)
+     retrouve n'importe quel fichier en une seconde sans index Windows.
+
+5) Audio (5 min, ça évite les crépitements)
+   - Clic droit sur le haut-parleur > Sons > onglet Communications : "Ne rien faire" (sinon Windows
+     baisse ton son de 80 % quand Discord sonne).
+   - Périphérique de lecture > Propriétés > Améliorations : "Désactiver toutes les améliorations".
+     Onglet Avancé : 24 bits, 48000 Hz (le format des jeux et de Discord, zéro rééchantillonnage).
+   - Nahimic / Sonic Studio / Realtek Audio Console : désinstalle, le pilote nu suffit (voir Maintenance).

@@ -1,0 +1,22 @@
+WINDOWS BAGARRE EDITION
+
+Tu viens de réinstaller Windows 11. Ouvre un Terminal (clic droit sur Démarrer > Terminal),
+colle cette ligne, Entrée, accepte la fenêtre d'administrateur :
+
+  irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
+
+Une fenêtre s'ouvre avec tout le pack dedans : les étapes dans l'ordre, les boutons qui
+installent ou lancent les outils, le script à cocher, le test DNS, l'audit IA.
+Rien d'autre à télécharger. La commande prend toujours la version du jour.
+
+Ce dépôt, c'est le code source de cette fenêtre :
+  bagarre.ps1   le script assemblé, celui que la commande télécharge
+  src/          ses morceaux : noyau, catalogue des optis, DNS, restauration, collecte, fenêtre
+  textes/       les tutos affichés dans chaque onglet
+  outils/       SetTimerResolution.exe et MeasureSleep.exe (GPL, dépôt valleyofdoom/TimerResolution)
+  images/       les captures (carte réseau, NVCleanstall, Panneau NVIDIA)
+  build.ps1     assemble src/ et textes/ en bagarre.ps1
+
+Modifier quelque chose : édite src/ ou textes/, lance build.ps1, commite bagarre.ps1 avec.
+Tester sans rien appliquer :  powershell -ExecutionPolicy Bypass -File bagarre.ps1 -Liste
+Voir chaque onglet en PNG sans ouvrir la fenêtre :  ... -File bagarre.ps1 -Capture captures

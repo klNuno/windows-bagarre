@@ -1,0 +1,40 @@
+#Requires -Version 5.1
+# build.ps1 : assemble src/*.ps1 et textes/*.txt en un seul bagarre.ps1 (UTF-8 avec BOM), celui que "irm | iex" telecharge.
+# A lancer apres chaque modification d'une source. bagarre.ps1 est commite et jamais edite a la main.
+$ErrorActionPreference = 'Stop'
+$racine = Split-Path -Parent $MyInvocation.MyCommand.Path
+$utf8 = New-Object Text.UTF8Encoding $true
+$sb = New-Object Text.StringBuilder
+[void]$sb.AppendLine('#Requires -Version 5.1')
+[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre.')
+[void]$sb.AppendLine('# bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.')
+[void]$sb.AppendLine('')
+
+$noyau = [IO.File]::ReadAllText((Join-Path $racine 'src\00-noyau.ps1'), [Text.Encoding]::UTF8)
+$depot = [regex]::Match($noyau, "(?m)^\`$Depot = '([^']+)'").Groups[1].Value
+if (-not $depot) { throw 'Depot introuvable dans src/00-noyau.ps1' }
+
+[void]$sb.AppendLine('$Textes = @{}')
+foreach ($f in Get-ChildItem (Join-Path $racine 'textes') -Filter *.txt | Sort-Object Name) {
+    $t = [IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8).TrimEnd() -replace '\{\{DEPOT\}\}', $depot
+    if ($t -match "(?m)^'@") { throw "$($f.Name) contient une ligne qui commence par '@, interdit dans une here-string" }
+    [void]$sb.AppendLine("`$Textes['$($f.BaseName)'] = @'")
+    [void]$sb.AppendLine($t)
+    [void]$sb.AppendLine("'@")
+}
+foreach ($f in Get-ChildItem (Join-Path $racine 'src') -Filter *.ps1 | Sort-Object Name) {
+    [void]$sb.AppendLine('')
+    [void]$sb.AppendLine("# ===== $($f.Name) =====")
+    [void]$sb.AppendLine([IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8).TrimEnd())
+}
+
+$sortie = Join-Path $racine 'bagarre.ps1'
+[IO.File]::WriteAllText($sortie, $sb.ToString(), $utf8)
+
+$erreurs = $null
+[void][Management.Automation.Language.Parser]::ParseFile($sortie, [ref]$null, [ref]$erreurs)
+if ($erreurs) {
+    $erreurs | ForEach-Object { Write-Host "ERREUR ligne $($_.Extent.StartLineNumber) : $($_.Message)" -ForegroundColor Red }
+    exit 1
+}
+Write-Host "bagarre.ps1 : $((Get-Content $sortie).Count) lignes, depot $depot"

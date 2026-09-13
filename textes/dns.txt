@@ -1,0 +1,11 @@
+Quad9 bloque les domaines malveillants connus et ne garde pas ton adresse IP dans ses journaux.
+Cloudflare est en général le plus rapide. Google garde des journaux. Le DNS du FAI est souvent le plus
+lent, sauf chez Free où il est très bon.
+
+Un écart sous 5 ms ne se sent pas. Si ta box est à moins de 5 ms de la meilleure, garde-la.
+
+Pour chiffrer le DNS choisi (DoH : ta box et ton FAI ne voient plus les noms demandés) :
+Paramètres > Réseau et Internet > ta carte > Attribution du serveur DNS > Modifier > DNS chiffré :
+Chiffré de préférence. Facultatif, zéro effet sur le ping.
+
+"Tout remettre comme avant" (onglet 3) remet aussi le DNS d'avant.

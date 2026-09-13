@@ -1,0 +1,83 @@
+NVIDIA (15 min) : le pilote nu, puis l'ancien Panneau de configuration
+
+À savoir en 2026 : depuis le pilote 610.47 (mai 2026) le Panneau de configuration classique
+n'est plus dans le pilote. Il s'installe depuis le Store (étape 2), et disparaît à chaque
+installation propre : tu le réinstalles après.
+
+1) NVCleanstall (bouton : winget installe la dernière version)
+   - "Manual", dernier pilote Game Ready pour ta carte.
+   - Composants : Display Driver, et PhysX si tu joues à des jeux qui l'utilisent. Rien d'autre.
+     Pas de NVIDIA App, pas de GeForce Experience, pas de USB-C, pas de Stereo 3D.
+     NVIDIA HD Audio : garde-le seulement si ton son sort par le câble HDMI / DisplayPort de l'écran.
+   - Page "Installation Tweaks", coche comme sur la capture (bouton "Capture : NVCleanstall") SAUF la ligne MPO (voir plus bas). Ce que ça fait :
+     . Perform a Clean Installation : repart de zéro.
+     . Disable Ansel : overlay de capture, inutile.
+     . Disable Driver Telemetry.
+     . Enable Message Signaled Interrupts, priorité High : la carte parle au CPU par MSI
+       au lieu de l'ancienne ligne d'interruption partagée. Moins de latence image prête / image affichée.
+     . Disable HDCP : le chiffrement anti-copie du câble. Exigé par Netflix 4K et les Blu-ray, par rien d'autre.
+       Actif, il provoque des micro-coupures quand la liaison se renégocie (alt-tab, sortie de veille).
+       Tu perds : Netflix / Disney+ en 4K dans le navigateur (la 1080p passe).
+     . Rebuild digital signature + "Use method compatible with Easy-Anti-Cheat" + "Automatically accept" :
+       NVCleanstall a modifié le pilote (HDCP, MSI), la signature NVIDIA ne colle plus, Windows refuserait.
+       Il re-signe. La méthode EAC garde le fichier du pilote intact, seul l'installeur change,
+       donc l'anti-cheat voit un pilote NVIDIA officiel. Validé par le mainteneur du pack sur les
+       anti-cheats courants. Si un jeu refuse de lancer après : réinstalle le pilote sans ces deux cases.
+     . Disable Multiplane Overlay (MPO) : DÉCOCHÉ par défaut maintenant. MPO est ce qui permet au jeu
+       fenêtré d'être présenté sans copie (les "optimisations pour les jeux fenêtrés" en dépendent).
+       Coche-le seulement si tu as des écrans noirs ou des scintillements en multi-écran, c'est le
+       correctif officiel NVIDIA (clé OverlayTestMode=5). Une grosse mise à jour Windows peut la
+       réécrire : si le bug revient, repasse par NVCleanstall.
+   - Install. L'écran clignote et des messages rouges passent, c'est normal, ne touche à rien.
+   La fois suivante, NVCleanstall propose "paramètres précédents", plus besoin de recocher.
+
+2) Panneau de configuration NVIDIA (l ancien), bouton ci-dessus. Ce qu il lance :
+   winget install --id 9NF8H0H7WMLT --source msstore
+   Il a besoin du service NVIDIA Display Container (NvContainer) : ne le désactive jamais.
+
+   Réglages (bouton "Capture : Panneau NVIDIA"), Gérer les paramètres 3D > Paramètres globaux :
+   - Mode de faible latence : Activé. Le pilote garde une seule image d'avance. "Ultra" force zéro
+     image d'avance et coûte des saccades quand le CPU est à la limite : c'est le réglage d'avant
+     Reflex. Si un jeu propose Reflex, Reflex prend le dessus, normal.
+   - Gestion de l'alimentation : Privilégier les performances maximales. Sur les pilotes récents
+     (616.xx) le réglage ne s'applique pas toujours : vérifie au repos avec "nvidia-smi -q -d CLOCK"
+     dans un terminal, si les fréquences retombent à l'idle c'est ignoré, et ce n'est pas grave.
+   - Taille du cache de shaders : Illimitée. Le défaut (4 Go) sature, un shader évincé se recompile
+     en pleine partie : pic de temps d'image.
+   - Filtrage de texture, qualité : Hautes performances.
+   - Optimisation threadée : Activé.
+   - Synchronisation verticale et G-Sync, deux cas :
+     . Écran G-Sync / compatible : G-Sync activé dans "Configuration de G-SYNC", V-Sync "Activé" ICI
+       dans le Panneau, V-Sync OFF dans chaque jeu, et un cap de FPS 3 à 4 sous le taux de l'écran
+       (RivaTuner, tuto Dur, ou Reflex qui le fait tout seul). C'est la combinaison documentée par
+       Blur Busters : zéro tearing, latence minimale. Le "paramètre de l'application" de l'ancien tuto
+       laissait le jeu remettre sa V-Sync classique par-dessus G-Sync.
+     . Sans G-Sync : V-Sync Désactivé, cap RivaTuner seul, Reflex si le jeu l'a.
+     Jeu en fenêtré ou sur un portable hybride (Optimus) : la V-Sync du Panneau ne s'applique pas
+     toujours, règle-la dans le jeu.
+   - Processeur graphique OpenGL : ta carte, pas "auto".
+   - Smooth Motion (génération d'images par le pilote) : jamais en global. Par jeu, solo seulement,
+     jamais en compétitif (ajoute une image de latence).
+   Configurer Surround et PhysX : PhysX sur ta carte NVIDIA.
+   Régler la taille et la position du bureau : second écran en "Pas de mise à l'échelle".
+   Modifier la résolution : plage dynamique de sortie "Complète", format RGB 4:4:4. Le pilote choisit
+   parfois "Limitée" sur une TV ou un écran HDMI : les noirs deviennent gris.
+
+   Paramètres Windows > Système > Affichage > Graphiques :
+   - "Optimisations pour les jeux fenêtrés" activé. Windows présente les images du fenêtré comme en
+     plein écran, la latence baisse. Retour en arrière si un jeu clignote.
+   - Planification GPU à accélération matérielle (HAGS) : garde activé. DLSS Frame Generation et
+     Smooth Motion l'exigent. Le couper ne fait rien gagner sur une carte récente.
+   - Auto HDR : off en compétitif, ça ajoute un traitement par image. On pour les jeux solo si l'écran
+     est vraiment HDR (600 nits et plus).
+
+3) MSI Afterburner et RivaTuner (bouton)
+   Pas pour overclocker. Pour la courbe de ventilation et l'overlay RivaTuner (FPS, temps d'image,
+   températures). C'est ton outil pour VOIR qu'une opti change quelque chose au lieu de le croire.
+   Un seul overlay à la fois : RivaTuner OU Steam OU Discord OU la Game Bar. Deux overlays
+   empilés, c'est un hook de plus par image.
+
+Si tu as quand même installé la NVIDIA App (ou si un jeu te l'a imposée) :
+   Paramètres > Fonctionnalités : overlay OFF, Instant Replay OFF, Freestyle OFF. Jeux : "optimiser
+   automatiquement" OFF (elle réécrit tes réglages). Le reste du tuto s'applique pareil, le Panneau
+   classique et l'App écrivent dans le même profil.
