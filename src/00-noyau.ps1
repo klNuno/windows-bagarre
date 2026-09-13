@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Continue'
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
 # Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
-$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null }
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null; Cartes = @() }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
@@ -59,6 +59,9 @@ $EstPortable = (Get-CimInstance Win32_SystemEnclosure).ChassisTypes | Where-Obje
 $DisqueSysteme = Get-PhysicalDisk | Where-Object { $_.DeviceId -eq ((Get-Partition -DriveLetter $env:SystemDrive[0]).DiskNumber) } | Select-Object -First 1
 $EstHdd = $DisqueSysteme -and $DisqueSysteme.MediaType -eq 'HDD'
 $Machine = "$RamGo Go RAM, $Gpu, disque système $(if ($EstHdd) { 'HDD' } else { 'SSD' })$(if ($EstPortable) { ', portable' })"
+# Âge de l'installation de Windows : au-delà d'un mois la fenêtre propose de se protéger avant de toucher (point de restauration, sauvegarde).
+$InstallDate = try { (Get-CimInstance Win32_OperatingSystem).InstallDate } catch { $null }
+$InstallJours = if ($InstallDate) { [int]((Get-Date) - $InstallDate).TotalDays } else { 0 }
 
 # ---------------------------------------------------------------------------
 # Outils : lire, écrire, mémoriser pour le retour arrière
@@ -146,14 +149,29 @@ function Tache-Couper($chemin, $nom) {
     Log "tâche     $chemin$nom désactivée"
 }
 
-# Cartes réseau physiques actives (pas les cartes virtuelles VPN / VMware / Bluetooth)
+# Cartes réseau physiques actives (pas les cartes virtuelles VPN / VMware / Bluetooth).
+# La liste est gardée après le premier appel : changer une propriété avancée réinitialise la carte, qui n'est plus "Up"
+# pendant une ou deux secondes, et les items réseau suivants ne voyaient aucune carte (vu sur le PC du mainteneur le 2026-09-13).
 function Cartes-Reseau {
-    Get-NetAdapter -Physical -ErrorAction SilentlyContinue | Where-Object { $_.Status -eq 'Up' -and $_.InterfaceDescription -notmatch 'Bluetooth|Virtual|VMware|Hyper-V|TAP|WireGuard|Tailscale' }
+    if ($Bagarre.Cartes.Count -eq 0) {
+        $Bagarre.Cartes = @(Get-NetAdapter -Physical -ErrorAction SilentlyContinue | Where-Object { $_.Status -eq 'Up' -and $_.InterfaceDescription -notmatch 'Bluetooth|Virtual|VMware|Hyper-V|TAP|WireGuard|Tailscale' })
+    }
+    $Bagarre.Cartes
+}
+
+# Attend que la carte soit revenue après une réinitialisation (au plus 15 s), la fenêtre reste vivante pendant ce temps.
+function Net-Attendre($carte) {
+    for ($i = 0; $i -lt 30; $i++) {
+        $a = Get-NetAdapter -Name $carte.Name -ErrorAction SilentlyContinue
+        if ($a -and $a.Status -eq 'Up') { return }
+        Start-Sleep -Milliseconds 500
+        Rafraichir
+    }
 }
 
 function Net-Liaison-Couper($carte, $composant, $description) {
     $b = Get-NetAdapterBinding -Name $carte.Name -ComponentID $composant -ErrorAction SilentlyContinue
-    if (-not $b) { return }
+    if (-not $b) { Log "réseau    $($carte.Name) : $description introuvable, ignoré"; return }
     if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add(-not [bool]$b.Enabled); return }
     Memoriser "netb|$($carte.Name)|$composant" @{ carte = $carte.Name; composant = $composant; actif = [bool]$b.Enabled }
     Disable-NetAdapterBinding -Name $carte.Name -ComponentID $composant -ErrorAction SilentlyContinue
@@ -164,20 +182,39 @@ function Net-Propriete-Regler($carte, $motif, $valeur, $description) {
     $props = Get-NetAdapterAdvancedProperty -Name $carte.Name -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -match $motif }
     foreach ($p in $props) {
         $choix = $p.ValidDisplayValues | Where-Object { $_ -match $valeur } | Select-Object -First 1
-        if (-not $choix) { Log "réseau    $($carte.Name) : $($p.DisplayName) n a pas de valeur '$valeur', ignoré"; continue }
+        if (-not $choix) { continue }   # la propriété n'a pas cette valeur (autre pilote, autre libellé) : rien à faire
         if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add([string]$p.DisplayValue -eq [string]$choix); continue }
+        if ([string]$p.DisplayValue -eq [string]$choix) { Log "réseau    $($carte.Name) : $($p.DisplayName) déjà sur $choix"; continue }
         Memoriser "netadv|$($carte.Name)|$($p.RegistryKeyword)" @{ carte = $carte.Name; mot = $p.RegistryKeyword; valeur = [string]$p.RegistryValue }
         Set-NetAdapterAdvancedProperty -Name $carte.Name -RegistryKeyword $p.RegistryKeyword -DisplayValue $choix -ErrorAction SilentlyContinue
         Log "réseau    $($carte.Name) : $($p.DisplayName) = $choix ($description)"
+        Net-Attendre $carte
     }
 }
 
+# Alias powercfg (SUB_PROCESSOR, PERFBOOSTMODE...) -> GUID, d'après "powercfg /aliases". Un GUID passe tel quel.
+function Powercfg-Guid($nom) {
+    if ($nom -match '^[0-9a-f]{8}-') { return $nom }
+    if (-not $Bagarre.ContainsKey('PowercfgAlias')) {
+        $t = @{}
+        foreach ($l in (powercfg /aliases 2>$null)) { if ($l -match '^\s*([0-9a-f-]{36})\s+(\S+)') { $t[$Matches[2]] = $Matches[1] } }
+        $Bagarre.PowercfgAlias = $t
+    }
+    if ($Bagarre.PowercfgAlias[$nom]) { $Bagarre.PowercfgAlias[$nom] } else { $nom }
+}
+
+# Les réglages cachés (PERFBOOSTMODE, CPMINCORES) ne sortent pas de "powercfg /query" : leur valeur est lue dans le registre
+# du plan actif, et si la clé n'existe pas c'est le défaut de Windows (mémorisé comme $null, la restauration supprime la clé).
 function Powercfg-Regler($sousGroupe, $reglage, $valeur, $description) {
     $id = "pwr|$sousGroupe|$reglage"
+    $plan = ((powercfg /getactivescheme 2>$null) -join ' ') -replace '.*?([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}).*', '$1'
+    $cle = "HKLM:\SYSTEM\CurrentControlSet\Control\Power\User\PowerSchemes\$plan\$(Powercfg-Guid $sousGroupe)\$(Powercfg-Guid $reglage)"
     $lu = (powercfg /query SCHEME_CURRENT $sousGroupe $reglage 2>$null | Select-String 'Index du paramètre d.alimentation CA actuel|Current AC Power Setting Index')
-    $avantVal = if ($lu) { [Convert]::ToInt32(($lu -split ':')[-1].Trim(), 16) } else { $null }
+    $avantVal = if ($lu) { [Convert]::ToInt32(($lu -split ':')[-1].Trim(), 16) }
+                elseif (Test-Path $cle) { (Get-ItemProperty $cle -ErrorAction SilentlyContinue).ACSettingIndex }
+                else { $null }
     if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add(($null -ne $avantVal) -and ($avantVal -eq [int]$valeur)); return }
-    Memoriser $id @{ sousGroupe = $sousGroupe; reglage = $reglage; valeur = $avantVal }
+    Memoriser $id @{ sousGroupe = $sousGroupe; reglage = $reglage; valeur = $avantVal; cle = $cle }
     powercfg /setacvalueindex SCHEME_CURRENT $sousGroupe $reglage $valeur | Out-Null
     powercfg /setdcvalueindex SCHEME_CURRENT $sousGroupe $reglage $valeur | Out-Null
     powercfg /setactive SCHEME_CURRENT | Out-Null
@@ -204,6 +241,22 @@ function Ouvrir($url) { Start-Process $url | Out-Null }
 
 function Image-Ouvrir($nom) {
     if ($Here -and (Test-Path (Join-Path $Here "images\$nom"))) { Ouvrir (Join-Path $Here "images\$nom") } else { Ouvrir "$Depot/images/$nom" }
+}
+
+# Les petites images embarquées par build.ps1 ($Logos, base64) en BitmapImage, une seule fois chacune.
+$LogoCache = @{}
+function Logo-Image($nom) {
+    if ($LogoCache.ContainsKey($nom)) { return $LogoCache[$nom] }
+    $bi = $null
+    if ($Logos[$nom]) {
+        try {
+            $flux = New-Object IO.MemoryStream (, [Convert]::FromBase64String($Logos[$nom]))
+            $bi = New-Object Windows.Media.Imaging.BitmapImage
+            $bi.BeginInit(); $bi.StreamSource = $flux; $bi.CacheOption = 'OnLoad'; $bi.EndInit(); $bi.Freeze()
+        } catch { $bi = $null }
+    }
+    $LogoCache[$nom] = $bi
+    $bi
 }
 
 # Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.

@@ -1,62 +1,37 @@
-MAINTENANCE: once the PC has some mileage on it
+Months after the install, when the PC has lived a while.
 
-- Autoruns (button): everything that launches at startup. Options > Hide Microsoft
-  entries, then uncheck what you do not recognize (launchers, updaters). Uncheck, do not delete.
-- Geek Uninstaller (button): uninstalls cleanly and removes the leftovers. Better than Settings > Apps.
-- MeasureSleep (button): checks the timer. About 0.5 ms expected after the script.
-  1 ms or 15.6 ms: see the Hard tutorial, point 1.
+## What starts on its own
+@BtnAutoruns, BtnGeek
+Autoruns: Options > Hide Microsoft entries, then untick what you do not recognize (launchers, updaters). Untick, do not delete.
+Vendor suites to remove: Nahimic, Killer Intelligence Center, Armoury Crate, MSI Center, Sonic Studio. Each one adds a service and an overlay.
+@BtnFan, BtnRgb
 
-Manufacturer suites to remove (they are there without you asking): Nahimic, Killer Intelligence
-Center, Armoury Crate, MSI Center, Dragon Center, Sonic Studio. Each one installs a service and an
-audio or network overlay. For fans: FanControl (open source). For LEDs: OpenRGB, or the
-brand's software alone (iCUE, Synapse) without its "modules".
+## Disk cleanup, in order
+@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
+Settings > System > Storage > Storage Sense: monthly, recycle bin 30 days, Downloads never.
+@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
+! BleachBit: never "Free disk space" nor "Memory". DISM: never /ResetBase.
 
-Disk cleanup, in order:
-1. Windows + R > cleanmgr > Clean up system files: old updates, recycle bin.
-2. Settings > System > Storage > Storage Sense: on, every month, recycle bin 30 days,
-   Downloads never (it deletes what you have not sorted through yet).
-3. Admin Terminal, WinSxS:
-   Dism /Online /Cleanup-Image /AnalyzeComponentStore     (tells you if there is anything to clean)
-   Dism /Online /Cleanup-Image /StartComponentCleanup     (never /ResetBase: no more uninstalling updates)
-4. BleachBit (open source, winget install BleachBit.BleachBit) if you want more: browser caches, logs.
-   Never check "Free disk space" or "Memory": slow and useless on SSD.
-5. DriverStore Explorer (RAPR): removes old stacked NVIDIA drivers (several GB).
-6. SSD: Optimize-Volume -DriveLetter C -ReTrim in an admin terminal (TRIM, once a month
-   Storage Sense already does it). CrystalDiskInfo for health and temperature.
+## Drivers
+Windows Update no longer touches them (jeu-pilotes box). NVIDIA through NVCleanstall, the rest from the maker's site, only when something misbehaves.
+@BtnDdu
+DDU only when you switch graphics card brand.
 
-Drivers: Windows Update no longer touches them (the jeu-pilotes checkbox). You update them yourself:
-NVIDIA via NVCleanstall, the rest from the manufacturer's site, only if something works badly.
-DDU (Display Driver Uninstaller) only when you switch graphics card brands, not for
-every driver update: NVCleanstall's "clean installation" is enough.
+## The PC wakes up on its own, does not sleep, crashes
+@BtnReveil
+lastwake says who woke it, requests what keeps it awake (often a browser with a video).
+Blue screens: Event Viewer > System, source "WHEA-Logger". A WHEA error = hardware (RAM, overclock, PSU), not Windows.
+Wi-Fi dropping:
+> netsh wlan show wlanreport
 
-Defender hogging resources: Windows has an official tool to see which file costs (admin PowerShell).
-  New-MpPerformanceRecording -RecordTo C:\defender.etl    (play for 10 min, then Ctrl+C)
-  Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopExtensions 10
-Whatever folder comes out goes into Exclusions (the game or launcher folder). Never the whole disk.
+## Defender hogging
+> New-MpPerformanceRecording -RecordTo C:\defender.etl
+> Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10
+Play 10 minutes, Ctrl+C. The folder that comes out goes into Exclusions. Never the whole disk.
 
-The PC wakes up on its own / will not sleep (admin terminal):
-  powercfg /lastwake         (what woke it up)
-  powercfg /waketimers       (what has the right to wake it up, empty after the jeu-reveil checkbox)
-  powercfg /requests         (what keeps it from sleeping: often a browser with a video playing)
-  powercfg /sleepstudy       (laptop: HTML report of what drained the battery during sleep)
-Wi-Fi that drops: netsh wlan show wlanreport, then open the HTML report it points to.
-Crashes or blue screens: Event Viewer > System, filter source "WHEA-Logger":
-a WHEA error means hardware (RAM, overclock, PSU), not Windows.
-
-Measure before / after (the only way to know if a tweak does anything):
-  Tool: CapFrameX (free) or PresentMon (Intel, open source). RivaTuner to watch it live.
-  1. Same game, same scene (a built-in benchmark or a replay), same resolution.
-  2. One warmup pass (discarded), then 3 passes of 60 s BEFORE, 3 passes AFTER, alternating if you
-  can (before, after, before, after, and so on) to smooth out temperature.
-  3. Look at the median FPS, the 1% low and the p99 frame time. Not the average.
-  4. A gap under 3% with the 1% low moving both ways means no effect. Revert it.
-  PresentMon also tells you the "PresentMode": "Hardware: Independent Flip" means the game is presented with no
-  copy (optimized windowed or full screen), "Composed: Flip" means it goes through the compositor (one extra
-  frame of latency). That is how you check that MPO and windowed optimizations are working.
-
-Dev Drive (if you compile code or have heavy projects): Settings > System > Storage > Advanced
-storage settings > Create Dev Drive. A ReFS partition with Defender in performance mode. Not for games.
-
-RegCleaner and PureRa, which were in the old pack, are gone. 2026 verdict: obsolete,
-no gain on a modern Windows, a risk of breaking a key. The old .reg files
-(Recycle Bin in This PC, Quick access, VLC) are now unchecked checkboxes in the Comfort group, tab 3.
+## Measure before / after
+@BtnMeasure, BtnCapframe
+- Same game, same scene, same resolution.
+- One warm-up run, then 3 runs of 60 s before, 3 after.
+- Median, 1% low, p99 frame time. Never the average.
+- A gap under 3% = no effect. Put it back.

@@ -1,84 +1,30 @@
-NVIDIA (15 min): the bare driver, then the old Control Panel
+Since driver 610.47 (May 2026) the classic Control Panel is no longer in the driver. It comes from the Store and disappears on every clean install: you reinstall it afterwards.
 
-Good to know in 2026: since driver 610.47 (May 2026) the classic Control Panel
-is no longer bundled with the driver. It installs from the Store (step 2), and disappears with every
-clean installation: you reinstall it afterward.
+## 1. NVCleanstall: the bare driver
+@BtnNvclean, BtnImgNvclean
+- "Manual", latest Game Ready driver for your card.
+- Components: Display Driver, PhysX if a game uses it. Nothing else. NVIDIA HD Audio only if your sound goes through the monitor cable.
+- Installation Tweaks: tick as on the screenshot, EXCEPT the MPO line.
+! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. Validated on the common anti-cheats. A game refuses to start: reinstall without those two boxes.
+! HDCP off: you lose Netflix and Disney+ in 4K in the browser (1080p still works). You gain zero micro-stutter on alt-tab.
+MPO (Multiplane Overlay): only turn it off if you get black screens or flickering with several monitors.
+The screen flickers and red messages scroll during the install, that is normal.
 
-1) NVCleanstall (button: winget installs the latest version)
-   - "Manual", latest Game Ready driver for your card.
-   - Components: Display Driver, and PhysX if you play games that use it. Nothing else.
-     No NVIDIA App, no GeForce Experience, no USB-C, no Stereo 3D.
-     NVIDIA HD Audio: keep it only if your sound goes out through the screen's HDMI / DisplayPort cable.
-   - "Installation Tweaks" page, check as in the screenshot (button "Screenshot: NVCleanstall")
-     EXCEPT the MPO line (see below). What it does:
-     . Perform a Clean Installation: starts fresh.
-     . Disable Ansel: capture overlay, useless.
-     . Disable Driver Telemetry.
-     . Enable Message Signaled Interrupts, High priority: the card talks to the CPU over MSI
-       instead of the old shared interrupt line. Less latency between frame ready and frame displayed.
-     . Disable HDCP: the cable's anti-copy encryption. Required by Netflix 4K and Blu-ray, nothing else.
-       Active, it causes micro-cuts when the link renegotiates (alt-tab, waking from sleep).
-       You lose: Netflix / Disney+ in 4K in the browser (1080p still works).
-     . Rebuild digital signature + "Use method compatible with Easy-Anti-Cheat" + "Automatically accept":
-       NVCleanstall changed the driver (HDCP, MSI), the NVIDIA signature no longer matches, Windows would refuse it.
-       It re-signs it. The EAC method keeps the driver file intact, only the installer changes,
-       so the anti-cheat sees an official NVIDIA driver. Validated by the pack's maintainer on the
-       common anti-cheats. If a game refuses to launch afterward: reinstall the driver without those two boxes.
-     . Disable Multiplane Overlay (MPO): UNCHECKED by default now. MPO is what lets the
-       windowed game be presented with no copy ("optimizations for windowed games" depend on it).
-       Check it only if you get black screens or flickering with multiple monitors, it is the
-       official NVIDIA fix (OverlayTestMode=5 key). A major Windows update can overwrite it,
-       if the bug comes back, run NVCleanstall again.
-   - Install. The screen flickers and red messages flash by, that is normal, do not touch anything.
-   Next time, NVCleanstall offers "previous settings", no need to check everything again.
+## 2. The NVIDIA Control Panel, the classic one
+@BtnPanneau, BtnImgPanneau
+Manage 3D settings > Global settings:
+- Low latency mode: On, not Ultra. Reflex takes over when a game has it.
+- Power management: prefer maximum performance.
+- Shader cache size: Unlimited. The default fills up and recompiles mid-game.
+- Texture filtering: High performance. Threaded optimization: On.
+- G-Sync monitor: G-Sync on, V-Sync On here, V-Sync OFF in every game, FPS cap 3 below the refresh rate (RivaTuner or Reflex). No G-Sync: V-Sync Off, RivaTuner cap alone.
+- Smooth Motion: never globally. Per game, single-player only.
+Change resolution: dynamic range "Full", RGB 4:4:4. Otherwise blacks are grey.
+Windows Settings > Display > Graphics: optimizations for windowed games on, HAGS kept, Auto HDR off in competitive.
+! Never disable the NVIDIA Display Container service (NvContainer), the Control Panel needs it.
 
-2) NVIDIA Control Panel (the old one), button above. What it runs:
-   winget install --id 9NF8H0H7WMLT --source msstore
-   It needs the NVIDIA Display Container service (NvContainer): never disable it.
-
-   Settings (button "Screenshot: NVIDIA Control Panel"), Manage 3D settings > Global settings:
-   - Low Latency Mode: On. The driver keeps a single frame of lead. "Ultra" forces zero
-     frames of lead and costs stutter when the CPU is at its limit: it is the setting from before
-     Reflex. If a game offers Reflex, Reflex takes over, which is normal.
-   - Power management mode: Prefer maximum performance. On recent drivers
-     (616.xx) the setting does not always apply: check at idle with "nvidia-smi -q -d CLOCK"
-     in a terminal, if the clocks drop back down at idle it is being ignored, and that is fine.
-   - Shader cache size: Unlimited. The default (4 GB) fills up, an evicted shader recompiles
-     mid-game: a frame time spike.
-   - Texture filtering, quality: High performance.
-   - Threaded optimization: On.
-   - Vertical sync and G-Sync, two cases:
-     . G-Sync / compatible screen: G-Sync enabled in "Set up G-SYNC", V-Sync "On" HERE
-       in the Panel, V-Sync OFF in every game, and an FPS cap 3 to 4 under the screen's refresh rate
-       (RivaTuner, Hard tutorial, or Reflex which does it on its own). This is the combination documented by
-       Blur Busters: zero tearing, minimal latency. The "application-controlled" setting from the old tutorial
-       let the game put its own classic V-Sync back on top of G-Sync.
-     . Without G-Sync: V-Sync Off, RivaTuner cap alone, Reflex if the game has it.
-     Game in windowed mode or on a hybrid laptop (Optimus): the Panel's V-Sync does not always
-     apply, set it in the game instead.
-   - OpenGL rendering GPU: your card, not "auto".
-   - Smooth Motion (driver-side frame generation): never globally. Per game, single player only,
-     never in competitive play (adds a frame of latency).
-   Configure Surround, PhysX: PhysX on your NVIDIA card.
-   Adjust desktop size and position: second monitor set to "No scaling".
-   Change resolution: output dynamic range "Full", RGB format 4:4:4. The driver sometimes
-   picks "Limited" on a TV or an HDMI monitor: blacks turn gray.
-
-   Windows Settings > System > Display > Graphics:
-   - "Optimizations for windowed games" on. Windows presents windowed frames like
-     full screen ones, latency drops. Turn it back off if a game flickers.
-   - Hardware-accelerated GPU scheduling (HAGS): keep it on. DLSS Frame Generation and
-     Smooth Motion require it. Turning it off gains nothing on a recent card.
-   - Auto HDR: off in competitive play, it adds processing per frame. On for single player games if the screen
-     is genuinely HDR (600 nits and above).
-
-3) MSI Afterburner and RivaTuner (button)
-   Not for overclocking. For the fan curve and the RivaTuner overlay (FPS, frame time,
-   temperatures). This is your tool to SEE that a tweak changes something instead of just believing it.
-   Only one overlay at a time: RivaTuner OR Steam OR Discord OR the Game Bar. Two overlays
-   stacked means one more hook per frame.
-
-If you installed the NVIDIA App anyway (or a game forced it on you):
-   Settings > Features: overlay OFF, Instant Replay OFF, Freestyle OFF. Games: "auto-optimize"
-   OFF (it rewrites your settings). The rest of the tutorial applies the same way, the classic Panel
-   and the App write to the same profile.
+## 3. Afterburner and RivaTuner: to see, not to overclock
+@BtnAfterburner, BtnInspector
+The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything. One overlay at a time: RivaTuner or Steam or Discord.
+Profile Inspector: Ansel off, CUDA Force P2 State off. Nothing else unless you know.
+If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.

@@ -19,6 +19,8 @@ function Tout-Restaurer {
                     if ($null -ne $v.valeur) {
                         powercfg /setacvalueindex SCHEME_CURRENT $v.sousGroupe $v.reglage $v.valeur | Out-Null
                         powercfg /setdcvalueindex SCHEME_CURRENT $v.sousGroupe $v.reglage $v.valeur | Out-Null
+                    } elseif ($v.cle -and (Test-Path $v.cle)) {
+                        Remove-Item -Path $v.cle -Recurse -Force -ErrorAction SilentlyContinue   # pas de valeur avant = défaut Windows
                     }
                 }
                 'cmd|hibernation' { if ($v.actif) { powercfg /h on | Out-Null } }

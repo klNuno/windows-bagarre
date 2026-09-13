@@ -6,7 +6,7 @@ $racine = Split-Path -Parent $MyInvocation.MyCommand.Path
 $utf8 = New-Object Text.UTF8Encoding $false   # sans BOM : voir l'en-tete du fichier genere
 $sb = New-Object Text.StringBuilder
 [void]$sb.AppendLine('#Requires -Version 5.1')
-[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [switch]$Essai, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Depuis : dossier du clone (pose par la relance admin).')
+[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [switch]$Essai, [switch]$Vieux, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Vieux : force l avertissement "installation pas recente". -Depuis : dossier du clone (pose par la relance admin).')
 [void]$sb.AppendLine('# bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.')
 [void]$sb.AppendLine('# UTF-8 SANS BOM : "irm" garde le BOM dans le texte et PowerShell le prend pour une commande. Pour le lancer en local :')
 [void]$sb.AppendLine('#   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste')
@@ -27,6 +27,12 @@ foreach ($d in Get-ChildItem (Join-Path $racine 'textes') -Directory | Sort-Obje
         [void]$sb.AppendLine($t)
         [void]$sb.AppendLine("'@")
     }
+}
+# images/logos/*.png et images/stop-it.gif -> $Logos[<nom>] en base64 (petites images, decodees en BitmapImage par la fenetre)
+[void]$sb.AppendLine('$Logos = @{}')
+$images = @(Get-ChildItem (Join-Path $racine 'images\logos') -Filter *.png | Sort-Object Name) + @(Get-Item (Join-Path $racine 'images\stop-it.gif'))
+foreach ($f in $images) {
+    [void]$sb.AppendLine("`$Logos['$($f.BaseName)'] = '$([Convert]::ToBase64String([IO.File]::ReadAllBytes($f.FullName)))'")
 }
 foreach ($f in Get-ChildItem (Join-Path $racine 'src') -Filter *.ps1 | Sort-Object Name) {
     [void]$sb.AppendLine('')

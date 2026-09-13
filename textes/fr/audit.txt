@@ -1,22 +1,13 @@
-Le pack est générique. Ton PC ne l'est pas : ta carte réseau, ton GPU, tes programmes,
-tes jeux. L'audit prend une photo de ton PC et la donne à une IA avec un prompt qui sait
-ce que le pack a fait, ce qu'il refuse de faire, et comment juger une opti.
+Le pack est générique, ton PC ne l'est pas. L'audit prend une photo de ton PC et la donne à une IA avec un prompt qui sait ce que le pack a fait, ce qu'il refuse, et comment juger une opti.
 
-1) Bouton "Collecter le rapport". 30 secondes. Il écrit rapport-pc.txt et AUDIT.txt (le prompt)
-   dans un dossier bagarre-audit sur ton Bureau, et l'ouvre. Il ne modifie rien. Le rapport ne
-   contient ni nom de compte, ni mot de passe, ni clé de licence. Ouvre-le quand même avant de
-   l'envoyer, c'est ton PC.
+## 1. Le rapport
+@BtnCollecter
+30 secondes, ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur ton Bureau. Ni nom de compte, ni mot de passe, ni clé de licence. Ouvre-le quand même avant de l'envoyer.
 
-2) Bouton "Copier le prompt" (ou ouvre AUDIT.txt et copie tout).
+## 2. Le prompt
+@BtnPrompt, BtnDossierAudit
 
-3) Choisis ton IA :
-   - Claude Code, Codex, Gemini CLI ou tout agent en terminal : ouvre-le dans le dossier
-     bagarre-audit et colle le prompt. Il lira rapport-pc.txt tout seul et peut aller vérifier des trucs.
-   - ChatGPT, Claude.ai, un chat web : colle le prompt, puis joins rapport-pc.txt
-     (ou colle son contenu à la suite).
-
-4) Lis la réponse comme le reste du pack : chaque proposition doit dire ce que ça change,
-   ce que tu perds, et d'où ça vient. Une proposition sans source ou sans contrepartie,
-   tu ne l'appliques pas. Une chose à la fois, tu mesures avec RivaTuner, tu gardes ou tu remets.
-
-L'IA ne touche pas à ton PC. Elle lit et propose. C'est toi qui appliques.
+## 3. Ton IA
+- Agent en terminal (Claude Code, Codex, Gemini CLI) : ouvre-le dans le dossier bagarre-audit et colle le prompt. Il lit le rapport tout seul.
+- Chat web (ChatGPT, Claude.ai) : colle le prompt, puis joins rapport-pc.txt.
+Lis la réponse comme le reste du pack : une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.

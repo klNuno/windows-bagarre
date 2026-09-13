@@ -1,29 +1,9 @@
-NETWORK CARD (5 min)
+The Network card group of the script does all of this by itself. This guide is for checking, or doing it by hand.
 
-The checkbox script does all of this on its own, "Network card" group.
-This tutorial is for doing it by hand or checking it. Screenshots: the two "Screenshot" buttons above.
+Control Panel > Network and Sharing Center > Change adapter settings > right-click your card > Properties.
 
-Control Panel > Network and Sharing Center > Change adapter settings
-> right-click your card > Properties.
+1. Configure > Power Management: untick "Allow the computer to turn off this device". Otherwise the network drops for 2 seconds after sleep.
 
-1) Power management (Configure button > Power Management tab)
-   Uncheck "Allow the computer to turn off this device to save power".
-   Why: Windows turns the card off when idle, and it takes a second to come back.
-   That is the "network dropped for 2 seconds" after sleep.
+2. Advanced tab: Energy Efficient Ethernet, Green Ethernet, Power Saving Mode set to Disabled. Interrupt Moderation set to Medium, not Disabled. The rest at default, Jumbo Frame and Receive Buffers bring nothing in games.
 
-2) Advanced tab (screenshot "Advanced tab")
-   - Energy Efficient Ethernet / Green Ethernet / Power Saving Mode: Disabled.
-     The chip falls asleep between packets and wakes up with a delay.
-   - Interrupt Moderation Rate: Medium, NOT Disabled. Disabled means more interrupts,
-     more CPU time stolen from the game. Often missing on Realtek, too bad.
-   - The rest: leave it at default. Jumbo Frame, Receive Buffers maxed out, etc.
-     bring nothing in games, it is UDP in small packets.
-
-3) Protocol list (screenshot "protocols"), what to uncheck
-   - Microsoft LLDP Protocol Driver
-   - Link-Layer Topology Discovery Responder
-   - Link-Layer Topology Discovery Mapper I/O Driver
-   These three map out the local network. Useless.
-   KEEP: TCP/IPv4, TCP/IPv6 (games and Xbox Live use them), Client for Microsoft Networks
-   and File and Printer Sharing if you have a NAS or shared folders, QoS Packet Scheduler
-   if another device at home is downloading while you play.
+3. Protocols to untick: Microsoft LLDP Protocol Driver, Link-Layer Topology Discovery Responder, Link-Layer Topology Discovery Mapper I/O Driver. Keep TCP/IPv4 and IPv6.

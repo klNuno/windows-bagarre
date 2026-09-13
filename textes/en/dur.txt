@@ -1,85 +1,40 @@
-HARD (20 min): read everything before touching anything
+One thing at a time. You change it, you play 30 minutes with RivaTuner open, you keep it or put it back. A tweak you cannot measure does not exist.
 
-Here you change one thing at a time, you play for 30 minutes, you watch the frame time graph
-in RivaTuner, you keep it or you revert. A tweak you cannot measure does not exist.
-The clean measurement protocol is in the Maintenance tab ("Measure before / after").
+## 1. Check the 0.507 ms timer
+@BtnMeasureDur, BtnTimerDepot
+The script created the "bagarre timer" task. MeasureSleep should show about 0.5 ms.
+It shows 1 ms or 15.6 ms: re-tick the jeu-timer box in the script, or look at the "bagarre timer" task in Task Scheduler.
 
-1) 0.507 ms timer
-   The checkbox script created the "bagarre timer" task (SetTimerResolution.exe, open source GPL,
-   valleyofdoom/TimerResolution repo). Check with MeasureSleep (button, Maintenance tab): about 0.5 ms expected.
-   If MeasureSleep shows 1 ms or 15.6 ms: the GlobalTimerResolutionRequests key is not set
-   (the jeu-timer checkbox in the script) or the task did not start (Task Scheduler, "bagarre timer").
-   Process Lasso is no longer in the pack: 30 s wait on startup in the free version, timer paid
-   after a month. ThreadPilot (AGPL) exists for per-process affinity, with no ProBalance or timer,
-   curiosity only.
+## 2. Mouse
+Acceleration turned off by the script. Then: 1000 Hz in the mouse software, native DPI (400 / 800 / 1600), sensitivity in the game, never in Windows (6/11).
+The RawMouseThrottleDuration box in the script: only at 4000 Hz and above.
 
-6) Mouse
-   Acceleration turned off by the script. Then: 1000 Hz in the mouse software,
-   native DPI (400 / 800 / 1600), sensitivity set in the game, not in Windows (6/11 = 1:1).
-   RawMouseThrottleDuration (adv-rawmouse checkbox): only test it at 4000 Hz and above, and it is often
-   already at 8 by default on recent Windows 11 (the previous value is in bagarre.log, button on tab 3).
+## 3. Three Advanced boxes in the script, one at a time
+- Win32PrioritySeparation 0x26: helps a CPU-bound game with Discord and a browser behind. Can make the audio crackle.
+- Nagle (TcpAckFrequency): a few ms on a TCP game (MMO). Zero effect on a UDP shooter.
+- CPU boost Aggressive: desktop Intel only. On AMD the key does nothing, on a laptop it heats up for nothing.
 
-7) Win32PrioritySeparation (adv-priosep checkbox)
-   0x26 = short, variable quantum, x3 boost in the foreground. Can help a CPU-bound game with Discord
-   and a browser running behind it. Can also make the audio crackle. Measure it.
+## 4. Memory: 16 GB and recent games
+@BtnIslc
+ISLC empties the standby list when free RAM drops under 1 GB, which avoids swap stutter. 32 GB and more: useless. Windows memory compression stays on.
 
-8) Memory
-   16 GB of RAM and recent games: ISLC (Intelligent Standby List Cleaner, Wagnardsoft) empties the
-   standby list when free RAM drops under 1 GB, it avoids swap stutter. 32 GB and above:
-   useless. Windows memory compression stays on either way (turning it off makes it swap
-   sooner).
+## 5. Storage
+@BtnCompact
+DirectStorage games on the NVMe. Never NTFS compression on a game folder, CompactGUI is for old 2D games. The shader cache does not get "cleaned": emptying it recompiles everything.
 
-9) Cores for gaming (AutoGpuAffinity, optional)
-   A script that tests which core to put the GPU interrupt on and gives you the best one. Long (1 h), do it
-   on a PC that is already stable. valleyofdoom/AutoGpuAffinity repo.
-   MSI Util v3: to CHECK that the graphics card is really in MSI mode (NVCleanstall did it), not
-   to write. Its inpoutx64.sys driver has been blocked by Windows since KB5121003 (2026): if the tool
-   will not launch anymore, that is why, and you do not need it.
+## 6. The GPU interrupt core, optional
+@BtnAutoGpu
+AutoGpuAffinity tests which core to put the GPU interrupt on and keeps the best one. One hour, on an already stable PC.
 
-10) Storage
-   DirectStorage (Forspoken, Ratchet & Clank, Starfield): the game on the NVMe, not on a SATA drive, and
-   never NTFS compression on a game folder (CompactGUI: only for old 2D games).
-   The shader cache (%LOCALAPPDATA%\NVIDIA\DXCache) does not get "cleaned": emptying it makes
-   every shader recompile on your next play session.
+## 7. AMD
+Driver only from AMD's site, not the full Adrenalin. Anti-Lag 2 per game. AFMF off in competitive. On a Ryzen X3D, leave core parking alone: it is what keeps the game on the CCD with the cache.
 
-11) CPU boost (checkbox in powercfg, Intel desktop only, optional)
-   powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PERFBOOSTMODE 2 (Aggressive) then
-   powercfg /setactive SCHEME_CURRENT. The processor ramps up clock speed faster. On AMD the boost
-   is handled by the firmware, the key does nothing. On a laptop, no: it just heats up for nothing.
+## 8. Big Windows updates
+Settings > Windows Update > Advanced options: pause up to 5 weeks when a big version ships (25H2, 26H1), until drivers and anti-cheats catch up. No longer, security fixes depend on it.
 
-12) If you are on AMD (one page is enough)
-   Driver from the AMD site, "driver only" install (not the full Adrenalin) or Radeon Software
-   Slimmer (open source). Anti-Lag 2 on per game if available. AFMF (frame generation) off in
-   competitive play. On a Ryzen X3D, leave core parking on: it is what keeps the game on the CCD with
-   the cache. The rest of the pack applies the same way.
-
-13) Feature updates
-   Settings > Windows Update > Advanced options: pause for up to 5 weeks when a major
-   version (25H2, 26H1) comes out, until drivers and anti-cheats catch up. No more than that: the
-   security fixes depend on it. The "Xbox Mode" / Xbox full screen experience does nothing on a
-   desktop PC, it is for handheld consoles.
-
-The videos from the previous pack (Khorvie Tech channel), found through the Wayback Machine:
-- "BOOST PC PERFORMANCE | Win32 Priority Separation Benchmarks" (May 2024, 3 min): now private.
-  Benchmark on a single machine, a single scene. Kept as an unchecked Advanced checkbox, nothing more.
-- "Debunk'd Mouse and Keyboard Data Queue Sizes" (July 2024): deleted. Concluded that the
-  mouse / keyboard data queue tweak changes nothing. Not in the pack.
-- "The ONLY Windows PC OPTIMIZATION Guide 2024" (April 2024, 40 min, 1.6M views): now private.
-  The pack's timecodes fell in "network tweaks" (21:35). What was useful is in
-  the script's Network card group, with the explanation. The rest (unparking CPU via a third-party tool,
-  "win tweaker") is covered by the script or deliberately left out.
-
-What we do not do, and why:
-- HVCI / memory integrity off: anti-cheats require it, the October 2026 updates
-  turn it back on anyway, and the gain is 1 to 3%.
+## What the pack refuses, and why
+- HVCI off: anti-cheats require it, gain of 1 to 3%.
 - Registry cleaner: nothing to gain, everything to break.
-- "Ultimate performance" plan: identical to High performance on a desktop since 1903.
-- Disabling the Windows Update service, Defender, the firewall: no.
-- Prefetch / superfetch tweaks: the SSD does not care, SysMain helps on HDD.
-- "Unlocking" bandwidth (the reserved 20%): a myth, the key never did that.
-- HPET / useplatformclock, TdrLevel, DisablePreemption, MouseDataQueueSize, NetworkThrottlingIndex,
-  SystemResponsiveness=0, IPv6 off, C-states off, Interrupt Moderation "Disabled": tested by
-  others, nothing measurable, or harmful. Renaming GameBarPresenceWriter.exe: the script turns it off
-  properly (ActivationType key), never by renaming it.
-- Lossless Scaling, ExplorerPatcher, ViveTool, ParkControl, HIDUSBF: either paid, or broken by
-  every update, or already covered by the script.
+- "Ultimate performance" plan: identical to High performance since 1903.
+- Windows Update, Defender, firewall off: no.
+- Prefetch, "unlock the reserved 20% bandwidth", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled: nothing measurable or harmful.

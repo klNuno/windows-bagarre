@@ -1,14 +1,19 @@
-1) quand t'installes Windows 11
-- bypass compte local : "start ms-cxh:localonly"
-   - Juste après le premier bureau, dans un Terminal admin :  fsutil 8dot3name set 1
-     Ça coupe la génération des noms courts "PROGRA~1" sur les disques neufs (moins d'écritures
-     par fichier créé). À faire avant d'installer quoi que ce soit, ça ne se rattrape pas après.
+## Pendant l'installation de Windows
+Compte local, sans compte Microsoft : Maj+F10 à l'écran de connexion, puis :
+> start ms-cxh:localonly
 
-2) Windows Update avant de continuer
+## Juste après le premier bureau
+Avant d'installer quoi que ce soit, ça ne se rattrape pas après.
+@BtnFsutil
+Coupe les noms courts PROGRA~1 sur les disques neufs : moins d'écritures par fichier créé.
 
-3) Pilotes, dans l'ordre :
-   a. Chipset et carte réseau : site du fabricant de ta carte mère (ou du portable), ton modèle exact.
-   b. Carte graphique NVIDIA : PAS maintenant, c est l onglet 4. NVIDIA.
-      AMD : site AMD.
-   c. Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
-   d. Snappy Driver Installer Origin (bouton ci-dessus) : dernier recours, ne coche que ce qui manque.
+## Windows Update
+Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
+@BtnWindowsUpdate
+
+## Pilotes, dans l'ordre
+- Chipset et carte réseau : site du fabricant de ta carte mère (ou du portable), ton modèle exact.
+- Carte graphique NVIDIA : pas maintenant, c'est l'étape 4. AMD : site AMD.
+- Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
+- Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.
+@BtnSnappy

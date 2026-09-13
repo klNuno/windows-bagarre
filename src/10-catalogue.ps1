@@ -314,15 +314,19 @@ Ajouter $G 'net-alim' 'Interdire à Windows d éteindre la carte réseau pour é
         if ($pm) { Memoriser "netpm|$($c.Name)" @{ carte = $c.Name; valeur = [string]$pm.AllowComputerToTurnOffDevice } }
         Disable-NetAdapterPowerManagement -Name $c.Name -ErrorAction SilentlyContinue
         Log "réseau    $($c.Name) : gestion de l alimentation coupée"
+        Net-Attendre $c
     }
 }
 Ajouter $G 'net-eee' 'Couper Energy Efficient Ethernet / Green Ethernet' `
     'Même logique : la puce réseau s endort entre deux paquets pour économiser quelques milliwatts, et se réveille avec un délai. En jeu on veut la carte toujours réveillée.' $true 'Rien de visible.' {
-    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Energy.Efficient|Green Ethernet|EEE|Power Saving' 'Disabled|Désactivé|Off' 'économie d énergie de la puce' }
+    # Libellés vus : "Energy Efficient Ethernet", "Ethernet à économie d'énergie", "Green Ethernet", "Ethernet vert", "Advanced EEE",
+    # "Power Saving Mode", "Gigabit Lite" (Realtek). Pas "EEE Max Support Speed", qui n'a pas de valeur Désactivé.
+    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Energy.Efficient|conomie d|Green Ethernet|Ethernet vert|^Advanced EEE$|Power Saving|Gigabit Lite' '^(Disabled|Désactivé|Off)$' 'économie d énergie de la puce' }
 }
 Ajouter $G 'net-moderation' 'Modération des interruptions sur Medium (pas Désactivé)' `
     'La carte regroupe ses interruptions pour ne pas réveiller le CPU à chaque paquet. Medium garde le CPU disponible pour le jeu tout en livrant les paquets vite. Tout couper fait l inverse de ce que promettent les tutos : plus d interruptions, plus de temps CPU volé au jeu (mesuré au xperf par djdallmann sur trafic UDP de jeu).' $false 'Si ta carte n a pas cette option (souvent le cas sur Realtek), rien ne se passe.' {
-    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c '^Interrupt Moderation Rate' 'Medium|Moyen' 'modération d interruptions' }
+    # Intel : "Interrupt Moderation Rate" (Off / Low / Medium / High / Adaptive). Realtek : "Modération interruption" (Désactivé / Activé), on garde Activé.
+    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Interrupt Moderation|Modération interruption' '^(Medium|Moyen|Enabled|Activé)$' 'modération d interruptions' }
 }
 Ajouter $G 'net-decouverte' 'Décocher les protocoles de découverte réseau (LLDP, topologie de liaison)' `
     'Trois protocoles qui servent à dessiner la carte du réseau local. Ils tournent sur chaque paquet pour rien. TCP/IPv4 et IPv6 restent.' $true 'Le "mappage réseau" du Centre réseau ne voit plus les autres appareils. Personne ne l utilise.' {
@@ -455,6 +459,10 @@ Ajouter $G 'adv-nagle' 'Couper l algorithme de Nagle (TcpAckFrequency, TCPNoDela
         if (Test-Path $chemin) { Reg-Ecrire $chemin 'TcpAckFrequency' 1; Reg-Ecrire $chemin 'TCPNoDelay' 1 }
     }
 }
+Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE), PC fixe Intel' `
+    'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Sur AMD le boost est géré par le firmware, la valeur ne change rien.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
+    Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
+}
 Ajouter $G 'adv-dyntick' 'Couper le tick dynamique (bcdedit disabledynamictick)' `
     'Le noyau arrête son horloge quand rien ne se passe et la relance à la demande. Avec un timer à 0,5 ms ça peut dériver. À cocher seulement si MeasureSleep montre une résolution instable après le timer.' $false 'Consommation au repos un peu plus haute.' {
     Memoriser 'cmd|dyntick' @{ valeur = ((bcdedit /enum '{current}') | Select-String 'disabledynamictick') -replace '.*disabledynamictick\s+', '' }
@@ -497,7 +505,7 @@ $Actions = @{
     'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
     'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
     'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'
-    'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'nv-pstate' = 'set'
+    'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'adv-boost' = 'set'; 'nv-pstate' = 'set'
 }
 function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'off' } }
 

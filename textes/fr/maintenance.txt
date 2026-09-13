@@ -1,62 +1,37 @@
-MAINTENANCE : quand le PC a vécu
+Des mois après l'installation, quand le PC a vécu.
 
-- Autoruns (bouton) : tout ce qui se lance au démarrage. Options > Hide Microsoft
-  entries, puis décoche ce que tu ne reconnais pas (launchers, updaters). Décoche, ne supprime pas.
-- Geek Uninstaller (bouton) : désinstalle proprement et enlève les restes. Mieux que Paramètres > Applis.
-- MeasureSleep (bouton) : vérifie le timer. Attendu environ 0,5 ms après le script.
-  1 ms ou 15,6 ms : voir le tuto Dur, point 1.
+## Ce qui se lance tout seul
+@BtnAutoruns, BtnGeek
+Autoruns : Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas (launchers, updaters). Décoche, ne supprime pas.
+Suites constructeur à virer : Nahimic, Killer Intelligence Center, Armoury Crate, MSI Center, Sonic Studio. Chacune pose un service et un overlay.
+@BtnFan, BtnRgb
 
-Suites constructeur à virer (elles sont là sans qu'on te demande) : Nahimic, Killer Intelligence
-Center, Armoury Crate, MSI Center, Dragon Center, Sonic Studio. Chacune pose un service et un
-overlay audio ou réseau. Pour les ventilos : FanControl (open source). Pour les LED : OpenRGB, ou le
-logiciel de la marque seul (iCUE, Synapse) sans ses "modules".
+## Nettoyage disque, dans l'ordre
+@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
+Paramètres > Système > Stockage > Assistant de stockage : tous les mois, corbeille 30 jours, Téléchargements jamais.
+@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
+! BleachBit : jamais "Free disk space" ni "Memory". DISM : jamais /ResetBase.
 
-Nettoyage disque, dans l'ordre :
-1. Windows + R > cleanmgr > Nettoyer les fichiers système : anciennes mises à jour, corbeille.
-2. Paramètres > Système > Stockage > Assistant de stockage : activé, tous les mois, corbeille 30 jours,
-   Téléchargements jamais (il efface ce que tu n'as pas encore rangé).
-3. Terminal admin, WinSxS :
-   Dism /Online /Cleanup-Image /AnalyzeComponentStore     (dit s'il y a quelque chose à nettoyer)
-   Dism /Online /Cleanup-Image /StartComponentCleanup     (jamais /ResetBase : plus de désinstallation de mise à jour)
-4. BleachBit (open source, winget install BleachBit.BleachBit) si tu veux plus : caches navigateurs, logs.
-   Ne coche jamais "Free disk space" ni "Memory" : lent et inutile sur SSD.
-5. DriverStore Explorer (RAPR) : supprime les vieux pilotes NVIDIA empilés (plusieurs Go).
-6. SSD : Optimize-Volume -DriveLetter C -ReTrim dans un terminal admin (TRIM, une fois par mois
-   l'Assistant de stockage le fait déjà). CrystalDiskInfo pour la santé et la température.
+## Pilotes
+Windows Update ne les touche plus (case jeu-pilotes). NVIDIA via NVCleanstall, le reste depuis le site du constructeur, seulement si un truc marche mal.
+@BtnDdu
+DDU seulement quand tu changes de marque de carte graphique.
 
-Pilotes : Windows Update ne les touche plus (case jeu-pilotes). Tu les mets à jour toi-même :
-NVIDIA via NVCleanstall, le reste depuis le site du constructeur, seulement si un truc marche mal.
-DDU (Display Driver Uninstaller) seulement quand tu changes de marque de carte graphique, pas à
-chaque pilote : NVCleanstall "clean installation" suffit.
+## Le PC se réveille tout seul, ne dort pas, plante
+@BtnReveil
+lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir (souvent un navigateur avec une vidéo).
+Écrans bleus : Observateur d'événements > Système, source "WHEA-Logger". Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
+Wi-Fi qui décroche :
+> netsh wlan show wlanreport
 
-Defender qui pompe : Windows a un outil officiel pour voir quel fichier coûte (PowerShell admin).
-  New-MpPerformanceRecording -RecordTo C:\defender.etl    (joue 10 min, puis Ctrl+C)
-  Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopExtensions 10
-Le dossier qui ressort va dans Exclusions (dossier du jeu ou du launcher). Jamais tout le disque.
+## Defender qui pompe
+> New-MpPerformanceRecording -RecordTo C:\defender.etl
+> Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10
+Joue 10 minutes, Ctrl+C. Le dossier qui ressort va dans Exclusions. Jamais tout le disque.
 
-Le PC se réveille tout seul / ne dort pas (terminal admin) :
-  powercfg /lastwake         (qui l'a réveillé)
-  powercfg /waketimers       (qui a le droit de le réveiller, vide après la case jeu-reveil)
-  powercfg /requests         (ce qui l'empêche de dormir : souvent un navigateur avec une vidéo)
-  powercfg /sleepstudy       (portable : rapport HTML de ce qui a vidé la batterie en veille)
-Wi-Fi qui décroche : netsh wlan show wlanreport, puis ouvre le rapport HTML indiqué.
-Plantages ou écrans bleus : Observateur d'événements > Système, filtre source "WHEA-Logger" :
-une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
-
-Mesurer avant / après (le seul moyen de savoir si une opti fait quelque chose) :
-  Outil : CapFrameX (gratuit) ou PresentMon (Intel, open source). RivaTuner pour voir en direct.
-  1. Même jeu, même scène (un benchmark intégré ou un replay), même résolution.
-  2. Une passe de chauffe (jetée), puis 3 passes de 60 s AVANT, 3 passes APRÈS, en alternant si tu
-     peux (avant, après, avant, après...) pour lisser la température.
-  3. Regarde la médiane des FPS, le 1 % low et le p99 du temps d'image. Pas la moyenne.
-  4. Un écart sous 3 % avec des 1 % low qui bougent dans les deux sens = pas d'effet. Remets comme avant.
-  PresentMon te dit aussi le "PresentMode" : "Hardware: Independent Flip" = le jeu est présenté sans
-  copie (fenêtré optimisé ou plein écran), "Composed: Flip" = il passe par le compositeur (une image
-  de latence en plus). C'est comme ça qu'on vérifie que MPO et les optimisations fenêtrées marchent.
-
-Dev Drive (si tu compiles ou tu as des projets lourds) : Paramètres > Système > Stockage > Disques
-avancés > Créer un Dev Drive. Partition ReFS avec Defender en mode performance. Pas pour les jeux.
-
-RegCleaner et PureRa, qui étaient dans l ancien pack, sont retirés. Verdict 2026 : obsolètes,
-aucun gain sur un Windows moderne, un risque de casser une clé. Les anciens .reg
-(Corbeille dans Ce PC, Accès rapide, VLC) sont des cases décochées du groupe Confort, onglet 3.
+## Mesurer avant / après
+@BtnMeasure, BtnCapframe
+- Même jeu, même scène, même résolution.
+- Une passe de chauffe, puis 3 passes de 60 s avant, 3 après.
+- Médiane, 1 % low, p99 du temps d'image. Jamais la moyenne.
+- Un écart sous 3 % = pas d'effet. Remets comme avant.

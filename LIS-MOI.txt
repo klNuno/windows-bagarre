@@ -5,19 +5,23 @@ colle cette ligne, Entrée, accepte la fenêtre d'administrateur :
 
   irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
 
-Une fenêtre s ouvre avec tout le pack dedans, en français ou en anglais (boutons en bas à gauche) :
+Une fenêtre s ouvre avec tout le pack dedans, en français ou en anglais (FR / EN en haut à droite) :
 les étapes dans l ordre, les boutons qui installent ou lancent les outils, le script à cocher, le test DNS, l audit IA.
 Rien d'autre à télécharger. La commande prend toujours la version du jour.
+Si ton Windows a plus d un mois, la fenêtre te propose d abord un point de restauration ou une sauvegarde.
 
 Ce dépôt, c'est le code source de cette fenêtre :
   bagarre.ps1   le script assemblé, celui que la commande télécharge
   src/          ses morceaux : noyau, catalogue des optis (fr) et sa traduction (en), DNS, restauration, collecte, fenêtre
   textes/       les tutos affichés dans chaque onglet, fr/ et en/
   outils/       SetTimerResolution.exe et MeasureSleep.exe (GPL, dépôt valleyofdoom/TimerResolution)
-  images/       les captures (carte réseau, NVCleanstall, Panneau NVIDIA)
+  images/       les captures (carte réseau, NVCleanstall, Panneau NVIDIA), logos/ pour les boutons, stop-it.gif
   build.ps1     assemble src/ et textes/ en bagarre.ps1
 
 Modifier quelque chose : édite src/ ou textes/, lance build.ps1, commite bagarre.ps1 avec.
 Tester sans rien appliquer (le fichier est en UTF-8 sans BOM, d où cette forme plutôt que -File) :
   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste
-Voir chaque onglet en PNG sans ouvrir la fenêtre : la même ligne avec -Capture captures à la place de -Liste.
+Voir chaque étape en PNG sans ouvrir la fenêtre : la même ligne avec -Capture captures à la place de -Liste
+(ajoute -Vieux pour voir aussi l avertissement des installations pas récentes).
+Un texte d étape se modifie dans textes/ : "## Titre" ouvre une carte, "@BtnId" pose un bouton, "! " une mise en garde,
+"> " une commande, "- " une puce.

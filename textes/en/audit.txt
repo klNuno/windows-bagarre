@@ -1,22 +1,13 @@
-The pack is generic. Your PC is not: your network card, your GPU, your programs,
-your games. The audit takes a snapshot of your PC and gives it to an AI with a prompt that knows
-what the pack did, what it refuses to do, and how to judge a tweak.
+The pack is generic, your PC is not. The audit takes a snapshot of your PC and hands it to an AI with a prompt that knows what the pack did, what it refuses, and how to judge a tweak.
 
-1) "Collect the report" button. 30 seconds. It writes rapport-pc.txt and AUDIT.txt (the prompt)
-   into a bagarre-audit folder on your Desktop, and opens it. It changes nothing. The report
-   contains no account name, no password, no license key. Open it anyway before
-   sending it, it is your PC.
+## 1. The report
+@BtnCollecter
+30 seconds, changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on your Desktop. No account name, no password, no license key. Open it anyway before sending it.
 
-2) "Copy the prompt" button (or open AUDIT.txt and copy all of it).
+## 2. The prompt
+@BtnPrompt, BtnDossierAudit
 
-3) Pick your AI:
-   - Claude Code, Codex, Gemini CLI or any terminal agent: open it in the
-     bagarre-audit folder and paste the prompt. It will read rapport-pc.txt on its own and can go check things.
-   - ChatGPT, Claude.ai, a web chat: paste the prompt, then attach rapport-pc.txt
-     (or paste its content after).
-
-4) Read the answer like the rest of the pack: every proposal must say what it changes,
-   what you lose, and where it comes from. A proposal with no source or no tradeoff,
-   you do not apply it. One thing at a time, you measure with RivaTuner, you keep it or you revert.
-
-The AI does not touch your PC. It reads and proposes. You are the one who applies it.
+## 3. Your AI
+- Terminal agent (Claude Code, Codex, Gemini CLI): open it in the bagarre-audit folder and paste the prompt. It reads the report by itself.
+- Web chat (ChatGPT, Claude.ai): paste the prompt, then attach rapport-pc.txt.
+Read the answer like the rest of the pack: a proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.

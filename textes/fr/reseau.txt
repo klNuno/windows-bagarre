@@ -1,29 +1,9 @@
-CARTE RÉSEAU (5 min)
+Le groupe Carte réseau du script fait tout ça tout seul. Ce tuto sert à vérifier, ou à le faire à la main.
 
-Le script à cocher fait tout ça tout seul, groupe "Carte réseau".
-Ce tuto sert si tu veux le faire à la main ou vérifier. Captures : les deux boutons "Capture" au-dessus.
+Panneau de configuration > Centre réseau > Modifier les paramètres de la carte > clic droit sur ta carte > Propriétés.
 
-Panneau de configuration > Centre réseau > Modifier les paramètres de la carte
-> clic droit sur ta carte > Propriétés.
+1. Configurer > Gestion de l'alimentation : décoche "Autoriser l'ordinateur à éteindre ce périphérique". Sinon le réseau lâche 2 secondes après une veille.
 
-1) Gestion de l'alimentation (bouton Configurer > onglet Gestion de l'alimentation)
-   Décoche "Autoriser l'ordinateur à éteindre ce périphérique".
-   Pourquoi : Windows coupe la carte au repos, elle met une seconde à revenir.
-   C'est le "le réseau a lâché 2 secondes" après une veille.
+2. Onglet Avancé : Energy Efficient Ethernet, Green Ethernet, Power Saving Mode sur Désactivé. Interrupt Moderation sur Medium, pas Désactivé. Le reste par défaut, Jumbo Frame et Receive Buffers n'apportent rien en jeu.
 
-2) Onglet Avancé (capture "onglet Avancé")
-   - Energy Efficient Ethernet / Green Ethernet / Power Saving Mode : Désactivé.
-     La puce s'endort entre deux paquets et se réveille avec un délai.
-   - Interrupt Moderation Rate : Medium, PAS Désactivé. Désactivé = plus d'interruptions,
-     plus de temps CPU volé au jeu. Souvent absent sur Realtek, tant pis.
-   - Le reste : laisse par défaut. Jumbo Frame, Receive Buffers à fond, etc.
-     n'apportent rien en jeu, c'est de l'UDP en petits paquets.
-
-3) Liste des protocoles (capture "protocoles"), ce qu'on décoche
-   - Pilote de protocole LLDP Microsoft
-   - Répondeur de découverte de topologie de la couche de liaison
-   - Pilote E/S de mappage de découverte de topologie
-   Ces trois-là dessinent la carte du réseau local. Inutile.
-   On GARDE : TCP/IPv4, TCP/IPv6 (des jeux et Xbox Live s'en servent), Client réseaux Microsoft
-   et Partage de fichiers si tu as un NAS ou des dossiers partagés, Planificateur QoS
-   si un autre appareil de la maison télécharge pendant que tu joues.
+3. Protocoles à décocher : pilote LLDP Microsoft, répondeur de découverte de topologie, pilote E/S de mappage de topologie. On garde TCP/IPv4 et IPv6.
