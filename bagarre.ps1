@@ -942,7 +942,9 @@ $ErrorActionPreference = 'Continue'
 # État partagé avec les gestionnaires d'événements de la fenêtre. Une table, jamais $script: :
 # selon le lancement (-File, "irm | iex", scriptblock) le préfixe $script: ne désigne pas la même portée,
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
-$S = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @() }
+# Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
+# si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
@@ -978,7 +980,7 @@ $LogFichier = Join-Path $Dossier 'bagarre.log'
 
 # Langue de la fenêtre : celle choisie la dernière fois, sinon celle de Windows (français ou anglais).
 $LangueFichier = Join-Path $Dossier 'langue.txt'
-$S.Langue = if ((Test-Path $LangueFichier) -and ((Get-Content $LangueFichier -Raw).Trim() -in 'fr', 'en')) { (Get-Content $LangueFichier -Raw).Trim() }
+$Bagarre.Langue = if ((Test-Path $LangueFichier) -and ((Get-Content $LangueFichier -Raw).Trim() -in 'fr', 'en')) { (Get-Content $LangueFichier -Raw).Trim() }
           elseif ((Get-Culture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
 
 # ---------------------------------------------------------------------------
@@ -1002,6 +1004,7 @@ if (Test-Path $EtatFichier) {
 }
 
 function Log($texte) {
+    if ($Bagarre.Simulation) { return }
     $ligne = "{0}  {1}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $texte
     Add-Content -Path $LogFichier -Value $ligne
     Write-Host "   $texte" -ForegroundColor DarkGray
@@ -1014,6 +1017,7 @@ function Rafraichir {
 }
 
 function Memoriser($cle, $valeur) {
+    if ($Bagarre.Simulation) { return }
     if (-not $Avant.ContainsKey($cle)) { $Avant[$cle] = $valeur }
 }
 
@@ -1026,6 +1030,7 @@ function Reg-Lire($chemin, $nom) {
 }
 
 function Reg-Ecrire($chemin, $nom, $valeur, $type = 'DWord') {
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add(([string](Reg-Lire $chemin $nom)) -eq [string]$valeur); return }
     $id = "reg|$chemin|$nom"
     Memoriser $id @{ chemin = $chemin; nom = $nom; valeur = (Reg-Lire $chemin $nom); type = $type }
     if (-not (Test-Path $chemin)) { New-Item -Path $chemin -Force | Out-Null }
@@ -1034,6 +1039,7 @@ function Reg-Ecrire($chemin, $nom, $valeur, $type = 'DWord') {
 }
 
 function Reg-Supprimer($chemin, $nom) {
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add($null -eq (Reg-Lire $chemin $nom)); return }
     $id = "reg|$chemin|$nom"
     Memoriser $id @{ chemin = $chemin; nom = $nom; valeur = (Reg-Lire $chemin $nom); type = 'DWord' }
     Remove-ItemProperty -Path $chemin -Name $nom -ErrorAction SilentlyContinue
@@ -1045,6 +1051,7 @@ function Service-Couper($nom, $description) {
     if (-not $svc) { Log "service   $nom absent sur cette machine, ignoré"; return }
     $chemin = "HKLM:\SYSTEM\CurrentControlSet\Services\$nom"
     $start = Reg-Lire $chemin 'Start'
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add($start -eq 4); return }
     Memoriser "svc|$nom" @{ nom = $nom; start = $start }
     if ($svc.Status -eq 'Running') { Stop-Service -Name $nom -Force -ErrorAction SilentlyContinue }
     # Écriture directe du type de démarrage : Set-Service refuse certains services protégés.
@@ -1052,9 +1059,22 @@ function Service-Couper($nom, $description) {
     Log "service   $nom désactivé ($description)"
 }
 
+# Service en démarrage manuel (il ne part plus tout seul, mais reste disponible)
+function Service-Manuel($nom, $description) {
+    $svc = Get-Service -Name $nom -ErrorAction SilentlyContinue
+    if (-not $svc) { return }
+    $chemin = "HKLM:\SYSTEM\CurrentControlSet\Services\$nom"
+    $start = Reg-Lire $chemin 'Start'
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add($start -eq 3); return }
+    Memoriser "svc|$nom" @{ nom = $nom; start = $start }
+    Set-ItemProperty -Path $chemin -Name 'Start' -Value 3 -ErrorAction SilentlyContinue
+    Log "service   $nom en manuel ($description)"
+}
+
 function Tache-Couper($chemin, $nom) {
     $t = Get-ScheduledTask -TaskPath $chemin -TaskName $nom -ErrorAction SilentlyContinue
     if (-not $t) { return }
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add([string]$t.State -eq 'Disabled'); return }
     Memoriser "task|$chemin$nom" @{ chemin = $chemin; nom = $nom; etat = [string]$t.State }
     Disable-ScheduledTask -TaskPath $chemin -TaskName $nom -ErrorAction SilentlyContinue | Out-Null
     Log "tâche     $chemin$nom désactivée"
@@ -1068,6 +1088,7 @@ function Cartes-Reseau {
 function Net-Liaison-Couper($carte, $composant, $description) {
     $b = Get-NetAdapterBinding -Name $carte.Name -ComponentID $composant -ErrorAction SilentlyContinue
     if (-not $b) { return }
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add(-not [bool]$b.Enabled); return }
     Memoriser "netb|$($carte.Name)|$composant" @{ carte = $carte.Name; composant = $composant; actif = [bool]$b.Enabled }
     Disable-NetAdapterBinding -Name $carte.Name -ComponentID $composant -ErrorAction SilentlyContinue
     Log "réseau    $($carte.Name) : $description décoché"
@@ -1078,6 +1099,7 @@ function Net-Propriete-Regler($carte, $motif, $valeur, $description) {
     foreach ($p in $props) {
         $choix = $p.ValidDisplayValues | Where-Object { $_ -match $valeur } | Select-Object -First 1
         if (-not $choix) { Log "réseau    $($carte.Name) : $($p.DisplayName) n a pas de valeur '$valeur', ignoré"; continue }
+        if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add([string]$p.DisplayValue -eq [string]$choix); continue }
         Memoriser "netadv|$($carte.Name)|$($p.RegistryKeyword)" @{ carte = $carte.Name; mot = $p.RegistryKeyword; valeur = [string]$p.RegistryValue }
         Set-NetAdapterAdvancedProperty -Name $carte.Name -RegistryKeyword $p.RegistryKeyword -DisplayValue $choix -ErrorAction SilentlyContinue
         Log "réseau    $($carte.Name) : $($p.DisplayName) = $choix ($description)"
@@ -1088,6 +1110,7 @@ function Powercfg-Regler($sousGroupe, $reglage, $valeur, $description) {
     $id = "pwr|$sousGroupe|$reglage"
     $lu = (powercfg /query SCHEME_CURRENT $sousGroupe $reglage 2>$null | Select-String 'Index du paramètre d.alimentation CA actuel|Current AC Power Setting Index')
     $avantVal = if ($lu) { [Convert]::ToInt32(($lu -split ':')[-1].Trim(), 16) } else { $null }
+    if ($Bagarre.Simulation) { [void]$Bagarre.Verif.Add(($null -ne $avantVal) -and ($avantVal -eq [int]$valeur)); return }
     Memoriser $id @{ sousGroupe = $sousGroupe; reglage = $reglage; valeur = $avantVal }
     powercfg /setacvalueindex SCHEME_CURRENT $sousGroupe $reglage $valeur | Out-Null
     powercfg /setdcvalueindex SCHEME_CURRENT $sousGroupe $reglage $valeur | Out-Null
@@ -1120,11 +1143,11 @@ function Image-Ouvrir($nom) {
 # Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
-$S.ConsoleN = 0
+$Bagarre.ConsoleN = 0
 function Console-Lancer($titre, $commande) {
-    $S.ConsoleN++
+    $Bagarre.ConsoleN++
     $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`nWrite-Host ''`r`nWrite-Host '  $titre' -ForegroundColor Cyan`r`nWrite-Host ''`r`n$commande`r`n"
-    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $S.ConsoleN)
+    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $Bagarre.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
     Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$fichier`"" | Out-Null
     Log "console   $titre"
@@ -1311,11 +1334,7 @@ Ajouter $G 'priv-copilot' 'Couper Copilot, Recall, Click to Do, les Widgets et l
     foreach ($n in 'DisableCocreator', 'DisableGenerativeFill', 'DisableImageCreator', 'DisableGenerativeErase', 'DisableRemoveBackground') {
         Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint' $n 1
     }
-    if (Get-Service WSAIFabricSvc -ErrorAction SilentlyContinue) {
-        Memoriser 'svc|WSAIFabricSvc' @{ nom = 'WSAIFabricSvc'; start = (Reg-Lire 'HKLM:\SYSTEM\CurrentControlSet\Services\WSAIFabricSvc' 'Start') }
-        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WSAIFabricSvc' -Name 'Start' -Value 3 -ErrorAction SilentlyContinue
-        Log 'service   WSAIFabricSvc en manuel (pile IA, ne démarre plus tout seul)'
-    }
+    Service-Manuel 'WSAIFabricSvc' 'pile IA, ne démarre plus tout seul'
 }
 Ajouter $G 'priv-taches' 'Tâches planifiées de télémétrie (Compatibility Appraiser, CEIP, Feedback, DiskDiagnostic)' `
     'Des tâches de fond qui analysent tes programmes installés et envoient le résultat à Microsoft, parfois en pleine partie (Compatibility Appraiser est connu pour ses pics disque).' $true '' {
@@ -1632,6 +1651,44 @@ if ($EstNvidia) {
     }
 }
 
+# Ce que fait la case une fois cochée, affiché en étiquette devant chaque ligne : 'off' (coupe le truc, le défaut),
+# 'on' (l'ajoute ou l'autorise), 'set' (change une valeur). Un item absent d'ici est 'off'.
+$Actions = @{
+    'jeu-timer' = 'on'; 'jeu-timer-demarrage' = 'on'; 'jeu-f8' = 'on'
+    'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
+    'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
+    'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'
+    'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'nv-pstate' = 'set'
+}
+function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'off' } }
+
+# Détection de ce qui est déjà fait. Par défaut le bloc Appliquer est rejoué en simulation ($Bagarre.Simulation) : les
+# fonctions d'écriture comparent au lieu d'écrire. Les items qui lancent une commande directe ont leur test ici,
+# ils ne doivent JAMAIS être rejoués en simulation (bcdedit, powercfg /h, schtasks, explorer relancé).
+$Verifs = @{
+    'jeu-timer-demarrage' = { [bool](Get-ScheduledTask -TaskName 'bagarre timer' -ErrorAction SilentlyContinue) }
+    'jeu-hiber' = { (Reg-Lire 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' 'HibernateEnabled') -eq 0 }
+    'jeu-f8' = { [bool]((bcdedit /enum '{current}' 2>$null) -match 'bootmenupolicy\s+Legacy') }
+    'net-alim' = {
+        $cartes = @(Cartes-Reseau)
+        if ($cartes.Count -eq 0) { $null }
+        else { @($cartes | ForEach-Object { [string](Get-NetAdapterPowerManagement -Name $_.Name -ErrorAction SilentlyContinue).AllowComputerToTurnOffDevice }) -notcontains 'Enabled' }
+    }
+    'conf-menu-classique' = { Test-Path 'HKCU:\SOFTWARE\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}' }
+    'conf-reserve' = { [string](Get-WindowsReservedStorageState -ErrorAction SilentlyContinue).ReservedStorageState -eq 'Disabled' }
+    'conf-corbeille' = { Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{645FF040-5081-101B-9F08-00AA002F954E}' }
+    'adv-dyntick' = { [bool]((bcdedit /enum '{current}' 2>$null) -match 'disabledynamictick\s+Yes') }
+}
+# Rend $true (déjà fait), $false (à faire) ou $null (rien à comparer sur cette machine)
+function Detecter-Item($it) {
+    if ($Verifs[$it.Id]) { try { return (& $Verifs[$it.Id]) } catch { return $null } }
+    $Bagarre.Verif = New-Object System.Collections.ArrayList
+    $Bagarre.Simulation = $true
+    try { & $it.Appliquer } catch {} finally { $Bagarre.Simulation = $false }
+    if ($Bagarre.Verif.Count -eq 0) { return $null }
+    return ($Bagarre.Verif -notcontains $false)
+}
+
 # ===== 15-catalogue-en.ps1 =====
 # ---------------------------------------------------------------------------
 # English titles and explanations of the catalogue, by item id (the French ones live in 10-catalogue.ps1)
@@ -1830,11 +1887,17 @@ function Appliquer-Items($liste) {
     $liste = @($liste)
     if ($liste.Count -eq 0) { Log 'Rien de coché.'; return }
     Log "Application de $($liste.Count) réglages..."
+    $barre = if ($Ctl) { $Ctl.Progression } else { $null }
+    if ($barre) { $barre.Value = 0; $barre.Visibility = 'Visible' }
+    $n = 0
     foreach ($it in $liste) {
         Log "> $($it.Titre)"
         try { & $it.Appliquer } catch { Log "ÉCHEC $($it.Id) : $_" }
         SauverEtat
+        $n++
+        if ($barre) { $barre.Value = 100 * $n / $liste.Count; Rafraichir }
     }
+    if ($barre) { $barre.Visibility = 'Collapsed' }
     Log "Terminé. Les valeurs d avant sont dans $EtatFichier, le détail dans $LogFichier. Redémarre le PC."
 }
 
@@ -2050,7 +2113,7 @@ $UI = @{
             Accueil = "Les étapes, dans l'ordre. Clique sur une étape pour y aller, ou sur Étape suivante en bas."
             Installation = 'Les boutons lancent les commandes du tuto dans une console à part. Le reste se fait à la main, dans l ordre.'
             Facile = "Les deux boutons jaunes ouvrent chaque outil dans sa propre console (ils demandent avant chaque groupe). Les boutons gris installent via winget."
-            Optis = "Une case cochée = appliqué quand tu cliques le bouton jaune. Décochée = pas touché. Les cases cochées d'office sont sûres pour tout PC. Passe la souris sur une ligne : le Pourquoi et ce que tu perds s'affichent à droite. Tu ne comprends pas une ligne, tu ne la coches pas. Tout remettre restaure les valeurs d'avant. Redémarre après."
+            Optis = "Une case cochée = ce sera fait quand tu cliques le bouton jaune. Décochée = on n'y touche pas. L'étiquette devant chaque ligne dit ce que la case fait. Les cases cochées d'office sont sûres pour tout PC ; passe la souris sur une ligne pour lire le pourquoi et ce que tu perds. Tu ne comprends pas une ligne, tu ne la coches pas. Tout remettre restaure les valeurs d'avant. Redémarre après."
             Nvidia = 'NVCleanstall installe le pilote nu, le Panneau vient du Store. Les captures montrent quoi cocher.'
             Dur = "Une chose à la fois, tu joues 30 minutes, tu regardes RivaTuner, tu gardes ou tu remets."
             Maintenance = "Des mois après l'installation. Les boutons gris installent l'outil, les autres lancent la commande."
@@ -2073,6 +2136,9 @@ $UI = @{
         dejaApplique = '{0} réglages déjà appliqués sur ce PC (bagarre-avant.json). Tout remettre les restaure.'
         ouverte = 'Fenêtre ouverte. Si tu ne la vois pas, regarde la barre des tâches : elle peut être derrière ce terminal.'
         measureTitre = 'MeasureSleep : attendu environ 0,5 ms, Ctrl+C pour arrêter'
+        filtrer = 'Chercher une ligne :'; tout = 'tout'; rienBtn = 'rien'; coches = 'cochées'; dejaFait = 'déjà fait'
+        detection = 'Détection de ce qui est déjà en place sur ce PC...'
+        detectionFin = '{0} réglages déjà en place, décochés et marqués "déjà fait". Le reste est à faire.'
     }
     en = @{
         nav      = 'Home', '1. Install', '2. Easy', '3. The checkbox script', '4. NVIDIA', '5. Hard', '6. Maintenance', '7. DNS', '8. AI audit'
@@ -2089,7 +2155,7 @@ $UI = @{
             Accueil = 'The steps, in order. Click a step to open it, or use Next step at the bottom.'
             Installation = 'The buttons run the commands from the guide in a separate console. The rest is done by hand, in order.'
             Facile = 'The two yellow buttons open each tool in its own console (they ask before each group). The grey buttons install through winget.'
-            Optis = 'A checked box = applied when you click the yellow button. Unchecked = untouched. The boxes checked by default are safe on any PC. Hover a line: the Why and what you lose show up on the right. If you do not understand a line, do not check it. Restore everything puts the previous values back. Reboot afterwards.'
+            Optis = 'A checked box = it gets done when you click the yellow button. Unchecked = left alone. The label in front of each line says what the box does. The boxes checked by default are safe on any PC; hover a line to read the why and what you lose. If you do not understand a line, do not check it. Restore everything puts the previous values back. Reboot afterwards.'
             Nvidia = 'NVCleanstall installs the bare driver, the Control Panel comes from the Store. The screenshots show what to tick.'
             Dur = 'One thing at a time, play 30 minutes, watch RivaTuner, keep it or put it back.'
             Maintenance = 'Months after the install. Grey buttons install the tool, the others run the command.'
@@ -2112,14 +2178,17 @@ $UI = @{
         dejaApplique = '{0} settings already applied on this PC (bagarre-avant.json). Restore puts them back.'
         ouverte = 'Window open. If you do not see it, check the taskbar: it may be behind this terminal.'
         measureTitre = 'MeasureSleep: about 0.5 ms expected, Ctrl+C to stop'
+        filtrer = 'Find a line:'; tout = 'all'; rienBtn = 'none'; coches = 'checked'; dejaFait = 'already done'
+        detection = 'Detecting what is already in place on this PC...'
+        detectionFin = '{0} settings already in place, unchecked and marked "already done". The rest is to do.'
     }
 }
-$S.L = $UI[$S.Langue]
+$Bagarre.L = $UI[$Bagarre.Langue]
 
 # Titre et explications d'un item dans la langue courante
-function Item-Titre($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Titre } else { $it.Titre } }
-function Item-Pourquoi($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Pourquoi } else { $it.Pourquoi } }
-function Item-Attention($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Attention } else { $it.Attention } }
+function Item-Titre($it) { if ($Bagarre.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Titre } else { $it.Titre } }
+function Item-Pourquoi($it) { if ($Bagarre.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Pourquoi } else { $it.Pourquoi } }
+function Item-Attention($it) { if ($Bagarre.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Attention } else { $it.Attention } }
 
 # ---------------------------------------------------------------------------
 # Les boutons de chaque page : libellé et bulle d'aide dans les deux langues, et ce qu'ils font.
@@ -2144,7 +2213,8 @@ $Boutons = [ordered]@{
         @{ Id = 'BtnAppliquer'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
         @{ Id = 'BtnRestaurer'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
         @{ Id = 'BtnDefaut'; T = @{ fr = 'Cases par défaut'; en = 'Default boxes' }; Tip = @{ fr = 'Recoche exactement les cases sûres, décoche le reste.'; en = 'Re-ticks exactly the safe boxes, unticks the rest.' }; Action = { foreach ($id in $Cases.Keys) { $Cases[$id].IsChecked = $Defauts[$id] } } }
-        @{ Id = 'BtnReseau'; T = @{ fr = 'Carte réseau à la main (tuto)'; en = 'Network card by hand (guide)' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $S.L.reseauTitre $Textes[$S.Langue]['reseau'] $null } }
+        @{ Id = 'BtnDetecter'; T = @{ fr = 'Re-détecter ce qui est déjà fait'; en = 'Re-detect what is already done' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
+        @{ Id = 'BtnReseau'; T = @{ fr = 'Carte réseau à la main (tuto)'; en = 'Network card by hand (guide)' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
         @{ Id = 'BtnImgProtocoles'; T = @{ fr = 'Capture : protocoles'; en = 'Screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
         @{ Id = 'BtnImgAvance'; T = @{ fr = 'Capture : onglet Avancé'; en = 'Screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
         @{ Id = 'BtnJournal'; T = @{ fr = 'Ouvrir bagarre.log'; en = 'Open bagarre.log' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
@@ -2164,7 +2234,7 @@ $Boutons = [ordered]@{
         @{ Id = 'BtnTimerDepot'; T = @{ fr = 'TimerResolution (dépôt)'; en = 'TimerResolution (repo)' }; Tip = @{ fr = 'Le code source de SetTimerResolution et MeasureSleep.'; en = 'The source code of SetTimerResolution and MeasureSleep.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/TimerResolution' } }
     )
     Maintenance = @(
-        @{ Id = 'BtnMeasure'; Principal = $true; T = @{ fr = 'MeasureSleep (vérifier le timer)'; en = 'MeasureSleep (check the timer)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. 1 ms ou 15,6 ms : tuto Dur, point 1.'; en = 'About 0.5 ms expected after the script. 1 ms or 15.6 ms: Hard guide, point 1.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $S.L.measureTitre "& '$exe'" } } }
+        @{ Id = 'BtnMeasure'; Principal = $true; T = @{ fr = 'MeasureSleep (vérifier le timer)'; en = 'MeasureSleep (check the timer)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. 1 ms ou 15,6 ms : tuto Dur, point 1.'; en = 'About 0.5 ms expected after the script. 1 ms or 15.6 ms: Hard guide, point 1.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $Bagarre.L.measureTitre "& '$exe'" } } }
         @{ Id = 'BtnCleanmgr'; T = @{ fr = 'Nettoyage de disque (cleanmgr)'; en = 'Disk Cleanup (cleanmgr)' }; Tip = @{ fr = 'Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
         @{ Id = 'BtnDismAnalyse'; T = @{ fr = 'DISM : analyser WinSxS'; en = 'DISM: analyze WinSxS' }; Tip = @{ fr = 'Dit s il y a quelque chose à nettoyer.'; en = 'Says whether there is something to clean.' }; Action = { Console-Lancer 'DISM AnalyzeComponentStore' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' } }
         @{ Id = 'BtnDismNettoyer'; T = @{ fr = 'DISM : nettoyer WinSxS'; en = 'DISM: clean WinSxS' }; Tip = @{ fr = 'Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
@@ -2181,12 +2251,12 @@ $Boutons = [ordered]@{
     )
     Dns = @(
         @{ Id = 'BtnDnsTester'; Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Une trentaine de secondes.'; en = 'About thirty seconds.' }; Action = { Dns-Tester } }
-        @{ Id = 'BtnDnsAppliquer'; T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $C.DnsListe.SelectedIndex; if ($i -lt 0) { Log $S.L.dnsSelection; return }; Dns-Appliquer $S.DnsAdapt $S.DnsResultats[$i] } }
+        @{ Id = 'BtnDnsAppliquer'; T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $Ctl.DnsListe.SelectedIndex; if ($i -lt 0) { Log $Bagarre.L.dnsSelection; return }; Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$i] } }
     )
     Audit = @(
         @{ Id = 'BtnCollecter'; Principal = $true; T = @{ fr = '1. Collecter le rapport (30 s, ne modifie rien)'; en = '1. Collect the report (30 s, changes nothing)' }; Tip = @{ fr = 'Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
-        @{ Id = 'BtnPrompt'; T = @{ fr = "2. Copier le prompt d'audit"; en = '2. Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$S.Langue]['audit-prompt']); Log $S.L.promptCopie } }
-        @{ Id = 'BtnDossierAudit'; T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $S.L.pasRapport } } }
+        @{ Id = 'BtnPrompt'; T = @{ fr = "2. Copier le prompt d'audit"; en = '2. Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
+        @{ Id = 'BtnDossierAudit'; T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
     )
 }
 
@@ -2302,6 +2372,20 @@ $Xaml = @'
       <Setter Property="Foreground" Value="#F2C14E"/>
       <Setter Property="Margin" Value="0,12,0,2"/>
     </Style>
+    <Style x:Key="Ligne" TargetType="Border">
+      <Setter Property="Padding" Value="6,2"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#232329"/></Trigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="Petit" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Padding" Value="8,1"/>
+      <Setter Property="Margin" Value="8,0,0,0"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Background" Value="#141416"/>
+    </Style>
   </Window.Resources>
   <Grid Background="#1B1B1F">
     <Grid.ColumnDefinitions>
@@ -2363,7 +2447,12 @@ $Xaml = @'
       <DockPanel Name="PageOptis" Visibility="Collapsed">
         <TextBlock DockPanel.Dock="Top" Name="TitreOptis" Style="{StaticResource Titre}"/>
         <TextBlock DockPanel.Dock="Top" Name="IntroOptis" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="Legende" Margin="0,0,0,10"/>
         <WrapPanel DockPanel.Dock="Top" Name="BoutonsOptis"/>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+          <TextBlock Name="FiltreTitre" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#B0B0B8"/>
+          <TextBox Name="Filtre" IsReadOnly="False" AcceptsReturn="False" Padding="6,3" FontFamily="Segoe UI" Width="320" VerticalScrollBarVisibility="Hidden"/>
+        </StackPanel>
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -2431,6 +2520,7 @@ $Xaml = @'
 
     <DockPanel Grid.Column="1" Grid.Row="2" Margin="20,0,20,14">
       <TextBlock DockPanel.Dock="Top" Name="JournalTitre" Foreground="#8A8A95" Margin="0,0,0,4"/>
+      <ProgressBar DockPanel.Dock="Top" Name="Progression" Height="6" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0,0,0,4" Foreground="#F2C14E" Background="#141416" BorderThickness="0"/>
       <TextBox Name="Journal" FontSize="12"/>
     </DockPanel>
   </Grid>
@@ -2446,33 +2536,33 @@ try {
 }
 
 # Tous les contrôles nommés dans $C, le journal à portée de Log
-$C = @{}
-foreach ($m in [regex]::Matches($Xaml, '(?<![:\w])Name="(\w+)"')) { $n = $m.Groups[1].Value; $C[$n] = $Fenetre.FindName($n) }
-$Journal = $C.Journal
-$C.NavMachine.Text = "$Machine`nbagarre $Version"
+$Ctl = @{}
+foreach ($m in [regex]::Matches($Xaml, '(?<![:\w])Name="(\w+)"')) { $n = $m.Groups[1].Value; $Ctl[$n] = $Fenetre.FindName($n) }
+$Journal = $Ctl.Journal
+$Ctl.NavMachine.Text = "$Machine`nbagarre $Version"
 
 # ---------------------------------------------------------------------------
 # Navigation : liste à gauche, cartes de l'accueil, Précédent / Suivant
 # ---------------------------------------------------------------------------
-foreach ($n in $PagesNoms) { $li = New-Object Windows.Controls.ListBoxItem; [void]$C.Nav.Items.Add($li) }
-function Aller($k) { $C.Nav.SelectedIndex = $k }
-$C.Nav.Add_SelectionChanged({
-    $i = $C.Nav.SelectedIndex
+foreach ($n in $PagesNoms) { $li = New-Object Windows.Controls.ListBoxItem; [void]$Ctl.Nav.Items.Add($li) }
+function Aller($k) { $Ctl.Nav.SelectedIndex = $k }
+$Ctl.Nav.Add_SelectionChanged({
+    $i = $Ctl.Nav.SelectedIndex
     for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
-        $C["Page$($PagesNoms[$k])"].Visibility = if ($k -eq $i) { 'Visible' } else { 'Collapsed' }
+        $Ctl["Page$($PagesNoms[$k])"].Visibility = if ($k -eq $i) { 'Visible' } else { 'Collapsed' }
     }
-    $C.BtnPrecedent.IsEnabled = $i -gt 0
-    $C.BtnSuivant.IsEnabled = $i -lt ($PagesNoms.Count - 1)
+    $Ctl.BtnPrecedent.IsEnabled = $i -gt 0
+    $Ctl.BtnSuivant.IsEnabled = $i -lt ($PagesNoms.Count - 1)
 })
-$C.BtnPrecedent.Add_Click({ if ($C.Nav.SelectedIndex -gt 0) { Aller ($C.Nav.SelectedIndex - 1) } })
-$C.BtnSuivant.Add_Click({ if ($C.Nav.SelectedIndex -lt ($PagesNoms.Count - 1)) { Aller ($C.Nav.SelectedIndex + 1) } })
+$Ctl.BtnPrecedent.Add_Click({ if ($Ctl.Nav.SelectedIndex -gt 0) { Aller ($Ctl.Nav.SelectedIndex - 1) } })
+$Ctl.BtnSuivant.Add_Click({ if ($Ctl.Nav.SelectedIndex -lt ($PagesNoms.Count - 1)) { Aller ($Ctl.Nav.SelectedIndex + 1) } })
 
 for ($k = 1; $k -lt $PagesNoms.Count; $k++) {
     $carte = New-Object Windows.Controls.Button
     $carte.Style = $Fenetre.FindResource('Carte')
     $carte.Tag = $k
     $carte.Add_Click({ param($s, $e) Aller ([int]$s.Tag) })
-    [void]$C.Cartes.Children.Add($carte)
+    [void]$Ctl.Cartes.Children.Add($carte)
 }
 
 # ---------------------------------------------------------------------------
@@ -2484,54 +2574,144 @@ foreach ($page in $Boutons.Keys) {
         if ($def.Principal) { $b.Style = $Fenetre.FindResource('Principal') }
         $b.Add_Click($def.Action)
         $def.Ctl = $b
-        $C[$def.Id] = $b
-        [void]$C["Boutons$page"].Children.Add($b)
+        $Ctl[$def.Id] = $b
+        [void]$Ctl["Boutons$page"].Children.Add($b)
     }
 }
-$C.BtnDnsAppliquer.IsEnabled = $false
+$Ctl.BtnDnsAppliquer.IsEnabled = $false
 
 # ---------------------------------------------------------------------------
 # Onglet 3 : une case par item du catalogue, l'explication au survol, le compte sur le bouton
 # ---------------------------------------------------------------------------
 function Opti-Montrer($titre, $pourquoi, $attention) {
-    $C.OptiTitre.Text = $titre
-    $C.OptiPourquoi.Text = $pourquoi
-    $C.OptiAttention.Text = if ($attention) { $attention } else { $S.L.rien }
-    $C.OptiEtiquette1.Visibility = 'Visible'
-    $C.OptiEtiquette2.Visibility = if ($null -eq $attention) { 'Collapsed' } else { 'Visible' }
+    $Ctl.OptiTitre.Text = $titre
+    $Ctl.OptiPourquoi.Text = $pourquoi
+    $Ctl.OptiAttention.Text = if ($attention) { $attention } else { $Bagarre.L.rien }
+    $Ctl.OptiEtiquette1.Visibility = 'Visible'
+    $Ctl.OptiEtiquette2.Visibility = if ($null -eq $attention) { 'Collapsed' } else { 'Visible' }
 }
 function Opti-Vider {
-    $C.OptiTitre.Text = $S.L.survole
-    $C.OptiPourquoi.Text = ''; $C.OptiAttention.Text = ''
-    $C.OptiEtiquette1.Visibility = 'Collapsed'; $C.OptiEtiquette2.Visibility = 'Collapsed'
+    $Ctl.OptiTitre.Text = $Bagarre.L.survole
+    $Ctl.OptiPourquoi.Text = ''; $Ctl.OptiAttention.Text = ''
+    $Ctl.OptiEtiquette1.Visibility = 'Collapsed'; $Ctl.OptiEtiquette2.Visibility = 'Collapsed'
 }
 function Compter-Coches {
     $n = @($Items | Where-Object { $_.Coche }).Count
-    $C.BtnAppliquer.Content = switch ($n) { 0 { $S.L.appliquer0 } 1 { $S.L.appliquer1 } default { $S.L.appliquerN -f $n } }
+    $Ctl.BtnAppliquer.Content = switch ($n) { 0 { $Bagarre.L.appliquer0 } 1 { $Bagarre.L.appliquer1 } default { $Bagarre.L.appliquerN -f $n } }
+    foreach ($g in $Groupes) {
+        $c = @($g.Cases | Where-Object { $_.IsChecked }).Count
+        $g.Compte.Text = "$c / $($g.Cases.Count) $($Bagarre.L.coches)"
+    }
+}
+
+# L'étiquette colorée devant chaque ligne : ce que la case fait une fois cochée
+$Etiquettes = @{
+    off = @{ fr = 'DÉSACTIVER'; en = 'TURN OFF'; couleur = '#E07A7A'; legFr = 'la case coupe ce truc'; legEn = 'the box turns this off' }
+    on  = @{ fr = 'ACTIVER'; en = 'TURN ON'; couleur = '#7CCB8A'; legFr = "la case l'ajoute ou l'autorise"; legEn = 'the box adds or allows it' }
+    set = @{ fr = 'RÉGLER'; en = 'SET'; couleur = '#7FB3E6'; legFr = 'la case change une valeur'; legEn = 'the box changes a value' }
+}
+function Etiquette-Tag($action) {
+    $b = New-Object Windows.Controls.Border
+    $b.Background = $Etiquettes[$action].couleur
+    $b.CornerRadius = '3'; $b.Padding = '6,1'; $b.Margin = '0,0,8,0'; $b.Width = 92; $b.VerticalAlignment = 'Center'
+    $t = New-Object Windows.Controls.TextBlock
+    $t.FontSize = 10; $t.FontWeight = 'SemiBold'; $t.Foreground = '#1B1B1F'; $t.TextAlignment = 'Center'
+    $t.Tag = $action
+    $b.Child = $t
+    $b
+}
+# Contenu d'une case : [étiquette] titre. Les textes sont posés par Appliquer-Langue.
+function Etiquette-Ligne($action) {
+    $sp = New-Object Windows.Controls.StackPanel
+    $sp.Orientation = 'Horizontal'
+    [void]$sp.Children.Add((Etiquette-Tag $action))
+    $titre = New-Object Windows.Controls.TextBlock
+    $titre.VerticalAlignment = 'Center'; $titre.TextWrapping = 'Wrap'
+    [void]$sp.Children.Add($titre)
+    # "déjà fait", caché tant que la détection ne l'a pas vu en place
+    $fait = New-Object Windows.Controls.Border
+    $fait.BorderBrush = '#7CCB8A'; $fait.BorderThickness = '1'; $fait.CornerRadius = '3'; $fait.Padding = '6,0'; $fait.Margin = '10,0,0,0'
+    $fait.VerticalAlignment = 'Center'; $fait.Visibility = 'Collapsed'
+    $ft = New-Object Windows.Controls.TextBlock
+    $ft.FontSize = 10; $ft.Foreground = '#7CCB8A'
+    $fait.Child = $ft
+    [void]$sp.Children.Add($fait)
+    $sp
+}
+function Case-Libeller($cb) {
+    $sp = $cb.Content
+    $sp.Children[0].Child.Text = $Etiquettes[$sp.Children[0].Child.Tag][$Bagarre.Langue]
+    $sp.Children[1].Text = Item-Titre $cb.Tag
+    $sp.Children[2].Child.Text = $Bagarre.L.dejaFait
 }
 
 $Cases = @{}
 $Defauts = @{}
-$Groupes = @()
-$groupe = ''
+$Groupes = @()   # un objet par groupe : Nom, Entete (le panneau), Titre, Compte, Tout, Rien, Cases
+$groupe = $null
 foreach ($it in $Items) {
-    if ($it.Groupe -ne $groupe) {
-        $groupe = $it.Groupe
+    if (-not $groupe -or $it.Groupe -ne $groupe.Nom) {
+        $entete = New-Object Windows.Controls.StackPanel
+        $entete.Orientation = 'Horizontal'
         $tb = New-Object Windows.Controls.TextBlock
         $tb.Style = $Fenetre.FindResource('Groupe')
-        $tb.Tag = $groupe
-        [void]$C.ListeOptis.Children.Add($tb)
-        $Groupes += $tb
+        $compte = New-Object Windows.Controls.TextBlock
+        $compte.Foreground = '#8A8A95'; $compte.Margin = '10,14,0,6'; $compte.VerticalAlignment = 'Bottom'
+        $tout = New-Object Windows.Controls.Button; $tout.Style = $Fenetre.FindResource('Petit'); $tout.Margin = '14,14,0,6'
+        $rien = New-Object Windows.Controls.Button; $rien.Style = $Fenetre.FindResource('Petit'); $rien.Margin = '6,14,0,6'
+        [void]$entete.Children.Add($tb); [void]$entete.Children.Add($compte); [void]$entete.Children.Add($tout); [void]$entete.Children.Add($rien)
+        [void]$Ctl.ListeOptis.Children.Add($entete)
+        $groupe = @{ Nom = $it.Groupe; Entete = $entete; Titre = $tb; Compte = $compte; Tout = $tout; Rien = $rien; Cases = @() }
+        $tout.Tag = $groupe; $rien.Tag = $groupe
+        $tout.Add_Click({ param($s, $e) foreach ($x in $s.Tag.Cases) { if ($x.Parent.Visibility -eq 'Visible') { $x.IsChecked = $true } } })
+        $rien.Add_Click({ param($s, $e) foreach ($x in $s.Tag.Cases) { if ($x.Parent.Visibility -eq 'Visible') { $x.IsChecked = $false } } })
+        $Groupes += $groupe
     }
     $cb = New-Object Windows.Controls.CheckBox
     $cb.IsChecked = [bool]$it.Coche
     $cb.Tag = $it
+    $cb.Content = Etiquette-Ligne (Item-Action $it)
     $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })
     $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Compter-Coches })
     $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Compter-Coches })
-    [void]$C.ListeOptis.Children.Add($cb)
+    $ligne = New-Object Windows.Controls.Border
+    $ligne.Style = $Fenetre.FindResource('Ligne')
+    $ligne.Child = $cb
+    [void]$Ctl.ListeOptis.Children.Add($ligne)
+    $groupe.Cases += $cb
     $Cases[$it.Id] = $cb
     $Defauts[$it.Id] = [bool]$it.Coche
+}
+
+# Filtre : tape un mot, seules les lignes dont le titre le contient restent, les groupes vides disparaissent
+function Filtrer {
+    $f = $Ctl.Filtre.Text.Trim()
+    foreach ($g in $Groupes) {
+        $visibles = 0
+        foreach ($cb in $g.Cases) {
+            $ok = ($f -eq '') -or ((Item-Titre $cb.Tag).IndexOf($f, [StringComparison]::OrdinalIgnoreCase) -ge 0)
+            $cb.Parent.Visibility = if ($ok) { 'Visible' } else { 'Collapsed' }
+            if ($ok) { $visibles++ }
+        }
+        $g.Entete.Visibility = if ($visibles -gt 0) { 'Visible' } else { 'Collapsed' }
+    }
+}
+$Ctl.Filtre.Add_TextChanged({ Filtrer })
+
+# Détection de ce qui est déjà en place : les items déjà faits sont décochés et étiquetés
+$Etat = @{}
+function Detecter-Tout {
+    Log $Bagarre.L.detection
+    Rafraichir
+    $faits = 0
+    foreach ($it in $Items) {
+        $r = Detecter-Item $it
+        $Etat[$it.Id] = $r
+        $fait = $Cases[$it.Id].Content.Children[2]
+        if ($r -eq $true) { $fait.Visibility = 'Visible'; $Cases[$it.Id].IsChecked = $false; $faits++ } else { $fait.Visibility = 'Collapsed' }
+    }
+    Log ($Bagarre.L.detectionFin -f $faits)
+    Compter-Coches
 }
 
 # Noms de groupe en anglais (les groupes du catalogue sont en français)
@@ -2544,20 +2724,22 @@ $GroupesEn = @{
 
 function Appliquer-Demander {
     $coches = @($Items | Where-Object { $_.Coche })
-    if ($coches.Count -eq 0) { Log $S.L.rienCoche; return }
-    $q = [Windows.MessageBox]::Show(($S.L.confirmAppliquer -f $coches.Count, $EtatFichier), 'bagarre', 'YesNo', 'Question')
+    if ($coches.Count -eq 0) { Log $Bagarre.L.rienCoche; return }
+    $q = [Windows.MessageBox]::Show(($Bagarre.L.confirmAppliquer -f $coches.Count, $EtatFichier), 'bagarre', 'YesNo', 'Question')
     if ($q -ne 'Yes') { return }
     Appliquer-Items $coches
-    [Windows.MessageBox]::Show($S.L.termine, 'bagarre') | Out-Null
+    Detecter-Tout
+    [Windows.MessageBox]::Show($Bagarre.L.termine, 'bagarre') | Out-Null
 }
 function Restaurer-Demander {
-    if ($Avant.Count -eq 0) { Log $S.L.rienRestaurer; return }
-    $q = [Windows.MessageBox]::Show(($S.L.confirmRestaurer -f $Avant.Count), 'bagarre', 'YesNo', 'Question')
+    if ($Avant.Count -eq 0) { Log $Bagarre.L.rienRestaurer; return }
+    $q = [Windows.MessageBox]::Show(($Bagarre.L.confirmRestaurer -f $Avant.Count), 'bagarre', 'YesNo', 'Question')
     if ($q -ne 'Yes') { return }
     Tout-Restaurer
-    [Windows.MessageBox]::Show($S.L.restaure, 'bagarre') | Out-Null
+    Detecter-Tout
+    [Windows.MessageBox]::Show($Bagarre.L.restaure, 'bagarre') | Out-Null
 }
-function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $LogFichier } else { Log $S.L.pasJournal } }
+function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $LogFichier } else { Log $Bagarre.L.pasJournal } }
 
 # ---------------------------------------------------------------------------
 # Onglet 2 : les applis winget à cocher
@@ -2579,31 +2761,31 @@ foreach ($a in $Applis) {
     $cb.IsChecked = $a.Coche
     $cb.Tag = $a.Id
     $cb.Margin = '0,3,18,3'
-    [void]$C.ListeApplis.Children.Add($cb)
+    [void]$Ctl.ListeApplis.Children.Add($cb)
 }
-$C.BtnApplis.Add_Click({
-    $ids = @($C.ListeApplis.Children | Where-Object { $_.IsChecked } | ForEach-Object { $_.Tag })
-    if ($ids.Count -eq 0) { Log $S.L.aucuneAppli; return }
+$Ctl.BtnApplis.Add_Click({
+    $ids = @($Ctl.ListeApplis.Children | Where-Object { $_.IsChecked } | ForEach-Object { $_.Tag })
+    if ($ids.Count -eq 0) { Log $Bagarre.L.aucuneAppli; return }
     Winget-Installer "$($ids.Count) apps" $ids
 })
 
 # ---------------------------------------------------------------------------
 # Onglet 7 : DNS
 # ---------------------------------------------------------------------------
-$S.DnsAdapt = $null
-$S.DnsResultats = @()
+$Bagarre.DnsAdapt = $null
+$Bagarre.DnsResultats = @()
 function Dns-Tester {
     $adapt = Dns-Carte
-    if (-not $adapt) { Log $S.L.aucuneCarte; return }
-    $S.DnsAdapt = $adapt
-    $C.DnsCarte.Text = $S.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
-    $C.DnsListe.Items.Clear()
-    $C.BtnDnsAppliquer.IsEnabled = $false
-    Log $S.L.dnsEnCours
-    $S.DnsResultats = @(Dns-Mesurer $adapt)
-    foreach ($r in $S.DnsResultats) { [void]$C.DnsListe.Items.Add(('{0,-24} {1,7} ms' -f $r.Nom, $r.Mediane)) }
-    $C.BtnDnsAppliquer.IsEnabled = $true
-    Log $S.L.dnsFini
+    if (-not $adapt) { Log $Bagarre.L.aucuneCarte; return }
+    $Bagarre.DnsAdapt = $adapt
+    $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
+    $Ctl.DnsListe.Items.Clear()
+    $Ctl.BtnDnsAppliquer.IsEnabled = $false
+    Log $Bagarre.L.dnsEnCours
+    $Bagarre.DnsResultats = @(Dns-Mesurer $adapt)
+    foreach ($r in $Bagarre.DnsResultats) { [void]$Ctl.DnsListe.Items.Add(('{0,-24} {1,7} ms' -f $r.Nom, $r.Mediane)) }
+    $Ctl.BtnDnsAppliquer.IsEnabled = $true
+    Log $Bagarre.L.dnsFini
 }
 
 # ---------------------------------------------------------------------------
@@ -2612,8 +2794,8 @@ function Dns-Tester {
 $DossierAudit = Join-Path ([Environment]::GetFolderPath('Desktop')) 'bagarre-audit'
 function Audit-Collecter {
     if (-not (Test-Path $DossierAudit)) { New-Item -Path $DossierAudit -ItemType Directory -Force | Out-Null }
-    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $Textes[$S.Langue]['audit-prompt'], (New-Object Text.UTF8Encoding $true))
-    Log $S.L.collecte
+    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $Textes[$Bagarre.Langue]['audit-prompt'], (New-Object Text.UTF8Encoding $true))
+    Log $Bagarre.L.collecte
     Collecter-Rapport (Join-Path $DossierAudit 'rapport-pc.txt')
     Ouvrir $DossierAudit
 }
@@ -2622,50 +2804,68 @@ function Audit-Collecter {
 # Langue : tout relabelliser d'un coup, et retenir le choix
 # ---------------------------------------------------------------------------
 function Appliquer-Langue {
-    $S.L = $UI[$S.Langue]; $L = $S.L
+    $Bagarre.L = $UI[$Bagarre.Langue]; $L = $Bagarre.L
     for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
         $p = $PagesNoms[$k]
-        $C.Nav.Items[$k].Content = $L.nav[$k]
-        $C["Titre$p"].Text = $L.titres[$p]
-        $C["Intro$p"].Text = $L.intros[$p]
-        if ($C["Texte$p"]) { $C["Texte$p"].Text = $Textes[$S.Langue][$p.ToLower()] }
+        $Ctl.Nav.Items[$k].Content = $L.nav[$k]
+        $Ctl["Titre$p"].Text = $L.titres[$p]
+        $Ctl["Intro$p"].Text = $L.intros[$p]
+        if ($Ctl["Texte$p"]) { $Ctl["Texte$p"].Text = $Textes[$Bagarre.Langue][$p.ToLower()] }
     }
     $k = 1
-    foreach ($carte in $C.Cartes.Children) {
+    foreach ($carte in $Ctl.Cartes.Children) {
         $carte.Content = '{0,-26} {1,-10} {2}' -f $L.nav[$k], $L.duree[$k], $L.resume[$k]
         $carte.FontFamily = 'Consolas'
         $k++
     }
-    foreach ($page in $Boutons.Keys) { foreach ($def in $Boutons[$page]) { $def.Ctl.Content = $def.T[$S.Langue]; $def.Ctl.ToolTip = $def.Tip[$S.Langue] } }
-    $C.BtnPrecedent.Content = $L.precedent; $C.BtnSuivant.Content = $L.suivant
-    $C.JournalTitre.Text = $L.journal
-    $C.ApplisTitre.Text = $L.applisTitre
-    $C.BtnApplis.Content = if ($S.Langue -eq 'fr') { 'Installer les applis cochées' } else { 'Install the ticked apps' }
-    $C.OptiEtiquette1.Text = $L.pourquoi; $C.OptiEtiquette2.Text = $L.perds
-    foreach ($tb in $Groupes) { $tb.Text = if ($S.Langue -eq 'en' -and $GroupesEn[$tb.Tag]) { $GroupesEn[$tb.Tag] } else { $tb.Tag } }
-    foreach ($id in $Cases.Keys) { $Cases[$id].Content = Item-Titre $Cases[$id].Tag }
-    $C.BtnFr.BorderBrush = if ($S.Langue -eq 'fr') { '#F2C14E' } else { '#3C3C46' }
-    $C.BtnEn.BorderBrush = if ($S.Langue -eq 'en') { '#F2C14E' } else { '#3C3C46' }
+    foreach ($page in $Boutons.Keys) { foreach ($def in $Boutons[$page]) { $def.Ctl.Content = $def.T[$Bagarre.Langue]; $def.Ctl.ToolTip = $def.Tip[$Bagarre.Langue] } }
+    $Ctl.BtnPrecedent.Content = $L.precedent; $Ctl.BtnSuivant.Content = $L.suivant
+    $Ctl.JournalTitre.Text = $L.journal
+    $Ctl.ApplisTitre.Text = $L.applisTitre
+    $Ctl.BtnApplis.Content = if ($Bagarre.Langue -eq 'fr') { 'Installer les applis cochées' } else { 'Install the ticked apps' }
+    $Ctl.OptiEtiquette1.Text = $L.pourquoi; $Ctl.OptiEtiquette2.Text = $L.perds
+    foreach ($g in $Groupes) {
+        $g.Titre.Text = if ($Bagarre.Langue -eq 'en' -and $GroupesEn[$g.Nom]) { $GroupesEn[$g.Nom] } else { $g.Nom }
+        $g.Tout.Content = $L.tout; $g.Rien.Content = $L.rienBtn
+    }
+    $Ctl.FiltreTitre.Text = $L.filtrer
+    foreach ($id in $Cases.Keys) { Case-Libeller $Cases[$id] }
+    $Ctl.Legende.Children.Clear()
+    foreach ($action in 'off', 'on', 'set') {
+        $sp = New-Object Windows.Controls.StackPanel
+        $sp.Orientation = 'Horizontal'; $sp.Margin = '0,0,22,4'
+        $tag = Etiquette-Tag $action
+        $tag.Child.Text = $Etiquettes[$action][$Bagarre.Langue]
+        [void]$sp.Children.Add($tag)
+        $t = New-Object Windows.Controls.TextBlock
+        $t.Text = if ($Bagarre.Langue -eq 'fr') { $Etiquettes[$action].legFr } else { $Etiquettes[$action].legEn }
+        $t.Foreground = '#B0B0B8'; $t.VerticalAlignment = 'Center'
+        [void]$sp.Children.Add($t)
+        [void]$Ctl.Legende.Children.Add($sp)
+    }
+    $Ctl.BtnFr.BorderBrush = if ($Bagarre.Langue -eq 'fr') { '#F2C14E' } else { '#3C3C46' }
+    $Ctl.BtnEn.BorderBrush = if ($Bagarre.Langue -eq 'en') { '#F2C14E' } else { '#3C3C46' }
     Opti-Vider
     Compter-Coches
 }
 function Changer-Langue($l) {
-    $S.Langue = $l
+    $Bagarre.Langue = $l
     Set-Content -Path $LangueFichier -Value $l -Encoding ASCII
     Appliquer-Langue
 }
-$C.BtnFr.Add_Click({ Changer-Langue 'fr' })
-$C.BtnEn.Add_Click({ Changer-Langue 'en' })
+$Ctl.BtnFr.Add_Click({ Changer-Langue 'fr' })
+$Ctl.BtnEn.Add_Click({ Changer-Langue 'en' })
 Appliquer-Langue
 Aller 0
-$C.BtnPrecedent.IsEnabled = $false
+$Ctl.BtnPrecedent.IsEnabled = $false
+Detecter-Tout
 
 # ---------------------------------------------------------------------------
 # Mode -Capture dossier : rend chaque onglet en PNG sans afficher la fenêtre ni demander l'admin (preuve visuelle en dev)
 # ---------------------------------------------------------------------------
 if ($Capture) {
     if (-not (Test-Path $Capture)) { New-Item -Path $Capture -ItemType Directory -Force | Out-Null }
-    Log "bagarre $Version, $Machine (capture $($S.Langue))"
+    Log "bagarre $Version, $Machine (capture $($Bagarre.Langue))"
     $racine = $Fenetre.Content
     $racine.Measure((New-Object Windows.Size 1200, 800))
     $racine.Arrange((New-Object Windows.Rect 0, 0, 1200, 800))
@@ -2677,7 +2877,7 @@ if ($Capture) {
         $bmp.Render($racine)
         $enc = New-Object Windows.Media.Imaging.PngBitmapEncoder
         $enc.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bmp))
-        $fs = [IO.File]::Create((Join-Path $Capture ('{0}-{1}-{2}.png' -f $k, $PagesNoms[$k].ToLower(), $S.Langue)))
+        $fs = [IO.File]::Create((Join-Path $Capture ('{0}-{1}-{2}.png' -f $k, $PagesNoms[$k].ToLower(), $Bagarre.Langue)))
         $enc.Save($fs); $fs.Close()
     }
     Write-Host "Captures dans $Capture"

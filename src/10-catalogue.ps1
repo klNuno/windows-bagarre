@@ -173,11 +173,7 @@ Ajouter $G 'priv-copilot' 'Couper Copilot, Recall, Click to Do, les Widgets et l
     foreach ($n in 'DisableCocreator', 'DisableGenerativeFill', 'DisableImageCreator', 'DisableGenerativeErase', 'DisableRemoveBackground') {
         Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Paint' $n 1
     }
-    if (Get-Service WSAIFabricSvc -ErrorAction SilentlyContinue) {
-        Memoriser 'svc|WSAIFabricSvc' @{ nom = 'WSAIFabricSvc'; start = (Reg-Lire 'HKLM:\SYSTEM\CurrentControlSet\Services\WSAIFabricSvc' 'Start') }
-        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WSAIFabricSvc' -Name 'Start' -Value 3 -ErrorAction SilentlyContinue
-        Log 'service   WSAIFabricSvc en manuel (pile IA, ne démarre plus tout seul)'
-    }
+    Service-Manuel 'WSAIFabricSvc' 'pile IA, ne démarre plus tout seul'
 }
 Ajouter $G 'priv-taches' 'Tâches planifiées de télémétrie (Compatibility Appraiser, CEIP, Feedback, DiskDiagnostic)' `
     'Des tâches de fond qui analysent tes programmes installés et envoient le résultat à Microsoft, parfois en pleine partie (Compatibility Appraiser est connu pour ses pics disque).' $true '' {
@@ -492,4 +488,42 @@ if ($EstNvidia) {
         $cle = Get-ChildItem $classe -ErrorAction SilentlyContinue | Where-Object { (Reg-Lire $_.PSPath 'DriverDesc') -match 'NVIDIA' } | Select-Object -First 1
         if ($cle) { Reg-Ecrire $cle.PSPath 'DisableDynamicPstate' 1 } else { Log 'nvidia    clé du pilote introuvable, DisableDynamicPstate non posé' }
     }
+}
+
+# Ce que fait la case une fois cochée, affiché en étiquette devant chaque ligne : 'off' (coupe le truc, le défaut),
+# 'on' (l'ajoute ou l'autorise), 'set' (change une valeur). Un item absent d'ici est 'off'.
+$Actions = @{
+    'jeu-timer' = 'on'; 'jeu-timer-demarrage' = 'on'; 'jeu-f8' = 'on'
+    'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
+    'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
+    'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'
+    'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'nv-pstate' = 'set'
+}
+function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'off' } }
+
+# Détection de ce qui est déjà fait. Par défaut le bloc Appliquer est rejoué en simulation ($Bagarre.Simulation) : les
+# fonctions d'écriture comparent au lieu d'écrire. Les items qui lancent une commande directe ont leur test ici,
+# ils ne doivent JAMAIS être rejoués en simulation (bcdedit, powercfg /h, schtasks, explorer relancé).
+$Verifs = @{
+    'jeu-timer-demarrage' = { [bool](Get-ScheduledTask -TaskName 'bagarre timer' -ErrorAction SilentlyContinue) }
+    'jeu-hiber' = { (Reg-Lire 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' 'HibernateEnabled') -eq 0 }
+    'jeu-f8' = { [bool]((bcdedit /enum '{current}' 2>$null) -match 'bootmenupolicy\s+Legacy') }
+    'net-alim' = {
+        $cartes = @(Cartes-Reseau)
+        if ($cartes.Count -eq 0) { $null }
+        else { @($cartes | ForEach-Object { [string](Get-NetAdapterPowerManagement -Name $_.Name -ErrorAction SilentlyContinue).AllowComputerToTurnOffDevice }) -notcontains 'Enabled' }
+    }
+    'conf-menu-classique' = { Test-Path 'HKCU:\SOFTWARE\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}' }
+    'conf-reserve' = { [string](Get-WindowsReservedStorageState -ErrorAction SilentlyContinue).ReservedStorageState -eq 'Disabled' }
+    'conf-corbeille' = { Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{645FF040-5081-101B-9F08-00AA002F954E}' }
+    'adv-dyntick' = { [bool]((bcdedit /enum '{current}' 2>$null) -match 'disabledynamictick\s+Yes') }
+}
+# Rend $true (déjà fait), $false (à faire) ou $null (rien à comparer sur cette machine)
+function Detecter-Item($it) {
+    if ($Verifs[$it.Id]) { try { return (& $Verifs[$it.Id]) } catch { return $null } }
+    $Bagarre.Verif = New-Object System.Collections.ArrayList
+    $Bagarre.Simulation = $true
+    try { & $it.Appliquer } catch {} finally { $Bagarre.Simulation = $false }
+    if ($Bagarre.Verif.Count -eq 0) { return $null }
+    return ($Bagarre.Verif -notcontains $false)
 }

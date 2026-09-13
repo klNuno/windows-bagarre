@@ -58,10 +58,16 @@ function Appliquer-Items($liste) {
     $liste = @($liste)
     if ($liste.Count -eq 0) { Log 'Rien de coché.'; return }
     Log "Application de $($liste.Count) réglages..."
+    $barre = if ($Ctl) { $Ctl.Progression } else { $null }
+    if ($barre) { $barre.Value = 0; $barre.Visibility = 'Visible' }
+    $n = 0
     foreach ($it in $liste) {
         Log "> $($it.Titre)"
         try { & $it.Appliquer } catch { Log "ÉCHEC $($it.Id) : $_" }
         SauverEtat
+        $n++
+        if ($barre) { $barre.Value = 100 * $n / $liste.Count; Rafraichir }
     }
+    if ($barre) { $barre.Visibility = 'Collapsed' }
     Log "Terminé. Les valeurs d avant sont dans $EtatFichier, le détail dans $LogFichier. Redémarre le PC."
 }
