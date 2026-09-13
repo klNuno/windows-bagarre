@@ -6,7 +6,7 @@ $racine = Split-Path -Parent $MyInvocation.MyCommand.Path
 $utf8 = New-Object Text.UTF8Encoding $false   # sans BOM : voir l'en-tete du fichier genere
 $sb = New-Object Text.StringBuilder
 [void]$sb.AppendLine('#Requires -Version 5.1')
-[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Depuis : dossier du clone (pose par la relance admin).')
+[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [switch]$Essai, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Depuis : dossier du clone (pose par la relance admin).')
 [void]$sb.AppendLine('# bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.')
 [void]$sb.AppendLine('# UTF-8 SANS BOM : "irm" garde le BOM dans le texte et PowerShell le prend pour une commande. Pour le lancer en local :')
 [void]$sb.AppendLine('#   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste')
@@ -16,13 +16,17 @@ $noyau = [IO.File]::ReadAllText((Join-Path $racine 'src\00-noyau.ps1'), [Text.En
 $depot = [regex]::Match($noyau, "(?m)^\`$Depot = '([^']+)'").Groups[1].Value
 if (-not $depot) { throw 'Depot introuvable dans src/00-noyau.ps1' }
 
+# textes/<langue>/<nom>.txt -> $Textes[<langue>][<nom>]
 [void]$sb.AppendLine('$Textes = @{}')
-foreach ($f in Get-ChildItem (Join-Path $racine 'textes') -Filter *.txt | Sort-Object Name) {
-    $t = [IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8).TrimEnd() -replace '\{\{DEPOT\}\}', $depot
-    if ($t -match "(?m)^'@") { throw "$($f.Name) contient une ligne qui commence par '@, interdit dans une here-string" }
-    [void]$sb.AppendLine("`$Textes['$($f.BaseName)'] = @'")
-    [void]$sb.AppendLine($t)
-    [void]$sb.AppendLine("'@")
+foreach ($d in Get-ChildItem (Join-Path $racine 'textes') -Directory | Sort-Object Name) {
+    [void]$sb.AppendLine("`$Textes['$($d.Name)'] = @{}")
+    foreach ($f in Get-ChildItem $d.FullName -Filter *.txt | Sort-Object Name) {
+        $t = [IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8).TrimEnd() -replace '\{\{DEPOT\}\}', $depot
+        if ($t -match "(?m)^'@") { throw "$($d.Name)/$($f.Name) contient une ligne qui commence par '@, interdit dans une here-string" }
+        [void]$sb.AppendLine("`$Textes['$($d.Name)']['$($f.BaseName)'] = @'")
+        [void]$sb.AppendLine($t)
+        [void]$sb.AppendLine("'@")
+    }
 }
 foreach ($f in Get-ChildItem (Join-Path $racine 'src') -Filter *.ps1 | Sort-Object Name) {
     [void]$sb.AppendLine('')

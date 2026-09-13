@@ -1,0 +1,14 @@
+1) when you install Windows 11
+- local account bypass: "start ms-cxh:localonly"
+   - Right after the first desktop, in an admin Terminal:  fsutil 8dot3name set 1
+     This turns off short name generation "PROGRA~1" on new drives (fewer writes
+     per file created). Do it before installing anything, you cannot catch up on it later.
+
+2) Windows Update before continuing
+
+3) Drivers, in order:
+   a. Chipset and network card: your motherboard's manufacturer site (or laptop's), your exact model.
+   b. NVIDIA graphics card: NOT now, that is tab 4. NVIDIA.
+      AMD: AMD site.
+   c. Windows Update again: since 24H2 it finishes the rest (audio, USB, Bluetooth).
+   d. Snappy Driver Installer Origin (button above): last resort, only check what is missing.

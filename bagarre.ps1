@@ -1,27 +1,480 @@
 #Requires -Version 5.1
-param([switch]$Liste, [string]$Capture, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Depuis : dossier du clone (pose par la relance admin).
+param([switch]$Liste, [string]$Capture, [switch]$Essai, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Depuis : dossier du clone (pose par la relance admin).
 # bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.
 # UTF-8 SANS BOM : "irm" garde le BOM dans le texte et PowerShell le prend pour une commande. Pour le lancer en local :
 #   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste
 
 $Textes = @{}
-$Textes['accueil'] = @'
+$Textes['en'] = @{}
+$Textes['en']['accueil'] = @'
+This pack removes what runs for nothing and tunes what matters for gaming.
+No backup beforehand: if it breaks, you reinstall, that is the whole point of a fresh Windows.
+
+Follow the steps in order. Easy is enough for a desktop PC. The checkbox script
+is the real level for gaming. Hard, you understand every line before checking it.
+
+Pack rule: every tweak says what it changes and what you lose.
+You do not understand a line, you do not check it.
+
+The "(winget)" buttons open a console that installs the current version of the tool.
+Win11Debloat and WinUtil launch as is, in their own console.
+
+Everything the checkbox script changes is logged in C:\ProgramData\bagarre
+(bagarre-avant.json for the before values, bagarre.log for the detail).
+"Restore everything" restores exactly those values.
+
+To reopen bagarre later, the same command in a Terminal:
+  irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
+'@
+$Textes['en']['audit'] = @'
+The pack is generic. Your PC is not: your network card, your GPU, your programs,
+your games. The audit takes a snapshot of your PC and gives it to an AI with a prompt that knows
+what the pack did, what it refuses to do, and how to judge a tweak.
+
+1) "Collect the report" button. 30 seconds. It writes rapport-pc.txt and AUDIT.txt (the prompt)
+   into a bagarre-audit folder on your Desktop, and opens it. It changes nothing. The report
+   contains no account name, no password, no license key. Open it anyway before
+   sending it, it is your PC.
+
+2) "Copy the prompt" button (or open AUDIT.txt and copy all of it).
+
+3) Pick your AI:
+   - Claude Code, Codex, Gemini CLI or any terminal agent: open it in the
+     bagarre-audit folder and paste the prompt. It will read rapport-pc.txt on its own and can go check things.
+   - ChatGPT, Claude.ai, a web chat: paste the prompt, then attach rapport-pc.txt
+     (or paste its content after).
+
+4) Read the answer like the rest of the pack: every proposal must say what it changes,
+   what you lose, and where it comes from. A proposal with no source or no tradeoff,
+   you do not apply it. One thing at a time, you measure with RivaTuner, you keep it or you revert.
+
+The AI does not touch your PC. It reads and proposes. You are the one who applies it.
+'@
+$Textes['en']['audit-prompt'] = @'
+You are a Windows 11 expert focused on gaming and latency, careful, who prefers one measurable tweak to ten forum tweaks.
+You are auditing a PC whose state is in the file rapport-pc.txt (next to this prompt, or attached to the message).
+Answer in the language of the person asking, informal, direct, no filler.
+
+CONTEXT
+This PC went through the "windows bagarre edition" pack:
+- Fresh Windows 11, Windows Update current, chipset/network drivers from the manufacturer.
+- Win11Debloat (default mode) and WinUtil (Standard tweaks).
+- NVIDIA driver installed bare via NVCleanstall: no NVIDIA App, MSI High, HDCP off, Ansel off, MPO kept
+  (off only in case of black screen or flicker), signature rebuilt (EAC compatible method).
+  Classic NVIDIA Control Panel from the Store, Low Latency Mode On (Ultra if no FPS cap),
+  max performance, unlimited shader cache, G-Sync + V-Sync On in the Panel + RTSS cap under the screen's refresh rate.
+- Checkbox script bagarre.ps1: useless services (telemetry, fax, demo, Edge update...), telemetry, CEIP and error
+  reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI cut, Game DVR and PresenceWriter off,
+  GlobalTimerResolutionRequests=1, 0.507 ms timer via a scheduled task SetTimerResolution, mouse acceleration off,
+  hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off,
+  drivers excluded from Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card
+  (power management, EEE, LLDP/topology unchecked, Interrupt Moderation Medium), comfort (classic right-click menu,
+  End task in the taskbar, Edge without Startup Boost, File Explorer).
+  Options unchecked by default: SvcHostSplitThreshold (placebo), Win32PrioritySeparation 0x26, PowerThrottlingOff,
+  Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off, LLMNR off, clipboard, Dynamic Lighting,
+  NVIDIA P0, core parking.
+
+WHAT THE PACK REFUSES, DO NOT PROPOSE IT
+- Disabling HVCI / memory integrity, Secure Boot, Defender, the firewall, Windows Update, UAC.
+- Registry cleaners, paid "optimizers", scripts that make 200 changes at once.
+- BIOS settings (out of scope for the pack).
+- "Ultimate performance" plan, prefetch/superfetch tweaks, "unlocking the 20% reserved bandwidth", placebo tweaks
+  (LargeSystemCache, IRQ8Priority, mouse/keyboard data queues, TcpWindowSize, disabling the page file).
+- Disabling a service you are not sure about: NvContainer, Windows Audio, Themes, Cryptographic Services,
+  Windows Time, Storage Service, Device Install, Windows Management Instrumentation stay on.
+
+YOUR MISSION, IN THIS ORDER
+1. Pack check: for each point in the CONTEXT, say whether it is DONE, NOT DONE or UNCERTAIN based on the report,
+   with the report line that proves it. List what is missing, with the script checkbox or the tutorial step to redo.
+
+2. What is off: old drivers (compare the GPU and network driver date to today), MSI missing on the GPU or the
+   network card, useless auto-start programs, third-party services set to automatic (launchers, updaters,
+   RGB), Store bloat still present, a duplicate antivirus, repeated system errors (WHEA, disk, driver),
+   an almost full disk, HAGS or windowed optimizations inconsistent with the GPU, slow or ISP DNS.
+
+3. Tweaks specific to THIS config, that the generic pack cannot know:
+   - the exact CPU model (E-cores / P-cores, X3D, laptop), GPU, network card (Realtek, Intel, Killer,
+     Marvell) and exactly what to set for each ;
+   - the installed programs (Discord, launchers, RGB, overlays) and which ones cost you in-game ;
+   - the screen (Hz, G-Sync) and the consistency of V-Sync / FPS cap / low latency ;
+   - the RAM (sticks, rated speed vs likely XMP, but with no BIOS step: just flag it).
+
+4. For EVERY proposal, this format, otherwise it is worthless:
+   - What: the exact setting (registry key, command, menu), ready to apply.
+   - Why: the mechanism in two sentences, not "it optimizes things".
+   - What you lose: the tradeoff, even a small one. "Nothing" is rarely true.
+   - Source: manufacturer doc, Microsoft doc, maintained repo, with the name and the year. No videos, no "people say".
+   - Expected gain: measurable or not, and how to measure it (RivaTuner frame time, MeasureSleep, ping, LatencyMon).
+   - Reversible: how to roll it back.
+   Sort them: DO (clear gain, no risk) / TEST (one at a time, measure) / NO (placebo or harmful, say why).
+
+5. Finish with the 5 most useful actions for this exact PC, in order, one line each.
+
+RULES
+- You do not change anything yourself, even if you have terminal access. You propose, the user applies.
+  If you are an agent with access to the PC, you can read (registry, Get-*, powercfg /query) to clarify a point,
+  never write.
+- If the report does not allow a conclusion, say UNCERTAIN and say which command to run to decide.
+- No made-up FPS estimate. "A few ms of latency" only if you can say where it comes from.
+- Keep it short. A tweak that needs a paragraph to justify itself is probably not a tweak.
+'@
+$Textes['en']['dns'] = @'
+Quad9 blocks known malicious domains and does not keep your IP address in its logs.
+Cloudflare is usually the fastest. Google keeps logs. Your ISP's DNS is often the
+slowest, except at Free where it is very good.
+
+A gap under 5 ms is not noticeable. If your box is within 5 ms of the best one, keep it.
+
+To encrypt the chosen DNS (DoH: your box and your ISP no longer see the names you request):
+Settings > Network & internet > your adapter > DNS server assignment > Edit > Encrypted DNS:
+Encrypted preferred. Optional, zero effect on ping.
+
+"Restore everything" (tab 3) also restores the previous DNS.
+'@
+$Textes['en']['dur'] = @'
+HARD (20 min): read everything before touching anything
+
+Here you change one thing at a time, you play for 30 minutes, you watch the frame time graph
+in RivaTuner, you keep it or you revert. A tweak you cannot measure does not exist.
+The clean measurement protocol is in the Maintenance tab ("Measure before / after").
+
+1) 0.507 ms timer
+   The checkbox script created the "bagarre timer" task (SetTimerResolution.exe, open source GPL,
+   valleyofdoom/TimerResolution repo). Check with MeasureSleep (button, Maintenance tab): about 0.5 ms expected.
+   If MeasureSleep shows 1 ms or 15.6 ms: the GlobalTimerResolutionRequests key is not set
+   (the jeu-timer checkbox in the script) or the task did not start (Task Scheduler, "bagarre timer").
+   Process Lasso is no longer in the pack: 30 s wait on startup in the free version, timer paid
+   after a month. ThreadPilot (AGPL) exists for per-process affinity, with no ProBalance or timer,
+   curiosity only.
+
+6) Mouse
+   Acceleration turned off by the script. Then: 1000 Hz in the mouse software,
+   native DPI (400 / 800 / 1600), sensitivity set in the game, not in Windows (6/11 = 1:1).
+   RawMouseThrottleDuration (adv-rawmouse checkbox): only test it at 4000 Hz and above, and it is often
+   already at 8 by default on recent Windows 11 (the previous value is in bagarre.log, button on tab 3).
+
+7) Win32PrioritySeparation (adv-priosep checkbox)
+   0x26 = short, variable quantum, x3 boost in the foreground. Can help a CPU-bound game with Discord
+   and a browser running behind it. Can also make the audio crackle. Measure it.
+
+8) Memory
+   16 GB of RAM and recent games: ISLC (Intelligent Standby List Cleaner, Wagnardsoft) empties the
+   standby list when free RAM drops under 1 GB, it avoids swap stutter. 32 GB and above:
+   useless. Windows memory compression stays on either way (turning it off makes it swap
+   sooner).
+
+9) Cores for gaming (AutoGpuAffinity, optional)
+   A script that tests which core to put the GPU interrupt on and gives you the best one. Long (1 h), do it
+   on a PC that is already stable. valleyofdoom/AutoGpuAffinity repo.
+   MSI Util v3: to CHECK that the graphics card is really in MSI mode (NVCleanstall did it), not
+   to write. Its inpoutx64.sys driver has been blocked by Windows since KB5121003 (2026): if the tool
+   will not launch anymore, that is why, and you do not need it.
+
+10) Storage
+   DirectStorage (Forspoken, Ratchet & Clank, Starfield): the game on the NVMe, not on a SATA drive, and
+   never NTFS compression on a game folder (CompactGUI: only for old 2D games).
+   The shader cache (%LOCALAPPDATA%\NVIDIA\DXCache) does not get "cleaned": emptying it makes
+   every shader recompile on your next play session.
+
+11) CPU boost (checkbox in powercfg, Intel desktop only, optional)
+   powercfg /setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PERFBOOSTMODE 2 (Aggressive) then
+   powercfg /setactive SCHEME_CURRENT. The processor ramps up clock speed faster. On AMD the boost
+   is handled by the firmware, the key does nothing. On a laptop, no: it just heats up for nothing.
+
+12) If you are on AMD (one page is enough)
+   Driver from the AMD site, "driver only" install (not the full Adrenalin) or Radeon Software
+   Slimmer (open source). Anti-Lag 2 on per game if available. AFMF (frame generation) off in
+   competitive play. On a Ryzen X3D, leave core parking on: it is what keeps the game on the CCD with
+   the cache. The rest of the pack applies the same way.
+
+13) Feature updates
+   Settings > Windows Update > Advanced options: pause for up to 5 weeks when a major
+   version (25H2, 26H1) comes out, until drivers and anti-cheats catch up. No more than that: the
+   security fixes depend on it. The "Xbox Mode" / Xbox full screen experience does nothing on a
+   desktop PC, it is for handheld consoles.
+
+The videos from the previous pack (Khorvie Tech channel), found through the Wayback Machine:
+- "BOOST PC PERFORMANCE | Win32 Priority Separation Benchmarks" (May 2024, 3 min): now private.
+  Benchmark on a single machine, a single scene. Kept as an unchecked Advanced checkbox, nothing more.
+- "Debunk'd Mouse and Keyboard Data Queue Sizes" (July 2024): deleted. Concluded that the
+  mouse / keyboard data queue tweak changes nothing. Not in the pack.
+- "The ONLY Windows PC OPTIMIZATION Guide 2024" (April 2024, 40 min, 1.6M views): now private.
+  The pack's timecodes fell in "network tweaks" (21:35). What was useful is in
+  the script's Network card group, with the explanation. The rest (unparking CPU via a third-party tool,
+  "win tweaker") is covered by the script or deliberately left out.
+
+What we do not do, and why:
+- HVCI / memory integrity off: anti-cheats require it, the October 2026 updates
+  turn it back on anyway, and the gain is 1 to 3%.
+- Registry cleaner: nothing to gain, everything to break.
+- "Ultimate performance" plan: identical to High performance on a desktop since 1903.
+- Disabling the Windows Update service, Defender, the firewall: no.
+- Prefetch / superfetch tweaks: the SSD does not care, SysMain helps on HDD.
+- "Unlocking" bandwidth (the reserved 20%): a myth, the key never did that.
+- HPET / useplatformclock, TdrLevel, DisablePreemption, MouseDataQueueSize, NetworkThrottlingIndex,
+  SystemResponsiveness=0, IPv6 off, C-states off, Interrupt Moderation "Disabled": tested by
+  others, nothing measurable, or harmful. Renaming GameBarPresenceWriter.exe: the script turns it off
+  properly (ActivationType key), never by renaming it.
+- Lossless Scaling, ExplorerPatcher, ViveTool, ParkControl, HIDUSBF: either paid, or broken by
+  every update, or already covered by the script.
+'@
+$Textes['en']['facile'] = @'
+EASY (15 min): two commands and two installers
+
+The two buttons at the top open each tool in its own console, as administrator.
+They download the current version, nothing to update here. The commands are listed for reference.
+
+1) Win11Debloat (button): remove what Windows installed without asking
+   & ([scriptblock]::Create((irm "https://debloat.raphi.re/")))
+   Default mode. Removes sponsored apps, Copilot, Start menu ads,
+   telemetry, and asks before each group. Updated several times a month, knows 24H2 and 25H2.
+   OneDrive: it offers to uninstall it. Say yes if you do not use it, but check FIRST that
+   Documents / Pictures are not "in OneDrive" (right-click > Properties > Location): otherwise
+   they get removed with it.
+
+2) Chris Titus's WinUtil (button): install all your programs at once
+   irm https://christitus.com/win | iex
+   Install tab: check Steam, Discord, browser, 7-Zip, VLC, it installs everything via winget.
+   Tweaks tab: "Standard" preset only. Not the Advanced tab, the checkbox script
+   on tab 3 does the same thing while explaining every line.
+   Never the "windev" version (development branch).
+   To do the same install on another PC: "winget export -o mes-applis.json" here,
+   "winget import mes-applis.json" over there.
+
+3) DirectX and Visual C++: the libraries games ask for
+   Without them a game crashes with "VCRUNTIME140.dll not found".
+   - DirectX: button above (winget Microsoft.DirectX). For old games.
+   - Visual C++: button above. What it runs, if you prefer typing it in an admin Terminal:
+
+   '2005','2008','2010','2012','2013' | ForEach-Object {
+     winget install --id "Microsoft.VCRedist.$_.x86" -e --accept-package-agreements --accept-source-agreements
+     winget install --id "Microsoft.VCRedist.$_.x64" -e --accept-package-agreements --accept-source-agreements
+   }
+   winget install --id 'Microsoft.VCRedist.2015+.x86' -e --accept-package-agreements --accept-source-agreements
+   winget install --id 'Microsoft.VCRedist.2015+.x64' -e --accept-package-agreements --accept-source-agreements
+
+   Comes from Microsoft, updates with "winget upgrade --all".
+
+4) Small keyboard and search tricks
+   - Copilot key on a recent keyboard: Settings > Personalization > Text input >
+     "Customize the Copilot key" (since KB5124010) to turn it into a search or an app launch.
+     Otherwise PowerToys > Keyboard Manager.
+   - If you installed Gemini or Copilot as an app: their overlay sticks to Alt+Space. Turn it off
+     in their settings, or you will get it mid-game.
+   - If you turned off indexing (the svc-recherche checkbox in the script): Everything (voidtools, free)
+     finds any file in a second with no Windows index.
+
+5) Audio (5 min, it prevents crackling)
+   - Right-click the speaker icon > Sounds > Communications tab: "Do nothing" (otherwise Windows
+     drops your volume by 80% when Discord rings).
+   - Playback device > Properties > Enhancements: "Disable all enhancements".
+     Advanced tab: 24 bit, 48000 Hz (the format games and Discord use, zero resampling).
+   - Nahimic / Sonic Studio / Realtek Audio Console: uninstall, the bare driver is enough (see Maintenance).
+'@
+$Textes['en']['installation'] = @'
+1) when you install Windows 11
+- local account bypass: "start ms-cxh:localonly"
+   - Right after the first desktop, in an admin Terminal:  fsutil 8dot3name set 1
+     This turns off short name generation "PROGRA~1" on new drives (fewer writes
+     per file created). Do it before installing anything, you cannot catch up on it later.
+
+2) Windows Update before continuing
+
+3) Drivers, in order:
+   a. Chipset and network card: your motherboard's manufacturer site (or laptop's), your exact model.
+   b. NVIDIA graphics card: NOT now, that is tab 4. NVIDIA.
+      AMD: AMD site.
+   c. Windows Update again: since 24H2 it finishes the rest (audio, USB, Bluetooth).
+   d. Snappy Driver Installer Origin (button above): last resort, only check what is missing.
+'@
+$Textes['en']['maintenance'] = @'
+MAINTENANCE: once the PC has some mileage on it
+
+- Autoruns (button): everything that launches at startup. Options > Hide Microsoft
+  entries, then uncheck what you do not recognize (launchers, updaters). Uncheck, do not delete.
+- Geek Uninstaller (button): uninstalls cleanly and removes the leftovers. Better than Settings > Apps.
+- MeasureSleep (button): checks the timer. About 0.5 ms expected after the script.
+  1 ms or 15.6 ms: see the Hard tutorial, point 1.
+
+Manufacturer suites to remove (they are there without you asking): Nahimic, Killer Intelligence
+Center, Armoury Crate, MSI Center, Dragon Center, Sonic Studio. Each one installs a service and an
+audio or network overlay. For fans: FanControl (open source). For LEDs: OpenRGB, or the
+brand's software alone (iCUE, Synapse) without its "modules".
+
+Disk cleanup, in order:
+1. Windows + R > cleanmgr > Clean up system files: old updates, recycle bin.
+2. Settings > System > Storage > Storage Sense: on, every month, recycle bin 30 days,
+   Downloads never (it deletes what you have not sorted through yet).
+3. Admin Terminal, WinSxS:
+   Dism /Online /Cleanup-Image /AnalyzeComponentStore     (tells you if there is anything to clean)
+   Dism /Online /Cleanup-Image /StartComponentCleanup     (never /ResetBase: no more uninstalling updates)
+4. BleachBit (open source, winget install BleachBit.BleachBit) if you want more: browser caches, logs.
+   Never check "Free disk space" or "Memory": slow and useless on SSD.
+5. DriverStore Explorer (RAPR): removes old stacked NVIDIA drivers (several GB).
+6. SSD: Optimize-Volume -DriveLetter C -ReTrim in an admin terminal (TRIM, once a month
+   Storage Sense already does it). CrystalDiskInfo for health and temperature.
+
+Drivers: Windows Update no longer touches them (the jeu-pilotes checkbox). You update them yourself:
+NVIDIA via NVCleanstall, the rest from the manufacturer's site, only if something works badly.
+DDU (Display Driver Uninstaller) only when you switch graphics card brands, not for
+every driver update: NVCleanstall's "clean installation" is enough.
+
+Defender hogging resources: Windows has an official tool to see which file costs (admin PowerShell).
+  New-MpPerformanceRecording -RecordTo C:\defender.etl    (play for 10 min, then Ctrl+C)
+  Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopExtensions 10
+Whatever folder comes out goes into Exclusions (the game or launcher folder). Never the whole disk.
+
+The PC wakes up on its own / will not sleep (admin terminal):
+  powercfg /lastwake         (what woke it up)
+  powercfg /waketimers       (what has the right to wake it up, empty after the jeu-reveil checkbox)
+  powercfg /requests         (what keeps it from sleeping: often a browser with a video playing)
+  powercfg /sleepstudy       (laptop: HTML report of what drained the battery during sleep)
+Wi-Fi that drops: netsh wlan show wlanreport, then open the HTML report it points to.
+Crashes or blue screens: Event Viewer > System, filter source "WHEA-Logger":
+a WHEA error means hardware (RAM, overclock, PSU), not Windows.
+
+Measure before / after (the only way to know if a tweak does anything):
+  Tool: CapFrameX (free) or PresentMon (Intel, open source). RivaTuner to watch it live.
+  1. Same game, same scene (a built-in benchmark or a replay), same resolution.
+  2. One warmup pass (discarded), then 3 passes of 60 s BEFORE, 3 passes AFTER, alternating if you
+  can (before, after, before, after, and so on) to smooth out temperature.
+  3. Look at the median FPS, the 1% low and the p99 frame time. Not the average.
+  4. A gap under 3% with the 1% low moving both ways means no effect. Revert it.
+  PresentMon also tells you the "PresentMode": "Hardware: Independent Flip" means the game is presented with no
+  copy (optimized windowed or full screen), "Composed: Flip" means it goes through the compositor (one extra
+  frame of latency). That is how you check that MPO and windowed optimizations are working.
+
+Dev Drive (if you compile code or have heavy projects): Settings > System > Storage > Advanced
+storage settings > Create Dev Drive. A ReFS partition with Defender in performance mode. Not for games.
+
+RegCleaner and PureRa, which were in the old pack, are gone. 2026 verdict: obsolete,
+no gain on a modern Windows, a risk of breaking a key. The old .reg files
+(Recycle Bin in This PC, Quick access, VLC) are now unchecked checkboxes in the Comfort group, tab 3.
+'@
+$Textes['en']['nvidia'] = @'
+NVIDIA (15 min): the bare driver, then the old Control Panel
+
+Good to know in 2026: since driver 610.47 (May 2026) the classic Control Panel
+is no longer bundled with the driver. It installs from the Store (step 2), and disappears with every
+clean installation: you reinstall it afterward.
+
+1) NVCleanstall (button: winget installs the latest version)
+   - "Manual", latest Game Ready driver for your card.
+   - Components: Display Driver, and PhysX if you play games that use it. Nothing else.
+     No NVIDIA App, no GeForce Experience, no USB-C, no Stereo 3D.
+     NVIDIA HD Audio: keep it only if your sound goes out through the screen's HDMI / DisplayPort cable.
+   - "Installation Tweaks" page, check as in the screenshot (button "Screenshot: NVCleanstall")
+     EXCEPT the MPO line (see below). What it does:
+     . Perform a Clean Installation: starts fresh.
+     . Disable Ansel: capture overlay, useless.
+     . Disable Driver Telemetry.
+     . Enable Message Signaled Interrupts, High priority: the card talks to the CPU over MSI
+       instead of the old shared interrupt line. Less latency between frame ready and frame displayed.
+     . Disable HDCP: the cable's anti-copy encryption. Required by Netflix 4K and Blu-ray, nothing else.
+       Active, it causes micro-cuts when the link renegotiates (alt-tab, waking from sleep).
+       You lose: Netflix / Disney+ in 4K in the browser (1080p still works).
+     . Rebuild digital signature + "Use method compatible with Easy-Anti-Cheat" + "Automatically accept":
+       NVCleanstall changed the driver (HDCP, MSI), the NVIDIA signature no longer matches, Windows would refuse it.
+       It re-signs it. The EAC method keeps the driver file intact, only the installer changes,
+       so the anti-cheat sees an official NVIDIA driver. Validated by the pack's maintainer on the
+       common anti-cheats. If a game refuses to launch afterward: reinstall the driver without those two boxes.
+     . Disable Multiplane Overlay (MPO): UNCHECKED by default now. MPO is what lets the
+       windowed game be presented with no copy ("optimizations for windowed games" depend on it).
+       Check it only if you get black screens or flickering with multiple monitors, it is the
+       official NVIDIA fix (OverlayTestMode=5 key). A major Windows update can overwrite it,
+       if the bug comes back, run NVCleanstall again.
+   - Install. The screen flickers and red messages flash by, that is normal, do not touch anything.
+   Next time, NVCleanstall offers "previous settings", no need to check everything again.
+
+2) NVIDIA Control Panel (the old one), button above. What it runs:
+   winget install --id 9NF8H0H7WMLT --source msstore
+   It needs the NVIDIA Display Container service (NvContainer): never disable it.
+
+   Settings (button "Screenshot: NVIDIA Control Panel"), Manage 3D settings > Global settings:
+   - Low Latency Mode: On. The driver keeps a single frame of lead. "Ultra" forces zero
+     frames of lead and costs stutter when the CPU is at its limit: it is the setting from before
+     Reflex. If a game offers Reflex, Reflex takes over, which is normal.
+   - Power management mode: Prefer maximum performance. On recent drivers
+     (616.xx) the setting does not always apply: check at idle with "nvidia-smi -q -d CLOCK"
+     in a terminal, if the clocks drop back down at idle it is being ignored, and that is fine.
+   - Shader cache size: Unlimited. The default (4 GB) fills up, an evicted shader recompiles
+     mid-game: a frame time spike.
+   - Texture filtering, quality: High performance.
+   - Threaded optimization: On.
+   - Vertical sync and G-Sync, two cases:
+     . G-Sync / compatible screen: G-Sync enabled in "Set up G-SYNC", V-Sync "On" HERE
+       in the Panel, V-Sync OFF in every game, and an FPS cap 3 to 4 under the screen's refresh rate
+       (RivaTuner, Hard tutorial, or Reflex which does it on its own). This is the combination documented by
+       Blur Busters: zero tearing, minimal latency. The "application-controlled" setting from the old tutorial
+       let the game put its own classic V-Sync back on top of G-Sync.
+     . Without G-Sync: V-Sync Off, RivaTuner cap alone, Reflex if the game has it.
+     Game in windowed mode or on a hybrid laptop (Optimus): the Panel's V-Sync does not always
+     apply, set it in the game instead.
+   - OpenGL rendering GPU: your card, not "auto".
+   - Smooth Motion (driver-side frame generation): never globally. Per game, single player only,
+     never in competitive play (adds a frame of latency).
+   Configure Surround, PhysX: PhysX on your NVIDIA card.
+   Adjust desktop size and position: second monitor set to "No scaling".
+   Change resolution: output dynamic range "Full", RGB format 4:4:4. The driver sometimes
+   picks "Limited" on a TV or an HDMI monitor: blacks turn gray.
+
+   Windows Settings > System > Display > Graphics:
+   - "Optimizations for windowed games" on. Windows presents windowed frames like
+     full screen ones, latency drops. Turn it back off if a game flickers.
+   - Hardware-accelerated GPU scheduling (HAGS): keep it on. DLSS Frame Generation and
+     Smooth Motion require it. Turning it off gains nothing on a recent card.
+   - Auto HDR: off in competitive play, it adds processing per frame. On for single player games if the screen
+     is genuinely HDR (600 nits and above).
+
+3) MSI Afterburner and RivaTuner (button)
+   Not for overclocking. For the fan curve and the RivaTuner overlay (FPS, frame time,
+   temperatures). This is your tool to SEE that a tweak changes something instead of just believing it.
+   Only one overlay at a time: RivaTuner OR Steam OR Discord OR the Game Bar. Two overlays
+   stacked means one more hook per frame.
+
+If you installed the NVIDIA App anyway (or a game forced it on you):
+   Settings > Features: overlay OFF, Instant Replay OFF, Freestyle OFF. Games: "auto-optimize"
+   OFF (it rewrites your settings). The rest of the tutorial applies the same way, the classic Panel
+   and the App write to the same profile.
+'@
+$Textes['en']['reseau'] = @'
+NETWORK CARD (5 min)
+
+The checkbox script does all of this on its own, "Network card" group.
+This tutorial is for doing it by hand or checking it. Screenshots: the two "Screenshot" buttons above.
+
+Control Panel > Network and Sharing Center > Change adapter settings
+> right-click your card > Properties.
+
+1) Power management (Configure button > Power Management tab)
+   Uncheck "Allow the computer to turn off this device to save power".
+   Why: Windows turns the card off when idle, and it takes a second to come back.
+   That is the "network dropped for 2 seconds" after sleep.
+
+2) Advanced tab (screenshot "Advanced tab")
+   - Energy Efficient Ethernet / Green Ethernet / Power Saving Mode: Disabled.
+     The chip falls asleep between packets and wakes up with a delay.
+   - Interrupt Moderation Rate: Medium, NOT Disabled. Disabled means more interrupts,
+     more CPU time stolen from the game. Often missing on Realtek, too bad.
+   - The rest: leave it at default. Jumbo Frame, Receive Buffers maxed out, etc.
+     bring nothing in games, it is UDP in small packets.
+
+3) Protocol list (screenshot "protocols"), what to uncheck
+   - Microsoft LLDP Protocol Driver
+   - Link-Layer Topology Discovery Responder
+   - Link-Layer Topology Discovery Mapper I/O Driver
+   These three map out the local network. Useless.
+   KEEP: TCP/IPv4, TCP/IPv6 (games and Xbox Live use them), Client for Microsoft Networks
+   and File and Printer Sharing if you have a NAS or shared folders, QoS Packet Scheduler
+   if another device at home is downloading while you play.
+'@
+$Textes['fr'] = @{}
+$Textes['fr']['accueil'] = @'
 Ce pack enlève ce qui tourne pour rien et règle ce qui compte pour jouer.
 Pas de sauvegarde avant : si ça casse, tu réinstalles, c'est le principe d'un Windows tout frais.
 
-Dans l'ordre des onglets, à gauche :
-
-  1. Installation          30 min     Windows propre, mises à jour, pilotes
-  2. Facile                15 min     débloat en deux clics, DirectX, Visual C++, tes applis
-  3. Le script à cocher    10 min     services, vie privée, jeu, carte réseau, confort
-  4. NVIDIA                15 min     pilote nu, ancien Panneau de configuration
-  5. Dur                   20 min     tu lis tout avant de toucher
-  6. Maintenance           plus tard  nettoyer et vérifier, des mois après
-  7. DNS                   1 min      le résolveur le plus rapide depuis chez toi
-  8. Audit IA              10 min     une IA vérifie ton PC et trouve ce qui manque
-
-Facile suffit pour un PC de bureau. Le script à cocher est le vrai niveau pour jouer.
-Dur, tu comprends chaque ligne avant de cocher.
+Suis les étapes dans l'ordre. Facile suffit pour un PC de bureau. Le script à cocher
+est le vrai niveau pour jouer. Dur, tu comprends chaque ligne avant de cocher.
 
 Règle du pack : chaque opti dit ce qu'elle change et ce que tu perds.
 Tu ne comprends pas une ligne, tu ne la coches pas.
@@ -31,12 +484,12 @@ Win11Debloat et WinUtil se lancent tels quels, dans leur propre console.
 
 Tout ce que le script à cocher modifie est noté dans C:\ProgramData\bagarre
 (bagarre-avant.json pour les valeurs d'avant, bagarre.log pour le détail).
-"Tout remettre comme avant", onglet 3, restaure exactement ces valeurs.
+"Tout remettre comme avant" restaure exactement ces valeurs.
 
 Pour rouvrir bagarre plus tard, la même commande dans un Terminal :
   irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
 '@
-$Textes['audit'] = @'
+$Textes['fr']['audit'] = @'
 Le pack est générique. Ton PC ne l'est pas : ta carte réseau, ton GPU, tes programmes,
 tes jeux. L'audit prend une photo de ton PC et la donne à une IA avec un prompt qui sait
 ce que le pack a fait, ce qu'il refuse de faire, et comment juger une opti.
@@ -60,7 +513,7 @@ ce que le pack a fait, ce qu'il refuse de faire, et comment juger une opti.
 
 L'IA ne touche pas à ton PC. Elle lit et propose. C'est toi qui appliques.
 '@
-$Textes['audit-prompt'] = @'
+$Textes['fr']['audit-prompt'] = @'
 Tu es un expert Windows 11 orienté jeu et latence, prudent, qui préfère une opti mesurable à dix optis de forum.
 Tu audites un PC dont l'état est dans le fichier rapport-pc.txt (à côté de ce prompt, ou joint au message).
 Réponds en français, tutoiement, ton direct, pas de blabla.
@@ -128,7 +581,7 @@ RÈGLES
 - Pas d'estimation de FPS inventée. "Quelques ms de latence" seulement si tu peux dire d'où elles viennent.
 - Court. Une opti qui demande un paragraphe pour se justifier n'est probablement pas une opti.
 '@
-$Textes['dns'] = @'
+$Textes['fr']['dns'] = @'
 Quad9 bloque les domaines malveillants connus et ne garde pas ton adresse IP dans ses journaux.
 Cloudflare est en général le plus rapide. Google garde des journaux. Le DNS du FAI est souvent le plus
 lent, sauf chez Free où il est très bon.
@@ -141,7 +594,7 @@ Chiffré de préférence. Facultatif, zéro effet sur le ping.
 
 "Tout remettre comme avant" (onglet 3) remet aussi le DNS d'avant.
 '@
-$Textes['dur'] = @'
+$Textes['fr']['dur'] = @'
 DUR (20 min) : lis tout avant de toucher
 
 Ici tu changes une chose à la fois, tu joues 30 minutes, tu regardes le graphe de temps d'image
@@ -228,7 +681,7 @@ Ce qu'on ne fait pas, et pourquoi :
 - Lossless Scaling, ExplorerPatcher, ViveTool, ParkControl, HIDUSBF : soit payants, soit cassés à
   chaque mise à jour, soit couverts par le script.
 '@
-$Textes['facile'] = @'
+$Textes['fr']['facile'] = @'
 FACILE (15 min) : deux commandes et deux installeurs
 
 Les deux boutons du haut ouvrent chaque outil dans sa propre console, en administrateur.
@@ -281,7 +734,7 @@ Ils téléchargent la version du jour, rien à mettre à jour ici. Les commandes
      Onglet Avancé : 24 bits, 48000 Hz (le format des jeux et de Discord, zéro rééchantillonnage).
    - Nahimic / Sonic Studio / Realtek Audio Console : désinstalle, le pilote nu suffit (voir Maintenance).
 '@
-$Textes['installation'] = @'
+$Textes['fr']['installation'] = @'
 1) quand t'installes Windows 11
 - bypass compte local : "start ms-cxh:localonly"
    - Juste après le premier bureau, dans un Terminal admin :  fsutil 8dot3name set 1
@@ -297,7 +750,7 @@ $Textes['installation'] = @'
    c. Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
    d. Snappy Driver Installer Origin (bouton ci-dessus) : dernier recours, ne coche que ce qui manque.
 '@
-$Textes['maintenance'] = @'
+$Textes['fr']['maintenance'] = @'
 MAINTENANCE : quand le PC a vécu
 
 - Autoruns (bouton) : tout ce qui se lance au démarrage. Options > Hide Microsoft
@@ -361,7 +814,7 @@ RegCleaner et PureRa, qui étaient dans l ancien pack, sont retirés. Verdict 20
 aucun gain sur un Windows moderne, un risque de casser une clé. Les anciens .reg
 (Corbeille dans Ce PC, Accès rapide, VLC) sont des cases décochées du groupe Confort, onglet 3.
 '@
-$Textes['nvidia'] = @'
+$Textes['fr']['nvidia'] = @'
 NVIDIA (15 min) : le pilote nu, puis l'ancien Panneau de configuration
 
 À savoir en 2026 : depuis le pilote 610.47 (mai 2026) le Panneau de configuration classique
@@ -446,7 +899,7 @@ Si tu as quand même installé la NVIDIA App (ou si un jeu te l'a imposée) :
    automatiquement" OFF (elle réécrit tes réglages). Le reste du tuto s'applique pareil, le Panneau
    classique et l'App écrivent dans le même profil.
 '@
-$Textes['reseau'] = @'
+$Textes['fr']['reseau'] = @'
 CARTE RÉSEAU (5 min)
 
 Le script à cocher fait tout ça tout seul, groupe "Carte réseau".
@@ -486,6 +939,11 @@ $Depot = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main'
 $Version = '2026-09-13'
 $ErrorActionPreference = 'Continue'
 
+# État partagé avec les gestionnaires d'événements de la fenêtre. Une table, jamais $script: :
+# selon le lancement (-File, "irm | iex", scriptblock) le préfixe $script: ne désigne pas la même portée,
+# alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
+$S = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @() }
+
 # Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
 $Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'outils'))) { Split-Path -Parent $PSCommandPath } else { $null }
@@ -496,7 +954,7 @@ $Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Pa
 # fenêtre cachée sur la ligne de commande élevée, Defender classe ce motif en cheval de Troie (Commando.A!ml, vu le 2026-09-13).
 $EstAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $EstSta = [Threading.Thread]::CurrentThread.GetApartmentState() -eq 'STA'
-if (-not $Liste -and -not $Capture -and (-not $EstAdmin -or -not $EstSta)) {
+if (-not $Liste -and -not $Capture -and -not $Essai -and (-not $EstAdmin -or -not $EstSta)) {
     try {
         $texte = if ($PSCommandPath) { [IO.File]::ReadAllText($PSCommandPath, [Text.Encoding]::UTF8) } else { irm "$Depot/bagarre.ps1" }
         $copie = Join-Path $env:TEMP 'bagarre\bagarre.ps1'
@@ -517,6 +975,11 @@ $Dossier = if ($EstAdmin) { Join-Path $env:ProgramData 'bagarre' } else { Join-P
 if (-not (Test-Path $Dossier)) { New-Item -Path $Dossier -ItemType Directory -Force | Out-Null }
 $EtatFichier = Join-Path $Dossier 'bagarre-avant.json'
 $LogFichier = Join-Path $Dossier 'bagarre.log'
+
+# Langue de la fenêtre : celle choisie la dernière fois, sinon celle de Windows (français ou anglais).
+$LangueFichier = Join-Path $Dossier 'langue.txt'
+$S.Langue = if ((Test-Path $LangueFichier) -and ((Get-Content $LangueFichier -Raw).Trim() -in 'fr', 'en')) { (Get-Content $LangueFichier -Raw).Trim() }
+          elseif ((Get-Culture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
 
 # ---------------------------------------------------------------------------
 # Détection machine (sert aux valeurs automatiques et aux explications)
@@ -542,12 +1005,12 @@ function Log($texte) {
     $ligne = "{0}  {1}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $texte
     Add-Content -Path $LogFichier -Value $ligne
     Write-Host "   $texte" -ForegroundColor DarkGray
-    if ($script:Journal) { $script:Journal.AppendText("$texte`r`n"); $script:Journal.ScrollToEnd(); Rafraichir }
+    if ($Journal) { $Journal.AppendText("$texte`r`n"); $Journal.ScrollToEnd(); Rafraichir }
 }
 
 # Laisse la fenêtre se redessiner pendant une action longue (tout tourne sur le thread de la fenêtre).
 function Rafraichir {
-    if ($script:Fenetre) { $script:Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
+    if ($Fenetre) { $Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
 }
 
 function Memoriser($cle, $valeur) {
@@ -657,11 +1120,11 @@ function Image-Ouvrir($nom) {
 # Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
-$script:ConsoleN = 0
+$S.ConsoleN = 0
 function Console-Lancer($titre, $commande) {
-    $script:ConsoleN++
+    $S.ConsoleN++
     $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`nWrite-Host ''`r`nWrite-Host '  $titre' -ForegroundColor Cyan`r`nWrite-Host ''`r`n$commande`r`n"
-    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $script:ConsoleN)
+    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $S.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
     Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$fichier`"" | Out-Null
     Log "console   $titre"
@@ -1169,6 +1632,94 @@ if ($EstNvidia) {
     }
 }
 
+# ===== 15-catalogue-en.ps1 =====
+# ---------------------------------------------------------------------------
+# English titles and explanations of the catalogue, by item id (the French ones live in 10-catalogue.ps1)
+# ---------------------------------------------------------------------------
+$TraductionsEn = @{
+    'svc-telemetrie' = @{ Titre = 'Microsoft telemetry (DiagTrack, dmwappushservice)'; Pourquoi = 'Sends your usage to Microsoft continuously. No role for you.'; Attention = '' }
+    'svc-geoloc' = @{ Titre = 'Location services (lfsvc)'; Pourquoi = 'GPS position for Store apps. A desktop PC does not move.'; Attention = 'Weather and map apps no longer locate you.' }
+    'svc-phone' = @{ Titre = 'Telephony (PhoneSvc)'; Pourquoi = 'Used by Phone Link to make calls from the PC.'; Attention = 'Phone Link loses call support.' }
+    'svc-maps' = @{ Titre = 'Offline maps (MapsBroker)'; Pourquoi = 'Downloads maps for the Maps app. Nobody uses it.'; Attention = '' }
+    'svc-demo' = @{ Titre = 'Retail demo mode (RetailDemo)'; Pourquoi = 'The showcase mode for PCs on a store shelf.'; Attention = '' }
+    'svc-wer' = @{ Titre = 'Windows Error Reporting (WerSvc)'; Pourquoi = 'Sends a report to Microsoft when a program crashes.'; Attention = 'No more automatic report when an app crashes (you can still read Event Viewer).' }
+    'svc-fax' = @{ Titre = 'Fax'; Pourquoi = 'It is 2026.'; Attention = '' }
+    'svc-compat' = @{ Titre = 'Program Compatibility Assistant (PcaSvc)'; Pourquoi = 'Watches every launch of an old program to suggest a compatibility mode.'; Attention = 'Windows no longer offers to fix an old program on its own.' }
+    'svc-xbox' = @{ Titre = 'Xbox services (XblAuthManager, XblGameSave, XboxNetApiSvc)'; Pourquoi = 'Xbox Live sign-in, Xbox cloud saves, Xbox networking.'; Attention = 'Game Pass for PC, the Xbox app and Microsoft Store games stop connecting. Leave unchecked if you play an Xbox or Game Pass title.' }
+    'svc-edge' = @{ Titre = 'Edge background updates (edgeupdate, edgeupdatem)'; Pourquoi = 'Two services that check Edge every hour. Edge updates itself on launch anyway.'; Attention = '' }
+    'svc-wmp' = @{ Titre = 'Windows Media Player network sharing (WMPNetworkSvc)'; Pourquoi = 'Streams your WMP library on the local network.'; Attention = '' }
+    'svc-insider' = @{ Titre = 'Windows Insider Program (wisvc)'; Pourquoi = 'Only used to receive beta versions of Windows.'; Attention = '' }
+    'svc-diag' = @{ Titre = 'Automatic diagnostics (DPS, WdiServiceHost, WdiSystemHost)'; Pourquoi = 'The automatic troubleshooting utilities. They run permanently for very rare use.'; Attention = 'The Troubleshoot button in Settings stops working while this is off.' }
+    'svc-cdp' = @{ Titre = 'Connected Devices Platform (CDPSvc)'; Pourquoi = 'Nearby Sharing, Phone Link, continuity between devices.'; Attention = 'Nearby Sharing and Phone Link stop working.' }
+    'svc-imprimante' = @{ Titre = 'Print spooler (Spooler)'; Pourquoi = 'Manages printers. Without a printer, it runs for nothing.'; Attention = 'You can no longer print, not even to PDF. Check this only if you never have a printer.' }
+    'svc-recherche' = @{ Titre = 'Search indexing (WSearch)'; Pourquoi = 'Builds an index of your files so Start menu search is instant. On an SSD, indexing costs very little.'; Attention = 'File search in Start and File Explorer becomes slow. Outlook too.' }
+    'svc-sysmain' = @{ Titre = 'SysMain (formerly Superfetch)'; Pourquoi = ('Preloads into RAM the programs you launch often. On an SSD it does not get in the way, on a hard drive it can cause slowdowns. ' + $(if ($EstHdd) { 'Your system disk is an HDD: check it.' } else { 'Your system disk is an SSD: leave it.' })); Attention = 'Program launches are no longer preloaded.' }
+    'svc-bits' = @{ Titre = 'Background Intelligent Transfer Service (BITS)'; Pourquoi = 'Downloads Windows and Store updates quietly in the background.'; Attention = 'Windows Update, the Microsoft Store and Defender definitions stop downloading. Honestly, do not check this one.' }
+    'svc-bluetooth' = @{ Titre = 'Bluetooth (bthserv, BTAGService)'; Pourquoi = 'Everything Bluetooth.'; Attention = 'No more Bluetooth devices: headset, controller, mouse. Check this only if you have none at all.' }
+    'svc-delivery' = @{ Titre = 'Delivery Optimization: stop sending updates to strangers'; Pourquoi = 'By default your PC re-sends the Windows updates it downloaded to other PCs on the internet (peer to peer). That uses upload bandwidth while you play. We keep the download, we cut the upload.'; Attention = '' }
+    'svc-hyperv' = @{ Titre = 'Hyper-V guest services (vmic*)'; Pourquoi = 'Only useful if Windows runs INSIDE a Hyper-V virtual machine. On a real PC they never start, cutting them changes nothing.'; Attention = '' }
+    'priv-telemetrie' = @{ Titre = 'Telemetry at the minimum (AllowTelemetry, CEIP, error reports, PowerShell)'; Pourquoi = 'Sets the level of data sent to Microsoft to the lowest. Honestly: on Home and Pro, AllowTelemetry=0 behaves like 1 (the "required" level stays), only Enterprise and Education editions cut everything. We also cut the Customer Experience Improvement Program (CEIP), crash report sending, feedback requests and PowerShell telemetry.'; Attention = 'Crash reports no longer go to Microsoft (they stay readable in Event Viewer).' }
+    'priv-pub' = @{ Titre = 'Advertising ID, suggestions, Start menu "Recommended" section, Chat button'; Pourquoi = 'Cuts the advertising ID, suggestions in Start and its "Recommended" section, tips on the lock screen, ads in File Explorer, silent installation of sponsored apps, the rotating illustrations in the search box, the Chat (Teams) button on the taskbar and online tips in Settings.'; Attention = 'The Start menu "Recommended" section becomes empty (recent files stay in File Explorer).' }
+    'priv-saisie' = @{ Titre = 'Typing and voice personalization'; Pourquoi = 'Windows learns your typing, handwriting and voice to send them to the cloud. Useless outside Cortana.'; Attention = '' }
+    'priv-fond' = @{ Titre = 'Store apps running in the background'; Pourquoi = 'Stops Store apps from running once closed.'; Attention = 'Notifications from these apps (Mail, Weather) stop arriving while they are closed.' }
+    'priv-copilot' = @{ Titre = 'Turn off Copilot, Recall, Click to Do, Widgets and the Notepad / Paint AI features'; Pourquoi = 'Copilot and Widgets are processes that stay in memory. Recall, when active, takes a screenshot every few seconds and indexes it: constant CPU and disk use. Click to Do analyzes the screen on demand. The AllowRecallEnablement and DisableClickToDo policies are the ones documented by Microsoft (WindowsAI CSP policy, 2025). We also set the AI stack service (WSAIFabricSvc) to manual and turn off the AI buttons in Notepad and Paint.'; Attention = 'No more Copilot, no more Recall, no more Click to Do (Win+click), no more weather / news panel, no more "Rewrite" in Notepad or Cocreator in Paint.' }
+    'priv-taches' = @{ Titre = 'Telemetry scheduled tasks (Compatibility Appraiser, CEIP, Feedback, DiskDiagnostic)'; Pourquoi = 'Background tasks that scan your installed programs and send the result to Microsoft, sometimes in the middle of a game (Compatibility Appraiser is known for its disk spikes).'; Attention = '' }
+    'priv-assistance' = @{ Titre = 'Turn off Remote Assistance'; Pourquoi = 'Lets someone take control of your PC through Windows. Nobody uses it, and it is one less door open.'; Attention = 'The Windows "Quick Assist" button stops working (Discord, AnyDesk, Parsec are not affected).' }
+    'priv-sync' = @{ Titre = 'Settings sync with your Microsoft account'; Pourquoi = 'Stops sending theme, passwords and settings to the Microsoft cloud.'; Attention = 'Your settings no longer follow you to another PC signed in with the same account.' }
+    'priv-autorun' = @{ Titre = 'Turn off automatic execution for USB drives and disks (AutoRun / AutoPlay)'; Pourquoi = 'A plugged-in drive no longer launches anything on its own. This has been Microsoft''s baseline security recommendation since 2011, still open by default for the "what do you want to do?" window.'; Attention = 'No more automatic window when you plug in a drive or a phone: you open it from File Explorer.' }
+    'priv-relance' = @{ Titre = 'Stop reopening apps automatically after an update (ARSO)'; Pourquoi = 'After an update restart, Windows signs back in on its own and relaunches whatever was open. A PC that boots with 15 windows and yesterday''s launcher.'; Attention = 'After an update you type your PIN again and reopen your apps yourself.' }
+    'priv-metadata' = @{ Titre = 'Stop downloading device info sheets and icons from Microsoft'; Pourquoi = 'Every device you plug in triggers a download of its icon and info sheet from Microsoft. Purely cosmetic, in "Devices and Printers".'; Attention = 'Devices show a generic icon.' }
+    'priv-presse-papiers' = @{ Titre = 'Turn off clipboard history (Win+V) and its cloud sync'; Pourquoi = 'Windows keeps in memory everything you copy, passwords included, and can send it to your Microsoft account.'; Attention = 'No more Win+V. If you use it, leave this unchecked: only the cloud sync is worth cutting, and that is in Settings > System > Clipboard.' }
+    'jeu-dvr' = @{ Titre = 'Turn off Game DVR (Game Bar background recording)'; Pourquoi = 'Game Bar constantly records the last 30 seconds of gameplay "just in case". That is an encoder running while you play.'; Attention = 'No more instant clip with Win+Alt+G. Game Bar itself stays (Win+G).' }
+    'jeu-presence' = @{ Titre = 'Turn off GameBarPresenceWriter (the process that remains after turning off Game Bar)'; Pourquoi = 'Even with Game Bar off, a small "Game Bar Presence Writer" process launches with every game to tell the Xbox network what you are playing. We disable its COM class (ActivationType = 0): it no longer launches. We never rename the executable, an update would restore it and break Game Bar.'; Attention = 'Your Xbox friends no longer see "playing ...". Game Bar (Win+G) still works.' }
+    'jeu-svchost' = @{ Titre = "Group system services (SvcHostSplitThreshold, $RamGo GB of RAM detected)"; Pourquoi = 'Since Windows 10, every service gets its own process once you have more than 3.5 GB of RAM. Raising the threshold to your real RAM groups them back together like before: fewer processes in Task Manager. Verdict after review: placebo, nobody has measured a significant FPS or RAM gain (a few dozen MB). Unchecked by default, check it if you like a shorter Task Manager.'; Attention = 'A service that crashes takes down the others in the same process with it, like on Windows 7.' }
+    'jeu-timer' = @{ Titre = 'Allow fine timer resolution for games (GlobalTimerResolutionRequests)'; Pourquoi = 'Since Windows 11, an app that requests a 0.5 ms timer only gets it for itself and only in the foreground. This key restores the Windows 10 behavior: the request applies to the whole system. This is what Process Lasso or a timer resolution tool relies on.'; Attention = 'Idle power draw goes very slightly higher when a program requests a fine timer.' }
+    'jeu-timer-demarrage' = @{ Titre = 'Timer at 0.507 ms on startup (SetTimerResolution as a scheduled task)'; Pourquoi = 'The companion to the key above: a 40-line program (SetTimerResolution, open source, GPL) requests a 0.507 ms timer as soon as you sign in and stays in memory. This is exactly what Process Lasso does, without the 30-second wait of the free version. 0.507 rather than 0.500: measured on more than 30 machines, the wake lands right on the tick. Check with MeasureSleep (Maintenance tab).'; Attention = 'Idle power draw a bit higher. On a laptop, leave this unchecked.' }
+    'jeu-souris' = @{ Titre = 'Turn off mouse acceleration (Enhance pointer precision)'; Pourquoi = 'With acceleration, the distance the cursor travels depends on how fast you move your hand: the same hand movement never gives the same on-screen movement. Your muscle memory cannot learn anything. Every gamer turns it off, it is the first thing to do.'; Attention = 'The cursor needs a bit more hand movement on the desktop. Raise your mouse DPI if needed.' }
+    'jeu-hiber' = @{ Titre = 'Turn off hibernation and fast startup'; Pourquoi = 'Frees hiberfil.sys (several GB) and forces a real restart on every boot instead of reloading a frozen image. A real boot avoids drivers ending up in a weird state after an update.'; Attention = 'No more hibernation (regular sleep stays).' }
+    'jeu-parking' = @{ Titre = 'Disable core parking'; Pourquoi = 'Windows can put idle cores to sleep, and takes a moment to wake them when a game needs them. On a Ryzen with the AMD chipset driver or a recent Intel CPU, Windows handles this well on its own. Mostly useful on older CPUs or laptops.'; Attention = 'Idle power draw a bit higher.' }
+    'jeu-usb' = @{ Titre = 'Turn off USB selective suspend'; Pourquoi = 'Windows turns off idle USB ports to save 0.1 W. A mouse or keyboard that falls asleep can take a few milliseconds to respond. On a desktop PC, there is no point saving that.'; Attention = 'On a laptop, a bit less battery life.' }
+    'jeu-pcie' = @{ Titre = 'Turn off PCI Express power saving (ASPM)'; Pourquoi = 'The PCIe link of the graphics card and SSD can drop to low power at idle, with a wake delay. On a desktop PC, we leave the link always open.'; Attention = 'On a laptop, a bit less battery life.' }
+    'jeu-reveil' = @{ Titre = 'Block wake timers from taking the PC out of sleep'; Pourquoi = 'Windows Update and some tasks can wake the PC in the middle of the night to do their work. We turn off wake timers in the active power plan.'; Attention = 'The PC no longer wakes on its own for an update: it happens when you turn it on.' }
+    'jeu-usb3' = @{ Titre = 'Turn off USB 3 link power management (Link Power Management)'; Pourquoi = 'Like selective suspend but for the USB 3 layer: the link drops to low power between transfers. An external drive or a USB controller can stall for a fraction of a second on wake. On a desktop we keep the link at full power.'; Attention = 'On a laptop, a bit less battery life.' }
+    'jeu-hdd' = @{ Titre = 'Never stop the hard drive (detected: HDD system disk)'; Pourquoi = 'Windows stops the hard drive after 20 minutes without access, and spinning it back up causes a 2 to 5 second freeze. On an HDD we keep the platter spinning.'; Attention = 'The disk spins permanently: a bit more noise and wear.' }
+    'jeu-pilotes' = @{ Titre = 'Stop Windows Update from overwriting your drivers'; Pourquoi = 'Windows Update sometimes installs an older or generic graphics driver over the one you set up (NVCleanstall, AMD). This key keeps you in control.'; Attention = 'Windows no longer updates any driver on its own, you manage them yourself (Snappy Driver Installer, vendor tools).' }
+    'jeu-nouveautes' = @{ Titre = 'Stop receiving Windows features early (Continuous Innovation)'; Pourquoi = 'Windows 11 offers "get the latest updates as soon as they are available": these are new features pushed before their official release, the ones most likely to break a driver or an anti-cheat. We stay on stable versions. Security fixes still arrive the same.'; Attention = 'New features arrive a few weeks or months later.' }
+    'jeu-f8' = @{ Titre = 'Restore the F8 boot menu (Safe Mode)'; Pourquoi = 'Windows 11 hides the advanced boot menu. Without it, entering Safe Mode requires making the boot fail three times in a row. With this option, F8 at startup is enough.'; Attention = 'Startup takes a fraction of a second longer (the menu waits for F8).' }
+    'net-alim' = @{ Titre = 'Stop Windows from turning off the network card to save power'; Pourquoi = 'Windows can turn off the card at idle, and it takes a second to come back: that is the "network dropped for 2 seconds" in the middle of a match, especially after sleep.'; Attention = 'On a laptop, a bit less battery life.' }
+    'net-eee' = @{ Titre = 'Turn off Energy Efficient Ethernet / Green Ethernet'; Pourquoi = 'Same logic: the network chip sleeps between packets to save a few milliwatts, and wakes up with a delay. While gaming you want the card always awake.'; Attention = 'Nothing visible.' }
+    'net-moderation' = @{ Titre = 'Interrupt Moderation set to Medium (not Disabled)'; Pourquoi = 'The card groups its interrupts so it does not wake the CPU on every packet. Medium keeps the CPU available for the game while still delivering packets fast. Turning it off entirely does the opposite of what the tutorials promise: more interrupts, more CPU time stolen from the game (measured with xperf by djdallmann on game UDP traffic).'; Attention = 'If your card does not have this option (often the case on Realtek), nothing happens.' }
+    'net-decouverte' = @{ Titre = 'Uncheck the network discovery protocols (LLDP, link layer topology)'; Pourquoi = 'Three protocols used to draw a map of the local network. They run on every packet for nothing. TCP/IPv4 and IPv6 stay on.'; Attention = 'The Network and Sharing Center "network map" no longer sees other devices. Nobody uses it.' }
+    'net-partage' = @{ Titre = 'Uncheck Microsoft file and printer sharing'; Pourquoi = 'The SMB protocol, both server and client side. Only useful if you share folders between PCs at home or with a NAS.'; Attention = 'No more access to other PCs'' shared folders or to a NAS, and others no longer see yours. Check this only if you have none of that.' }
+    'net-qos' = @{ Titre = 'Uncheck the QoS Packet Scheduler'; Pourquoi = 'QoS prioritizes certain packets when the line is saturated. On a normal connection it does nothing. If you get lag in games while another device is downloading, this is exactly what you should turn back on.'; Attention = 'No more prioritization when the line saturates.' }
+    'conf-bing' = @{ Titre = 'No more Bing web results in the Start menu'; Pourquoi = 'Every keystroke in Start goes to Bing before searching your files. We search locally only: faster and nothing gets sent out.'; Attention = 'No more web suggestions in Start.' }
+    'conf-explorateur' = @{ Titre = 'File Explorer: visible file extensions, open to "This PC"'; Pourquoi = 'Seeing ".exe" and ".txt" helps you avoid launching a fake file, and "This PC" is more useful than the home view with recent files.'; Attention = '' }
+    'conf-menu-classique' = @{ Titre = 'Full right-click menu directly (no "Show more options")'; Pourquoi = 'The Windows 11 right-click menu hides half its entries behind "Show more options". This key restores the full Windows 10 menu in a single click. File Explorer restarts to apply it.'; Attention = 'The menu is longer and without modern icons. The Windows 11 entries (Copy as path, Share) stay accessible with Shift+right-click.' }
+    'conf-fin-tache' = @{ Titre = '"End task" button in the taskbar right-click menu'; Pourquoi = 'Right-clicking a taskbar icon offers "End task": a frozen program dies without opening Task Manager. A Windows 11 option (Settings > System > For developers), just hidden.'; Attention = '' }
+    'conf-edge' = @{ Titre = 'Edge: no more startup preload or background process'; Pourquoi = 'Edge half-launches at Windows startup (Startup Boost) and stays in memory after you close its window (Background Mode), even if you use another browser. Two policies documented by Microsoft.'; Attention = 'Edge takes one more second to open the first time.' }
+    'conf-eclairage' = @{ Titre = 'Turn off Dynamic Lighting'; Pourquoi = 'Windows 11 drives the RGB LEDs of compatible devices itself, and its service runs even without LEDs. If you have iCUE, OpenRGB or Armoury Crate, they fight with it.'; Attention = 'Windows no longer manages your LEDs: your vendor software (or nothing) takes over.' }
+    'conf-accueil-parametres' = @{ Titre = 'Hide the Settings "Home" page (Microsoft 365, Game Pass ads)'; Pourquoi = 'The first page of Settings is a showcase: Microsoft 365 subscription, Game Pass, account. We open straight to System instead.'; Attention = 'The "Recent devices" card and the account shortcut on that page disappear with it.' }
+    'conf-reserve' = @{ Titre = 'Free up Windows Update reserved storage (about 7 GB)'; Pourquoi = 'Windows sets 7 GB aside for its updates. With a disk that has room, updates work just as well without that reserve.'; Attention = 'A big update can fail if the disk is nearly full (Windows will tell you).' }
+    'conf-menus' = @{ Titre = 'Instant menus (MenuShowDelay 0, MouseHoverTime 10)'; Pourquoi = 'Windows waits 400 ms before opening a submenu. We set it to 0.'; Attention = '' }
+    'conf-demarrage' = @{ Titre = 'Launch startup programs without delay (StartupDelayInMSec 0)'; Pourquoi = 'Windows delays startup programs by 10 seconds. We remove the delay.'; Attention = 'If you have many startup programs, the desktop can feel less responsive for the first few seconds.' }
+    'conf-fin' = @{ Titre = 'Close stuck programs without asking (AutoEndTasks)'; Pourquoi = 'At shutdown, Windows kills programs that stop responding instead of showing the "this program is preventing shutdown" window.'; Attention = 'An unsaved document in a frozen program is lost at shutdown.' }
+    'conf-transparence' = @{ Titre = 'Turn off transparency'; Pourquoi = 'The blur effects behind the Start menu and taskbar. Costs a bit of GPU constantly.'; Attention = 'A flatter interface.' }
+    'conf-animations' = @{ Titre = 'Turn off window animations'; Pourquoi = 'Windows appear instantly instead of sliding in. Windows feels faster because it no longer waits for the animation to finish.'; Attention = 'A blunter interface. Personal taste.' }
+    'conf-accessibilite' = @{ Titre = 'Turn off accessibility shortcuts (Sticky Keys, Filter Keys)'; Pourquoi = 'Pressing Shift 5 times during a game opens the Sticky Keys window. Never again.'; Attention = '' }
+    'conf-acces-rapide' = @{ Titre = 'File Explorer: remove "Quick access" from the left pane (HubMode)'; Pourquoi = 'File Explorer''s left pane starts with "Quick access" and its recent folders. This key removes it, the pane starts at "This PC". Source: tenforums.com, tutorial 4844 (Shawn Brink, 2018), still valid on Windows 11.'; Attention = 'No more "Quick access" shortcuts or recent folders in the pane.' }
+    'conf-corbeille' = @{ Titre = 'File Explorer: Recycle Bin in "This PC"'; Pourquoi = 'Adds the Recycle Bin next to the drives in "This PC" and in the left pane. Source: howtogeek.com, article 282820 (Walter Glenn).'; Attention = 'Nothing, the key removes cleanly on rollback.' }
+    'conf-vlc-pistes' = @{ Titre = 'VLC: right-click "VLC with mixed audio tracks" on .mp4 files'; Pourquoi = 'Adds a right-click entry on .mp4 files that launches VLC with all audio tracks mixed together (--sout-all). Useful for gameplay recordings with voice and game audio on two separate tracks. Requires VLC installed at C:\Program Files\VideoLAN.'; Attention = 'One more entry in the .mp4 right-click menu.' }
+    'adv-priosep' = @{ Titre = 'Win32PrioritySeparation = 0x26 (short, variable quantum, x3 boost for the foreground)'; Pourquoi = 'Sets how the scheduler splits CPU time between the foreground program and the rest. 0x26 gives short, variable time slices with a x3 boost for the game. A real effect on the split, no reproducible FPS gain has been published: keep it only if you measure an improvement (CapFrameX, 3 runs).'; Attention = 'Background tasks (downloads, encoding) progress more slowly while you play.' }
+    'adv-throttling' = @{ Titre = 'Turn off Power Throttling (PowerThrottlingOff)'; Pourquoi = 'Windows throttles programs it considers "in the background" (EcoQoS) to save power. On a desktop PC we do not want to throttle anything: Discord, your launcher, the overlay run at full speed even behind the game.'; Attention = 'On a laptop, less battery life. On a desktop, nothing.' }
+    'adv-nagle' = @{ Titre = 'Turn off Nagle''s algorithm (TcpAckFrequency, TCPNoDelay) on the active card'; Pourquoi = 'Nagle groups small TCP packets before sending them, and delays acknowledgments. A few ms saved on a game using TCP (MMOs, some Unity games). Zero effect on a game using UDP, which is nearly every FPS.'; Attention = 'A few more small packets on the line. Nothing visible.' }
+    'adv-dyntick' = @{ Titre = 'Turn off dynamic tick (bcdedit disabledynamictick)'; Pourquoi = 'The kernel stops its clock when nothing happens and restarts it on demand. With a 0.5 ms timer this can drift. Check this only if MeasureSleep shows an unstable resolution after setting the timer.'; Attention = 'Idle power draw a bit higher.' }
+    'adv-rawmouse' = @{ Titre = 'RawMouseThrottleDuration = 8 (mouse report batching)'; Pourquoi = 'Windows groups mouse Raw Input reports into time windows. With a mouse at 1000 Hz or more, a shorter window delivers movement to the game sooner. Documented range is 3 to 20. On recent Windows 11 builds the default is already 8: in that case the key changes nothing (check on your machine with ?, the previous value is written to bagarre.log). Verify with MouseTester: zero missed reports.'; Attention = 'No known downside. If the cursor feels off, R restores the previous value.' }
+    'adv-fth' = @{ Titre = 'Turn off the Fault Tolerant Heap (FTH)'; Pourquoi = 'When a program crashes several times, Windows relaunches it with a "tolerant", slower memory allocator, without telling you. A game that crashed three times then runs throttled. With this off, it still crashes the same way but runs at full speed the rest of the time. Documented by Microsoft (FTH, Win32 apps).'; Attention = 'An old unstable program that FTH was keeping alive can start crashing again.' }
+    'adv-llmnr' = @{ Titre = 'Turn off LLMNR (multicast name resolution)'; Pourquoi = 'When a name is not found by DNS, Windows shouts it out over multicast on the local network (LLMNR). This is a known entry point for credential interception (Responder) and pointless network noise. A standard enterprise security recommendation.'; Attention = 'Typing \\PC-NAME to reach another PC at home may stop working (use its IP or enable mDNS on the NAS side).' }
+    'nv-telemetrie' = @{ Titre = 'Turn off NVIDIA telemetry'; Pourquoi = 'The driver sends statistics to NVIDIA. Two keys, no effect on gaming.'; Attention = '' }
+    'nv-pstate' = @{ Titre = 'Lock the card at P0 (DisableDynamicPstate)'; Pourquoi = 'At idle the card drops its clock speed, and takes a few frames to ramp back up when a scene loads all at once: that is the micro-freeze after a menu or a loading screen. This key keeps it at max clock as long as Windows runs. Verifiable with nvidia-smi (Perf P0). The "Prefer maximum performance" setting in the control panel does almost the same thing without a restart, this key is one notch further.'; Attention = 'Card runs hotter and draws more power at idle, fans that no longer stop on some cards.' }
+}
+
 # ===== 20-dns.ps1 =====
 # ---------------------------------------------------------------------------
 # Test DNS : mesure les résolveurs depuis chez toi, applique celui que tu choisis
@@ -1479,7 +2030,168 @@ if ($Liste) {
 }
 
 # ---------------------------------------------------------------------------
-# La fenêtre : un volet d'onglets à gauche, une page par étape du pack, le journal en bas.
+# Textes de l'interface, français et anglais. Les tutos sont dans $Textes, les items dans le catalogue
+# (français) et $TraductionsEn (anglais).
+# ---------------------------------------------------------------------------
+$PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Maintenance', 'Dns', 'Audit'
+$UI = @{
+    fr = @{
+        nav      = 'Accueil', '1. Installation', '2. Facile', '3. Le script à cocher', '4. NVIDIA', '5. Dur', '6. Maintenance', '7. DNS', '8. Audit IA'
+        duree    = '', '30 min', '15 min', '10 min', '15 min', '20 min', 'plus tard', '1 min', '10 min'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, DirectX, Visual C++, tes applis', 'services, vie privée, jeu, carte réseau, confort', 'pilote nu, ancien Panneau de configuration', 'tu lis tout avant de toucher', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC et trouve ce qui manque'
+        titres   = @{
+            Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = '1. Installation (30 min) : Windows propre, mises à jour, pilotes'
+            Facile = '2. Facile (15 min) : débloat en deux clics, DirectX, Visual C++, tes applis'; Optis = '3. Le script à cocher (10 min)'
+            Nvidia = "4. NVIDIA (15 min) : le pilote nu, puis l'ancien Panneau de configuration"; Dur = '5. Dur (20 min) : lis tout avant de toucher'
+            Maintenance = '6. Maintenance : quand le PC a vécu'; Dns = '7. DNS : qui répond le plus vite depuis chez toi ?'
+            Audit = '8. Audit IA (10 min) : une IA vérifie ton PC et trouve ce qui manque'
+        }
+        intros   = @{
+            Accueil = "Les étapes, dans l'ordre. Clique sur une étape pour y aller, ou sur Étape suivante en bas."
+            Installation = 'Les boutons lancent les commandes du tuto dans une console à part. Le reste se fait à la main, dans l ordre.'
+            Facile = "Les deux boutons jaunes ouvrent chaque outil dans sa propre console (ils demandent avant chaque groupe). Les boutons gris installent via winget."
+            Optis = "Une case cochée = appliqué quand tu cliques le bouton jaune. Décochée = pas touché. Les cases cochées d'office sont sûres pour tout PC. Passe la souris sur une ligne : le Pourquoi et ce que tu perds s'affichent à droite. Tu ne comprends pas une ligne, tu ne la coches pas. Tout remettre restaure les valeurs d'avant. Redémarre après."
+            Nvidia = 'NVCleanstall installe le pilote nu, le Panneau vient du Store. Les captures montrent quoi cocher.'
+            Dur = "Une chose à la fois, tu joues 30 minutes, tu regardes RivaTuner, tu gardes ou tu remets."
+            Maintenance = "Des mois après l'installation. Les boutons gris installent l'outil, les autres lancent la commande."
+            Dns = 'Le DNS transforme un nom (youtube.com) en adresse IP. Un DNS lent ajoute quelques dizaines de ms à CHAQUE nouveau site ou serveur de jeu contacté. Le test résout 6 noms courants sur chaque serveur, 3 fois, et garde la médiane. Une trentaine de secondes, la fenêtre ne répond pas pendant ce temps.'
+            Audit = 'Trois boutons, dans l ordre : le rapport, le prompt, et tu colles les deux dans ton IA.'
+        }
+        precedent = 'Étape précédente'; suivant = 'Étape suivante'; journal = 'Journal : ce qui vient de se passer'
+        survole = 'Passe la souris sur une case.'; pourquoi = 'Pourquoi'; perds = 'Ce que tu perds'; rien = 'Rien de notable.'
+        appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
+        applisTitre = "Tes applis, installées d'un coup par winget (coche, puis le bouton) :"
+        reseauTitre = 'Carte réseau à la main'
+        rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
+        termine = 'Terminé. Redémarre le PC pour que tout prenne effet.'; rienRestaurer = 'Rien à restaurer : aucun réglage appliqué sur ce PC.'
+        confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
+        aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte : {0} ({1}). DNS actuel : {2} (souvent ta box).'
+        dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Sélectionne une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
+        dnsSelection = 'Sélectionne une ligne dans la liste.'
+        collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
+        pasRapport = "Pas encore de rapport : bouton 1 d'abord."; pasJournal = 'Pas encore de journal.'; aucuneAppli = 'Aucune appli cochée.'
+        dejaApplique = '{0} réglages déjà appliqués sur ce PC (bagarre-avant.json). Tout remettre les restaure.'
+        ouverte = 'Fenêtre ouverte. Si tu ne la vois pas, regarde la barre des tâches : elle peut être derrière ce terminal.'
+        measureTitre = 'MeasureSleep : attendu environ 0,5 ms, Ctrl+C pour arrêter'
+    }
+    en = @{
+        nav      = 'Home', '1. Install', '2. Easy', '3. The checkbox script', '4. NVIDIA', '5. Hard', '6. Maintenance', '7. DNS', '8. AI audit'
+        duree    = '', '30 min', '15 min', '10 min', '15 min', '20 min', 'later', '1 min', '10 min'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, DirectX, Visual C++, your apps', 'services, privacy, gaming, network card, comfort', 'bare driver, classic Control Panel', 'read everything before touching anything', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC and finds what is missing'
+        titres   = @{
+            Accueil = 'Just reinstalled Windows 11?'; Installation = '1. Install (30 min): clean Windows, updates, drivers'
+            Facile = '2. Easy (15 min): debloat in two clicks, DirectX, Visual C++, your apps'; Optis = '3. The checkbox script (10 min)'
+            Nvidia = '4. NVIDIA (15 min): the bare driver, then the classic Control Panel'; Dur = '5. Hard (20 min): read everything before touching anything'
+            Maintenance = '6. Maintenance: when the PC has lived a while'; Dns = '7. DNS: who answers fastest from your place?'
+            Audit = '8. AI audit (10 min): an AI checks your PC and finds what is missing'
+        }
+        intros   = @{
+            Accueil = 'The steps, in order. Click a step to open it, or use Next step at the bottom.'
+            Installation = 'The buttons run the commands from the guide in a separate console. The rest is done by hand, in order.'
+            Facile = 'The two yellow buttons open each tool in its own console (they ask before each group). The grey buttons install through winget.'
+            Optis = 'A checked box = applied when you click the yellow button. Unchecked = untouched. The boxes checked by default are safe on any PC. Hover a line: the Why and what you lose show up on the right. If you do not understand a line, do not check it. Restore everything puts the previous values back. Reboot afterwards.'
+            Nvidia = 'NVCleanstall installs the bare driver, the Control Panel comes from the Store. The screenshots show what to tick.'
+            Dur = 'One thing at a time, play 30 minutes, watch RivaTuner, keep it or put it back.'
+            Maintenance = 'Months after the install. Grey buttons install the tool, the others run the command.'
+            Dns = 'DNS turns a name (youtube.com) into an IP address. A slow DNS adds tens of ms to EVERY new site or game server you contact. The test resolves 6 common names on each server, 3 times, and keeps the median. About thirty seconds, the window does not respond meanwhile.'
+            Audit = 'Three buttons, in order: the report, the prompt, then paste both into your AI.'
+        }
+        precedent = 'Previous step'; suivant = 'Next step'; journal = 'Log: what just happened'
+        survole = 'Hover a checkbox.'; pourquoi = 'Why'; perds = 'What you lose'; rien = 'Nothing notable.'
+        appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
+        applisTitre = 'Your apps, installed in one go by winget (tick, then the button):'
+        reseauTitre = 'Network card by hand'
+        rienCoche = 'Nothing checked.'; confirmAppliquer = "Apply {0} settings?`n`nThe previous state is saved in {1}, the Restore button puts it back."
+        termine = 'Done. Reboot the PC so everything takes effect.'; rienRestaurer = 'Nothing to restore: no setting applied on this PC.'
+        confirmRestaurer = 'Put the {0} settings back as they were?'; restaure = 'Restored. Reboot the PC.'
+        aucuneCarte = 'No active network card found.'; dnsCarte = 'Card: {0} ({1}). Current DNS: {2} (usually your router).'
+        dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Select a line then "Use the selected DNS", or change nothing.'
+        dnsSelection = 'Select a line in the list.'
+        collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
+        pasRapport = 'No report yet: button 1 first.'; pasJournal = 'No log yet.'; aucuneAppli = 'No app ticked.'
+        dejaApplique = '{0} settings already applied on this PC (bagarre-avant.json). Restore puts them back.'
+        ouverte = 'Window open. If you do not see it, check the taskbar: it may be behind this terminal.'
+        measureTitre = 'MeasureSleep: about 0.5 ms expected, Ctrl+C to stop'
+    }
+}
+$S.L = $UI[$S.Langue]
+
+# Titre et explications d'un item dans la langue courante
+function Item-Titre($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Titre } else { $it.Titre } }
+function Item-Pourquoi($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Pourquoi } else { $it.Pourquoi } }
+function Item-Attention($it) { if ($S.Langue -eq 'en' -and $TraductionsEn[$it.Id]) { $TraductionsEn[$it.Id].Attention } else { $it.Attention } }
+
+# ---------------------------------------------------------------------------
+# Les boutons de chaque page : libellé et bulle d'aide dans les deux langues, et ce qu'ils font.
+# ---------------------------------------------------------------------------
+$Boutons = [ordered]@{
+    Accueil = @(
+        @{ Id = 'BtnRestaurerAccueil'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
+        @{ Id = 'BtnJournalAccueil'; T = @{ fr = 'Ouvrir bagarre.log'; en = 'Open bagarre.log' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
+    )
+    Installation = @(
+        @{ Id = 'BtnFsutil'; T = @{ fr = 'fsutil 8dot3name set 1'; en = 'fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
+        @{ Id = 'BtnWindowsUpdate'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
+        @{ Id = 'BtnSnappy'; T = @{ fr = 'Snappy Driver Installer Origin (winget)'; en = 'Snappy Driver Installer Origin (winget)' }; Tip = @{ fr = 'Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Last resort for a missing driver. Only tick what is missing.' }; Action = { Winget-Installer 'Snappy Driver Installer Origin' 'GlennDelahoy.SnappyDriverInstallerOrigin' } }
+    )
+    Facile = @(
+        @{ Id = 'BtnDebloat'; Principal = $true; T = @{ fr = 'Win11Debloat'; en = 'Win11Debloat' }; Tip = @{ fr = 'Retire les applis sponsorisées, Copilot, les pubs, la télémétrie. Demande avant chaque groupe. Mode par défaut.'; en = 'Removes sponsored apps, Copilot, ads, telemetry. Asks before each group. Default mode.' }; Action = { Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' } }
+        @{ Id = 'BtnWinUtil'; Principal = $true; T = @{ fr = 'WinUtil (Chris Titus)'; en = 'WinUtil (Chris Titus)' }; Tip = @{ fr = 'Onglet Install pour tes programmes, onglet Tweaks preset Standard seulement.'; en = 'Install tab for your programs, Tweaks tab with the Standard preset only.' }; Action = { Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' } }
+        @{ Id = 'BtnDirectX'; T = @{ fr = 'DirectX (winget)'; en = 'DirectX (winget)' }; Tip = @{ fr = 'Les vieilles librairies DirectX 9 que les anciens jeux réclament.'; en = 'The old DirectX 9 libraries older games ask for.' }; Action = { Winget-Installer 'DirectX' 'Microsoft.DirectX' } }
+        @{ Id = 'BtnVcredist'; T = @{ fr = 'Visual C++ 2005 à 2022 (winget)'; en = 'Visual C++ 2005 to 2022 (winget)' }; Tip = @{ fr = 'Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".'; en = 'Without them a game crashes with "VCRUNTIME140.dll not found".' }; Action = { $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }; Winget-Installer 'Visual C++ 2005-2022' $ids } }
+    )
+    Optis = @(
+        @{ Id = 'BtnAppliquer'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
+        @{ Id = 'BtnRestaurer'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
+        @{ Id = 'BtnDefaut'; T = @{ fr = 'Cases par défaut'; en = 'Default boxes' }; Tip = @{ fr = 'Recoche exactement les cases sûres, décoche le reste.'; en = 'Re-ticks exactly the safe boxes, unticks the rest.' }; Action = { foreach ($id in $Cases.Keys) { $Cases[$id].IsChecked = $Defauts[$id] } } }
+        @{ Id = 'BtnReseau'; T = @{ fr = 'Carte réseau à la main (tuto)'; en = 'Network card by hand (guide)' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $S.L.reseauTitre $Textes[$S.Langue]['reseau'] $null } }
+        @{ Id = 'BtnImgProtocoles'; T = @{ fr = 'Capture : protocoles'; en = 'Screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
+        @{ Id = 'BtnImgAvance'; T = @{ fr = 'Capture : onglet Avancé'; en = 'Screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
+        @{ Id = 'BtnJournal'; T = @{ fr = 'Ouvrir bagarre.log'; en = 'Open bagarre.log' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
+    )
+    Nvidia = @(
+        @{ Id = 'BtnNvclean'; Principal = $true; T = @{ fr = 'NVCleanstall (winget)'; en = 'NVCleanstall (winget)' }; Tip = @{ fr = 'Installe le pilote NVIDIA nu, sans NVIDIA App. Coche comme sur la capture.'; en = 'Installs the bare NVIDIA driver, without the NVIDIA App. Tick as on the screenshot.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
+        @{ Id = 'BtnPanneau'; T = @{ fr = 'Panneau de configuration NVIDIA (Store)'; en = 'NVIDIA Control Panel (Store)' }; Tip = @{ fr = 'L ancien Panneau, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The classic Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Console-Lancer 'NVIDIA Control Panel' 'winget install --id 9NF8H0H7WMLT --source msstore --accept-package-agreements --accept-source-agreements' } }
+        @{ Id = 'BtnAfterburner'; T = @{ fr = 'MSI Afterburner + RivaTuner (winget)'; en = 'MSI Afterburner + RivaTuner (winget)' }; Tip = @{ fr = 'Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+        @{ Id = 'BtnInspector'; T = @{ fr = 'NVIDIA Profile Inspector (winget)'; en = 'NVIDIA Profile Inspector (winget)' }; Tip = @{ fr = 'Ansel off, CUDA Force P2 State off. Rien d autre sans savoir.'; en = 'Ansel off, CUDA Force P2 State off. Nothing else unless you know.' }; Action = { Winget-Installer 'NVIDIA Profile Inspector' 'Orbmu2k.nvidiaProfileInspector' } }
+        @{ Id = 'BtnImgNvclean'; T = @{ fr = 'Capture : NVCleanstall'; en = 'Screenshot: NVCleanstall' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall (sauf MPO).'; en = 'The boxes to tick in NVCleanstall (except MPO).' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
+        @{ Id = 'BtnImgPanneau'; T = @{ fr = 'Capture : Panneau NVIDIA'; en = 'Screenshot: NVIDIA Control Panel' }; Tip = @{ fr = 'Les réglages 3D globaux.'; en = 'The global 3D settings.' }; Action = { Image-Ouvrir 'panneau-nvidia.png' } }
+    )
+    Dur = @(
+        @{ Id = 'BtnIslc'; T = @{ fr = 'ISLC (winget)'; en = 'ISLC (winget)' }; Tip = @{ fr = '16 Go de RAM et des jeux récents seulement.'; en = '16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
+        @{ Id = 'BtnCompact'; T = @{ fr = 'CompactGUI (winget)'; en = 'CompactGUI (winget)' }; Tip = @{ fr = 'Compression NTFS des vieux jeux 2D uniquement.'; en = 'NTFS compression for old 2D games only.' }; Action = { Winget-Installer 'CompactGUI' 'IridiumIO.CompactGUI' } }
+        @{ Id = 'BtnAutoGpu'; T = @{ fr = 'AutoGpuAffinity (dépôt)'; en = 'AutoGpuAffinity (repo)' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
+        @{ Id = 'BtnTimerDepot'; T = @{ fr = 'TimerResolution (dépôt)'; en = 'TimerResolution (repo)' }; Tip = @{ fr = 'Le code source de SetTimerResolution et MeasureSleep.'; en = 'The source code of SetTimerResolution and MeasureSleep.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/TimerResolution' } }
+    )
+    Maintenance = @(
+        @{ Id = 'BtnMeasure'; Principal = $true; T = @{ fr = 'MeasureSleep (vérifier le timer)'; en = 'MeasureSleep (check the timer)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. 1 ms ou 15,6 ms : tuto Dur, point 1.'; en = 'About 0.5 ms expected after the script. 1 ms or 15.6 ms: Hard guide, point 1.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $S.L.measureTitre "& '$exe'" } } }
+        @{ Id = 'BtnCleanmgr'; T = @{ fr = 'Nettoyage de disque (cleanmgr)'; en = 'Disk Cleanup (cleanmgr)' }; Tip = @{ fr = 'Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
+        @{ Id = 'BtnDismAnalyse'; T = @{ fr = 'DISM : analyser WinSxS'; en = 'DISM: analyze WinSxS' }; Tip = @{ fr = 'Dit s il y a quelque chose à nettoyer.'; en = 'Says whether there is something to clean.' }; Action = { Console-Lancer 'DISM AnalyzeComponentStore' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' } }
+        @{ Id = 'BtnDismNettoyer'; T = @{ fr = 'DISM : nettoyer WinSxS'; en = 'DISM: clean WinSxS' }; Tip = @{ fr = 'Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
+        @{ Id = 'BtnTrim'; T = @{ fr = 'TRIM du disque système'; en = 'TRIM the system disk' }; Tip = @{ fr = 'Optimize-Volume -ReTrim. L Assistant de stockage le fait déjà tous les mois.'; en = 'Optimize-Volume -ReTrim. Storage Sense already does it monthly.' }; Action = { Console-Lancer 'TRIM' "Optimize-Volume -DriveLetter $($env:SystemDrive[0]) -ReTrim -Verbose" } }
+        @{ Id = 'BtnAutoruns'; T = @{ fr = 'Autoruns (winget)'; en = 'Autoruns (winget)' }; Tip = @{ fr = 'Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
+        @{ Id = 'BtnGeek'; T = @{ fr = 'Geek Uninstaller (winget)'; en = 'Geek Uninstaller (winget)' }; Tip = @{ fr = 'Désinstalle proprement et enlève les restes.'; en = 'Uninstalls cleanly and removes leftovers.' }; Action = { Winget-Installer 'Geek Uninstaller' 'GeekUninstaller.GeekUninstaller' } }
+        @{ Id = 'BtnRapr'; T = @{ fr = 'DriverStore Explorer (winget)'; en = 'DriverStore Explorer (winget)' }; Tip = @{ fr = 'Supprime les vieux pilotes NVIDIA empilés (plusieurs Go).'; en = 'Removes stacked old NVIDIA drivers (several GB).' }; Action = { Winget-Installer 'DriverStore Explorer' 'lostindark.DriverStoreExplorer' } }
+        @{ Id = 'BtnBleach'; T = @{ fr = 'BleachBit (winget)'; en = 'BleachBit (winget)' }; Tip = @{ fr = 'Caches navigateurs, logs. Jamais "Free disk space" ni "Memory".'; en = 'Browser caches, logs. Never "Free disk space" nor "Memory".' }; Action = { Winget-Installer 'BleachBit' 'BleachBit.BleachBit' } }
+        @{ Id = 'BtnCrystal'; T = @{ fr = 'CrystalDiskInfo (winget)'; en = 'CrystalDiskInfo (winget)' }; Tip = @{ fr = 'Santé et température des disques.'; en = 'Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
+        @{ Id = 'BtnFan'; T = @{ fr = 'FanControl (winget)'; en = 'FanControl (winget)' }; Tip = @{ fr = 'Les ventilos, sans la suite constructeur.'; en = 'Fans, without the vendor suite.' }; Action = { Winget-Installer 'FanControl' 'Rem0o.FanControl' } }
+        @{ Id = 'BtnRgb'; T = @{ fr = 'OpenRGB (winget)'; en = 'OpenRGB (winget)' }; Tip = @{ fr = 'Les LED, sans la suite constructeur.'; en = 'LEDs, without the vendor suite.' }; Action = { Winget-Installer 'OpenRGB' 'OpenRGB.OpenRGB' } }
+        @{ Id = 'BtnDdu'; T = @{ fr = 'DDU (winget)'; en = 'DDU (winget)' }; Tip = @{ fr = 'Seulement quand tu changes de marque de carte graphique.'; en = 'Only when you switch graphics card brand.' }; Action = { Winget-Installer 'Display Driver Uninstaller' 'Wagnardsoft.DisplayDriverUninstaller' } }
+        @{ Id = 'BtnCapframe'; T = @{ fr = 'CapFrameX + PresentMon (winget)'; en = 'CapFrameX + PresentMon (winget)' }; Tip = @{ fr = 'Mesurer avant / après : médiane, 1 % low, p99.'; en = 'Measure before / after: median, 1% low, p99.' }; Action = { Winget-Installer 'CapFrameX + PresentMon' 'CXWorld.CapFrameX', 'Intel.PresentMon' } }
+    )
+    Dns = @(
+        @{ Id = 'BtnDnsTester'; Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Une trentaine de secondes.'; en = 'About thirty seconds.' }; Action = { Dns-Tester } }
+        @{ Id = 'BtnDnsAppliquer'; T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $C.DnsListe.SelectedIndex; if ($i -lt 0) { Log $S.L.dnsSelection; return }; Dns-Appliquer $S.DnsAdapt $S.DnsResultats[$i] } }
+    )
+    Audit = @(
+        @{ Id = 'BtnCollecter'; Principal = $true; T = @{ fr = '1. Collecter le rapport (30 s, ne modifie rien)'; en = '1. Collect the report (30 s, changes nothing)' }; Tip = @{ fr = 'Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
+        @{ Id = 'BtnPrompt'; T = @{ fr = "2. Copier le prompt d'audit"; en = '2. Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$S.Langue]['audit-prompt']); Log $S.L.promptCopie } }
+        @{ Id = 'BtnDossierAudit'; T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $S.L.pasRapport } } }
+    )
+}
+
+# ---------------------------------------------------------------------------
+# La fenêtre : onglets à gauche, une page par étape, Précédent / Suivant, journal en bas.
 # Tout tourne sur le thread de la fenêtre, Log appelle Rafraichir pour qu'elle reste vivante.
 # ---------------------------------------------------------------------------
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
@@ -1487,7 +2199,7 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 $Xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="windows bagarre edition" Width="1200" Height="780" MinWidth="960" MinHeight="620"
+        Title="windows bagarre edition" Width="1200" Height="800" MinWidth="960" MinHeight="640"
         WindowStartupLocation="CenterScreen" Background="#1B1B1F" Foreground="#E8E8E8" FontFamily="Segoe UI" FontSize="13">
   <Window.Resources>
     <Style TargetType="Button">
@@ -1497,12 +2209,13 @@ $Xaml = @'
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Padding" Value="12,6"/>
       <Setter Property="Margin" Value="0,0,8,8"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
       <Setter Property="Cursor" Value="Hand"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
             <Border Name="Fond" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Padding}">
-              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="Center"/>
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Fond" Property="BorderBrush" Value="#F2C14E"/></Trigger>
@@ -1516,6 +2229,18 @@ $Xaml = @'
       <Setter Property="Background" Value="#F2C14E"/>
       <Setter Property="Foreground" Value="#1B1B1F"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    <Style x:Key="Carte" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalContentAlignment" Value="Left"/>
+      <Setter Property="Padding" Value="14,10"/>
+      <Setter Property="Margin" Value="0,0,0,6"/>
+      <Setter Property="Background" Value="#141416"/>
+    </Style>
+    <Style x:Key="Langue" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Padding" Value="10,4"/>
+      <Setter Property="Margin" Value="0,0,6,0"/>
+      <Setter Property="Background" Value="#141416"/>
     </Style>
     <Style TargetType="CheckBox">
       <Setter Property="Foreground" Value="#E8E8E8"/>
@@ -1559,7 +2284,7 @@ $Xaml = @'
     <Style x:Key="Titre" TargetType="TextBlock">
       <Setter Property="FontSize" Value="20"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
-      <Setter Property="Margin" Value="0,0,0,10"/>
+      <Setter Property="Margin" Value="0,0,0,8"/>
       <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
     <Style x:Key="Intro" TargetType="TextBlock">
@@ -1580,80 +2305,65 @@ $Xaml = @'
   </Window.Resources>
   <Grid Background="#1B1B1F">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="230"/>
+      <ColumnDefinition Width="240"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="150"/>
     </Grid.RowDefinitions>
 
-    <DockPanel Grid.Column="0" Grid.RowSpan="2" Background="#141416">
+    <DockPanel Grid.Column="0" Grid.RowSpan="3" Background="#141416">
       <StackPanel DockPanel.Dock="Top" Margin="16,18,16,10">
         <TextBlock Text="BAGARRE" FontSize="24" FontWeight="Bold" Foreground="#F2C14E"/>
         <TextBlock Text="windows bagarre edition" Foreground="#8A8A95"/>
       </StackPanel>
-      <TextBlock DockPanel.Dock="Bottom" Name="NavMachine" Margin="16,8,16,14" Foreground="#8A8A95" TextWrapping="Wrap" FontSize="11"/>
-      <ListBox Name="Nav" Background="Transparent" BorderThickness="0" SelectedIndex="0">
-        <ListBoxItem Content="Accueil"/>
-        <ListBoxItem Content="1. Installation"/>
-        <ListBoxItem Content="2. Facile"/>
-        <ListBoxItem Content="3. Le script à cocher"/>
-        <ListBoxItem Content="4. NVIDIA"/>
-        <ListBoxItem Content="5. Dur"/>
-        <ListBoxItem Content="6. Maintenance"/>
-        <ListBoxItem Content="7. DNS"/>
-        <ListBoxItem Content="8. Audit IA"/>
-      </ListBox>
+      <StackPanel DockPanel.Dock="Bottom" Margin="16,8,16,14">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+          <Button Name="BtnFr" Content="Français" Style="{StaticResource Langue}"/>
+          <Button Name="BtnEn" Content="English" Style="{StaticResource Langue}"/>
+        </StackPanel>
+        <TextBlock Name="NavMachine" Foreground="#8A8A95" TextWrapping="Wrap" FontSize="11"/>
+      </StackPanel>
+      <ListBox Name="Nav" Background="Transparent" BorderThickness="0" SelectedIndex="0"/>
     </DockPanel>
 
-    <Grid Grid.Column="1" Grid.Row="0" Name="Pages" Margin="20,16,20,8">
+    <Grid Grid.Column="1" Grid.Row="0" Name="Pages" Margin="20,16,20,4">
 
       <DockPanel Name="PageAccueil">
-        <TextBlock DockPanel.Dock="Top" Text="Tu viens de réinstaller Windows 11" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="TitreAccueil" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroAccueil" Style="{StaticResource Intro}"/>
+        <StackPanel DockPanel.Dock="Top" Name="Cartes" Margin="0,0,0,10"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsAccueil"/>
         <TextBox Name="TexteAccueil"/>
       </DockPanel>
 
       <DockPanel Name="PageInstallation" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="1. Installation (30 min) : Windows propre, mises à jour, pilotes" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnFsutil" Content="fsutil 8dot3name set 1"/>
-          <Button Name="BtnWindowsUpdate" Content="Ouvrir Windows Update"/>
-          <Button Name="BtnSnappy" Content="Snappy Driver Installer Origin (winget)"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreInstallation" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroInstallation" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsInstallation"/>
         <TextBox Name="TexteInstallation"/>
       </DockPanel>
 
       <DockPanel Name="PageFacile" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="2. Facile (15 min) : débloat en deux clics, DirectX, Visual C++, tes applis" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnDebloat" Content="Win11Debloat" Style="{StaticResource Principal}"/>
-          <Button Name="BtnWinUtil" Content="WinUtil (Chris Titus)" Style="{StaticResource Principal}"/>
-          <Button Name="BtnDirectX" Content="DirectX (winget)"/>
-          <Button Name="BtnVcredist" Content="Visual C++ 2005 à 2022 (winget)"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreFacile" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroFacile" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsFacile"/>
         <Border DockPanel.Dock="Top" Background="#141416" CornerRadius="4" Padding="12" Margin="0,0,0,10">
           <StackPanel>
-            <TextBlock Text="Tes applis, installées d'un coup par winget (coche, puis le bouton) :" Margin="0,0,0,6"/>
+            <TextBlock Name="ApplisTitre" Margin="0,0,0,6"/>
             <WrapPanel Name="ListeApplis"/>
-            <Button Name="BtnApplis" Content="Installer les applis cochées" Margin="0,8,0,0" HorizontalAlignment="Left"/>
+            <Button Name="BtnApplis" Margin="0,8,0,0" HorizontalAlignment="Left"/>
           </StackPanel>
         </Border>
         <TextBox Name="TexteFacile"/>
       </DockPanel>
 
       <DockPanel Name="PageOptis" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="3. Le script à cocher (10 min)" Style="{StaticResource Titre}"/>
-        <TextBlock DockPanel.Dock="Top" Style="{StaticResource Intro}" Text="Les cases cochées par défaut sont sûres pour tout PC. Passe la souris sur une ligne : le Pourquoi et ce que tu perds s'affichent à droite. Tu ne comprends pas une ligne, tu ne la coches pas. Avant d'appliquer, l'état de chaque clé, service et réglage est sauvé : Tout remettre restaure. Redémarre après."/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnAppliquer" Content="Appliquer les cases cochées" Style="{StaticResource Principal}"/>
-          <Button Name="BtnRestaurer" Content="Tout remettre comme avant"/>
-          <Button Name="BtnDefaut" Content="Revenir aux cases par défaut"/>
-          <Button Name="BtnReseau" Content="Carte réseau à la main (tuto)"/>
-          <Button Name="BtnImgProtocoles" Content="Capture : protocoles"/>
-          <Button Name="BtnImgAvance" Content="Capture : onglet Avancé"/>
-          <Button Name="BtnJournal" Content="Ouvrir bagarre.log"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreOptis" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroOptis" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsOptis"/>
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -1665,10 +2375,10 @@ $Xaml = @'
           <Border Grid.Column="1" Background="#141416" CornerRadius="4" Padding="14">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
               <StackPanel>
-                <TextBlock Name="OptiTitre" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap" Text="Passe la souris sur une case."/>
-                <TextBlock Name="OptiEtiquette1" Text="Pourquoi" Style="{StaticResource Etiquette}"/>
+                <TextBlock Name="OptiTitre" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap"/>
+                <TextBlock Name="OptiEtiquette1" Style="{StaticResource Etiquette}"/>
                 <TextBlock Name="OptiPourquoi" TextWrapping="Wrap" Foreground="#DADADA"/>
-                <TextBlock Name="OptiEtiquette2" Text="Ce que tu perds" Style="{StaticResource Etiquette}"/>
+                <TextBlock Name="OptiEtiquette2" Style="{StaticResource Etiquette}"/>
                 <TextBlock Name="OptiAttention" TextWrapping="Wrap" Foreground="#DADADA"/>
               </StackPanel>
             </ScrollViewer>
@@ -1677,75 +2387,50 @@ $Xaml = @'
       </DockPanel>
 
       <DockPanel Name="PageNvidia" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="4. NVIDIA (15 min) : le pilote nu, puis l'ancien Panneau de configuration" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnNvclean" Content="NVCleanstall (winget)" Style="{StaticResource Principal}"/>
-          <Button Name="BtnPanneau" Content="Panneau de configuration NVIDIA (Store)"/>
-          <Button Name="BtnAfterburner" Content="MSI Afterburner + RivaTuner (winget)"/>
-          <Button Name="BtnInspector" Content="NVIDIA Profile Inspector (winget)"/>
-          <Button Name="BtnImgNvclean" Content="Capture : NVCleanstall"/>
-          <Button Name="BtnImgPanneau" Content="Capture : Panneau NVIDIA"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreNvidia" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroNvidia" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsNvidia"/>
         <TextBox Name="TexteNvidia"/>
       </DockPanel>
 
       <DockPanel Name="PageDur" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="5. Dur (20 min) : lis tout avant de toucher" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnIslc" Content="ISLC (winget)"/>
-          <Button Name="BtnCompact" Content="CompactGUI (winget)"/>
-          <Button Name="BtnAutoGpu" Content="AutoGpuAffinity (dépôt)"/>
-          <Button Name="BtnTimerDepot" Content="TimerResolution (dépôt)"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreDur" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroDur" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsDur"/>
         <TextBox Name="TexteDur"/>
       </DockPanel>
 
       <DockPanel Name="PageMaintenance" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="6. Maintenance : quand le PC a vécu" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnMeasure" Content="MeasureSleep (vérifier le timer)" Style="{StaticResource Principal}"/>
-          <Button Name="BtnCleanmgr" Content="Nettoyage de disque (cleanmgr)"/>
-          <Button Name="BtnDismAnalyse" Content="DISM : analyser WinSxS"/>
-          <Button Name="BtnDismNettoyer" Content="DISM : nettoyer WinSxS"/>
-          <Button Name="BtnTrim" Content="TRIM du disque système"/>
-          <Button Name="BtnAutoruns" Content="Autoruns (winget)"/>
-          <Button Name="BtnGeek" Content="Geek Uninstaller (winget)"/>
-          <Button Name="BtnRapr" Content="DriverStore Explorer (winget)"/>
-          <Button Name="BtnBleach" Content="BleachBit (winget)"/>
-          <Button Name="BtnCrystal" Content="CrystalDiskInfo (winget)"/>
-          <Button Name="BtnFan" Content="FanControl (winget)"/>
-          <Button Name="BtnRgb" Content="OpenRGB (winget)"/>
-          <Button Name="BtnDdu" Content="DDU (winget)"/>
-          <Button Name="BtnCapframe" Content="CapFrameX + PresentMon (winget)"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreMaintenance" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroMaintenance" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsMaintenance"/>
         <TextBox Name="TexteMaintenance"/>
       </DockPanel>
 
       <DockPanel Name="PageDns" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="7. DNS : qui répond le plus vite depuis chez toi ?" Style="{StaticResource Titre}"/>
-        <TextBlock DockPanel.Dock="Top" Style="{StaticResource Intro}" Text="Le DNS transforme un nom (youtube.com) en adresse IP. Un DNS lent ajoute quelques dizaines de ms à CHAQUE nouveau site ou serveur de jeu contacté. Le test résout 6 noms courants sur chaque serveur, 3 fois, et garde la médiane. Une trentaine de secondes, la fenêtre ne répond pas pendant ce temps."/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnDnsTester" Content="Tester les DNS" Style="{StaticResource Principal}"/>
-          <Button Name="BtnDnsAppliquer" Content="Utiliser le DNS sélectionné" IsEnabled="False"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreDns" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroDns" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsDns"/>
         <TextBlock DockPanel.Dock="Top" Name="DnsCarte" Foreground="#B0B0B8" Margin="0,0,0,8" TextWrapping="Wrap"/>
         <ListBox DockPanel.Dock="Top" Name="DnsListe" Background="#141416" BorderThickness="0" Height="150" FontFamily="Consolas"/>
         <TextBox Name="TexteDns" Margin="0,10,0,0"/>
       </DockPanel>
 
       <DockPanel Name="PageAudit" Visibility="Collapsed">
-        <TextBlock DockPanel.Dock="Top" Text="8. Audit IA (10 min) : une IA vérifie ton PC et trouve ce qui manque" Style="{StaticResource Titre}"/>
-        <WrapPanel DockPanel.Dock="Top">
-          <Button Name="BtnCollecter" Content="1. Collecter le rapport (30 s, ne modifie rien)" Style="{StaticResource Principal}"/>
-          <Button Name="BtnPrompt" Content="2. Copier le prompt d'audit"/>
-          <Button Name="BtnDossierAudit" Content="Ouvrir le dossier du rapport"/>
-        </WrapPanel>
+        <TextBlock DockPanel.Dock="Top" Name="TitreAudit" Style="{StaticResource Titre}"/>
+        <TextBlock DockPanel.Dock="Top" Name="IntroAudit" Style="{StaticResource Intro}"/>
+        <WrapPanel DockPanel.Dock="Top" Name="BoutonsAudit"/>
         <TextBox Name="TexteAudit"/>
       </DockPanel>
     </Grid>
 
-    <DockPanel Grid.Column="1" Grid.Row="1" Margin="20,0,20,14">
-      <TextBlock DockPanel.Dock="Top" Text="Journal" Foreground="#8A8A95" Margin="0,0,0,4"/>
+    <DockPanel Grid.Column="1" Grid.Row="1" Margin="20,0,20,6" LastChildFill="False">
+      <Button Name="BtnSuivant" DockPanel.Dock="Right" Style="{StaticResource Principal}" Margin="8,0,0,0"/>
+      <Button Name="BtnPrecedent" DockPanel.Dock="Right" Margin="0"/>
+    </DockPanel>
+
+    <DockPanel Grid.Column="1" Grid.Row="2" Margin="20,0,20,14">
+      <TextBlock DockPanel.Dock="Top" Name="JournalTitre" Foreground="#8A8A95" Margin="0,0,0,4"/>
       <TextBox Name="Journal" FontSize="12"/>
     </DockPanel>
   </Grid>
@@ -1753,7 +2438,7 @@ $Xaml = @'
 '@
 
 try {
-    $script:Fenetre = [Windows.Markup.XamlReader]::Parse($Xaml)
+    $Fenetre = [Windows.Markup.XamlReader]::Parse($Xaml)
 } catch {
     Add-Content -Path $LogFichier -Value "ÉCHEC fenêtre : $_"
     [Windows.MessageBox]::Show("La fenêtre n'a pas pu s'ouvrir :`n$_`n`nDétail dans $LogFichier", 'bagarre') | Out-Null
@@ -1761,101 +2446,123 @@ try {
 }
 
 # Tous les contrôles nommés dans $C, le journal à portée de Log
-$script:C = @{}
+$C = @{}
 foreach ($m in [regex]::Matches($Xaml, '(?<![:\w])Name="(\w+)"')) { $n = $m.Groups[1].Value; $C[$n] = $Fenetre.FindName($n) }
-$script:Journal = $C.Journal
-
-# ---------------------------------------------------------------------------
-# Textes des onglets et navigation
-# ---------------------------------------------------------------------------
-$C.TexteAccueil.Text = $Textes['accueil']
-$C.TexteInstallation.Text = $Textes['installation']
-$C.TexteFacile.Text = $Textes['facile']
-$C.TexteNvidia.Text = $Textes['nvidia']
-$C.TexteDur.Text = $Textes['dur']
-$C.TexteMaintenance.Text = $Textes['maintenance']
-$C.TexteDns.Text = $Textes['dns']
-$C.TexteAudit.Text = $Textes['audit']
+$Journal = $C.Journal
 $C.NavMachine.Text = "$Machine`nbagarre $Version"
 
-$script:PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Maintenance', 'Dns', 'Audit'
+# ---------------------------------------------------------------------------
+# Navigation : liste à gauche, cartes de l'accueil, Précédent / Suivant
+# ---------------------------------------------------------------------------
+foreach ($n in $PagesNoms) { $li = New-Object Windows.Controls.ListBoxItem; [void]$C.Nav.Items.Add($li) }
+function Aller($k) { $C.Nav.SelectedIndex = $k }
 $C.Nav.Add_SelectionChanged({
-    $i = $script:C.Nav.SelectedIndex
-    for ($k = 0; $k -lt $script:PagesNoms.Count; $k++) {
-        $script:C["Page$($script:PagesNoms[$k])"].Visibility = if ($k -eq $i) { 'Visible' } else { 'Collapsed' }
+    $i = $C.Nav.SelectedIndex
+    for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
+        $C["Page$($PagesNoms[$k])"].Visibility = if ($k -eq $i) { 'Visible' } else { 'Collapsed' }
     }
+    $C.BtnPrecedent.IsEnabled = $i -gt 0
+    $C.BtnSuivant.IsEnabled = $i -lt ($PagesNoms.Count - 1)
 })
+$C.BtnPrecedent.Add_Click({ if ($C.Nav.SelectedIndex -gt 0) { Aller ($C.Nav.SelectedIndex - 1) } })
+$C.BtnSuivant.Add_Click({ if ($C.Nav.SelectedIndex -lt ($PagesNoms.Count - 1)) { Aller ($C.Nav.SelectedIndex + 1) } })
 
-# ---------------------------------------------------------------------------
-# Onglet 3 : une case par item du catalogue, l'explication au survol
-# ---------------------------------------------------------------------------
-function Opti-Montrer($titre, $pourquoi, $attention) {
-    $script:C.OptiTitre.Text = $titre
-    $script:C.OptiPourquoi.Text = $pourquoi
-    $script:C.OptiAttention.Text = if ($attention) { $attention } else { 'Rien de notable.' }
-    $script:C.OptiEtiquette2.Visibility = if ($null -eq $attention) { 'Collapsed' } else { 'Visible' }
+for ($k = 1; $k -lt $PagesNoms.Count; $k++) {
+    $carte = New-Object Windows.Controls.Button
+    $carte.Style = $Fenetre.FindResource('Carte')
+    $carte.Tag = $k
+    $carte.Add_Click({ param($s, $e) Aller ([int]$s.Tag) })
+    [void]$C.Cartes.Children.Add($carte)
 }
 
-$script:Cases = @{}
-$script:Defauts = @{}
+# ---------------------------------------------------------------------------
+# Boutons des pages, créés depuis $Boutons
+# ---------------------------------------------------------------------------
+foreach ($page in $Boutons.Keys) {
+    foreach ($def in $Boutons[$page]) {
+        $b = New-Object Windows.Controls.Button
+        if ($def.Principal) { $b.Style = $Fenetre.FindResource('Principal') }
+        $b.Add_Click($def.Action)
+        $def.Ctl = $b
+        $C[$def.Id] = $b
+        [void]$C["Boutons$page"].Children.Add($b)
+    }
+}
+$C.BtnDnsAppliquer.IsEnabled = $false
+
+# ---------------------------------------------------------------------------
+# Onglet 3 : une case par item du catalogue, l'explication au survol, le compte sur le bouton
+# ---------------------------------------------------------------------------
+function Opti-Montrer($titre, $pourquoi, $attention) {
+    $C.OptiTitre.Text = $titre
+    $C.OptiPourquoi.Text = $pourquoi
+    $C.OptiAttention.Text = if ($attention) { $attention } else { $S.L.rien }
+    $C.OptiEtiquette1.Visibility = 'Visible'
+    $C.OptiEtiquette2.Visibility = if ($null -eq $attention) { 'Collapsed' } else { 'Visible' }
+}
+function Opti-Vider {
+    $C.OptiTitre.Text = $S.L.survole
+    $C.OptiPourquoi.Text = ''; $C.OptiAttention.Text = ''
+    $C.OptiEtiquette1.Visibility = 'Collapsed'; $C.OptiEtiquette2.Visibility = 'Collapsed'
+}
+function Compter-Coches {
+    $n = @($Items | Where-Object { $_.Coche }).Count
+    $C.BtnAppliquer.Content = switch ($n) { 0 { $S.L.appliquer0 } 1 { $S.L.appliquer1 } default { $S.L.appliquerN -f $n } }
+}
+
+$Cases = @{}
+$Defauts = @{}
+$Groupes = @()
 $groupe = ''
 foreach ($it in $Items) {
     if ($it.Groupe -ne $groupe) {
         $groupe = $it.Groupe
         $tb = New-Object Windows.Controls.TextBlock
-        $tb.Text = $groupe
         $tb.Style = $Fenetre.FindResource('Groupe')
+        $tb.Tag = $groupe
         [void]$C.ListeOptis.Children.Add($tb)
+        $Groupes += $tb
     }
     $cb = New-Object Windows.Controls.CheckBox
-    $cb.Content = $it.Titre
     $cb.IsChecked = [bool]$it.Coche
     $cb.Tag = $it
-    $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer $s.Tag.Titre $s.Tag.Pourquoi $s.Tag.Attention })
-    $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true })
-    $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false })
+    $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })
+    $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Compter-Coches })
+    $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Compter-Coches })
     [void]$C.ListeOptis.Children.Add($cb)
     $Cases[$it.Id] = $cb
     $Defauts[$it.Id] = [bool]$it.Coche
 }
 
-$C.BtnAppliquer.Add_Click({
-    $coches = @($script:Items | Where-Object { $_.Coche })
-    if ($coches.Count -eq 0) { Log 'Rien de coché.'; return }
-    $q = [Windows.MessageBox]::Show("Appliquer $($coches.Count) réglages ?`n`nL'état d'avant est sauvé dans $EtatFichier, le bouton Tout remettre le restaure.", 'bagarre', 'YesNo', 'Question')
+# Noms de groupe en anglais (les groupes du catalogue sont en français)
+$GroupesEn = @{
+    'Services Windows' = 'Windows services'; 'Vie privée et pubs' = 'Privacy and ads'; 'Jeu et réactivité' = 'Gaming and responsiveness'
+    'Carte réseau (appliqué sur chaque carte physique active)' = 'Network card (applied to every active physical card)'
+    'Confort (aucun gain de FPS, juste plus vif)' = 'Comfort (no FPS gain, just snappier)'
+    'Avancé (décoché par défaut, lis l explication avant)' = 'Advanced (unchecked by default, read the explanation first)'; 'NVIDIA' = 'NVIDIA'
+}
+
+function Appliquer-Demander {
+    $coches = @($Items | Where-Object { $_.Coche })
+    if ($coches.Count -eq 0) { Log $S.L.rienCoche; return }
+    $q = [Windows.MessageBox]::Show(($S.L.confirmAppliquer -f $coches.Count, $EtatFichier), 'bagarre', 'YesNo', 'Question')
     if ($q -ne 'Yes') { return }
     Appliquer-Items $coches
-    [Windows.MessageBox]::Show('Terminé. Redémarre le PC pour que tout prenne effet.', 'bagarre') | Out-Null
-})
-$C.BtnRestaurer.Add_Click({
-    if ($script:Avant.Count -eq 0) { Log 'Rien à restaurer : aucun réglage appliqué sur ce PC.'; return }
-    $q = [Windows.MessageBox]::Show("Remettre les $($script:Avant.Count) réglages comme avant ?", 'bagarre', 'YesNo', 'Question')
+    [Windows.MessageBox]::Show($S.L.termine, 'bagarre') | Out-Null
+}
+function Restaurer-Demander {
+    if ($Avant.Count -eq 0) { Log $S.L.rienRestaurer; return }
+    $q = [Windows.MessageBox]::Show(($S.L.confirmRestaurer -f $Avant.Count), 'bagarre', 'YesNo', 'Question')
     if ($q -ne 'Yes') { return }
     Tout-Restaurer
-    [Windows.MessageBox]::Show('Restauré. Redémarre le PC.', 'bagarre') | Out-Null
-})
-$C.BtnDefaut.Add_Click({ foreach ($id in $script:Cases.Keys) { $script:Cases[$id].IsChecked = $script:Defauts[$id] } })
-$C.BtnReseau.Add_Click({ Opti-Montrer 'Carte réseau à la main' $Textes['reseau'] $null })
-$C.BtnImgProtocoles.Add_Click({ Image-Ouvrir 'reseau-protocoles.png' })
-$C.BtnImgAvance.Add_Click({ Image-Ouvrir 'reseau-avance.png' })
-$C.BtnJournal.Add_Click({ if (Test-Path $LogFichier) { Start-Process notepad $LogFichier } else { Log 'Pas encore de journal.' } })
+    [Windows.MessageBox]::Show($S.L.restaure, 'bagarre') | Out-Null
+}
+function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $LogFichier } else { Log $S.L.pasJournal } }
 
 # ---------------------------------------------------------------------------
-# Onglets 1, 2, 4, 5, 6 : des boutons qui lancent, installent ou ouvrent
+# Onglet 2 : les applis winget à cocher
 # ---------------------------------------------------------------------------
-$C.BtnFsutil.Add_Click({ Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' })
-$C.BtnWindowsUpdate.Add_Click({ Ouvrir 'ms-settings:windowsupdate' })
-$C.BtnSnappy.Add_Click({ Winget-Installer 'Snappy Driver Installer Origin' 'GlennDelahoy.SnappyDriverInstallerOrigin' })
-
-$C.BtnDebloat.Add_Click({ Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' })
-$C.BtnWinUtil.Add_Click({ Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' })
-$C.BtnDirectX.Add_Click({ Winget-Installer 'DirectX' 'Microsoft.DirectX' })
-$C.BtnVcredist.Add_Click({
-    $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }
-    Winget-Installer 'Visual C++ 2005 à 2022' $ids
-})
-
-$script:Applis = @(
+$Applis = @(
     @{ Nom = 'Steam'; Id = 'Valve.Steam'; Coche = $true }
     @{ Nom = 'Discord'; Id = 'Discord.Discord'; Coche = $true }
     @{ Nom = '7-Zip'; Id = '7zip.7zip'; Coche = $true }
@@ -1863,7 +2570,7 @@ $script:Applis = @(
     @{ Nom = 'Firefox'; Id = 'Mozilla.Firefox'; Coche = $false }
     @{ Nom = 'Brave'; Id = 'Brave.Brave'; Coche = $false }
     @{ Nom = 'Chrome'; Id = 'Google.Chrome'; Coche = $false }
-    @{ Nom = 'Everything (recherche de fichiers)'; Id = 'voidtools.Everything'; Coche = $false }
+    @{ Nom = 'Everything'; Id = 'voidtools.Everything'; Coche = $false }
     @{ Nom = 'PowerToys'; Id = 'Microsoft.PowerToys'; Coche = $false }
 )
 foreach ($a in $Applis) {
@@ -1875,97 +2582,102 @@ foreach ($a in $Applis) {
     [void]$C.ListeApplis.Children.Add($cb)
 }
 $C.BtnApplis.Add_Click({
-    $ids = @($script:C.ListeApplis.Children | Where-Object { $_.IsChecked } | ForEach-Object { $_.Tag })
-    if ($ids.Count -eq 0) { Log 'Aucune appli cochée.'; return }
-    Winget-Installer "$($ids.Count) applis" $ids
+    $ids = @($C.ListeApplis.Children | Where-Object { $_.IsChecked } | ForEach-Object { $_.Tag })
+    if ($ids.Count -eq 0) { Log $S.L.aucuneAppli; return }
+    Winget-Installer "$($ids.Count) apps" $ids
 })
-
-$C.BtnNvclean.Add_Click({ Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' })
-$C.BtnPanneau.Add_Click({ Console-Lancer 'Panneau de configuration NVIDIA' 'winget install --id 9NF8H0H7WMLT --source msstore --accept-package-agreements --accept-source-agreements' })
-$C.BtnAfterburner.Add_Click({ Winget-Installer 'MSI Afterburner et RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' })
-$C.BtnInspector.Add_Click({ Winget-Installer 'NVIDIA Profile Inspector' 'Orbmu2k.nvidiaProfileInspector' })
-$C.BtnImgNvclean.Add_Click({ Image-Ouvrir 'nvcleanstall.png' })
-$C.BtnImgPanneau.Add_Click({ Image-Ouvrir 'panneau-nvidia.png' })
-
-$C.BtnIslc.Add_Click({ Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' })
-$C.BtnCompact.Add_Click({ Winget-Installer 'CompactGUI' 'IridiumIO.CompactGUI' })
-$C.BtnAutoGpu.Add_Click({ Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' })
-$C.BtnTimerDepot.Add_Click({ Ouvrir 'https://github.com/valleyofdoom/TimerResolution' })
-
-$C.BtnMeasure.Add_Click({
-    $exe = Outil-Obtenir 'MeasureSleep.exe'
-    if ($exe) { Console-Lancer 'MeasureSleep : attendu environ 0,5 ms, Ctrl+C pour arrêter' "& '$exe'" }
-})
-$C.BtnCleanmgr.Add_Click({ Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' })
-$C.BtnDismAnalyse.Add_Click({ Console-Lancer 'DISM : analyse de WinSxS' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' })
-$C.BtnDismNettoyer.Add_Click({ Console-Lancer 'DISM : nettoyage de WinSxS (jamais /ResetBase)' 'Dism /Online /Cleanup-Image /StartComponentCleanup' })
-$C.BtnTrim.Add_Click({ Console-Lancer 'TRIM du disque système' "Optimize-Volume -DriveLetter $($env:SystemDrive[0]) -ReTrim -Verbose" })
-$C.BtnAutoruns.Add_Click({ Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' })
-$C.BtnGeek.Add_Click({ Winget-Installer 'Geek Uninstaller' 'GeekUninstaller.GeekUninstaller' })
-$C.BtnRapr.Add_Click({ Winget-Installer 'DriverStore Explorer' 'lostindark.DriverStoreExplorer' })
-$C.BtnBleach.Add_Click({ Winget-Installer 'BleachBit' 'BleachBit.BleachBit' })
-$C.BtnCrystal.Add_Click({ Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' })
-$C.BtnFan.Add_Click({ Winget-Installer 'FanControl' 'Rem0o.FanControl' })
-$C.BtnRgb.Add_Click({ Winget-Installer 'OpenRGB' 'OpenRGB.OpenRGB' })
-$C.BtnDdu.Add_Click({ Winget-Installer 'Display Driver Uninstaller' 'Wagnardsoft.DisplayDriverUninstaller' })
-$C.BtnCapframe.Add_Click({ Winget-Installer 'CapFrameX et PresentMon' 'CXWorld.CapFrameX', 'Intel.PresentMon' })
 
 # ---------------------------------------------------------------------------
 # Onglet 7 : DNS
 # ---------------------------------------------------------------------------
-$script:DnsAdapt = $null
-$script:DnsResultats = @()
-$C.BtnDnsTester.Add_Click({
+$S.DnsAdapt = $null
+$S.DnsResultats = @()
+function Dns-Tester {
     $adapt = Dns-Carte
-    if (-not $adapt) { Log 'Aucune carte réseau active trouvée.'; return }
-    $script:DnsAdapt = $adapt
-    $script:C.DnsCarte.Text = "Carte : $($adapt.Name) ($($adapt.InterfaceDescription)). DNS actuel : $((Dns-Actuels $adapt) -join ', ') (souvent ta box)."
-    $script:C.DnsListe.Items.Clear()
-    $script:C.BtnDnsAppliquer.IsEnabled = $false
-    Log 'Test DNS en cours...'
-    $script:DnsResultats = @(Dns-Mesurer $adapt)
-    foreach ($r in $script:DnsResultats) { [void]$script:C.DnsListe.Items.Add(('{0,-24} {1,7} ms' -f $r.Nom, $r.Mediane)) }
-    $script:C.BtnDnsAppliquer.IsEnabled = $true
-    Log 'Test terminé. Sélectionne une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
-})
-$C.BtnDnsAppliquer.Add_Click({
-    $i = $script:C.DnsListe.SelectedIndex
-    if ($i -lt 0) { Log 'Sélectionne une ligne dans la liste.'; return }
-    Dns-Appliquer $script:DnsAdapt $script:DnsResultats[$i]
-})
+    if (-not $adapt) { Log $S.L.aucuneCarte; return }
+    $S.DnsAdapt = $adapt
+    $C.DnsCarte.Text = $S.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
+    $C.DnsListe.Items.Clear()
+    $C.BtnDnsAppliquer.IsEnabled = $false
+    Log $S.L.dnsEnCours
+    $S.DnsResultats = @(Dns-Mesurer $adapt)
+    foreach ($r in $S.DnsResultats) { [void]$C.DnsListe.Items.Add(('{0,-24} {1,7} ms' -f $r.Nom, $r.Mediane)) }
+    $C.BtnDnsAppliquer.IsEnabled = $true
+    Log $S.L.dnsFini
+}
 
 # ---------------------------------------------------------------------------
 # Onglet 8 : audit IA
 # ---------------------------------------------------------------------------
-$script:DossierAudit = Join-Path ([Environment]::GetFolderPath('Desktop')) 'bagarre-audit'
-$C.BtnCollecter.Add_Click({
-    if (-not (Test-Path $script:DossierAudit)) { New-Item -Path $script:DossierAudit -ItemType Directory -Force | Out-Null }
-    [IO.File]::WriteAllText((Join-Path $script:DossierAudit 'AUDIT.txt'), $Textes['audit-prompt'], (New-Object Text.UTF8Encoding $true))
-    Log 'Collecte en cours, environ 30 secondes...'
-    Collecter-Rapport (Join-Path $script:DossierAudit 'rapport-pc.txt')
-    Ouvrir $script:DossierAudit
-})
-$C.BtnPrompt.Add_Click({ [Windows.Clipboard]::SetText($Textes['audit-prompt']); Log 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.' })
-$C.BtnDossierAudit.Add_Click({ if (Test-Path $script:DossierAudit) { Ouvrir $script:DossierAudit } else { Log 'Pas encore de rapport : bouton 1 d abord.' } })
+$DossierAudit = Join-Path ([Environment]::GetFolderPath('Desktop')) 'bagarre-audit'
+function Audit-Collecter {
+    if (-not (Test-Path $DossierAudit)) { New-Item -Path $DossierAudit -ItemType Directory -Force | Out-Null }
+    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $Textes[$S.Langue]['audit-prompt'], (New-Object Text.UTF8Encoding $true))
+    Log $S.L.collecte
+    Collecter-Rapport (Join-Path $DossierAudit 'rapport-pc.txt')
+    Ouvrir $DossierAudit
+}
+
+# ---------------------------------------------------------------------------
+# Langue : tout relabelliser d'un coup, et retenir le choix
+# ---------------------------------------------------------------------------
+function Appliquer-Langue {
+    $S.L = $UI[$S.Langue]; $L = $S.L
+    for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
+        $p = $PagesNoms[$k]
+        $C.Nav.Items[$k].Content = $L.nav[$k]
+        $C["Titre$p"].Text = $L.titres[$p]
+        $C["Intro$p"].Text = $L.intros[$p]
+        if ($C["Texte$p"]) { $C["Texte$p"].Text = $Textes[$S.Langue][$p.ToLower()] }
+    }
+    $k = 1
+    foreach ($carte in $C.Cartes.Children) {
+        $carte.Content = '{0,-26} {1,-10} {2}' -f $L.nav[$k], $L.duree[$k], $L.resume[$k]
+        $carte.FontFamily = 'Consolas'
+        $k++
+    }
+    foreach ($page in $Boutons.Keys) { foreach ($def in $Boutons[$page]) { $def.Ctl.Content = $def.T[$S.Langue]; $def.Ctl.ToolTip = $def.Tip[$S.Langue] } }
+    $C.BtnPrecedent.Content = $L.precedent; $C.BtnSuivant.Content = $L.suivant
+    $C.JournalTitre.Text = $L.journal
+    $C.ApplisTitre.Text = $L.applisTitre
+    $C.BtnApplis.Content = if ($S.Langue -eq 'fr') { 'Installer les applis cochées' } else { 'Install the ticked apps' }
+    $C.OptiEtiquette1.Text = $L.pourquoi; $C.OptiEtiquette2.Text = $L.perds
+    foreach ($tb in $Groupes) { $tb.Text = if ($S.Langue -eq 'en' -and $GroupesEn[$tb.Tag]) { $GroupesEn[$tb.Tag] } else { $tb.Tag } }
+    foreach ($id in $Cases.Keys) { $Cases[$id].Content = Item-Titre $Cases[$id].Tag }
+    $C.BtnFr.BorderBrush = if ($S.Langue -eq 'fr') { '#F2C14E' } else { '#3C3C46' }
+    $C.BtnEn.BorderBrush = if ($S.Langue -eq 'en') { '#F2C14E' } else { '#3C3C46' }
+    Opti-Vider
+    Compter-Coches
+}
+function Changer-Langue($l) {
+    $S.Langue = $l
+    Set-Content -Path $LangueFichier -Value $l -Encoding ASCII
+    Appliquer-Langue
+}
+$C.BtnFr.Add_Click({ Changer-Langue 'fr' })
+$C.BtnEn.Add_Click({ Changer-Langue 'en' })
+Appliquer-Langue
+Aller 0
+$C.BtnPrecedent.IsEnabled = $false
 
 # ---------------------------------------------------------------------------
 # Mode -Capture dossier : rend chaque onglet en PNG sans afficher la fenêtre ni demander l'admin (preuve visuelle en dev)
 # ---------------------------------------------------------------------------
 if ($Capture) {
     if (-not (Test-Path $Capture)) { New-Item -Path $Capture -ItemType Directory -Force | Out-Null }
-    Log "bagarre $Version, $Machine (capture)"
+    Log "bagarre $Version, $Machine (capture $($S.Langue))"
     $racine = $Fenetre.Content
-    $racine.Measure((New-Object Windows.Size 1200, 780))
-    $racine.Arrange((New-Object Windows.Rect 0, 0, 1200, 780))
-    Opti-Montrer $Items[0].Titre $Items[0].Pourquoi $Items[0].Attention   # le volet d'explication rempli, comme au survol
+    $racine.Measure((New-Object Windows.Size 1200, 800))
+    $racine.Arrange((New-Object Windows.Rect 0, 0, 1200, 800))
+    Opti-Montrer (Item-Titre $Items[0]) (Item-Pourquoi $Items[0]) (Item-Attention $Items[0])   # le volet d'explication rempli, comme au survol
     for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
-        $C.Nav.SelectedIndex = $k
+        Aller $k
         $racine.UpdateLayout()
-        $bmp = New-Object Windows.Media.Imaging.RenderTargetBitmap 1200, 780, 96, 96, ([Windows.Media.PixelFormats]::Pbgra32)
+        $bmp = New-Object Windows.Media.Imaging.RenderTargetBitmap 1200, 800, 96, 96, ([Windows.Media.PixelFormats]::Pbgra32)
         $bmp.Render($racine)
         $enc = New-Object Windows.Media.Imaging.PngBitmapEncoder
         $enc.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bmp))
-        $fs = [IO.File]::Create((Join-Path $Capture ('{0}-{1}.png' -f $k, $PagesNoms[$k].ToLower())))
+        $fs = [IO.File]::Create((Join-Path $Capture ('{0}-{1}-{2}.png' -f $k, $PagesNoms[$k].ToLower(), $S.Langue)))
         $enc.Save($fs); $fs.Close()
     }
     Write-Host "Captures dans $Capture"
@@ -1973,5 +2685,32 @@ if ($Capture) {
 }
 
 Log "bagarre $Version, $Machine"
-if ($Avant.Count -gt 0) { Log "$($Avant.Count) réglages déjà appliqués sur ce PC (bagarre-avant.json). Tout remettre les restaure." }
-$Fenetre.ShowDialog() | Out-Null
+if ($Avant.Count -gt 0) { Log ($L.dejaApplique -f $Avant.Count) }
+
+# Passer devant la console qui nous a lancés (un Terminal garde souvent le premier plan) : Topmost le temps du chargement, puis Activate.
+$Fenetre.Add_Loaded({
+    $Fenetre.Topmost = $true
+    [void]$Fenetre.Activate()
+    $Fenetre.Topmost = $false
+})
+
+# Mode -Essai : la fenêtre s'ouvre pour de vrai mais invisible (hors écran, transparente), note son état dans le journal et se ferme.
+if ($Essai) {
+    $Fenetre.WindowStartupLocation = 'Manual'; $Fenetre.Left = -20000; $Fenetre.Top = -20000
+    $Fenetre.Opacity = 0; $Fenetre.ShowInTaskbar = $false; $Fenetre.ShowActivated = $false
+    $minuteur = New-Object Windows.Threading.DispatcherTimer
+    $minuteur.Interval = [TimeSpan]::FromMilliseconds(1500)
+    $minuteur.Add_Tick({
+        Log "essai     visible=$($Fenetre.IsVisible) chargée=$($Fenetre.IsLoaded) largeur=$($Fenetre.ActualWidth) hauteur=$($Fenetre.ActualHeight)"
+        $this.Stop()
+        $Fenetre.Close()
+    })
+    $minuteur.Start()
+}
+
+Write-Host "  $($L.ouverte)" -ForegroundColor Green
+try { $Fenetre.ShowDialog() | Out-Null } catch {
+    Log "ÉCHEC affichage de la fenêtre : $_"
+    [Windows.MessageBox]::Show("La fenêtre n'a pas pu s'afficher :`n$_`n`nDétail dans $LogFichier", 'bagarre') | Out-Null
+}
+Log 'fenêtre fermée'

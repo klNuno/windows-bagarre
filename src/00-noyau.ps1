@@ -5,6 +5,11 @@ $Depot = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main'
 $Version = '2026-09-13'
 $ErrorActionPreference = 'Continue'
 
+# État partagé avec les gestionnaires d'événements de la fenêtre. Une table, jamais $script: :
+# selon le lancement (-File, "irm | iex", scriptblock) le préfixe $script: ne désigne pas la même portée,
+# alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
+$S = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @() }
+
 # Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
 $Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'outils'))) { Split-Path -Parent $PSCommandPath } else { $null }
@@ -15,7 +20,7 @@ $Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Pa
 # fenêtre cachée sur la ligne de commande élevée, Defender classe ce motif en cheval de Troie (Commando.A!ml, vu le 2026-09-13).
 $EstAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $EstSta = [Threading.Thread]::CurrentThread.GetApartmentState() -eq 'STA'
-if (-not $Liste -and -not $Capture -and (-not $EstAdmin -or -not $EstSta)) {
+if (-not $Liste -and -not $Capture -and -not $Essai -and (-not $EstAdmin -or -not $EstSta)) {
     try {
         $texte = if ($PSCommandPath) { [IO.File]::ReadAllText($PSCommandPath, [Text.Encoding]::UTF8) } else { irm "$Depot/bagarre.ps1" }
         $copie = Join-Path $env:TEMP 'bagarre\bagarre.ps1'
@@ -36,6 +41,11 @@ $Dossier = if ($EstAdmin) { Join-Path $env:ProgramData 'bagarre' } else { Join-P
 if (-not (Test-Path $Dossier)) { New-Item -Path $Dossier -ItemType Directory -Force | Out-Null }
 $EtatFichier = Join-Path $Dossier 'bagarre-avant.json'
 $LogFichier = Join-Path $Dossier 'bagarre.log'
+
+# Langue de la fenêtre : celle choisie la dernière fois, sinon celle de Windows (français ou anglais).
+$LangueFichier = Join-Path $Dossier 'langue.txt'
+$S.Langue = if ((Test-Path $LangueFichier) -and ((Get-Content $LangueFichier -Raw).Trim() -in 'fr', 'en')) { (Get-Content $LangueFichier -Raw).Trim() }
+          elseif ((Get-Culture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
 
 # ---------------------------------------------------------------------------
 # Détection machine (sert aux valeurs automatiques et aux explications)
@@ -61,12 +71,12 @@ function Log($texte) {
     $ligne = "{0}  {1}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $texte
     Add-Content -Path $LogFichier -Value $ligne
     Write-Host "   $texte" -ForegroundColor DarkGray
-    if ($script:Journal) { $script:Journal.AppendText("$texte`r`n"); $script:Journal.ScrollToEnd(); Rafraichir }
+    if ($Journal) { $Journal.AppendText("$texte`r`n"); $Journal.ScrollToEnd(); Rafraichir }
 }
 
 # Laisse la fenêtre se redessiner pendant une action longue (tout tourne sur le thread de la fenêtre).
 function Rafraichir {
-    if ($script:Fenetre) { $script:Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
+    if ($Fenetre) { $Fenetre.Dispatcher.Invoke([Action] {}, [Windows.Threading.DispatcherPriority]::Background) }
 }
 
 function Memoriser($cle, $valeur) {
@@ -176,11 +186,11 @@ function Image-Ouvrir($nom) {
 # Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
-$script:ConsoleN = 0
+$S.ConsoleN = 0
 function Console-Lancer($titre, $commande) {
-    $script:ConsoleN++
+    $S.ConsoleN++
     $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`nWrite-Host ''`r`nWrite-Host '  $titre' -ForegroundColor Cyan`r`nWrite-Host ''`r`n$commande`r`n"
-    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $script:ConsoleN)
+    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $S.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
     Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$fichier`"" | Out-Null
     Log "console   $titre"

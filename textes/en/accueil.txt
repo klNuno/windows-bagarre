@@ -1,0 +1,18 @@
+This pack removes what runs for nothing and tunes what matters for gaming.
+No backup beforehand: if it breaks, you reinstall, that is the whole point of a fresh Windows.
+
+Follow the steps in order. Easy is enough for a desktop PC. The checkbox script
+is the real level for gaming. Hard, you understand every line before checking it.
+
+Pack rule: every tweak says what it changes and what you lose.
+You do not understand a line, you do not check it.
+
+The "(winget)" buttons open a console that installs the current version of the tool.
+Win11Debloat and WinUtil launch as is, in their own console.
+
+Everything the checkbox script changes is logged in C:\ProgramData\bagarre
+(bagarre-avant.json for the before values, bagarre.log for the detail).
+"Restore everything" restores exactly those values.
+
+To reopen bagarre later, the same command in a Terminal:
+  irm {{DEPOT}}/bagarre.ps1 | iex

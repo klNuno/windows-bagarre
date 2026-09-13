@@ -1,0 +1,11 @@
+Quad9 blocks known malicious domains and does not keep your IP address in its logs.
+Cloudflare is usually the fastest. Google keeps logs. Your ISP's DNS is often the
+slowest, except at Free where it is very good.
+
+A gap under 5 ms is not noticeable. If your box is within 5 ms of the best one, keep it.
+
+To encrypt the chosen DNS (DoH: your box and your ISP no longer see the names you request):
+Settings > Network & internet > your adapter > DNS server assignment > Edit > Encrypted DNS:
+Encrypted preferred. Optional, zero effect on ping.
+
+"Restore everything" (tab 3) also restores the previous DNS.

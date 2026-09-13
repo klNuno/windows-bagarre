@@ -1,11 +1,13 @@
 # windows bagarre edition
 
-Débloate et règle un Windows 11 fraîchement installé pour jouer. Une fenêtre, tout le pack dedans.
+Debloats and tunes a freshly installed Windows 11 for gaming. One window, the whole pack inside, French or English.
 
-Dans un Terminal (clic droit sur Démarrer > Terminal), accepte la fenêtre d'administrateur :
+Open a Terminal (right-click Start > Terminal), paste this line, accept the administrator prompt:
 
 ```powershell
 irm https://raw.githubusercontent.com/klNuno/windows-bagarre/main/bagarre.ps1 | iex
 ```
 
-Le reste est dans `LIS-MOI.txt`.
+Nothing else to download. The command always fetches today's version. Everything the checkbox script changes is saved first and can be restored from the window.
+
+The rest, in French, is in `LIS-MOI.txt`.
