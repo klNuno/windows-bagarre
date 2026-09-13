@@ -18,5 +18,6 @@ Ce dépôt, c'est le code source de cette fenêtre :
   build.ps1     assemble src/ et textes/ en bagarre.ps1
 
 Modifier quelque chose : édite src/ ou textes/, lance build.ps1, commite bagarre.ps1 avec.
-Tester sans rien appliquer :  powershell -ExecutionPolicy Bypass -File bagarre.ps1 -Liste
-Voir chaque onglet en PNG sans ouvrir la fenêtre :  ... -File bagarre.ps1 -Capture captures
+Tester sans rien appliquer (le fichier est en UTF-8 sans BOM, d où cette forme plutôt que -File) :
+  & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste
+Voir chaque onglet en PNG sans ouvrir la fenêtre : la même ligne avec -Capture captures à la place de -Liste.

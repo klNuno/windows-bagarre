@@ -1,6 +1,8 @@
-﻿#Requires -Version 5.1
-param([switch]$Liste, [string]$Capture)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre.
+#Requires -Version 5.1
+param([switch]$Liste, [string]$Capture, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Depuis : dossier du clone (pose par la relance admin).
 # bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.
+# UTF-8 SANS BOM : "irm" garde le BOM dans le texte et PowerShell le prend pour une commande. Pour le lancer en local :
+#   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste
 
 $Textes = @{}
 $Textes['accueil'] = @'
@@ -486,17 +488,24 @@ $ErrorActionPreference = 'Continue'
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : outils et images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, ils sont téléchargés depuis $Depot au besoin.
-$Here = if ($PSCommandPath) { Split-Path -Parent $PSCommandPath } else { $null }
+$Here = if ($Depuis) { $Depuis } elseif ($PSCommandPath -and (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'outils'))) { Split-Path -Parent $PSCommandPath } else { $null }
 
 # Admin et thread STA (la fenêtre en a besoin). Sinon on se relance élevé, et on rend la main.
 # -Liste et -Capture (modes de test) tournent sans admin.
+# La relance passe par une copie locale du script (UTF-8 avec BOM, lisible par -File) : pas de "irm | iex" ni de
+# fenêtre cachée sur la ligne de commande élevée, Defender classe ce motif en cheval de Troie (Commando.A!ml, vu le 2026-09-13).
 $EstAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $EstSta = [Threading.Thread]::CurrentThread.GetApartmentState() -eq 'STA'
 if (-not $Liste -and -not $Capture -and (-not $EstAdmin -or -not $EstSta)) {
-    $relance = if ($Here) { "-File `"$PSCommandPath`"" } else { "-Command `"irm $Depot/bagarre.ps1 | iex`"" }
     try {
-        Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden $relance"
-        Write-Host "`n  La fenêtre bagarre s'ouvre en administrateur. Tu peux fermer cette console.`n" -ForegroundColor Green
+        $texte = if ($PSCommandPath) { [IO.File]::ReadAllText($PSCommandPath, [Text.Encoding]::UTF8) } else { irm "$Depot/bagarre.ps1" }
+        $copie = Join-Path $env:TEMP 'bagarre\bagarre.ps1'
+        if (-not (Test-Path (Split-Path $copie))) { New-Item -Path (Split-Path $copie) -ItemType Directory -Force | Out-Null }
+        [IO.File]::WriteAllText($copie, ([string]$texte).TrimStart([char]0xFEFF), (New-Object Text.UTF8Encoding $true))
+        $arguments = "-NoProfile -ExecutionPolicy Bypass -STA -File `"$copie`""
+        if ($Here) { $arguments += " -Depuis `"$Here`"" }
+        Start-Process powershell -Verb RunAs -ArgumentList $arguments
+        Write-Host "`n  La fenêtre bagarre s'ouvre en administrateur (une console l'accompagne, laisse-la). Tu peux fermer celle-ci.`n" -ForegroundColor Green
     } catch {
         Write-Host "`n  Élévation refusée : bagarre a besoin des droits administrateur pour régler Windows.`n" -ForegroundColor Yellow
     }
@@ -647,10 +656,14 @@ function Image-Ouvrir($nom) {
 
 # Lance une commande PowerShell dans une console à part (visible, admin comme nous), qui reste ouverte.
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
+# La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
+$script:ConsoleN = 0
 function Console-Lancer($titre, $commande) {
-    $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'; Write-Host ''; Write-Host '  $titre' -ForegroundColor Cyan; Write-Host ''; $commande"
-    $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($texte))
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -EncodedCommand $enc" | Out-Null
+    $script:ConsoleN++
+    $texte = "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`nWrite-Host ''`r`nWrite-Host '  $titre' -ForegroundColor Cyan`r`nWrite-Host ''`r`n$commande`r`n"
+    $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $script:ConsoleN)
+    [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
+    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$fichier`"" | Out-Null
     Log "console   $titre"
 }
 
