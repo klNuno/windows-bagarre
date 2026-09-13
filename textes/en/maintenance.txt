@@ -8,26 +8,27 @@ Vendor suites to remove: Nahimic, Killer Intelligence Center, Armoury Crate, MSI
 
 ## Disk cleanup, in order
 @BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Settings > System > Storage > Storage Sense: monthly, recycle bin 30 days, Downloads never.
+Storage Sense: monthly, recycle bin 30 days, Downloads never.
+@BtnStockage
 @BtnBleach, BtnRapr, BtnTrim, BtnCrystal
 ! BleachBit: never "Free disk space" nor "Memory". DISM: never /ResetBase.
 
 ## Drivers
-Windows Update no longer touches them (jeu-pilotes box). NVIDIA through NVCleanstall, the rest from the maker's site, only when something misbehaves.
+Windows Update no longer touches them (jeu-pilotes box). The graphics card as in step 4, the rest from the maker's site, only when something misbehaves.
 @BtnDdu
-DDU only when you switch graphics card brand.
+DDU when you switch graphics card brand, or to start clean after a misbehaving driver.
 
 ## The PC wakes up on its own, does not sleep, crashes
 @BtnReveil
 lastwake says who woke it, requests what keeps it awake (often a browser with a video).
-Blue screens: Event Viewer > System, source "WHEA-Logger". A WHEA error = hardware (RAM, overclock, PSU), not Windows.
-Wi-Fi dropping:
-> netsh wlan show wlanreport
+Blue screens: System log, source "WHEA-Logger". A WHEA error = hardware (RAM, overclock, PSU), not Windows.
+@BtnEvenements
+Wi-Fi dropping: the Windows Wi-Fi report says when and why.
+@BtnWlan
 
 ## Defender hogging
-> New-MpPerformanceRecording -RecordTo C:\defender.etl
-> Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10
-Play 10 minutes, Ctrl+C. The folder that comes out goes into Exclusions. Never the whole disk.
+@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
+Start the recording, play ten minutes, press Enter in the console. The report lists the most scanned folders: the game's one goes into Exclusions. Never the whole disk.
 
 ## Measure before / after
 @BtnMeasure, BtnCapframe

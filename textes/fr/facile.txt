@@ -8,14 +8,15 @@ Mode par défaut. Retire les applis sponsorisées, Copilot, les pubs, la télém
 ## 2. WinUtil de Chris Titus : tes programmes d'un coup
 @BtnWinUtil
 Onglet Install : coche ce que tu veux, il installe tout via winget. Onglet Tweaks : preset "Standard" seulement, le script à cocher fait le reste en expliquant chaque ligne.
-Ou coche ici, bagarre les installe directement :
-@Applis
 
 ## 3. Les librairies que les jeux réclament
 Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnVcredist, BtnDirectX
 
-## 4. Audio, 5 minutes, ça évite les crépitements
-- Clic droit sur le haut-parleur > Sons > Communications : "Ne rien faire". Sinon Windows baisse ton son quand Discord sonne.
+## 4. Son, ça évite les crépitements
+- Communications "Ne rien faire" (sinon Windows baisse ton son quand Discord sonne) : c'est une case du script à cocher, déjà cochée.
+@BtnOptiSon
 - Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz.
+@BtnSon
 - Nahimic, Sonic Studio, Realtek Audio Console : désinstalle, le pilote nu suffit.
+@BtnApplisInstallees

@@ -21,10 +21,10 @@ Gérer les paramètres 3D > Paramètres globaux :
 - Smooth Motion : jamais en global. Par jeu, solo seulement.
 Modifier la résolution : plage dynamique "Complète", RGB 4:4:4. Sinon les noirs sont gris.
 Paramètres Windows > Affichage > Graphiques : optimisations pour les jeux fenêtrés activées, HAGS gardé, Auto HDR off en compétitif.
+@BtnGraphiques
 ! Ne désactive jamais le service NVIDIA Display Container (NvContainer), le Panneau en a besoin.
 
 ## 3. Afterburner et RivaTuner : pour voir, pas pour overclocker
-@BtnAfterburner, BtnInspector
+@BtnAfterburner
 L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose. Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
-Profile Inspector : Ansel off, CUDA Force P2 State off. Rien d'autre sans savoir.
 Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.

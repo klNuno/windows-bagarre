@@ -13,7 +13,7 @@ Click until nothing is left, reboot between each batch.
 
 ## Drivers, in order
 - Chipset and network card: your motherboard (or laptop) maker's site, your exact model.
-- NVIDIA graphics card: not now, that is step 4. AMD: AMD's site.
+- Graphics card: not now, that is step 4 (the page adapts to your card, NVIDIA or AMD).
 - Windows Update once more: since 24H2 it finishes the rest (audio, USB, Bluetooth).
-- Last resort for a driver that cannot be found. Only tick what is missing.
-@BtnSnappy
+- An exclamation mark in Device Manager = a missing driver. Last resort: Snappy, only tick what is missing.
+@BtnPeripheriques, BtnSnappy

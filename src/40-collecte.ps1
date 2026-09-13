@@ -175,5 +175,5 @@ Get-WinEvent -FilterHashtable @{ LogName = 'System'; Level = 1, 2; StartTime = (
 # Anonymisation : nom du compte Windows et SID retirés
 $texte = $sb.ToString() -replace '(?i)C:\\Users\\[^\\"]+', 'C:\Users\<toi>' -replace 'HKU\\S-1-5-21-[\d-]+', 'HKCU' -replace [regex]::Escape($env:USERNAME), '<toi>'
 [IO.File]::WriteAllText($Sortie, $texte, (New-Object System.Text.UTF8Encoding $true))
-Log "Rapport écrit : $Sortie ($([math]::Round((Get-Item $Sortie).Length / 1KB)) Ko)"
+Log ((Msg 'rapportEcrit') -f $Sortie, [math]::Round((Get-Item $Sortie).Length / 1KB))
 }

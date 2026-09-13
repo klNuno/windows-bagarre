@@ -10,6 +10,8 @@ This PC went through the "windows bagarre edition" pack:
   (off only in case of black screen or flicker), signature rebuilt (EAC compatible method).
   Classic NVIDIA Control Panel from the Store, Low Latency Mode On (Ultra if no FPS cap),
   max performance, unlimited shader cache, G-Sync + V-Sync On in the Panel + RTSS cap under the screen's refresh rate.
+  AMD card instead: driver from AMD's site in minimal install, Anti-Lag on, Boost/Chill/Enhanced Sync
+  and AFMF off, FreeSync + RTSS cap, instant replay and the Adrenalin overlay off.
 - Checkbox script bagarre.ps1: useless services (telemetry, fax, demo, Edge update...), telemetry, CEIP and error
   reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI cut, Game DVR and PresenceWriter off,
   GlobalTimerResolutionRequests=1, 0.507 ms timer via a scheduled task SetTimerResolution, mouse acceleration off,

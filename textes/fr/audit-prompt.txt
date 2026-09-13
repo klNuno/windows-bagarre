@@ -10,6 +10,8 @@ Ce PC a suivi le pack "windows bagarre edition" :
   (coupé seulement en cas d écran noir ou scintillement), signature reconstruite (méthode compatible EAC).
   Panneau de configuration NVIDIA classique depuis le Store, faible latence Activé (Ultra si pas de cap FPS),
   performances max, cache shaders illimité, G-Sync + V-Sync Activé dans le Panneau + cap RTSS sous le taux de l écran.
+  Carte AMD à la place : pilote depuis le site AMD en installation minimale, Anti-Lag activé, Boost/Chill/Enhanced Sync
+  et AFMF coupés, FreeSync + cap RTSS, relecture instantanée et overlay Adrenalin coupés.
 - Script à cocher bagarre.ps1 : services inutiles (télémétrie, fax, démo, Edge update...), télémétrie, CEIP et rapports
   d erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés, Game DVR et PresenceWriter coupés,
   GlobalTimerResolutionRequests=1, timer 0,507 ms via une tâche planifiée SetTimerResolution, accélération souris coupée,

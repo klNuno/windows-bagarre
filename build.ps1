@@ -6,7 +6,7 @@ $racine = Split-Path -Parent $MyInvocation.MyCommand.Path
 $utf8 = New-Object Text.UTF8Encoding $false   # sans BOM : voir l'en-tete du fichier genere
 $sb = New-Object Text.StringBuilder
 [void]$sb.AppendLine('#Requires -Version 5.1')
-[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [switch]$Essai, [switch]$Vieux, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Vieux : force l avertissement "installation pas recente". -Depuis : dossier du clone (pose par la relance admin).')
+[void]$sb.AppendLine('param([switch]$Liste, [string]$Capture, [switch]$Essai, [switch]$Vieux, [switch]$Amd, [string]$Depuis)  # -Liste : le catalogue en texte, sans rien appliquer. -Capture dossier : chaque onglet en PNG, sans fenetre. -Essai : ouvre la fenetre invisible 1,5 s et note son etat. -Vieux : force l avertissement "installation pas recente". -Amd : simule une carte AMD dediee. -Depuis : dossier du clone (pose par la relance admin).')
 [void]$sb.AppendLine('# bagarre.ps1 : GENERE par build.ps1 a partir de src/ et textes/. Ne pas editer ce fichier, edite les sources.')
 [void]$sb.AppendLine('# UTF-8 SANS BOM : "irm" garde le BOM dans le texte et PowerShell le prend pour une commande. Pour le lancer en local :')
 [void]$sb.AppendLine('#   & ([scriptblock]::Create([IO.File]::ReadAllText("bagarre.ps1", [Text.Encoding]::UTF8))) -Liste')

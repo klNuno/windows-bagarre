@@ -13,7 +13,7 @@ Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
 
 ## Pilotes, dans l'ordre
 - Chipset et carte réseau : site du fabricant de ta carte mère (ou du portable), ton modèle exact.
-- Carte graphique NVIDIA : pas maintenant, c'est l'étape 4. AMD : site AMD.
+- Carte graphique : pas maintenant, c'est l'étape 4 (la page s'adapte à ta carte, NVIDIA ou AMD).
 - Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
-- Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.
-@BtnSnappy
+- Un point d'exclamation dans le Gestionnaire de périphériques = un pilote qui manque. Dernier recours : Snappy, ne coche que ce qui manque.
+@BtnPeripheriques, BtnSnappy

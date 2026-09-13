@@ -373,6 +373,10 @@ Ajouter $G 'conf-fin-tache' 'Bouton "Fin de tâche" dans le clic droit de la bar
     'Un clic droit sur une icône de la barre des tâches propose "Fin de tâche" : un programme figé se tue sans ouvrir le Gestionnaire des tâches. Option Windows 11 (Paramètres > Système > Pour les développeurs), juste cachée.' $true '' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings' 'TaskbarEndTask' 1
 }
+Ajouter $G 'conf-ducking' 'Son : "Ne rien faire" quand Discord ou un appel s ouvre' `
+    'Par défaut Windows baisse tous les autres sons de 80 % dès qu une appli de communication (Discord, Teams) prend le micro. Le jeu devient inaudible en vocal. C est l onglet Communications de la fenêtre Son, réglé sur "Ne rien faire".' $true '' {
+    Reg-Ecrire 'HKCU:\Software\Microsoft\Multimedia\Audio' 'UserDuckingPreference' 3
+}
 Ajouter $G 'conf-edge' 'Edge : plus de préchargement au démarrage ni de processus en fond' `
     'Edge se lance à moitié au démarrage de Windows (Startup Boost) et reste en mémoire fenêtre fermée (Background Mode), même si tu utilises un autre navigateur. Deux stratégies documentées par Microsoft.' $true 'Edge met une seconde de plus à s ouvrir la première fois.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'StartupBoostEnabled' 0
@@ -504,7 +508,7 @@ $Actions = @{
     'jeu-timer' = 'on'; 'jeu-timer-demarrage' = 'on'; 'jeu-f8' = 'on'
     'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
     'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
-    'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'
+    'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'; 'conf-ducking' = 'set'
     'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'adv-boost' = 'set'; 'nv-pstate' = 'set'
 }
 function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'off' } }

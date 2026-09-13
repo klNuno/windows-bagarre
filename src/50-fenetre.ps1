@@ -16,21 +16,18 @@ $PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Mai
 $UI = @{
     fr = @{
         nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        duree    = '', '30 min', '15 min', '10 min', '15 min', '20 min', 'plus tard', '1 min', '10 min'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, tes applis', 'services, vie privée, jeu, réseau, confort', 'pilote nu, ancien Panneau de configuration', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote nu, ancien Panneau de configuration', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
-            Facile = 'Débloat en deux clics, librairies, tes applis'; Optis = 'Le script à cocher'
+            Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
             Nvidia = "Le pilote nu, puis l'ancien Panneau de configuration"; Dur = 'Une chose à la fois, tu mesures'
             Maintenance = 'Quand le PC a vécu'; Dns = 'Qui répond le plus vite depuis chez toi ?'; Audit = 'Une IA vérifie ton PC'
         }
-        etape = 'Étape {0}'; precedent = 'Étape précédente'; suivant = 'Étape suivante'; journal = 'Journal'
         survole = 'Passe la souris sur une ligne pour lire le pourquoi et ce que tu perds.'; pourquoi = 'Pourquoi'; perds = 'Ce que tu perds'; rien = 'Rien de notable.'
         appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
-        legende = "Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. L'étiquette dit ce que la case fait : DÉSACTIVER coupe, ACTIVER ajoute, RÉGLER change une valeur. Les cases cochées d'office sont sûres pour tout PC. Tu ne comprends pas une ligne, tu ne la coches pas."
+        legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Tu ne comprends pas une ligne, tu ne la coches pas.'
         seraFait = 'sera fait'; laisse = 'laissé tel quel'; dejaFait = 'déjà fait'
-        applisTitre = 'Coche, puis le bouton. winget installe tout dans une console.'; applisBtn = 'Installer les applis cochées'
-        reseauTitre = 'Carte réseau à la main'
+        reseauTitre = 'Carte réseau à la main'; langue = 'Français'
         rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
         termine = 'Terminé. Redémarre le PC pour que tout prenne effet.'; rienRestaurer = 'Rien à restaurer : aucun réglage appliqué sur ce PC.'
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
@@ -39,7 +36,7 @@ $UI = @{
         dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
         commandeCopiee = 'Commande copiée. Colle-la dans un Terminal pour rouvrir bagarre.'
-        pasRapport = "Pas encore de rapport : bouton 1 d'abord."; pasJournal = 'Pas encore de journal.'; aucuneAppli = 'Aucune appli cochée.'
+        pasRapport = "Pas encore de rapport : bouton 1 d'abord."; pasJournal = 'Pas encore de journal.'
         dejaApplique = '{0} réglages déjà appliqués sur ce PC (bagarre-avant.json). Tout remettre les restaure.'
         ouverte = 'Fenêtre ouverte. Si tu ne la vois pas, regarde la barre des tâches : elle peut être derrière ce terminal.'
         measureTitre = 'MeasureSleep : attendu environ 0,5 ms, Ctrl+C pour arrêter'
@@ -53,21 +50,18 @@ $UI = @{
     }
     en = @{
         nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        duree    = '', '30 min', '15 min', '10 min', '15 min', '20 min', 'later', '1 min', '10 min'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, your apps', 'services, privacy, gaming, network, comfort', 'bare driver, classic Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'bare driver, classic Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
-            Facile = 'Debloat in two clicks, libraries, your apps'; Optis = 'The checkbox script'
+            Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
             Nvidia = 'The bare driver, then the classic Control Panel'; Dur = 'One thing at a time, you measure'
             Maintenance = 'When the PC has lived a while'; Dns = 'Who answers fastest from your place?'; Audit = 'An AI checks your PC'
         }
-        etape = 'Step {0}'; precedent = 'Previous step'; suivant = 'Next step'; journal = 'Log'
         survole = 'Hover a line to read the why and what you lose.'; pourquoi = 'Why'; perds = 'What you lose'; rien = 'Nothing notable.'
         appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
-        legende = 'Checked = done when you click Apply. Unchecked = nothing changes. The label says what the box does: TURN OFF cuts, TURN ON adds, SET changes a value. Boxes checked by default are safe on any PC. If you do not understand a line, do not check it.'
+        legende = 'Checked = done when you click Apply. Unchecked = nothing changes. If you do not understand a line, do not check it.'
         seraFait = 'will be done'; laisse = 'left as is'; dejaFait = 'already done'
-        applisTitre = 'Tick, then the button. winget installs everything in a console.'; applisBtn = 'Install the ticked apps'
-        reseauTitre = 'Network card by hand'
+        reseauTitre = 'Network card by hand'; langue = 'English'
         rienCoche = 'Nothing checked.'; confirmAppliquer = "Apply {0} settings?`n`nThe previous state is saved in {1}, the Restore button puts it back."
         termine = 'Done. Reboot the PC so everything takes effect.'; rienRestaurer = 'Nothing to restore: no setting applied on this PC.'
         confirmRestaurer = 'Put the {0} settings back as they were?'; restaure = 'Restored. Reboot the PC.'
@@ -76,7 +70,7 @@ $UI = @{
         dnsSelection = 'Click a result line.'; dnsBox = 'router'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
         commandeCopiee = 'Command copied. Paste it into a Terminal to reopen bagarre.'
-        pasRapport = 'No report yet: button 1 first.'; pasJournal = 'No log yet.'; aucuneAppli = 'No app ticked.'
+        pasRapport = 'No report yet: button 1 first.'; pasJournal = 'No log yet.'
         dejaApplique = '{0} settings already applied on this PC (bagarre-avant.json). Restore puts them back.'
         ouverte = 'Window open. If you do not see it, check the taskbar: it may be behind this terminal.'
         measureTitre = 'MeasureSleep: about 0.5 ms expected, Ctrl+C to stop'
@@ -110,63 +104,87 @@ function Age-Texte($jours) {
 # Les boutons : libellé et bulle d'aide dans les deux langues, logo de l'outil lancé, ce qu'ils font.
 # Un bouton est créé une fois (Bouton-Obtenir) et posé là où le texte de la page l'appelle par "@Id".
 # ---------------------------------------------------------------------------
+# Carte AMD dédiée : l'étape 4 devient la page AMD (textes/amd.txt), le rail et la carte d'accueil suivent.
+# Le nom interne de la page reste Nvidia.
+if ($EstAmd) {
+    $UI.fr.nav[4] = 'AMD'; $UI.fr.resume[4] = 'pilote propre, Adrenalin sans le superflu'; $UI.fr.titres.Nvidia = 'Le pilote propre, puis Adrenalin sans le superflu'
+    $UI.en.nav[4] = 'AMD'; $UI.en.resume[4] = 'clean driver, Adrenalin without the extras'; $UI.en.titres.Nvidia = 'The clean driver, then Adrenalin without the extras'
+}
+
 $Boutons = @{
     BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
-    BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir bagarre.log'; en = 'Open bagarre.log' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
-    BtnCommande = @{ T = @{ fr = 'Copier la commande'; en = 'Copy the command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot/bagarre.ps1 | iex"); Log $Bagarre.L.commandeCopiee } }
+    BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
+    BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot/bagarre.ps1 | iex"); Log $Bagarre.L.commandeCopiee } }
 
-    BtnFsutil = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'fsutil 8dot3name set 1'; en = 'fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
+    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
     BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
-    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Snappy Driver Installer Origin'; en = 'Snappy Driver Installer Origin' }; Tip = @{ fr = 'Installe via winget. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Installs through winget. Last resort for a missing driver. Only tick what is missing.' }; Action = { Winget-Installer 'Snappy Driver Installer Origin' 'GlennDelahoy.SnappyDriverInstallerOrigin' } }
+    BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
+    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Télécharge le zip officiel (celui que winget connaît) dans le dossier bagarre et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Downloads the official zip (the one winget knows) into the bagarre folder and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
 
-    BtnDebloat = @{ Logo = 'raphire'; Principal = $true; T = @{ fr = 'Lancer Win11Debloat'; en = 'Run Win11Debloat' }; Tip = @{ fr = 'Retire les applis sponsorisées, Copilot, les pubs, la télémétrie. Demande avant chaque groupe. Mode par défaut.'; en = 'Removes sponsored apps, Copilot, ads, telemetry. Asks before each group. Default mode.' }; Action = { Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' } }
-    BtnWinUtil = @{ Logo = 'christitus'; Principal = $true; T = @{ fr = 'Lancer WinUtil (Chris Titus)'; en = 'Run WinUtil (Chris Titus)' }; Tip = @{ fr = 'Onglet Install pour tes programmes, onglet Tweaks preset Standard seulement.'; en = 'Install tab for your programs, Tweaks tab with the Standard preset only.' }; Action = { Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' } }
-    BtnDirectX = @{ Logo = 'microsoft'; T = @{ fr = 'DirectX'; en = 'DirectX' }; Tip = @{ fr = 'Installe via winget les vieilles librairies DirectX 9 que les anciens jeux réclament.'; en = 'Installs through winget the old DirectX 9 libraries older games ask for.' }; Action = { Winget-Installer 'DirectX' 'Microsoft.DirectX' } }
-    BtnVcredist = @{ Logo = 'microsoft'; T = @{ fr = 'Visual C++ 2005 à 2022'; en = 'Visual C++ 2005 to 2022' }; Tip = @{ fr = 'Installe via winget. Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".'; en = 'Installs through winget. Without them a game crashes with "VCRUNTIME140.dll not found".' }; Action = { $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }; Winget-Installer 'Visual C++ 2005-2022' $ids } }
+    BtnDebloat = @{ Logo = 'raphire'; T = @{ fr = 'Lancer Win11Debloat'; en = 'Run Win11Debloat' }; Tip = @{ fr = 'Retire les applis sponsorisées, Copilot, les pubs, la télémétrie. Demande avant chaque groupe. Mode par défaut.'; en = 'Removes sponsored apps, Copilot, ads, telemetry. Asks before each group. Default mode.' }; Action = { Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' } }
+    BtnWinUtil = @{ Logo = 'christitus'; T = @{ fr = 'Lancer WinUtil (Chris Titus)'; en = 'Run WinUtil (Chris Titus)' }; Tip = @{ fr = 'Onglet Install pour tes programmes, onglet Tweaks preset Standard seulement.'; en = 'Install tab for your programs, Tweaks tab with the Standard preset only.' }; Action = { Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' } }
+    BtnDirectX = @{ Logo = 'microsoft'; T = @{ fr = 'Installer DirectX 9'; en = 'Install DirectX 9' }; Tip = @{ fr = 'Installe via winget les vieilles librairies DirectX 9 que les anciens jeux réclament.'; en = 'Installs through winget the old DirectX 9 libraries older games ask for.' }; Action = { Winget-Installer 'DirectX' 'Microsoft.DirectX' } }
+    BtnVcredist = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Visual C++ 2005 à 2022'; en = 'Install Visual C++ 2005 to 2022' }; Tip = @{ fr = 'Installe via winget. Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".'; en = 'Installs through winget. Without them a game crashes with "VCRUNTIME140.dll not found".' }; Action = { $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }; Winget-Installer 'Visual C++ 2005-2022' $ids } }
+    BtnOptiSon = @{ T = @{ fr = 'Voir la case dans le script à cocher'; en = 'See the box in the checkbox script' }; Tip = @{ fr = 'Ouvre le script à cocher sur la ligne Son.'; en = 'Opens the checkbox script on the Sound line.' }; Action = { Optis-Filtrer 'Discord' } }
+    BtnSon = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les périphériques de lecture'; en = 'Open playback devices' }; Tip = @{ fr = 'La fenêtre Son de Windows : ton haut-parleur > Propriétés > Améliorations et Avancé.'; en = 'The Windows Sound window: your speaker > Properties > Enhancements and Advanced.' }; Action = { Start-Process control.exe -ArgumentList 'mmsys.cpl' | Out-Null } }
+    BtnApplisInstallees = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Applications installées'; en = 'Open Installed apps' }; Tip = @{ fr = 'Pour désinstaller Nahimic, Sonic Studio, Realtek Audio Console.'; en = 'To uninstall Nahimic, Sonic Studio, Realtek Audio Console.' }; Action = { Ouvrir 'ms-settings:appsfeatures' } }
 
     BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
-    BtnDefaut = @{ Zone = 'Barre'; T = @{ fr = 'Cases par défaut'; en = 'Default boxes' }; Tip = @{ fr = 'Recoche exactement les cases sûres, décoche le reste.'; en = 'Re-ticks exactly the safe boxes, unticks the rest.' }; Action = { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } } }
-    BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter'; en = 'Re-detect' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
+    BtnDefaut = @{ Zone = 'Barre'; T = @{ fr = 'Recocher les cases par défaut'; en = 'Re-tick the default boxes' }; Tip = @{ fr = 'Recoche exactement les cases sûres, décoche le reste.'; en = 'Re-ticks exactly the safe boxes, unticks the rest.' }; Action = { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } } }
+    BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
     BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
-    BtnReseau = @{ Zone = 'Volet'; T = @{ fr = 'Carte réseau à la main'; en = 'Network card by hand' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
-    BtnImgProtocoles = @{ Zone = 'Volet'; T = @{ fr = 'Capture : protocoles'; en = 'Screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
-    BtnImgAvance = @{ Zone = 'Volet'; T = @{ fr = 'Capture : onglet Avancé'; en = 'Screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
-    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir bagarre.log'; en = 'Open bagarre.log' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
+    BtnReseau = @{ Zone = 'Volet'; T = @{ fr = 'Lire : la carte réseau à la main'; en = 'Read: the network card by hand' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
+    BtnImgProtocoles = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : protocoles'; en = 'See the screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
+    BtnImgAvance = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : onglet Avancé'; en = 'See the screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
+    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
-    BtnNvclean = @{ Logo = 'techpowerup'; Principal = $true; T = @{ fr = 'NVCleanstall'; en = 'NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App. Coche comme sur la capture.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App. Tick as on the screenshot.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
-    BtnPanneau = @{ Logo = 'nvidia'; Principal = $true; T = @{ fr = 'Panneau de configuration NVIDIA'; en = 'NVIDIA Control Panel' }; Tip = @{ fr = 'L ancien Panneau, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The classic Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Console-Lancer 'NVIDIA Control Panel' 'winget install --id 9NF8H0H7WMLT --source msstore --accept-package-agreements --accept-source-agreements' } }
-    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'MSI Afterburner + RivaTuner'; en = 'MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Installs through winget. Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
-    BtnInspector = @{ Logo = 'orbmu2k'; T = @{ fr = 'NVIDIA Profile Inspector'; en = 'NVIDIA Profile Inspector' }; Tip = @{ fr = 'Installe via winget. Ansel off, CUDA Force P2 State off. Rien d autre sans savoir.'; en = 'Installs through winget. Ansel off, CUDA Force P2 State off. Nothing else unless you know.' }; Action = { Winget-Installer 'NVIDIA Profile Inspector' 'Orbmu2k.nvidiaProfileInspector' } }
-    BtnImgNvclean = @{ T = @{ fr = 'Capture : quoi cocher'; en = 'Screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall (sauf MPO).'; en = 'The boxes to tick in NVCleanstall (except MPO).' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
-    BtnImgPanneau = @{ T = @{ fr = 'Capture : réglages 3D'; en = 'Screenshot: 3D settings' }; Tip = @{ fr = 'Les réglages 3D globaux.'; en = 'The global 3D settings.' }; Action = { Image-Ouvrir 'panneau-nvidia.png' } }
+    BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App. Coche comme sur la capture.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App. Tick as on the screenshot.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
+    BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'L ancien Panneau, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The classic Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Console-Lancer 'NVIDIA Control Panel' 'winget install --id 9NF8H0H7WMLT --source msstore --accept-package-agreements --accept-source-agreements' } }
+    BtnGraphiques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Affichage > Graphiques'; en = 'Open Display > Graphics' }; Tip = @{ fr = 'Les Paramètres Windows : optimisations fenêtrées, HAGS, Auto HDR.'; en = 'Windows Settings: windowed optimizations, HAGS, Auto HDR.' }; Action = { Ouvrir 'ms-settings:display-advancedgraphics' } }
+    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Installs through winget. Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall (sauf MPO).'; en = 'The boxes to tick in NVCleanstall (except MPO).' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
+    BtnImgPanneau = @{ T = @{ fr = 'Voir la capture : réglages 3D'; en = 'See the screenshot: 3D settings' }; Tip = @{ fr = 'Les réglages 3D globaux.'; en = 'The global 3D settings.' }; Action = { Image-Ouvrir 'panneau-nvidia.png' } }
 
-    BtnMeasureDur = @{ Logo = 'valleyofdoom'; Principal = $true; T = @{ fr = 'MeasureSleep'; en = 'MeasureSleep' }; Tip = @{ fr = 'Mesure le timer. Attendu environ 0,5 ms après le script.'; en = 'Measures the timer. About 0.5 ms expected after the script.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $Bagarre.L.measureTitre "& '$exe'" } } }
-    BtnTimerDepot = @{ Logo = 'valleyofdoom'; T = @{ fr = 'TimerResolution (dépôt)'; en = 'TimerResolution (repo)' }; Tip = @{ fr = 'Le code source de SetTimerResolution et MeasureSleep.'; en = 'The source code of SetTimerResolution and MeasureSleep.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/TimerResolution' } }
-    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'ISLC'; en = 'ISLC' }; Tip = @{ fr = 'Installe via winget. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget. 16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
-    BtnCompact = @{ Logo = 'iridiumio'; T = @{ fr = 'CompactGUI'; en = 'CompactGUI' }; Tip = @{ fr = 'Installe via winget. Compression NTFS des vieux jeux 2D uniquement.'; en = 'Installs through winget. NTFS compression for old 2D games only.' }; Action = { Winget-Installer 'CompactGUI' 'IridiumIO.CompactGUI' } }
-    BtnAutoGpu = @{ Logo = 'valleyofdoom'; T = @{ fr = 'AutoGpuAffinity (dépôt)'; en = 'AutoGpuAffinity (repo)' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
+    BtnMeasureDur = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Mesurer le timer (MeasureSleep)'; en = 'Measure the timer (MeasureSleep)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. Ctrl+C pour arrêter.'; en = 'About 0.5 ms expected after the script. Ctrl+C to stop.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $Bagarre.L.measureTitre "& '$exe'" } } }
+    BtnOptiTimer = @{ T = @{ fr = 'Voir la case du timer dans le script'; en = 'See the timer box in the script' }; Tip = @{ fr = 'Ouvre le script à cocher sur les lignes du timer.'; en = 'Opens the checkbox script on the timer lines.' }; Action = { Optis-Filtrer 'timer' } }
+    BtnPlanificateur = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Planificateur de tâches'; en = 'Open Task Scheduler' }; Tip = @{ fr = 'La tâche "bagarre timer" est à la racine.'; en = 'The "bagarre timer" task sits at the root.' }; Action = { Ouvrir 'taskschd.msc' } }
+    BtnTimerDepot = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Ouvrir le dépôt TimerResolution'; en = 'Open the TimerResolution repo' }; Tip = @{ fr = 'Le code source de SetTimerResolution et MeasureSleep.'; en = 'The source code of SetTimerResolution and MeasureSleep.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/TimerResolution' } }
+    BtnSouris = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les propriétés de la souris'; en = 'Open mouse properties' }; Tip = @{ fr = 'Onglet Options du pointeur : vitesse au cran 6/11, précision décochée par le script.'; en = 'Pointer Options tab: speed at notch 6/11, precision unticked by the script.' }; Action = { Start-Process control.exe -ArgumentList 'main.cpl' | Out-Null } }
+    BtnOptiSouris = @{ T = @{ fr = 'Voir la case RawMouseThrottleDuration'; en = 'See the RawMouseThrottleDuration box' }; Tip = @{ fr = 'Ouvre le script à cocher sur cette ligne.'; en = 'Opens the checkbox script on that line.' }; Action = { Optis-Filtrer 'RawMouse' } }
+    BtnOptiAvance = @{ T = @{ fr = 'Voir le groupe Avancé du script'; en = 'See the Advanced group of the script' }; Tip = @{ fr = 'Ouvre le script à cocher sur le groupe Avancé.'; en = 'Opens the checkbox script on the Advanced group.' }; Action = { Optis-Filtrer $(if ($Bagarre.Langue -eq 'fr') { 'Avancé' } else { 'Advanced' }) } }
+    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget. 16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
+    BtnCompact = @{ Logo = 'iridiumio'; T = @{ fr = 'Installer CompactGUI'; en = 'Install CompactGUI' }; Tip = @{ fr = 'Installe via winget. Compression NTFS des vieux jeux 2D uniquement.'; en = 'Installs through winget. NTFS compression for old 2D games only.' }; Action = { Winget-Installer 'CompactGUI' 'IridiumIO.CompactGUI' } }
+    BtnAutoGpu = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Ouvrir le dépôt AutoGpuAffinity'; en = 'Open the AutoGpuAffinity repo' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
+    BtnAmd = @{ T = @{ fr = 'Ouvrir la page pilotes AMD'; en = 'Open the AMD drivers page' }; Tip = @{ fr = 'Le site AMD, pilote seul.'; en = 'AMD site, driver only.' }; Action = { Ouvrir 'https://www.amd.com/en/support/download/drivers.html' } }
+    BtnUpdateOptions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update > Options avancées'; en = 'Open Windows Update > Advanced options' }; Tip = @{ fr = 'Suspendre les mises à jour, jusqu à 5 semaines.'; en = 'Pause updates, up to 5 weeks.' }; Action = { Ouvrir 'ms-settings:windowsupdate-options' } }
 
-    BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Autoruns'; en = 'Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
-    BtnGeek = @{ Logo = 'geek'; T = @{ fr = 'Geek Uninstaller'; en = 'Geek Uninstaller' }; Tip = @{ fr = 'Installe via winget. Désinstalle proprement et enlève les restes.'; en = 'Installs through winget. Uninstalls cleanly and removes leftovers.' }; Action = { Winget-Installer 'Geek Uninstaller' 'GeekUninstaller.GeekUninstaller' } }
-    BtnFan = @{ Logo = 'rem0o'; T = @{ fr = 'FanControl'; en = 'FanControl' }; Tip = @{ fr = 'Installe via winget. Les ventilos, sans la suite constructeur.'; en = 'Installs through winget. Fans, without the vendor suite.' }; Action = { Winget-Installer 'FanControl' 'Rem0o.FanControl' } }
-    BtnRgb = @{ Logo = 'openrgb'; T = @{ fr = 'OpenRGB'; en = 'OpenRGB' }; Tip = @{ fr = 'Installe via winget. Les LED, sans la suite constructeur.'; en = 'Installs through winget. LEDs, without the vendor suite.' }; Action = { Winget-Installer 'OpenRGB' 'OpenRGB.OpenRGB' } }
-    BtnCleanmgr = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Nettoyage de disque'; en = 'Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
-    BtnDismAnalyse = @{ Logo = 'microsoft'; T = @{ fr = 'DISM : analyser WinSxS'; en = 'DISM: analyze WinSxS' }; Tip = @{ fr = 'Dit s il y a quelque chose à nettoyer.'; en = 'Says whether there is something to clean.' }; Action = { Console-Lancer 'DISM AnalyzeComponentStore' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' } }
-    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'DISM : nettoyer WinSxS'; en = 'DISM: clean WinSxS' }; Tip = @{ fr = 'Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
-    BtnBleach = @{ Logo = 'bleachbit'; T = @{ fr = 'BleachBit'; en = 'BleachBit' }; Tip = @{ fr = 'Installe via winget. Caches navigateurs, logs. Jamais "Free disk space" ni "Memory".'; en = 'Installs through winget. Browser caches, logs. Never "Free disk space" nor "Memory".' }; Action = { Winget-Installer 'BleachBit' 'BleachBit.BleachBit' } }
-    BtnRapr = @{ Logo = 'lostindark'; T = @{ fr = 'DriverStore Explorer'; en = 'DriverStore Explorer' }; Tip = @{ fr = 'Installe via winget. Supprime les vieux pilotes NVIDIA empilés (plusieurs Go).'; en = 'Installs through winget. Removes stacked old NVIDIA drivers (several GB).' }; Action = { Winget-Installer 'DriverStore Explorer' 'lostindark.DriverStoreExplorer' } }
-    BtnTrim = @{ Logo = 'microsoft'; T = @{ fr = 'TRIM du disque système'; en = 'TRIM the system disk' }; Tip = @{ fr = 'Optimize-Volume -ReTrim. L Assistant de stockage le fait déjà tous les mois.'; en = 'Optimize-Volume -ReTrim. Storage Sense already does it monthly.' }; Action = { Console-Lancer 'TRIM' "Optimize-Volume -DriveLetter $($env:SystemDrive[0]) -ReTrim -Verbose" } }
-    BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'CrystalDiskInfo'; en = 'CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
-    BtnDdu = @{ Logo = 'wagnardsoft'; T = @{ fr = 'DDU'; en = 'DDU' }; Tip = @{ fr = 'Installe via winget. Seulement quand tu changes de marque de carte graphique.'; en = 'Installs through winget. Only when you switch graphics card brand.' }; Action = { Winget-Installer 'Display Driver Uninstaller' 'Wagnardsoft.DisplayDriverUninstaller' } }
-    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Qui réveille le PC ?'; en = 'What wakes the PC?' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans une console.'; en = 'powercfg /lastwake, /waketimers, /requests in a console.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' } }
-    BtnMeasure = @{ Logo = 'valleyofdoom'; T = @{ fr = 'MeasureSleep (vérifier le timer)'; en = 'MeasureSleep (check the timer)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. 1 ms ou 15,6 ms : tuto Dur, point 1.'; en = 'About 0.5 ms expected after the script. 1 ms or 15.6 ms: Hard guide, point 1.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $Bagarre.L.measureTitre "& '$exe'" } } }
-    BtnCapframe = @{ Logo = 'cxworld'; T = @{ fr = 'CapFrameX + PresentMon'; en = 'CapFrameX + PresentMon' }; Tip = @{ fr = 'Installe via winget. Mesurer avant / après : médiane, 1 % low, p99.'; en = 'Installs through winget. Measure before / after: median, 1% low, p99.' }; Action = { Winget-Installer 'CapFrameX + PresentMon' 'CXWorld.CapFrameX', 'Intel.PresentMon' } }
+    BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
+    BtnGeek = @{ Logo = 'geek'; T = @{ fr = 'Installer Geek Uninstaller'; en = 'Install Geek Uninstaller' }; Tip = @{ fr = 'Installe via winget. Désinstalle proprement et enlève les restes.'; en = 'Installs through winget. Uninstalls cleanly and removes leftovers.' }; Action = { Winget-Installer 'Geek Uninstaller' 'GeekUninstaller.GeekUninstaller' } }
+    BtnFan = @{ Logo = 'rem0o'; T = @{ fr = 'Installer FanControl'; en = 'Install FanControl' }; Tip = @{ fr = 'Installe via winget. Les ventilos, sans la suite constructeur.'; en = 'Installs through winget. Fans, without the vendor suite.' }; Action = { Winget-Installer 'FanControl' 'Rem0o.FanControl' } }
+    BtnRgb = @{ Logo = 'openrgb'; T = @{ fr = 'Installer OpenRGB'; en = 'Install OpenRGB' }; Tip = @{ fr = 'Installe via winget. Les LED, sans la suite constructeur.'; en = 'Installs through winget. LEDs, without the vendor suite.' }; Action = { Winget-Installer 'OpenRGB' 'OpenRGB.OpenRGB' } }
+    BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
+    BtnDismAnalyse = @{ Logo = 'microsoft'; T = @{ fr = 'Analyser WinSxS (DISM)'; en = 'Analyze WinSxS (DISM)' }; Tip = @{ fr = 'Dit s il y a quelque chose à nettoyer.'; en = 'Says whether there is something to clean.' }; Action = { Console-Lancer 'DISM AnalyzeComponentStore' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' } }
+    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer WinSxS (DISM)'; en = 'Clean WinSxS (DISM)' }; Tip = @{ fr = 'Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
+    BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
+    BtnBleach = @{ Logo = 'bleachbit'; T = @{ fr = 'Installer BleachBit'; en = 'Install BleachBit' }; Tip = @{ fr = 'Installe via winget. Caches navigateurs, logs. Jamais "Free disk space" ni "Memory".'; en = 'Installs through winget. Browser caches, logs. Never "Free disk space" nor "Memory".' }; Action = { Winget-Installer 'BleachBit' 'BleachBit.BleachBit' } }
+    BtnRapr = @{ Logo = 'lostindark'; T = @{ fr = 'Installer DriverStore Explorer'; en = 'Install DriverStore Explorer' }; Tip = @{ fr = 'Installe via winget. Supprime les vieux pilotes NVIDIA empilés (plusieurs Go).'; en = 'Installs through winget. Removes stacked old NVIDIA drivers (several GB).' }; Action = { Winget-Installer 'DriverStore Explorer' 'lostindark.DriverStoreExplorer' } }
+    BtnTrim = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer le TRIM du disque système'; en = 'Run TRIM on the system disk' }; Tip = @{ fr = 'Optimize-Volume -ReTrim. L Assistant de stockage le fait déjà tous les mois.'; en = 'Optimize-Volume -ReTrim. Storage Sense already does it monthly.' }; Action = { Console-Lancer 'TRIM' "Optimize-Volume -DriveLetter $($env:SystemDrive[0]) -ReTrim -Verbose" } }
+    BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
+    BtnDdu = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer DDU'; en = 'Install DDU' }; Tip = @{ fr = 'Installe via winget. Quand tu changes de marque de carte, ou pour repartir propre après un pilote qui déconne.'; en = 'Installs through winget. When you switch card brand, or to start clean after a misbehaving driver.' }; Action = { Winget-Installer 'Display Driver Uninstaller' 'Wagnardsoft.DisplayDriverUninstaller' } }
+    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans une console.'; en = 'powercfg /lastwake, /waketimers, /requests in a console.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' } }
+    BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
+    BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' } }
+    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender (10 min)'; en = 'Record Defender (10 min)' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue, puis Entrée dans la console pour arrêter.'; en = 'New-MpPerformanceRecording: play, then press Enter in the console to stop.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl' } }
+    BtnDefenderRapport = @{ Logo = 'microsoft'; T = @{ fr = 'Lire le rapport Defender'; en = 'Read the Defender report' }; Tip = @{ fr = 'Get-MpPerformanceReport : les 10 fichiers et dossiers les plus scannés.'; en = 'Get-MpPerformanceReport: the 10 most scanned files and folders.' }; Action = { Console-Lancer 'Defender' 'Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
+    BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
+    BtnMeasure = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Mesurer le timer (MeasureSleep)'; en = 'Measure the timer (MeasureSleep)' }; Tip = @{ fr = 'Attendu environ 0,5 ms après le script. 1 ms ou 15,6 ms : tuto Dur, point 1.'; en = 'About 0.5 ms expected after the script. 1 ms or 15.6 ms: Hard guide, point 1.' }; Action = { $exe = Outil-Obtenir 'MeasureSleep.exe'; if ($exe) { Console-Lancer $Bagarre.L.measureTitre "& '$exe'" } } }
+    BtnCapframe = @{ Logo = 'cxworld'; T = @{ fr = 'Installer CapFrameX + PresentMon'; en = 'Install CapFrameX + PresentMon' }; Tip = @{ fr = 'Installe via winget. Mesurer avant / après : médiane, 1 % low, p99.'; en = 'Installs through winget. Measure before / after: median, 1% low, p99.' }; Action = { Winget-Installer 'CapFrameX + PresentMon' 'CXWorld.CapFrameX', 'Intel.PresentMon' } }
 
-    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Une trentaine de secondes.'; en = 'About thirty seconds.' }; Action = { Dns-Tester } }
+    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS (30 s)'; en = 'Test the DNS servers (30 s)' }; Tip = @{ fr = 'Une trentaine de secondes, ne change rien.'; en = 'About thirty seconds, changes nothing.' }; Action = { Dns-Tester } }
     BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $Bagarre.DnsChoix; if ($i -lt 0) { Log $Bagarre.L.dnsSelection; return }; Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$i] } }
 
-    BtnCollecter = @{ Principal = $true; T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
-    BtnPrompt = @{ Principal = $true; T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
+    BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
+    BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
     BtnDossierAudit = @{ T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
 
     BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans une console. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in a console. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" } }
@@ -174,9 +192,39 @@ $Boutons = @{
     BtnVoileContinuer = @{ T = @{ fr = 'Continuer quand même'; en = 'Continue anyway' }; Tip = @{ fr = 'Ferme cet avertissement.'; en = 'Closes this warning.' }; Action = { $Ctl.Voile.Visibility = 'Collapsed' } }
 }
 
+# Snappy : winget refuse le paquet en admin (le hash du zip ne correspond plus au manifeste), donc on prend l'URL du zip
+# que winget connaît et on le télécharge nous-mêmes, puis on lance l'exe x64 dézippé.
+function Snappy-Installer {
+    $fr = $Bagarre.Langue -eq 'fr'
+    $m = @{
+        cherche = if ($fr) { 'Je demande à winget où est le zip de Snappy...' } else { 'Asking winget where the Snappy zip is...' }
+        pasUrl  = if ($fr) { 'Pas trouvé l URL du zip, j ouvre la page de téléchargement à la place.' } else { 'Could not find the zip URL, opening the download page instead.' }
+        telecharge = if ($fr) { 'Téléchargement de' } else { 'Downloading' }
+        lance   = if ($fr) { 'Je lance' } else { 'Starting' }
+        pasExe  = if ($fr) { 'Pas d exe x64 trouvé dans le zip, j ouvre le dossier.' } else { 'No x64 exe found in the zip, opening the folder.' }
+    }
+    $cmd = @"
+Write-Host '$($m.cherche)'
+`$fiche = winget show --id GlennDelahoy.SnappyDriverInstallerOrigin -e --accept-source-agreements | Out-String
+`$url = [regex]::Match(`$fiche, 'https?://\S+\.zip').Value
+if (-not `$url) { Write-Host '$($m.pasUrl)' -ForegroundColor Yellow; Start-Process 'https://www.glenn.delahoy.com/snappy-driver-installer-origin/'; return }
+`$zip = Join-Path '$Dossier' 'sdio.zip'
+`$dest = Join-Path '$Dossier' 'sdio'
+Write-Host "$($m.telecharge) `$url"
+Invoke-WebRequest -Uri `$url -OutFile `$zip -UseBasicParsing
+Expand-Archive -Path `$zip -DestinationPath `$dest -Force
+`$exe = Get-ChildItem -Path `$dest -Recurse -Filter 'SDIO_x64_*.exe' | Select-Object -First 1
+if (`$exe) { Write-Host "$($m.lance) `$(`$exe.Name)"; Start-Process `$exe.FullName } else { Write-Host '$($m.pasExe)' -ForegroundColor Yellow; Start-Process `$dest }
+"@
+    Console-Lancer 'Snappy Driver Installer Origin' $cmd
+}
+
+# Ouvre le script à cocher avec un mot dans le filtre : les raccourcis "Voir la case ..." des pages
+function Optis-Filtrer($mot) { $Ctl.Filtre.Text = $mot; Aller 3 }
+
 # ---------------------------------------------------------------------------
 # La fenêtre : barre de titre maison (WindowChrome garde le déplacement, le redimensionnement, l'aimantation),
-# rail des étapes à gauche, la page au centre, journal en bas. Tout tourne sur le thread de la fenêtre,
+# rail des étapes à gauche, la page au centre. Tout tourne sur le thread de la fenêtre,
 # Log appelle Rafraichir pour qu'elle reste vivante.
 # ---------------------------------------------------------------------------
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
@@ -184,7 +232,7 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 $Xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="windows bagarre edition" Width="1320" Height="860" MinWidth="1040" MinHeight="700"
+        Title="windows BAGARRE edition" Width="1320" Height="860" MinWidth="1040" MinHeight="700"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
         Background="#15121C" Foreground="#ECE8F4" FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
         TextOptions.TextFormattingMode="Display" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -245,17 +293,17 @@ $Xaml = @'
       <Setter Property="FontSize" Value="11"/>
       <Setter Property="Background" Value="Transparent"/>
     </Style>
-    <Style x:Key="Pilule" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-      <Setter Property="Padding" Value="10,2"/>
+    <Style x:Key="Drapeau" TargetType="Button">
+      <Setter Property="Padding" Value="2"/>
       <Setter Property="Margin" Value="0,0,6,0"/>
-      <Setter Property="FontSize" Value="11"/>
-      <Setter Property="FontWeight" Value="SemiBold"/>
       <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="Foreground" Value="{StaticResource Sourd}"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
-            <Border Name="Fond" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="{TemplateBinding Padding}">
+            <Border Name="Fond" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5" Padding="{TemplateBinding Padding}">
               <ContentPresenter VerticalAlignment="Center"/>
             </Border>
             <ControlTemplate.Triggers>
@@ -539,14 +587,10 @@ $Xaml = @'
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0,0,0">
-          <Border Width="10" Height="10" CornerRadius="5" Background="#B794F6" VerticalAlignment="Center" Margin="0,1,10,0"/>
-          <TextBlock Text="bagarre" FontSize="15" FontWeight="Bold" Foreground="#ECE8F4" VerticalAlignment="Center"/>
-          <TextBlock Text="windows bagarre edition" FontSize="12" Foreground="#9B93AD" VerticalAlignment="Center" Margin="10,1,0,0"/>
-        </StackPanel>
+        <TextBlock Name="TitreBarre" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Foreground="#ECE8F4" IsHitTestVisible="False"/>
         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0" WindowChrome.IsHitTestVisibleInChrome="True">
-          <Button Name="BtnFr" Content="FR" Style="{StaticResource Pilule}"/>
-          <Button Name="BtnEn" Content="EN" Style="{StaticResource Pilule}"/>
+          <Button Name="BtnFr" Style="{StaticResource Drapeau}"><Border Name="DrapeauFr" Width="24" Height="16" CornerRadius="3"/></Button>
+          <Button Name="BtnEn" Style="{StaticResource Drapeau}"><Border Name="DrapeauEn" Width="24" Height="16" CornerRadius="3"/></Button>
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal">
           <Button Name="BtnReduire" Content="&#xE921;" Style="{StaticResource Legende}"/>
@@ -556,12 +600,9 @@ $Xaml = @'
       </Grid>
 
       <!-- rail des étapes -->
-      <DockPanel Grid.Row="1" Grid.Column="0" Background="#110E17">
-        <StackPanel DockPanel.Dock="Bottom" Margin="16,8,16,14">
-          <TextBlock Name="NavMachine" Foreground="#9B93AD" TextWrapping="Wrap" FontSize="11" LineHeight="16"/>
-        </StackPanel>
+      <Border Grid.Row="1" Grid.Column="0" Background="#110E17">
         <ListBox Name="Nav" Margin="10,12,10,0"/>
-      </DockPanel>
+      </Border>
 
       <!-- la page -->
       <Grid Grid.Row="1" Grid.Column="1" Margin="28,18,24,14">
@@ -569,15 +610,9 @@ $Xaml = @'
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Margin="0,0,0,14" LastChildFill="False">
-          <TextBlock Name="TitrePage" DockPanel.Dock="Left" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"/>
-          <Border Name="DureePage" DockPanel.Dock="Left" Background="#2C2340" CornerRadius="10" Padding="10,2" Margin="14,4,0,0" VerticalAlignment="Center">
-            <TextBlock Name="DureeTexte" Foreground="#D4BFFF" FontSize="11" FontWeight="SemiBold"/>
-          </Border>
-        </DockPanel>
+        <TextBlock Grid.Row="0" Name="TitrePage" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,14"/>
 
         <Grid Grid.Row="1" Name="Pages">
           <Grid Name="PageOptis" Visibility="Collapsed">
@@ -620,18 +655,7 @@ $Xaml = @'
           </Grid>
         </Grid>
 
-        <DockPanel Grid.Row="2" Margin="0,10,0,8" LastChildFill="False">
-          <Button Name="BtnSuivant" DockPanel.Dock="Right" Style="{StaticResource Principal}" Margin="8,0,0,0"/>
-          <Button Name="BtnPrecedent" DockPanel.Dock="Right" Margin="0"/>
-        </DockPanel>
-
-        <DockPanel Grid.Row="3">
-          <DockPanel DockPanel.Dock="Top" Margin="0,0,0,4">
-            <TextBlock Name="JournalTitre" Foreground="#9B93AD" FontSize="11" VerticalAlignment="Center"/>
-            <ProgressBar Name="Progression" Height="5" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="12,0,0,0" VerticalAlignment="Center"/>
-          </DockPanel>
-          <TextBox Name="Journal" Height="112"/>
-        </DockPanel>
+        <ProgressBar Grid.Row="2" Name="Progression" Height="5" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0,10,0,0"/>
       </Grid>
 
       <!-- voile : installation pas récente -->
@@ -661,13 +685,18 @@ try {
     return
 }
 
-# Tous les contrôles nommés dans $Ctl, le journal à portée de Log
+# Tous les contrôles nommés dans $Ctl. Le journal reste dans le fichier et la console, pas dans la fenêtre.
 $Ctl = @{}
 foreach ($m in [regex]::Matches($Xaml, '(?<!\w)(?:x:)?Name="(\w+)"')) { $n = $m.Groups[1].Value; $Ctl[$n] = $Fenetre.FindName($n) }
-$Journal = $Ctl.Journal
-$Ctl.NavMachine.Text = "$Machine`nbagarre $Version"
+$Ctl.TitreBarre.Text = "windows BAGARRE edition v$Version"
+$Fenetre.Title = $Ctl.TitreBarre.Text
 $Pinceau = @{}
 foreach ($k in 'Fond', 'Rail', 'Surface', 'Surface2', 'Bordure', 'Texte', 'Sourd', 'Accent', 'AccentClair', 'AccentFond', 'SurAccent', 'Alerte', 'AlerteFond', 'Ok') { $Pinceau[$k] = $Fenetre.FindResource($k) }
+# Les deux drapeaux (images embarquées par build.ps1)
+foreach ($paire in @(@('DrapeauFr', 'drapeau-fr'), @('DrapeauEn', 'drapeau-en'))) {
+    $img = Logo-Image $paire[1]
+    if ($img) { $brosse = New-Object Windows.Media.ImageBrush $img; $brosse.Stretch = 'UniformToFill'; $Ctl[$paire[0]].Background = $brosse }   # pas $pinceau : écraserait $Pinceau
+}
 
 # ---------------------------------------------------------------------------
 # Barre de titre maison : réduire, agrandir / restaurer, fermer. Le déplacement, le double-clic et les bords
@@ -746,7 +775,8 @@ function Boutons-Libeller {
 function Page-Construire($nom) {
     $conteneur = $Ctl["Contenu$nom"]
     $conteneur.Children.Clear()
-    $texte = $Textes[$Bagarre.Langue][$nom.ToLower()]
+    $cle = if ($nom -eq 'Nvidia' -and $EstAmd) { 'amd' } else { $nom.ToLower() }   # l'étape 4 est la page de TA carte
+    $texte = $Textes[$Bagarre.Langue][$cle]
     if (-not $texte) { return }
     $pile = $conteneur; $intro = $true
     foreach ($ligne in ($texte -split "`r?`n")) {
@@ -762,7 +792,7 @@ function Page-Construire($nom) {
             $wp.Margin = '0,4,0,2'
             foreach ($id in ($Matches[1] -split ',')) {
                 $id = $id.Trim()
-                $c = switch ($id) { 'Applis' { $Ctl.PanneauApplis } 'DnsListe' { $Ctl.DnsPanneau } default { Bouton-Obtenir $id } }
+                $c = switch ($id) { 'DnsListe' { $Ctl.DnsPanneau } default { Bouton-Obtenir $id } }
                 if ($c) { Detacher $c; [void]$wp.Children.Add($c) }
             }
             [void]$pile.Children.Add($wp)
@@ -809,34 +839,28 @@ foreach ($n in $PagesNoms) {
 }
 
 # ---------------------------------------------------------------------------
-# Navigation : rail à gauche, en-tête de page, Précédent / Suivant, cartes d'étapes sur l'accueil
+# Navigation : rail à gauche, titre de page, cartes d'étapes sur l'accueil
 # ---------------------------------------------------------------------------
 $NavItems = @()
 for ($k = 0; $k -lt $PagesNoms.Count; $k++) {
     $li = New-Object Windows.Controls.ListBoxItem
     $g = New-Object Windows.Controls.Grid
-    foreach ($w in 'Auto', '*', 'Auto') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+    foreach ($w in 'Auto', '*') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
     $num = New-Object Windows.Controls.TextBlock
     $num.Text = if ($k -eq 0) { '' } else { "$k" }; $num.Width = 18; $num.Foreground = $Pinceau.Accent; $num.FontWeight = 'SemiBold'; $num.FontSize = 12; $num.VerticalAlignment = 'Center'
     $nom = New-Object Windows.Controls.TextBlock
     $nom.FontSize = 13; $nom.VerticalAlignment = 'Center'
     [Windows.Controls.Grid]::SetColumn($nom, 1)
-    $duree = New-Object Windows.Controls.TextBlock
-    $duree.FontSize = 11; $duree.Foreground = $Pinceau.Sourd; $duree.VerticalAlignment = 'Center'; $duree.Margin = '8,0,0,0'
-    [Windows.Controls.Grid]::SetColumn($duree, 2)
-    [void]$g.Children.Add($num); [void]$g.Children.Add($nom); [void]$g.Children.Add($duree)
+    [void]$g.Children.Add($num); [void]$g.Children.Add($nom)
     $li.Content = $g
     [void]$Ctl.Nav.Items.Add($li)
-    $NavItems += @{ Nom = $nom; Duree = $duree }
+    $NavItems += @{ Nom = $nom }
 }
 function Aller($k) { $Ctl.Nav.SelectedIndex = $k }
 function Entete-Poser {
     $i = $Ctl.Nav.SelectedIndex
     if ($i -lt 0) { return }
-    $L = $Bagarre.L; $p = $PagesNoms[$i]
-    $Ctl.TitrePage.Text = $L.titres[$p]
-    $Ctl.DureeTexte.Text = $L.duree[$i]
-    $Ctl.DureePage.Visibility = if ($L.duree[$i]) { 'Visible' } else { 'Collapsed' }
+    $Ctl.TitrePage.Text = $Bagarre.L.titres[$PagesNoms[$i]]
 }
 $Ctl.Nav.Add_SelectionChanged({
     $i = $Ctl.Nav.SelectedIndex
@@ -844,11 +868,7 @@ $Ctl.Nav.Add_SelectionChanged({
         $Ctl["Page$($PagesNoms[$k])"].Visibility = if ($k -eq $i) { 'Visible' } else { 'Collapsed' }
     }
     Entete-Poser
-    $Ctl.BtnPrecedent.IsEnabled = $i -gt 0
-    $Ctl.BtnSuivant.IsEnabled = $i -lt ($PagesNoms.Count - 1)
 })
-$Ctl.BtnPrecedent.Add_Click({ if ($Ctl.Nav.SelectedIndex -gt 0) { Aller ($Ctl.Nav.SelectedIndex - 1) } })
-$Ctl.BtnSuivant.Add_Click({ if ($Ctl.Nav.SelectedIndex -lt ($PagesNoms.Count - 1)) { Aller ($Ctl.Nav.SelectedIndex + 1) } })
 
 # Les huit étapes en cartes sur l'accueil, insérées après l'intro
 function Etapes-Construire {
@@ -864,15 +884,11 @@ function Etapes-Construire {
         $num.Text = "$k"; $num.FontSize = 26; $num.FontWeight = 'Bold'; $num.Foreground = $Pinceau.Accent; $num.Width = 36; $num.VerticalAlignment = 'Top'; $num.Margin = '0,-4,0,0'
         $pile = New-Object Windows.Controls.StackPanel
         [Windows.Controls.Grid]::SetColumn($pile, 1)
-        $ligne = New-Object Windows.Controls.StackPanel; $ligne.Orientation = 'Horizontal'
         $nom = New-Object Windows.Controls.TextBlock
-        $nom.Text = $L.nav[$k]; $nom.FontSize = 14; $nom.FontWeight = 'SemiBold'; $nom.VerticalAlignment = 'Center'
-        $duree = New-Object Windows.Controls.TextBlock
-        $duree.Text = $L.duree[$k]; $duree.FontSize = 11; $duree.Foreground = $Pinceau.AccentClair; $duree.VerticalAlignment = 'Center'; $duree.Margin = '10,1,0,0'
-        [void]$ligne.Children.Add($nom); [void]$ligne.Children.Add($duree)
+        $nom.Text = $L.nav[$k]; $nom.FontSize = 14; $nom.FontWeight = 'SemiBold'
         $resume = New-Object Windows.Controls.TextBlock
         $resume.Text = $L.resume[$k]; $resume.Foreground = $Pinceau.Sourd; $resume.TextWrapping = 'Wrap'; $resume.Margin = '0,3,0,0'; $resume.FontSize = 12
-        [void]$pile.Children.Add($ligne); [void]$pile.Children.Add($resume)
+        [void]$pile.Children.Add($nom); [void]$pile.Children.Add($resume)
         [void]$g.Children.Add($num); [void]$g.Children.Add($pile)
         $carte.Content = $g
         $carte.Add_Click({ param($s, $e) Aller ([int]$s.Tag) })
@@ -990,13 +1006,14 @@ foreach ($it in $Items) {
 foreach ($id in 'BtnAppliquer', 'BtnDefaut', 'BtnDetecter', 'BtnRestaurer') { [void]$Ctl.BarreOptis.Children.Add((Bouton-Obtenir $id)) }
 foreach ($id in 'BtnReseau', 'BtnImgProtocoles', 'BtnImgAvance', 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
 
-# Filtre : tape un mot, seules les lignes dont le titre le contient restent, les groupes vides disparaissent
+# Filtre : tape un mot, seules les lignes dont le titre (ou le nom du groupe) le contient restent, les groupes vides disparaissent
 function Filtrer {
     $f = $Ctl.Filtre.Text.Trim()
     foreach ($g in $Groupes) {
         $visibles = 0
+        $groupeOk = ($f -ne '') -and ($g.Titre.Text.IndexOf($f, [StringComparison]::OrdinalIgnoreCase) -ge 0)
         foreach ($id in $g.Ids) {
-            $ok = ($f -eq '') -or ((Item-Titre $Lignes[$id].Item).IndexOf($f, [StringComparison]::OrdinalIgnoreCase) -ge 0)
+            $ok = ($f -eq '') -or $groupeOk -or ((Item-Titre $Lignes[$id].Item).IndexOf($f, [StringComparison]::OrdinalIgnoreCase) -ge 0)
             $Lignes[$id].Ligne.Visibility = if ($ok) { 'Visible' } else { 'Collapsed' }
             if ($ok) { $visibles++ }
         }
@@ -1046,40 +1063,6 @@ function Restaurer-Demander {
     [Windows.MessageBox]::Show($Bagarre.L.restaure, 'bagarre') | Out-Null
 }
 function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $LogFichier } else { Log $Bagarre.L.pasJournal } }
-
-# ---------------------------------------------------------------------------
-# Facile : les applis winget à cocher (panneau posé par "@Applis" dans le texte)
-# ---------------------------------------------------------------------------
-$Applis = @(
-    @{ Nom = 'Steam'; Id = 'Valve.Steam'; Coche = $true }
-    @{ Nom = 'Discord'; Id = 'Discord.Discord'; Coche = $true }
-    @{ Nom = '7-Zip'; Id = '7zip.7zip'; Coche = $true }
-    @{ Nom = 'VLC'; Id = 'VideoLAN.VLC'; Coche = $true }
-    @{ Nom = 'Firefox'; Id = 'Mozilla.Firefox'; Coche = $false }
-    @{ Nom = 'Brave'; Id = 'Brave.Brave'; Coche = $false }
-    @{ Nom = 'Chrome'; Id = 'Google.Chrome'; Coche = $false }
-    @{ Nom = 'Everything'; Id = 'voidtools.Everything'; Coche = $false }
-    @{ Nom = 'PowerToys'; Id = 'Microsoft.PowerToys'; Coche = $false }
-)
-$panneau = New-Object Windows.Controls.StackPanel
-$panneau.Margin = '0,2,0,4'
-$Ctl.ApplisTitre = New-Object Windows.Controls.TextBlock
-$Ctl.ApplisTitre.Foreground = $Pinceau.Sourd; $Ctl.ApplisTitre.Margin = '0,0,0,8'; $Ctl.ApplisTitre.TextWrapping = 'Wrap'
-$Ctl.ListeApplis = New-Object Windows.Controls.WrapPanel
-foreach ($a in $Applis) {
-    $cb = New-Object Windows.Controls.CheckBox
-    $cb.Content = $a.Nom; $cb.IsChecked = $a.Coche; $cb.Tag = $a.Id; $cb.Margin = '0,4,22,6'
-    [void]$Ctl.ListeApplis.Children.Add($cb)
-}
-$Ctl.BtnApplis = New-Object Windows.Controls.Button
-$Ctl.BtnApplis.Margin = '0,6,0,0'; $Ctl.BtnApplis.HorizontalAlignment = 'Left'
-$Ctl.BtnApplis.Add_Click({
-    $ids = @($Ctl.ListeApplis.Children | Where-Object { $_.IsChecked } | ForEach-Object { $_.Tag })
-    if ($ids.Count -eq 0) { Log $Bagarre.L.aucuneAppli; return }
-    Winget-Installer "$($ids.Count) apps" $ids
-})
-foreach ($c in $Ctl.ListeApplis, $Ctl.BtnApplis) { [void]$panneau.Children.Add($c) }   # le texte de la page dit déjà quoi faire
-$Ctl.PanneauApplis = $panneau
 
 # ---------------------------------------------------------------------------
 # DNS : les résultats en lignes cliquables, logo, barre proportionnelle (panneau posé par "@DnsListe")
@@ -1178,13 +1161,10 @@ $EstVieux = ($InstallJours -gt 30) -or $Vieux
 # ---------------------------------------------------------------------------
 function Appliquer-Langue {
     $Bagarre.L = $UI[$Bagarre.Langue]; $L = $Bagarre.L
-    for ($k = 0; $k -lt $PagesNoms.Count; $k++) { $NavItems[$k].Nom.Text = $L.nav[$k]; $NavItems[$k].Duree.Text = $L.duree[$k] }
-    $Ctl.ApplisTitre.Text = $L.applisTitre; $Ctl.BtnApplis.Content = $L.applisBtn
+    for ($k = 0; $k -lt $PagesNoms.Count; $k++) { $NavItems[$k].Nom.Text = $L.nav[$k] }
     foreach ($p in $PagesNoms) { if ($p -ne 'Optis') { Page-Construire $p } }
     Etapes-Construire
     Boutons-Libeller
-    $Ctl.BtnPrecedent.Content = $L.precedent; $Ctl.BtnSuivant.Content = $L.suivant
-    $Ctl.JournalTitre.Text = $L.journal
     $Ctl.Legende.Text = $L.legende
     $Ctl.OptiEtiquette1.Text = $L.pourquoi; $Ctl.OptiEtiquette2.Text = $L.perds
     foreach ($g in $Groupes) {
@@ -1193,11 +1173,11 @@ function Appliquer-Langue {
     }
     $Ctl.FiltreIndice.Text = $L.filtrer
     foreach ($id in $Lignes.Keys) { Ligne-Libeller $id }
-    foreach ($paire in @(@($Ctl.BtnFr, 'fr'), @($Ctl.BtnEn, 'en'))) {
-        $actif = $Bagarre.Langue -eq $paire[1]
-        $paire[0].Background = if ($actif) { $Pinceau.Accent } else { 'Transparent' }
-        $paire[0].Foreground = if ($actif) { $Pinceau.SurAccent } else { $Pinceau.Sourd }
-        $paire[0].BorderBrush = if ($actif) { $Pinceau.Accent } else { $Pinceau.Bordure }
+    foreach ($paire in @(@($Ctl.BtnFr, $Ctl.DrapeauFr, 'fr'), @($Ctl.BtnEn, $Ctl.DrapeauEn, 'en'))) {
+        $actif = $Bagarre.Langue -eq $paire[2]
+        $paire[0].BorderBrush = if ($actif) { $Pinceau.Accent } else { 'Transparent' }
+        $paire[0].ToolTip = $UI[$paire[2]].langue
+        $paire[1].Opacity = if ($actif) { 1 } else { 0.45 }
     }
     Voile-Libeller
     Entete-Poser
@@ -1213,7 +1193,6 @@ $Ctl.BtnFr.Add_Click({ Changer-Langue 'fr' })
 $Ctl.BtnEn.Add_Click({ Changer-Langue 'en' })
 Appliquer-Langue
 Aller 0
-$Ctl.BtnPrecedent.IsEnabled = $false
 $Ctl.BtnDnsAppliquer.IsEnabled = $false
 Detecter-Tout
 if ($EstVieux) { $Ctl.Voile.Visibility = 'Visible' }
@@ -1274,4 +1253,4 @@ try { $Fenetre.ShowDialog() | Out-Null } catch {
     Log "ÉCHEC affichage de la fenêtre : $_"
     [Windows.MessageBox]::Show("La fenêtre n'a pas pu s'afficher :`n$_`n`nDétail dans $LogFichier", 'bagarre') | Out-Null
 }
-Log 'fenêtre fermée'
+Log (Msg 'fenetreFermee')

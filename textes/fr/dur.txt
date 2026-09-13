@@ -1,15 +1,17 @@
-Une chose à la fois. Tu changes, tu joues 30 minutes avec RivaTuner ouvert, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
+Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
 
 ## 1. Vérifier le timer 0,507 ms
-@BtnMeasureDur, BtnTimerDepot
+@BtnMeasureDur, BtnOptiTimer, BtnPlanificateur, BtnTimerDepot
 Le script a créé la tâche "bagarre timer". MeasureSleep doit afficher environ 0,5 ms.
-Il montre 1 ms ou 15,6 ms : recoche la case jeu-timer du script, ou regarde la tâche "bagarre timer" dans le Planificateur.
+Il montre 1 ms ou 15,6 ms : recoche la case du timer dans le script, ou regarde la tâche "bagarre timer" dans le Planificateur.
 
 ## 2. Souris
+@BtnSouris, BtnOptiSouris
 Accélération coupée par le script. Ensuite : 1000 Hz dans le logiciel de la souris, DPI natif (400 / 800 / 1600), sensibilité dans le jeu, jamais dans Windows (6/11).
 La case RawMouseThrottleDuration du script : seulement à 4000 Hz et plus.
 
 ## 3. Trois cases Avancé du script, une à la fois
+@BtnOptiAvance
 - Win32PrioritySeparation 0x26 : aide un jeu CPU-bound avec Discord et un navigateur derrière. Peut faire crépiter l'audio.
 - Nagle (TcpAckFrequency) : quelques ms sur un jeu en TCP (MMO). Zéro effet sur un FPS en UDP.
 - Boost CPU Aggressive : PC fixe Intel seulement. Sur AMD la clé ne fait rien, sur portable ça chauffe pour rien.
@@ -26,11 +28,9 @@ Les jeux DirectStorage sur le NVMe. Jamais de compression NTFS sur un dossier de
 @BtnAutoGpu
 AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. Une heure, sur un PC déjà stable.
 
-## 7. AMD
-Pilote seul depuis le site AMD, pas Adrenalin complet. Anti-Lag 2 par jeu. AFMF off en compétitif. Sur un Ryzen X3D, laisse le core parking : c'est lui qui garde le jeu sur le CCD avec le cache.
-
-## 8. Grosses mises à jour Windows
-Paramètres > Windows Update > Options avancées : suspendre jusqu'à 5 semaines quand une grosse version sort (25H2, 26H1), le temps que pilotes et anti-cheats suivent. Pas plus, les correctifs de sécurité en dépendent.
+## 7. Grosses mises à jour Windows
+@BtnUpdateOptions
+Suspendre jusqu'à 5 semaines quand une grosse version sort (25H2, 26H1), le temps que pilotes et anti-cheats suivent. Pas plus, les correctifs de sécurité en dépendent.
 
 ## Ce que le pack refuse, et pourquoi
 - HVCI off : les anti-cheats le demandent, gain de 1 à 3 %.

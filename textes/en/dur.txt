@@ -1,15 +1,17 @@
-One thing at a time. You change it, you play 30 minutes with RivaTuner open, you keep it or put it back. A tweak you cannot measure does not exist.
+One thing at a time. You change it, you play half an hour with RivaTuner open, you keep it or put it back. A tweak you cannot measure does not exist.
 
 ## 1. Check the 0.507 ms timer
-@BtnMeasureDur, BtnTimerDepot
+@BtnMeasureDur, BtnOptiTimer, BtnPlanificateur, BtnTimerDepot
 The script created the "bagarre timer" task. MeasureSleep should show about 0.5 ms.
-It shows 1 ms or 15.6 ms: re-tick the jeu-timer box in the script, or look at the "bagarre timer" task in Task Scheduler.
+It shows 1 ms or 15.6 ms: re-tick the timer box in the script, or look at the "bagarre timer" task in Task Scheduler.
 
 ## 2. Mouse
+@BtnSouris, BtnOptiSouris
 Acceleration turned off by the script. Then: 1000 Hz in the mouse software, native DPI (400 / 800 / 1600), sensitivity in the game, never in Windows (6/11).
 The RawMouseThrottleDuration box in the script: only at 4000 Hz and above.
 
 ## 3. Three Advanced boxes in the script, one at a time
+@BtnOptiAvance
 - Win32PrioritySeparation 0x26: helps a CPU-bound game with Discord and a browser behind. Can make the audio crackle.
 - Nagle (TcpAckFrequency): a few ms on a TCP game (MMO). Zero effect on a UDP shooter.
 - CPU boost Aggressive: desktop Intel only. On AMD the key does nothing, on a laptop it heats up for nothing.
@@ -26,11 +28,9 @@ DirectStorage games on the NVMe. Never NTFS compression on a game folder, Compac
 @BtnAutoGpu
 AutoGpuAffinity tests which core to put the GPU interrupt on and keeps the best one. One hour, on an already stable PC.
 
-## 7. AMD
-Driver only from AMD's site, not the full Adrenalin. Anti-Lag 2 per game. AFMF off in competitive. On a Ryzen X3D, leave core parking alone: it is what keeps the game on the CCD with the cache.
-
-## 8. Big Windows updates
-Settings > Windows Update > Advanced options: pause up to 5 weeks when a big version ships (25H2, 26H1), until drivers and anti-cheats catch up. No longer, security fixes depend on it.
+## 7. Big Windows updates
+@BtnUpdateOptions
+Pause up to 5 weeks when a big version ships (25H2, 26H1), until drivers and anti-cheats catch up. No longer, security fixes depend on it.
 
 ## What the pack refuses, and why
 - HVCI off: anti-cheats require it, gain of 1 to 3%.

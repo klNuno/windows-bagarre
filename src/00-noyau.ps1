@@ -2,7 +2,7 @@
 # Noyau : où on est, élévation, détection machine, outils d'écriture avec retour arrière.
 # ---------------------------------------------------------------------------
 $Depot = 'https://raw.githubusercontent.com/klNuno/windows-bagarre/main'
-$Version = '2026-09-13'
+$Version = '8.0'
 $ErrorActionPreference = 'Continue'
 
 # État partagé avec les gestionnaires d'événements de la fenêtre. Une table, jamais $script: :
@@ -44,17 +44,50 @@ if (-not (Test-Path $Dossier)) { New-Item -Path $Dossier -ItemType Directory -Fo
 $EtatFichier = Join-Path $Dossier 'bagarre-avant.json'
 $LogFichier = Join-Path $Dossier 'bagarre.log'
 
-# Langue de la fenêtre : celle choisie la dernière fois, sinon celle de Windows (français ou anglais).
+# Langue de la fenêtre et de la console : celle choisie par un clic sur un drapeau la dernière fois,
+# sinon la langue d'affichage de Windows (Get-UICulture, pas Get-Culture qui est le format des dates).
 $LangueFichier = Join-Path $Dossier 'langue.txt'
 $Bagarre.Langue = if ((Test-Path $LangueFichier) -and ((Get-Content $LangueFichier -Raw).Trim() -in 'fr', 'en')) { (Get-Content $LangueFichier -Raw).Trim() }
-          elseif ((Get-Culture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
+          elseif ((Get-UICulture).TwoLetterISOLanguageName -eq 'fr') { 'fr' } else { 'en' }
+
+# Les phrases écrites dans la console avant que la fenêtre existe ou hors de la fenêtre (application, restauration,
+# téléchargements). Les lignes techniques (registre, service, tâche, réseau, alim) gardent leurs mots-clés français :
+# c'est le journal, on le lit avec le catalogue à côté. Msg 'cle' rend la phrase dans la langue courante.
+$Messages = @{
+    fr = @{
+        rienRestaurer = 'Rien à restaurer : bagarre-avant.json est vide.'; restauration = 'Restauration de {0} réglages...'
+        restaure = 'restauré  {0}'; echecRestauration = 'ÉCHEC restauration {0} : {1}'; finRestauration = 'Terminé. Redémarre pour que tout reprenne effet.'
+        rienCoche = 'Rien de coché.'; application = 'Application de {0} réglages...'; echecItem = 'ÉCHEC {0} : {1}'
+        finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
+        telecharge = 'téléchargé {0} dans {1}'; echecTelechargement = 'ÉCHEC téléchargement de {0} : {1}'
+        rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
+    }
+    en = @{
+        rienRestaurer = 'Nothing to restore: bagarre-avant.json is empty.'; restauration = 'Restoring {0} settings...'
+        restaure = 'restored  {0}'; echecRestauration = 'FAILED restore {0}: {1}'; finRestauration = 'Done. Reboot so everything takes effect again.'
+        rienCoche = 'Nothing checked.'; application = 'Applying {0} settings...'; echecItem = 'FAILED {0}: {1}'
+        finApplication = 'Done. The previous values are in {0}, the detail in {1}. Reboot the PC.'
+        telecharge = 'downloaded {0} to {1}'; echecTelechargement = 'FAILED download of {0}: {1}'
+        rapportEcrit = 'Report written: {0} ({1} KB)'; fenetreFermee = 'window closed'
+    }
+}
+function Msg($cle) { $Messages[$Bagarre.Langue][$cle] }
 
 # ---------------------------------------------------------------------------
 # Détection machine (sert aux valeurs automatiques et aux explications)
 # ---------------------------------------------------------------------------
 $RamGo = [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB)
-$Gpu = (Get-CimInstance Win32_VideoController | Where-Object { $_.Name -match 'NVIDIA|AMD|Radeon|Intel' } | Select-Object -First 1).Name
-$EstNvidia = $Gpu -match 'NVIDIA'
+# Carte graphique : la carte dédiée compte, pas l'iGPU du processeur. NVIDIA ne fait pas d'iGPU sur PC fixe, chez AMD
+# la dédiée s'appelle "Radeon RX" ou "Radeon PRO" (l'iGPU est "Radeon Graphics", "Vega", "780M"), chez Intel c'est "Arc".
+# -Amd (mode de test) simule une carte AMD dédiée pour voir la page AMD sur un PC NVIDIA.
+$Cartes = @(Get-CimInstance Win32_VideoController | ForEach-Object { $_.Name })
+$Dediee = $Cartes | Where-Object { $_ -match 'NVIDIA|GeForce' } | Select-Object -First 1
+if (-not $Dediee) { $Dediee = $Cartes | Where-Object { $_ -match 'Radeon (RX|PRO)' } | Select-Object -First 1 }
+if (-not $Dediee) { $Dediee = $Cartes | Where-Object { $_ -match 'Intel.*Arc' } | Select-Object -First 1 }
+if ($Amd) { $Dediee = 'AMD Radeon RX (simulée par -Amd)' }
+$Gpu = if ($Dediee) { $Dediee } else { $Cartes | Select-Object -First 1 }
+$EstNvidia = [bool]($Dediee -match 'NVIDIA|GeForce')
+$EstAmd = [bool]($Dediee -match 'Radeon')
 $EstPortable = (Get-CimInstance Win32_SystemEnclosure).ChassisTypes | Where-Object { $_ -in 8, 9, 10, 11, 12, 14, 18, 21, 30, 31, 32 }
 $DisqueSysteme = Get-PhysicalDisk | Where-Object { $_.DeviceId -eq ((Get-Partition -DriveLetter $env:SystemDrive[0]).DiskNumber) } | Select-Object -First 1
 $EstHdd = $DisqueSysteme -and $DisqueSysteme.MediaType -eq 'HDD'
@@ -232,9 +265,9 @@ function Outil-Obtenir($nom) {
     if (Test-Path $dest) { return $dest }
     try {
         Invoke-WebRequest -Uri "$Depot/outils/$nom" -OutFile $dest -UseBasicParsing -ErrorAction Stop
-        Log "téléchargé $nom dans $Dossier"
+        Log ((Msg 'telecharge') -f $nom, $Dossier)
         return $dest
-    } catch { Log "ÉCHEC téléchargement de $nom : $_"; return $null }
+    } catch { Log ((Msg 'echecTelechargement') -f $nom, $_); return $null }
 }
 
 function Ouvrir($url) { Start-Process $url | Out-Null }

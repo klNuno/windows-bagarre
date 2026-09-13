@@ -8,14 +8,15 @@ Default mode. Removes sponsored apps, Copilot, ads, telemetry. It asks before ea
 ## 2. Chris Titus's WinUtil: your programs in one go
 @BtnWinUtil
 Install tab: tick what you want, it installs everything through winget. Tweaks tab: the "Standard" preset only, the checkbox script does the rest and explains every line.
-Or tick here and bagarre installs them directly:
-@Applis
 
 ## 3. The libraries games ask for
 Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnVcredist, BtnDirectX
 
-## 4. Audio, 5 minutes, it avoids crackling
-- Right-click the speaker > Sounds > Communications: "Do nothing". Otherwise Windows lowers your volume when Discord rings.
+## 4. Sound, it avoids crackling
+- Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
+@BtnOptiSon
 - Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
+@BtnSon
 - Nahimic, Sonic Studio, Realtek Audio Console: uninstall, the bare driver is enough.
+@BtnApplisInstallees

@@ -8,26 +8,27 @@ Suites constructeur à virer : Nahimic, Killer Intelligence Center, Armoury Crat
 
 ## Nettoyage disque, dans l'ordre
 @BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Paramètres > Système > Stockage > Assistant de stockage : tous les mois, corbeille 30 jours, Téléchargements jamais.
+Assistant de stockage : tous les mois, corbeille 30 jours, Téléchargements jamais.
+@BtnStockage
 @BtnBleach, BtnRapr, BtnTrim, BtnCrystal
 ! BleachBit : jamais "Free disk space" ni "Memory". DISM : jamais /ResetBase.
 
 ## Pilotes
-Windows Update ne les touche plus (case jeu-pilotes). NVIDIA via NVCleanstall, le reste depuis le site du constructeur, seulement si un truc marche mal.
+Windows Update ne les touche plus (case jeu-pilotes). La carte graphique comme à l'étape 4, le reste depuis le site du constructeur, seulement si un truc marche mal.
 @BtnDdu
-DDU seulement quand tu changes de marque de carte graphique.
+DDU quand tu changes de marque de carte graphique, ou pour repartir propre après un pilote qui déconne.
 
 ## Le PC se réveille tout seul, ne dort pas, plante
 @BtnReveil
 lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir (souvent un navigateur avec une vidéo).
-Écrans bleus : Observateur d'événements > Système, source "WHEA-Logger". Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
-Wi-Fi qui décroche :
-> netsh wlan show wlanreport
+Écrans bleus : journal Système, source "WHEA-Logger". Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
+@BtnEvenements
+Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
+@BtnWlan
 
 ## Defender qui pompe
-> New-MpPerformanceRecording -RecordTo C:\defender.etl
-> Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10
-Joue 10 minutes, Ctrl+C. Le dossier qui ressort va dans Exclusions. Jamais tout le disque.
+@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
+Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. Jamais tout le disque.
 
 ## Mesurer avant / après
 @BtnMeasure, BtnCapframe

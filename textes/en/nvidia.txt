@@ -21,10 +21,10 @@ Manage 3D settings > Global settings:
 - Smooth Motion: never globally. Per game, single-player only.
 Change resolution: dynamic range "Full", RGB 4:4:4. Otherwise blacks are grey.
 Windows Settings > Display > Graphics: optimizations for windowed games on, HAGS kept, Auto HDR off in competitive.
+@BtnGraphiques
 ! Never disable the NVIDIA Display Container service (NvContainer), the Control Panel needs it.
 
 ## 3. Afterburner and RivaTuner: to see, not to overclock
-@BtnAfterburner, BtnInspector
+@BtnAfterburner
 The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything. One overlay at a time: RivaTuner or Steam or Discord.
-Profile Inspector: Ansel off, CUDA Force P2 State off. Nothing else unless you know.
 If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.

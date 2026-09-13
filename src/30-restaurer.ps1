@@ -2,8 +2,8 @@
 # Retour arrière et application
 # ---------------------------------------------------------------------------
 function Tout-Restaurer {
-    if ($Avant.Count -eq 0) { Log 'Rien à restaurer : bagarre-avant.json est vide.'; return }
-    Log "Restauration de $($Avant.Count) réglages..."
+    if ($Avant.Count -eq 0) { Log (Msg 'rienRestaurer'); return }
+    Log ((Msg 'restauration') -f $Avant.Count)
     foreach ($id in @($Avant.Keys)) {
         $v = $Avant[$id]
         try {
@@ -47,29 +47,29 @@ function Tout-Restaurer {
                     else { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ResetServerAddresses }
                 }
             }
-            Log "restauré  $id"
-        } catch { Log "ÉCHEC restauration $id : $_" }
+            Log ((Msg 'restaure') -f $id)
+        } catch { Log ((Msg 'echecRestauration') -f $id, $_) }
     }
     powercfg /setactive SCHEME_CURRENT | Out-Null
     $Avant.Clear()
     Remove-Item $EtatFichier -ErrorAction SilentlyContinue
-    Log 'Terminé. Redémarre pour que tout reprenne effet.'
+    Log (Msg 'finRestauration')
 }
 
 function Appliquer-Items($liste) {
     $liste = @($liste)
-    if ($liste.Count -eq 0) { Log 'Rien de coché.'; return }
-    Log "Application de $($liste.Count) réglages..."
+    if ($liste.Count -eq 0) { Log (Msg 'rienCoche'); return }
+    Log ((Msg 'application') -f $liste.Count)
     $barre = if ($Ctl) { $Ctl.Progression } else { $null }
     if ($barre) { $barre.Value = 0; $barre.Visibility = 'Visible' }
     $n = 0
     foreach ($it in $liste) {
         Log "> $($it.Titre)"
-        try { & $it.Appliquer } catch { Log "ÉCHEC $($it.Id) : $_" }
+        try { & $it.Appliquer } catch { Log ((Msg 'echecItem') -f $it.Id, $_) }
         SauverEtat
         $n++
         if ($barre) { $barre.Value = 100 * $n / $liste.Count; Rafraichir }
     }
     if ($barre) { $barre.Visibility = 'Collapsed' }
-    Log "Terminé. Les valeurs d avant sont dans $EtatFichier, le détail dans $LogFichier. Redémarre le PC."
+    Log ((Msg 'finApplication') -f $EtatFichier, $LogFichier)
 }
