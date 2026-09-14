@@ -1,4 +1,4 @@
-The pack is generic, your PC is not. The audit takes a snapshot of your PC and hands it to an AI with a prompt that knows what the pack did, what it refuses, and how to judge a tweak.
+The pack does not know your PC. The audit takes a snapshot of it and hands it to an AI, with a prompt that knows what the pack did, what it refuses, and how to judge a tweak.
 
 ## 1. The report
 @BtnCollecter
@@ -10,4 +10,4 @@ The pack is generic, your PC is not. The audit takes a snapshot of your PC and h
 ## 3. Your AI
 - Terminal agent (Claude Code, Codex, Gemini CLI): open it in the bagarre-audit folder and paste the prompt. It reads the report by itself.
 - Web chat (ChatGPT, Claude.ai): paste the prompt, then attach rapport-pc.txt.
-Read the answer like the rest of the pack: a proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.
+A proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.

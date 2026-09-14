@@ -16,16 +16,16 @@ $PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Mai
 $UI = @{
     fr = @{
         nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote nu, Panneau de configuration OG', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
             Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
-            Nvidia = 'Le pilote nu, puis le Panneau de configuration OG'; Dur = 'Une chose à la fois, tu mesures'
-            Maintenance = 'Quand le PC a vécu'; Dns = 'Qui répond le plus vite depuis chez toi ?'; Audit = 'Une IA vérifie ton PC'
+            Nvidia = 'Le pilote NVIDIA et son Panneau de configuration'; Dur = 'Une opti à la fois, mesurée'
+            Maintenance = 'Entretien, des mois après'; Dns = 'Le DNS le plus rapide depuis chez toi'; Audit = 'Une IA vérifie ton PC'
         }
         survole = 'Passe la souris sur une ligne pour lire le pourquoi et ce que tu perds.'; pourquoi = 'Pourquoi'; perds = 'Ce que tu perds'; rien = 'Rien de notable.'
         appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
-        legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Tu ne comprends pas une ligne, tu ne la coches pas.'
+        legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Si tu ne comprends pas une ligne, ne la coche pas.'
         seraFait = 'sera fait'; laisse = 'laissé tel quel'; dejaFait = 'déjà fait'
         reseauTitre = 'Carte réseau à la main'; langue = 'Français'
         rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
@@ -35,7 +35,7 @@ $UI = @{
         dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Clique une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
         dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
         dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; mullvad = 'pas de journal, serveurs en Europe'; dns0 = 'européen, bloque les sites malveillants'; controld = 'bloque les sites malveillants' }
-        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal : rien à perdre'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut : tout remettre'; presetPerso = 'Personnalisé'
+        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
         presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
         ou = 'ou'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
@@ -53,12 +53,12 @@ $UI = @{
     }
     en = @{
         nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'bare driver, OG Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'one tweak at a time, measured', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
             Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
-            Nvidia = 'The bare driver, then the OG Control Panel'; Dur = 'One thing at a time, you measure'
-            Maintenance = 'When the PC has lived a while'; Dns = 'Who answers fastest from your place?'; Audit = 'An AI checks your PC'
+            Nvidia = 'The NVIDIA driver and its Control Panel'; Dur = 'One tweak at a time, measured'
+            Maintenance = 'Upkeep, months later'; Dns = 'The fastest DNS from your place'; Audit = 'An AI checks your PC'
         }
         survole = 'Hover a line to read the why and what you lose.'; pourquoi = 'Why'; perds = 'What you lose'; rien = 'Nothing notable.'
         appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
@@ -72,7 +72,7 @@ $UI = @{
         dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Click a line then "Use the selected DNS", or change nothing.'
         dnsSelection = 'Click a result line.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
         dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; mullvad = 'no logs, servers in Europe'; dns0 = 'European, blocks malicious sites'; controld = 'blocks malicious sites' }
-        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal: nothing to lose'; presetAucun = 'Untick everything'; presetWindows = 'Windows default: restore everything'; presetPerso = 'Custom'
+        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
         presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
         ou = 'or'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
@@ -113,8 +113,8 @@ function Age-Texte($jours) {
 # Carte AMD dédiée : l'étape 4 devient la page AMD (textes/amd.txt), le rail et la carte d'accueil suivent.
 # Le nom interne de la page reste Nvidia.
 if ($EstAmd) {
-    $UI.fr.nav[4] = 'AMD'; $UI.fr.resume[4] = 'pilote propre, Adrenalin sans le superflu'; $UI.fr.titres.Nvidia = 'Le pilote propre, puis Adrenalin sans le superflu'
-    $UI.en.nav[4] = 'AMD'; $UI.en.resume[4] = 'clean driver, Adrenalin without the extras'; $UI.en.titres.Nvidia = 'The clean driver, then Adrenalin without the extras'
+    $UI.fr.nav[4] = 'AMD'; $UI.fr.resume[4] = 'pilote AMD, Adrenalin réglé'; $UI.fr.titres.Nvidia = 'Le pilote AMD et Adrenalin'
+    $UI.en.nav[4] = 'AMD'; $UI.en.resume[4] = 'AMD driver, Adrenalin settings'; $UI.en.titres.Nvidia = 'The AMD driver and Adrenalin'
 }
 
 $Boutons = @{
@@ -143,7 +143,7 @@ $Boutons = @{
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
-    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Installs through winget. Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
     BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall, plus la ligne MPO.'; en = 'The boxes to tick in NVCleanstall, plus the MPO line.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }

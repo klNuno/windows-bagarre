@@ -1,4 +1,4 @@
-Des mois après l'installation, quand le PC a vécu. Un bouton, une phrase : tu sais ce que tu ouvres.
+Pour un PC installé depuis des mois. Sous chaque bouton, une phrase dit ce qu'il ouvre.
 
 ## Ce qui se lance tout seul
 @BtnAutoruns
@@ -24,4 +24,4 @@ Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
 
 ## Defender qui pompe en jeu
 @BtnDefenderEnregistrer, BtnDefenderExclusions
-Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque, jamais Téléchargements : c'est par là que les saletés arrivent.
+Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque ni Téléchargements, c'est par là que les virus arrivent.

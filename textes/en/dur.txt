@@ -1,4 +1,4 @@
-One thing at a time. You change, you play half an hour with RivaTuner open, you keep or you revert. i@ A tweak you cannot measure does not exist.
+One tweak at a time. You apply it, you play half an hour with RivaTuner open, and you keep it only if you see a difference. i@ Without a measurement, you will never know whether it did anything.
 
 ## 1. Priority and cores per game
 @BtnThreadPilot | BtnLasso

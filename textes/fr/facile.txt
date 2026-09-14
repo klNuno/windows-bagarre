@@ -1,4 +1,4 @@
-Deux outils, chacun dans sa console. Ils téléchargent la version du jour, rien à mettre à jour ici.
+Deux outils, chacun dans sa propre console. Ils téléchargent leur version du jour à chaque lancement.
 
 ## 1. Win11Debloat : enlever ce que Windows a installé sans demander
 @BtnDebloat
@@ -13,7 +13,7 @@ Onglet Install : coche ce que tu veux, il installe tout via winget. Onglet Tweak
 Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnVcredist, BtnDirectX
 
-## 4. Son, ça évite les crépitements
+## 4. Le son, pour éviter les crépitements
 - Communications "Ne rien faire" (sinon Windows baisse ton son quand Discord sonne) : c'est une case du script à cocher, déjà cochée.
 - Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz.
 @BtnSon

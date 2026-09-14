@@ -1,4 +1,4 @@
-Ce pack enlève ce qui tourne pour rien et règle ce qui compte pour jouer. Windows tout frais, les étapes dans l'ordre, une chose à la fois.
-Chaque ligne dit ce qu'elle change et ce que tu perds. Tu ne comprends pas une ligne, tu ne la coches pas.
+Ce pack enlève ce qui tourne pour rien sur un Windows 11 frais et règle ce qui compte pour jouer. Suis les étapes dans l'ordre.
+Chaque ligne du script dit ce qu'elle change et ce que tu perds. Si tu ne comprends pas une ligne, ne la coche pas.
 Tout ce que le script modifie est noté dans C:\ProgramData\bagarre. "Tout remettre comme avant" restaure exactement ces valeurs.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande

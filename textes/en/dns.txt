@@ -2,11 +2,11 @@ DNS turns a name (youtube.com) into an address. i@ A slow DNS adds a few tens of
 
 ## Test from home
 @BtnDnsTester
-Nine resolvers, six common names each, three times, median kept. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
+The test queries nine resolvers for six common names, three times each, and keeps the median. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Which one to keep
-A gap under 5 ms cannot be felt: if your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
+A gap under 5 ms cannot be felt. If your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
 The fastest is not always the right one. i@ AdGuard blocks ads, Quad9 and dns0 block malicious sites, Google keeps logs, Mullvad keeps none. A DNS that blocks domains can break a site or a launcher: if something stops loading, go back to Cloudflare or your router.
 "Restore everything" also puts the previous DNS back.

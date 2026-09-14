@@ -1,4 +1,4 @@
-Ta carte est une AMD : le pilote vient du site AMD, Adrenalin est son panneau, tout se règle dedans.
+Ta carte est une AMD. Le pilote vient du site AMD et tout se règle dans Adrenalin, son panneau.
 
 ## 1. Le pilote, depuis le site AMD
 @BtnAmd
@@ -19,4 +19,4 @@ Le reste, laisse par défaut. i@ Enhanced Sync, FreeSync, V-Sync, filtrage des t
 - Superposition dans le jeu (Alt+R) : OFF. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
 - Préférences : "Ouvrir au démarrage" OFF, "Mises à jour automatiques" sur Notifier seulement.
 @BtnAfterburner
-L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose.
+L'overlay RivaTuner affiche les FPS et le temps d'image. Sans lui, tu ne sauras pas si une opti change quelque chose.

@@ -7,13 +7,13 @@ param([switch]$Liste, [string]$Capture, [switch]$Essai, [switch]$Vieux, [switch]
 $Textes = @{}
 $Textes['en'] = @{}
 $Textes['en']['accueil'] = @'
-This pack removes what runs for nothing and sets what matters for gaming. Fresh Windows, the steps in order, one thing at a time.
-Every line says what it changes and what you lose. If you do not understand a line, do not tick it.
+This pack removes what runs for nothing on a fresh Windows 11 and sets what matters for gaming. Follow the steps in order.
+Every line of the script says what it changes and what you lose. If you do not understand a line, do not tick it.
 Everything the script changes is written to C:\ProgramData\bagarre. "Restore everything" puts exactly those values back.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
 '@
 $Textes['en']['amd'] = @'
-Your card is an AMD: the driver comes from AMD's site, Adrenalin is its panel, everything is set inside it.
+Your card is an AMD. The driver comes from AMD's site and everything is set in Adrenalin, its panel.
 
 ## 1. The driver, from AMD's site
 @BtnAmd
@@ -34,10 +34,10 @@ Leave the rest at default. i@ Enhanced Sync, FreeSync, V-Sync, texture filtering
 - In-game overlay (Alt+R): OFF. i@ One overlay at a time: RivaTuner or Steam or Discord.
 - Preferences: "Open on startup" OFF, "Automatic updates" set to Notify only.
 @BtnAfterburner
-The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything.
+The RivaTuner overlay shows FPS and frame time. Without it, you will not know whether a tweak changes anything.
 '@
 $Textes['en']['audit'] = @'
-The pack is generic, your PC is not. The audit takes a snapshot of your PC and hands it to an AI with a prompt that knows what the pack did, what it refuses, and how to judge a tweak.
+The pack does not know your PC. The audit takes a snapshot of it and hands it to an AI, with a prompt that knows what the pack did, what it refuses, and how to judge a tweak.
 
 ## 1. The report
 @BtnCollecter
@@ -49,7 +49,7 @@ The pack is generic, your PC is not. The audit takes a snapshot of your PC and h
 ## 3. Your AI
 - Terminal agent (Claude Code, Codex, Gemini CLI): open it in the bagarre-audit folder and paste the prompt. It reads the report by itself.
 - Web chat (ChatGPT, Claude.ai): paste the prompt, then attach rapport-pc.txt.
-Read the answer like the rest of the pack: a proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.
+A proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.
 '@
 $Textes['en']['audit-prompt'] = @'
 You are a Windows 11 expert focused on gaming and latency, careful, who prefers one measurable tweak to ten forum tweaks.
@@ -124,17 +124,17 @@ DNS turns a name (youtube.com) into an address. i@ A slow DNS adds a few tens of
 
 ## Test from home
 @BtnDnsTester
-Nine resolvers, six common names each, three times, median kept. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
+The test queries nine resolvers for six common names, three times each, and keeps the median. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Which one to keep
-A gap under 5 ms cannot be felt: if your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
+A gap under 5 ms cannot be felt. If your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
 The fastest is not always the right one. i@ AdGuard blocks ads, Quad9 and dns0 block malicious sites, Google keeps logs, Mullvad keeps none. A DNS that blocks domains can break a site or a launcher: if something stops loading, go back to Cloudflare or your router.
 "Restore everything" also puts the previous DNS back.
 '@
 $Textes['en']['dur'] = @'
-One thing at a time. You change, you play half an hour with RivaTuner open, you keep or you revert. i@ A tweak you cannot measure does not exist.
+One tweak at a time. You apply it, you play half an hour with RivaTuner open, and you keep it only if you see a difference. i@ Without a measurement, you will never know whether it did anything.
 
 ## 1. Priority and cores per game
 @BtnThreadPilot | BtnLasso
@@ -151,7 +151,7 @@ ISLC empties the standby list when free RAM drops under 1 GB. i@ It avoids swap 
 AutoGpuAffinity tests which core to put the GPU interrupt on and keeps the best one. i@ One hour, on an already stable PC. Redo it after a card or driver change.
 '@
 $Textes['en']['facile'] = @'
-Two tools, each in its own console. They fetch today's version, nothing to update here.
+Two tools, each in its own console. They download their current version every time you run them.
 
 ## 1. Win11Debloat: remove what Windows installed without asking
 @BtnDebloat
@@ -166,7 +166,7 @@ Install tab: tick what you want, it installs everything through winget. Tweaks t
 Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnVcredist, BtnDirectX
 
-## 4. Sound, it avoids crackling
+## 4. Sound, to avoid crackling
 - Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
 - Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
 @BtnSon
@@ -188,7 +188,7 @@ Click until there is nothing left, reboot between each batch.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['en']['maintenance'] = @'
-Months after the install, once the PC has lived. One button, one sentence: you know what you are opening.
+For a PC installed months ago. Under each button, one sentence says what it opens.
 
 ## What starts on its own
 @BtnAutoruns
@@ -214,16 +214,16 @@ Wi-Fi dropping: the Windows Wi-Fi report says when and why.
 
 ## Defender hogging while you play
 @BtnDefenderEnregistrer, BtnDefenderExclusions
-Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive, never Downloads: that is where the nasty stuff comes in.
+Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive or Downloads, that is where viruses come in.
 '@
 $Textes['en']['nvidia'] = @'
-The bare driver through NVCleanstall, then the OG Control Panel from the Store. i@ Since driver 610.47 (May 2026) the OG Control Panel is no longer in the driver. It comes from the Store and disappears with every clean install: you reinstall it afterwards.
+NVCleanstall installs the driver without the NVIDIA App, then you put the OG Control Panel back from the Store. i@ Since driver 610.47 (May 2026) the OG Control Panel is no longer in the driver. It comes from the Store and disappears with every clean install: you reinstall it afterwards.
 
-## 1. NVCleanstall: the bare driver
+## 1. NVCleanstall installs the driver alone
 @BtnNvclean, BtnImgNvclean
 - "Manual", latest Game Ready driver for your card.
 - Components: Display Driver, PhysX. Nothing else. i@ NVIDIA HD Audio only if your sound goes through the monitor cable. No NVIDIA App, no telemetry, no GeForce Experience.
-- Installation Tweaks: tick as on the screenshot, MPO line included. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. Off, Windows composes everything itself: zero effect in full screen. The checkbox script sets the same key, ticked by default.
+- Installation Tweaks: tick as on the screenshot, MPO line included. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. Once off, Windows composes everything itself, with no effect in full screen. The checkbox script sets the same key, ticked by default.
 - HDCP: on = Netflix and Disney+ in 4K in the browser, off = slight fps boost. i@ The screenshot turns it off. A game never uses it, 1080p always works. You want 4K: untick "Disable HDCP".
 ! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. A game refuses to start: reinstall without those two boxes.
 The screen flickers and red messages scroll by during the install, that is normal.
@@ -237,9 +237,9 @@ Manage 3D settings > Global settings:
 Change resolution: Output color format RGB, Output dynamic range Full. i@ Otherwise blacks can look grey: the card sends a limited range (16-235) to a screen expecting 0-255. On many screens it is already right.
 Leave the rest at default. i@ Power management, texture filtering, V-Sync: set per game if a game asks for it, never globally. Globally it costs watts or sharpness for nothing.
 
-## 3. Afterburner and RivaTuner: to see, not to overclock
+## 3. Afterburner and RivaTuner to measure
 @BtnAfterburner
-The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything. i@ One overlay at a time: RivaTuner or Steam or Discord. If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.
+The RivaTuner overlay shows FPS and frame time. Without it, you will not know whether a tweak changes anything. i@ One overlay at a time: RivaTuner or Steam or Discord. If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.
 '@
 $Textes['en']['reseau'] = @'
 The Network card group of the script does all of this by itself. This guide is for checking, or doing it by hand.
@@ -254,13 +254,13 @@ Control Panel > Network and Sharing Center > Change adapter settings > right-cli
 '@
 $Textes['fr'] = @{}
 $Textes['fr']['accueil'] = @'
-Ce pack enlève ce qui tourne pour rien et règle ce qui compte pour jouer. Windows tout frais, les étapes dans l'ordre, une chose à la fois.
-Chaque ligne dit ce qu'elle change et ce que tu perds. Tu ne comprends pas une ligne, tu ne la coches pas.
+Ce pack enlève ce qui tourne pour rien sur un Windows 11 frais et règle ce qui compte pour jouer. Suis les étapes dans l'ordre.
+Chaque ligne du script dit ce qu'elle change et ce que tu perds. Si tu ne comprends pas une ligne, ne la coche pas.
 Tout ce que le script modifie est noté dans C:\ProgramData\bagarre. "Tout remettre comme avant" restaure exactement ces valeurs.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
 '@
 $Textes['fr']['amd'] = @'
-Ta carte est une AMD : le pilote vient du site AMD, Adrenalin est son panneau, tout se règle dedans.
+Ta carte est une AMD. Le pilote vient du site AMD et tout se règle dans Adrenalin, son panneau.
 
 ## 1. Le pilote, depuis le site AMD
 @BtnAmd
@@ -281,10 +281,10 @@ Le reste, laisse par défaut. i@ Enhanced Sync, FreeSync, V-Sync, filtrage des t
 - Superposition dans le jeu (Alt+R) : OFF. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
 - Préférences : "Ouvrir au démarrage" OFF, "Mises à jour automatiques" sur Notifier seulement.
 @BtnAfterburner
-L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose.
+L'overlay RivaTuner affiche les FPS et le temps d'image. Sans lui, tu ne sauras pas si une opti change quelque chose.
 '@
 $Textes['fr']['audit'] = @'
-Le pack est générique, ton PC ne l'est pas. L'audit prend une photo de ton PC et la donne à une IA avec un prompt qui sait ce que le pack a fait, ce qu'il refuse, et comment juger une opti.
+Le pack ne connaît pas ton PC. L'audit en prend une photo et la donne à une IA, avec un prompt qui sait ce que le pack a fait, ce qu'il refuse, et comment juger une opti.
 
 ## 1. Le rapport
 @BtnCollecter
@@ -296,7 +296,7 @@ Le pack est générique, ton PC ne l'est pas. L'audit prend une photo de ton PC 
 ## 3. Ton IA
 - Agent en terminal (Claude Code, Codex, Gemini CLI) : ouvre-le dans le dossier bagarre-audit et colle le prompt. Il lit le rapport tout seul.
 - Chat web (ChatGPT, Claude.ai) : colle le prompt, puis joins rapport-pc.txt.
-Lis la réponse comme le reste du pack : une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.
+Une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.
 '@
 $Textes['fr']['audit-prompt'] = @'
 Tu es un expert Windows 11 orienté jeu et latence, prudent, qui préfère une opti mesurable à dix optis de forum.
@@ -371,17 +371,17 @@ Le DNS transforme un nom (youtube.com) en adresse. i@ Un DNS lent ajoute quelque
 
 ## Tester depuis chez toi
 @BtnDnsTester
-Neuf résolveurs, six noms courants chacun, trois fois, médiane gardée. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
+Le test interroge neuf résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Lequel garder
-Un écart sous 5 ms ne se sent pas : si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
+Un écart de moins de 5 ms ne se sent pas. Si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
 Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9 et dns0 les sites malveillants, Google garde des journaux, Mullvad n'en garde pas. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
 "Tout remettre comme avant" remet aussi le DNS d'avant.
 '@
 $Textes['fr']['dur'] = @'
-Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. i@ Une opti que tu ne peux pas mesurer n'existe pas.
+Une opti à la fois. Tu la fais, tu joues une demi-heure avec RivaTuner ouvert, et tu la gardes seulement si tu vois une différence. i@ Sans mesure, tu ne sauras jamais si elle a servi à quelque chose.
 
 ## 1. Priorité et cœurs par jeu
 @BtnThreadPilot | BtnLasso
@@ -398,7 +398,7 @@ ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go. i@ Ça évite l
 AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. i@ Une heure, sur un PC déjà stable. À refaire après un changement de carte ou de pilote.
 '@
 $Textes['fr']['facile'] = @'
-Deux outils, chacun dans sa console. Ils téléchargent la version du jour, rien à mettre à jour ici.
+Deux outils, chacun dans sa propre console. Ils téléchargent leur version du jour à chaque lancement.
 
 ## 1. Win11Debloat : enlever ce que Windows a installé sans demander
 @BtnDebloat
@@ -413,7 +413,7 @@ Onglet Install : coche ce que tu veux, il installe tout via winget. Onglet Tweak
 Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnVcredist, BtnDirectX
 
-## 4. Son, ça évite les crépitements
+## 4. Le son, pour éviter les crépitements
 - Communications "Ne rien faire" (sinon Windows baisse ton son quand Discord sonne) : c'est une case du script à cocher, déjà cochée.
 - Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz.
 @BtnSon
@@ -435,7 +435,7 @@ Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['fr']['maintenance'] = @'
-Des mois après l'installation, quand le PC a vécu. Un bouton, une phrase : tu sais ce que tu ouvres.
+Pour un PC installé depuis des mois. Sous chaque bouton, une phrase dit ce qu'il ouvre.
 
 ## Ce qui se lance tout seul
 @BtnAutoruns
@@ -461,16 +461,16 @@ Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
 
 ## Defender qui pompe en jeu
 @BtnDefenderEnregistrer, BtnDefenderExclusions
-Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque, jamais Téléchargements : c'est par là que les saletés arrivent.
+Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque ni Téléchargements, c'est par là que les virus arrivent.
 '@
 $Textes['fr']['nvidia'] = @'
-Le pilote nu par NVCleanstall, puis le Panneau de configuration OG depuis le Store. i@ Depuis le pilote 610.47 (mai 2026) le Panneau OG n'est plus dans le pilote. Il vient du Store et disparaît à chaque installation propre : tu le réinstalles après.
+NVCleanstall installe le pilote sans la NVIDIA App, puis tu remets le Panneau de configuration OG depuis le Store. i@ Depuis le pilote 610.47 (mai 2026) le Panneau OG n'est plus dans le pilote. Il vient du Store et disparaît à chaque installation propre : tu le réinstalles après.
 
-## 1. NVCleanstall : le pilote nu
+## 1. NVCleanstall installe le pilote seul
 @BtnNvclean, BtnImgNvclean
 - "Manual", dernier pilote Game Ready pour ta carte.
 - Composants : Display Driver, PhysX. Rien d'autre. i@ NVIDIA HD Audio seulement si ton son sort par le câble de l'écran. Pas de NVIDIA App, pas de télémétrie, pas de GeForce Experience.
-- Installation Tweaks : coche comme sur la capture, ligne MPO comprise. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. Coupé, Windows compose tout lui-même : zéro effet en plein écran. Le script à cocher pose la même clé, la case est cochée d'office.
+- Installation Tweaks : coche comme sur la capture, ligne MPO comprise. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. Une fois coupé, Windows compose tout lui-même, sans effet en plein écran. Le script à cocher pose la même clé, la case est cochée d'office.
 - HDCP : activé = Netflix et Disney+ en 4K dans le navigateur, désactivé = léger boost de fps. i@ La capture le coupe. Un jeu ne s'en sert jamais, la 1080p passe toujours. Tu veux le 4K : décoche "Disable HDCP".
 ! Rebuild digital signature + méthode compatible Easy Anti-Cheat : le fichier du pilote reste intact, seul l'installeur est re-signé. Un jeu refuse de se lancer : réinstalle sans ces deux cases.
 L'écran clignote et des messages rouges passent pendant l'installation, c'est normal.
@@ -484,9 +484,9 @@ Gérer les paramètres 3D > Paramètres globaux :
 Modifier la résolution : Format de couleur de sortie RGB, Plage dynamique de sortie Complète. i@ Sinon les noirs peuvent être gris : la carte envoie une plage limitée (16-235) à un écran qui attend du 0-255. Sur beaucoup d'écrans c'est déjà bon.
 Le reste, laisse par défaut. i@ Gestion de l'alimentation, filtrage des textures, V-Sync : ça se règle jeu par jeu si un jeu le demande, jamais en global. En global ça coûte des watts ou de la netteté pour rien.
 
-## 3. Afterburner et RivaTuner : pour voir, pas pour overclocker
+## 3. Afterburner et RivaTuner pour mesurer
 @BtnAfterburner
-L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord. Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.
+L'overlay RivaTuner affiche les FPS et le temps d'image. Sans lui, tu ne sauras pas si une opti change quelque chose. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord. Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.
 '@
 $Textes['fr']['reseau'] = @'
 Le groupe Carte réseau du script fait tout ça tout seul. Ce tuto sert à vérifier, ou à le faire à la main.
@@ -1826,16 +1826,16 @@ $PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Mai
 $UI = @{
     fr = @{
         nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote nu, Panneau de configuration OG', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
             Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
-            Nvidia = 'Le pilote nu, puis le Panneau de configuration OG'; Dur = 'Une chose à la fois, tu mesures'
-            Maintenance = 'Quand le PC a vécu'; Dns = 'Qui répond le plus vite depuis chez toi ?'; Audit = 'Une IA vérifie ton PC'
+            Nvidia = 'Le pilote NVIDIA et son Panneau de configuration'; Dur = 'Une opti à la fois, mesurée'
+            Maintenance = 'Entretien, des mois après'; Dns = 'Le DNS le plus rapide depuis chez toi'; Audit = 'Une IA vérifie ton PC'
         }
         survole = 'Passe la souris sur une ligne pour lire le pourquoi et ce que tu perds.'; pourquoi = 'Pourquoi'; perds = 'Ce que tu perds'; rien = 'Rien de notable.'
         appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
-        legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Tu ne comprends pas une ligne, tu ne la coches pas.'
+        legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Si tu ne comprends pas une ligne, ne la coche pas.'
         seraFait = 'sera fait'; laisse = 'laissé tel quel'; dejaFait = 'déjà fait'
         reseauTitre = 'Carte réseau à la main'; langue = 'Français'
         rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
@@ -1845,7 +1845,7 @@ $UI = @{
         dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Clique une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
         dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
         dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; mullvad = 'pas de journal, serveurs en Europe'; dns0 = 'européen, bloque les sites malveillants'; controld = 'bloque les sites malveillants' }
-        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal : rien à perdre'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut : tout remettre'; presetPerso = 'Personnalisé'
+        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
         presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
         ou = 'ou'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
@@ -1863,12 +1863,12 @@ $UI = @{
     }
     en = @{
         nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'bare driver, OG Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'one tweak at a time, measured', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
             Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
-            Nvidia = 'The bare driver, then the OG Control Panel'; Dur = 'One thing at a time, you measure'
-            Maintenance = 'When the PC has lived a while'; Dns = 'Who answers fastest from your place?'; Audit = 'An AI checks your PC'
+            Nvidia = 'The NVIDIA driver and its Control Panel'; Dur = 'One tweak at a time, measured'
+            Maintenance = 'Upkeep, months later'; Dns = 'The fastest DNS from your place'; Audit = 'An AI checks your PC'
         }
         survole = 'Hover a line to read the why and what you lose.'; pourquoi = 'Why'; perds = 'What you lose'; rien = 'Nothing notable.'
         appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
@@ -1882,7 +1882,7 @@ $UI = @{
         dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Click a line then "Use the selected DNS", or change nothing.'
         dnsSelection = 'Click a result line.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
         dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; mullvad = 'no logs, servers in Europe'; dns0 = 'European, blocks malicious sites'; controld = 'blocks malicious sites' }
-        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal: nothing to lose'; presetAucun = 'Untick everything'; presetWindows = 'Windows default: restore everything'; presetPerso = 'Custom'
+        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
         presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
         ou = 'or'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
@@ -1923,8 +1923,8 @@ function Age-Texte($jours) {
 # Carte AMD dédiée : l'étape 4 devient la page AMD (textes/amd.txt), le rail et la carte d'accueil suivent.
 # Le nom interne de la page reste Nvidia.
 if ($EstAmd) {
-    $UI.fr.nav[4] = 'AMD'; $UI.fr.resume[4] = 'pilote propre, Adrenalin sans le superflu'; $UI.fr.titres.Nvidia = 'Le pilote propre, puis Adrenalin sans le superflu'
-    $UI.en.nav[4] = 'AMD'; $UI.en.resume[4] = 'clean driver, Adrenalin without the extras'; $UI.en.titres.Nvidia = 'The clean driver, then Adrenalin without the extras'
+    $UI.fr.nav[4] = 'AMD'; $UI.fr.resume[4] = 'pilote AMD, Adrenalin réglé'; $UI.fr.titres.Nvidia = 'Le pilote AMD et Adrenalin'
+    $UI.en.nav[4] = 'AMD'; $UI.en.resume[4] = 'AMD driver, Adrenalin settings'; $UI.en.titres.Nvidia = 'The AMD driver and Adrenalin'
 }
 
 $Boutons = @{
@@ -1953,7 +1953,7 @@ $Boutons = @{
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
-    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Installs through winget. Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
     BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall, plus la ligne MPO.'; en = 'The boxes to tick in NVCleanstall, plus the MPO line.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }

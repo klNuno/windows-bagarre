@@ -1,4 +1,4 @@
-This pack removes what runs for nothing and sets what matters for gaming. Fresh Windows, the steps in order, one thing at a time.
-Every line says what it changes and what you lose. If you do not understand a line, do not tick it.
+This pack removes what runs for nothing on a fresh Windows 11 and sets what matters for gaming. Follow the steps in order.
+Every line of the script says what it changes and what you lose. If you do not understand a line, do not tick it.
 Everything the script changes is written to C:\ProgramData\bagarre. "Restore everything" puts exactly those values back.
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande

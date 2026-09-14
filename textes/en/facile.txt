@@ -1,4 +1,4 @@
-Two tools, each in its own console. They fetch today's version, nothing to update here.
+Two tools, each in its own console. They download their current version every time you run them.
 
 ## 1. Win11Debloat: remove what Windows installed without asking
 @BtnDebloat
@@ -13,7 +13,7 @@ Install tab: tick what you want, it installs everything through winget. Tweaks t
 Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnVcredist, BtnDirectX
 
-## 4. Sound, it avoids crackling
+## 4. Sound, to avoid crackling
 - Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
 - Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
 @BtnSon

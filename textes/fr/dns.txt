@@ -2,11 +2,11 @@ Le DNS transforme un nom (youtube.com) en adresse. i@ Un DNS lent ajoute quelque
 
 ## Tester depuis chez toi
 @BtnDnsTester
-Neuf résolveurs, six noms courants chacun, trois fois, médiane gardée. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
+Le test interroge neuf résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Lequel garder
-Un écart sous 5 ms ne se sent pas : si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
+Un écart de moins de 5 ms ne se sent pas. Si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
 Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9 et dns0 les sites malveillants, Google garde des journaux, Mullvad n'en garde pas. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
 "Tout remettre comme avant" remet aussi le DNS d'avant.

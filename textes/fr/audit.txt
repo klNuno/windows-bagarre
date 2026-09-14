@@ -1,4 +1,4 @@
-Le pack est générique, ton PC ne l'est pas. L'audit prend une photo de ton PC et la donne à une IA avec un prompt qui sait ce que le pack a fait, ce qu'il refuse, et comment juger une opti.
+Le pack ne connaît pas ton PC. L'audit en prend une photo et la donne à une IA, avec un prompt qui sait ce que le pack a fait, ce qu'il refuse, et comment juger une opti.
 
 ## 1. Le rapport
 @BtnCollecter
@@ -10,4 +10,4 @@ Le pack est générique, ton PC ne l'est pas. L'audit prend une photo de ton PC 
 ## 3. Ton IA
 - Agent en terminal (Claude Code, Codex, Gemini CLI) : ouvre-le dans le dossier bagarre-audit et colle le prompt. Il lit le rapport tout seul.
 - Chat web (ChatGPT, Claude.ai) : colle le prompt, puis joins rapport-pc.txt.
-Lis la réponse comme le reste du pack : une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.
+Une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.

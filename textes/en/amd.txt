@@ -1,4 +1,4 @@
-Your card is an AMD: the driver comes from AMD's site, Adrenalin is its panel, everything is set inside it.
+Your card is an AMD. The driver comes from AMD's site and everything is set in Adrenalin, its panel.
 
 ## 1. The driver, from AMD's site
 @BtnAmd
@@ -19,4 +19,4 @@ Leave the rest at default. i@ Enhanced Sync, FreeSync, V-Sync, texture filtering
 - In-game overlay (Alt+R): OFF. i@ One overlay at a time: RivaTuner or Steam or Discord.
 - Preferences: "Open on startup" OFF, "Automatic updates" set to Notify only.
 @BtnAfterburner
-The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything.
+The RivaTuner overlay shows FPS and frame time. Without it, you will not know whether a tweak changes anything.

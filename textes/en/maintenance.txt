@@ -1,4 +1,4 @@
-Months after the install, once the PC has lived. One button, one sentence: you know what you are opening.
+For a PC installed months ago. Under each button, one sentence says what it opens.
 
 ## What starts on its own
 @BtnAutoruns
@@ -24,4 +24,4 @@ Wi-Fi dropping: the Windows Wi-Fi report says when and why.
 
 ## Defender hogging while you play
 @BtnDefenderEnregistrer, BtnDefenderExclusions
-Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive, never Downloads: that is where the nasty stuff comes in.
+Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive or Downloads, that is where viruses come in.
