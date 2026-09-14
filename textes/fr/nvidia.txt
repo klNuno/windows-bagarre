@@ -4,7 +4,7 @@ NVCleanstall installe le pilote sans la NVIDIA App, puis tu remets le Panneau de
 @BtnNvclean, BtnImgNvclean
 - "Manual", dernier pilote Game Ready pour ta carte.
 - Composants : Display Driver, PhysX. Rien d'autre. i@ NVIDIA HD Audio seulement si ton son sort par le câble de l'écran. Pas de NVIDIA App, pas de télémétrie, pas de GeForce Experience.
-- Installation Tweaks : coche comme sur la capture, ligne MPO comprise. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. Une fois coupé, Windows compose tout lui-même, sans effet en plein écran. Le script à cocher pose la même clé, la case est cochée d'office.
+- Installation Tweaks : coche comme sur la capture, sauf la ligne "Disable MPO", que tu laisses au script à cocher. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. La case du script pose la même clé, cochée d'office, et "Tout remettre" peut la rendre, ce que NVCleanstall ne sait pas faire.
 - HDCP : activé = Netflix et Disney+ en 4K dans le navigateur, désactivé = léger boost de fps. i@ La capture le coupe. Un jeu ne s'en sert jamais, la 1080p passe toujours. Tu veux le 4K : décoche "Disable HDCP".
 ! Rebuild digital signature + méthode compatible Easy Anti-Cheat : le fichier du pilote reste intact, seul l'installeur est re-signé. Un jeu refuse de se lancer : réinstalle sans ces deux cases.
 L'écran clignote et des messages rouges passent pendant l'installation, c'est normal.

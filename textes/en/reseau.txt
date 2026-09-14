@@ -1,9 +1,0 @@
-The Network card group of the script does all of this by itself. This guide is for checking, or doing it by hand.
-
-Control Panel > Network and Sharing Center > Change adapter settings > right-click your card > Properties.
-
-1. Configure > Power Management: untick "Allow the computer to turn off this device". Otherwise the network drops for 2 seconds after sleep.
-
-2. Advanced tab: Energy Efficient Ethernet, Green Ethernet, Power Saving Mode set to Disabled. Interrupt Moderation set to Medium, not Disabled. The rest at default, Jumbo Frame and Receive Buffers bring nothing in games.
-
-3. Protocols to untick: Microsoft LLDP Protocol Driver, Link-Layer Topology Discovery Responder, Link-Layer Topology Discovery Mapper I/O Driver. Keep TCP/IPv4 and IPv6.

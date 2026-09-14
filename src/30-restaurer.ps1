@@ -44,8 +44,16 @@ function Tout-Restaurer {
                 'netadv|*' { Set-NetAdapterAdvancedProperty -Name $v.carte -RegistryKeyword $v.mot -RegistryValue $v.valeur -ErrorAction SilentlyContinue }
                 'netb|*' { if ($v.actif) { Enable-NetAdapterBinding -Name $v.carte -ComponentID $v.composant -ErrorAction SilentlyContinue } }
                 'dns|*' {
-                    if ($v.serveurs -and $v.serveurs.Count -gt 0) { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ServerAddresses $v.serveurs }
-                    else { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ResetServerAddresses }
+                    # serveurs = statiques IPv4 d'avant, serveurs6 = IPv6 (absents dans les états d'avant le 2026-09-14), vides = DHCP
+                    $liste = @($v.serveurs) + @($v.serveurs6) | Where-Object { $_ }
+                    Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ResetServerAddresses
+                    if ($liste.Count -gt 0) { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ServerAddresses $liste }
+                    foreach ($d in @($v.doh)) {
+                        if (-not $d -or -not $d.ip) { continue }
+                        if ($d.existait) { Set-DnsClientDohServerAddress -ServerAddress $d.ip -DohTemplate $d.modele -AutoUpgrade ([bool]$d.auto) -AllowFallbackToUdp ([bool]$d.repli) -ErrorAction SilentlyContinue | Out-Null }
+                        else { Remove-DnsClientDohServerAddress -ServerAddress $d.ip -ErrorAction SilentlyContinue | Out-Null }
+                    }
+                    Clear-DnsClientCache
                 }
             }
             Log ((Msg 'restaure') -f $id)

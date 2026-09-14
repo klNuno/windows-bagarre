@@ -1,9 +1,0 @@
-Le groupe Carte réseau du script fait tout ça tout seul. Ce tuto sert à vérifier, ou à le faire à la main.
-
-Panneau de configuration > Centre réseau > Modifier les paramètres de la carte > clic droit sur ta carte > Propriétés.
-
-1. Configurer > Gestion de l'alimentation : décoche "Autoriser l'ordinateur à éteindre ce périphérique". Sinon le réseau lâche 2 secondes après une veille.
-
-2. Onglet Avancé : Energy Efficient Ethernet, Green Ethernet, Power Saving Mode sur Désactivé. Interrupt Moderation sur Medium, pas Désactivé. Le reste par défaut, Jumbo Frame et Receive Buffers n'apportent rien en jeu.
-
-3. Protocoles à décocher : pilote LLDP Microsoft, répondeur de découverte de topologie, pilote E/S de mappage de topologie. On garde TCP/IPv4 et IPv6.

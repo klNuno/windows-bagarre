@@ -6,7 +6,7 @@ CONTEXTE : CE QUE LE PACK A DÉJÀ FAIT
 Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windows-bagarre) :
 - Windows 11 frais, Windows Update à jour, pilotes chipset et réseau du constructeur.
 - Win11Debloat (mode par défaut) et WinUtil (tweaks Standard).
-- Carte NVIDIA : pilote nu via NVCleanstall (sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé, MPO coupé,
+- Carte NVIDIA : pilote nu via NVCleanstall (sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé,
   signature reconstruite méthode compatible EAC). Panneau de configuration classique depuis le Store : faible latence
   Activé, cache de shaders illimité, optimisation threadée, sortie RGB plage complète. Le reste par défaut,
   réglé jeu par jeu si besoin (gestion de l'alimentation, filtrage, V-Sync, G-Sync).
@@ -22,7 +22,8 @@ Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windo
   Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC : SvcHostSplitThreshold,
   Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
   LLMNR off, presse-papiers, Dynamic Lighting, P0 NVIDIA, core parking, boost Aggressive (Intel seulement).
-- DNS testé depuis le PC (neuf résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms.
+- DNS testé depuis le PC (huit résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms, avec un
+  secours, le chiffrement DNS over HTTPS et l'IPv6 quand la connexion en a.
 
 NE PROPOSE PAS, C'EST DÉCIDÉ
 - Désactiver HVCI / intégrité de la mémoire, Secure Boot, Defender, le pare-feu, Windows Update, l'UAC.

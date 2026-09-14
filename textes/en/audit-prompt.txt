@@ -6,7 +6,7 @@ CONTEXT: WHAT THE PACK HAS ALREADY DONE
 This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/windows-bagarre):
 - Fresh Windows 11, Windows Update current, chipset and network drivers from the manufacturer.
 - Win11Debloat (default mode) and WinUtil (Standard tweaks).
-- NVIDIA card: bare driver via NVCleanstall (no NVIDIA App, MSI High, HDCP off, Ansel off, MPO off,
+- NVIDIA card: bare driver via NVCleanstall (no NVIDIA App, MSI High, HDCP off, Ansel off,
   signature rebuilt with the EAC compatible method). Classic Control Panel from the Store: Low Latency Mode On,
   unlimited shader cache, threaded optimization, RGB output full range. The rest at default, set per game when
   needed (power management, filtering, V-Sync, G-Sync).
@@ -22,7 +22,8 @@ This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/
   Boxes unticked by default, to propose only with a reason specific to this PC: SvcHostSplitThreshold,
   Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
   LLMNR off, clipboard, Dynamic Lighting, NVIDIA P0, core parking, Aggressive boost (Intel only).
-- DNS tested from the PC (nine resolvers), the fastest applied if the gap with the router was over 5 ms.
+- DNS tested from the PC (eight resolvers), the fastest applied if the gap with the router was over 5 ms, with a
+  fallback, DNS over HTTPS encryption and IPv6 when the connection has it.
 
 DO NOT PROPOSE, IT IS DECIDED
 - Disabling HVCI / memory integrity, Secure Boot, Defender, the firewall, Windows Update, UAC.

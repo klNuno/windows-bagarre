@@ -24,7 +24,7 @@ Eight steps, in order:
 4. NVIDIA or AMD, depending on the card: the driver without the extras, then the control panel settings.
 5. Hard: priority and cores per game, memory, the GPU interrupt core.
 6. Maintenance: startup programs, disk space, sleep problems, Defender while you play.
-7. DNS: measures nine resolvers from your connection and applies the one you pick.
+7. DNS: measures eight resolvers from your connection and applies the one you pick, with a fallback, DNS over HTTPS and IPv6.
 8. AI audit: a read-only report of the PC and a prompt for the AI of your choice.
 
 What the pack refuses to do, and why, is in [docs/decisions.md](docs/decisions.md).

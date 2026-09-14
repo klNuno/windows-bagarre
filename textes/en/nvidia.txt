@@ -4,7 +4,7 @@ NVCleanstall installs the driver without the NVIDIA App, then you put the OG Con
 @BtnNvclean, BtnImgNvclean
 - "Manual", latest Game Ready driver for your card.
 - Components: Display Driver, PhysX. Nothing else. i@ NVIDIA HD Audio only if your sound goes through the monitor cable. No NVIDIA App, no telemetry, no GeForce Experience.
-- Installation Tweaks: tick as on the screenshot, MPO line included. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. Once off, Windows composes everything itself, with no effect in full screen. The checkbox script sets the same key, ticked by default.
+- Installation Tweaks: tick as on the screenshot, except the "Disable MPO" line, which you leave to the checkbox script. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. The script box sets the same key, ticked by default, and "Restore everything" can put it back, which NVCleanstall cannot.
 - HDCP: on = Netflix and Disney+ in 4K in the browser, off = slight fps boost. i@ The screenshot turns it off. A game never uses it, 1080p always works. You want 4K: untick "Disable HDCP".
 ! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. A game refuses to start: reinstall without those two boxes.
 The screen flickers and red messages scroll by during the install, that is normal.

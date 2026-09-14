@@ -14,6 +14,5 @@ Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnVcredist, BtnDirectX
 
 ## 4. Le son, pour éviter les crépitements
-- Communications "Ne rien faire" (sinon Windows baisse ton son quand Discord sonne) : c'est une case du script à cocher, déjà cochée.
-- Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz.
+Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz. i@ La baisse de volume quand Discord sonne (Communications "Ne rien faire") est une case du script à cocher.
 @BtnSon

@@ -27,14 +27,18 @@ $UI = @{
         appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
         legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Si tu ne comprends pas une ligne, ne la coche pas.'
         seraFait = 'sera fait'; laisse = 'laissé tel quel'; dejaFait = 'déjà fait'
-        reseauTitre = 'Carte réseau à la main'; langue = 'Français'
+        langue = 'Français'
         rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
         termine = 'Terminé. Redémarre le PC pour que tout prenne effet.'; rienRestaurer = 'Rien à restaurer : aucun réglage appliqué sur ce PC.'
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
         aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte {0} ({1}). DNS actuel : {2}, souvent ta box.'
-        dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Clique une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
-        dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
-        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; mullvad = 'pas de journal, serveurs en Europe'; dns0 = 'européen, bloque les sites malveillants'; controld = 'bloque les sites malveillants' }
+        dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Un clic sur une ligne choisit le principal, un deuxième le secours, puis "Utiliser les DNS choisis".'
+        dnsSelection = 'Clique d abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
+        dnsResume1 = 'Principal {0} ({1}). Un deuxième clic choisit le secours, la même ligne donne sa deuxième adresse.'
+        dnsResume2 = 'Principal {0} ({1}), secours {2} ({3}).'; dnsResumeBox = 'La carte repasse en automatique, sur le DNS de ta box.'
+        dnsDoh = 'Chiffrer les requêtes (DNS over HTTPS)'; dnsDohTip = 'Windows passe en HTTPS avec ces serveurs et revient en clair si ça échoue. Ta box et ton FAI ne lisent plus les noms que tu demandes.'; dnsDohAbsent = 'Windows 11 seulement.'
+        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d adresse IPv6, la case ne change rien pour lui.'
+        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
         preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
         presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
         ou = 'ou'
@@ -64,14 +68,18 @@ $UI = @{
         appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
         legende = 'Checked = done when you click Apply. Unchecked = nothing changes. If you do not understand a line, do not check it.'
         seraFait = 'will be done'; laisse = 'left as is'; dejaFait = 'already done'
-        reseauTitre = 'Network card by hand'; langue = 'English'
+        langue = 'English'
         rienCoche = 'Nothing checked.'; confirmAppliquer = "Apply {0} settings?`n`nThe previous state is saved in {1}, the Restore button puts it back."
         termine = 'Done. Reboot the PC so everything takes effect.'; rienRestaurer = 'Nothing to restore: no setting applied on this PC.'
         confirmRestaurer = 'Put the {0} settings back as they were?'; restaure = 'Restored. Reboot the PC.'
         aucuneCarte = 'No active network card found.'; dnsCarte = 'Card {0} ({1}). Current DNS: {2}, usually your router.'
-        dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Click a line then "Use the selected DNS", or change nothing.'
-        dnsSelection = 'Click a result line.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
-        dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; mullvad = 'no logs, servers in Europe'; dns0 = 'European, blocks malicious sites'; controld = 'blocks malicious sites' }
+        dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. One click on a line picks the primary, a second the fallback, then "Use the chosen DNS".'
+        dnsSelection = 'Click a result line first.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
+        dnsResume1 = 'Primary {0} ({1}). A second click picks the fallback, the same line gives its second address.'
+        dnsResume2 = 'Primary {0} ({1}), fallback {2} ({3}).'; dnsResumeBox = 'The card goes back to automatic, on your router DNS.'
+        dnsDoh = 'Encrypt queries (DNS over HTTPS)'; dnsDohTip = 'Windows switches to HTTPS with these servers and falls back to plain text if that fails. Your router and your ISP no longer read the names you ask for.'; dnsDohAbsent = 'Windows 11 only.'
+        dnsIpv6 = 'IPv6 too'; dnsIpv6Tip = 'Ticked by default when your connection has a public IPv6 address. OpenDNS publishes no IPv6 address, the box changes nothing for it.'
+        dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; dns4eu = 'European, blocks malicious sites'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; controld = 'blocks malicious sites' }
         preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
         presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
         ou = 'or'
@@ -122,7 +130,7 @@ $Boutons = @{
     BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
     BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot | iex"); Log $Bagarre.L.commandeCopiee } }
 
-    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
+    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
     BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
     BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
     BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Télécharge le zip officiel (celui que winget connaît) dans le dossier bagarre et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Downloads the official zip (the one winget knows) into the bagarre folder and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
@@ -136,15 +144,12 @@ $Boutons = @{
     BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
     BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
     BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
-    BtnReseau = @{ Zone = 'Volet'; T = @{ fr = 'Lire : la carte réseau à la main'; en = 'Read: the network card by hand' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
-    BtnImgProtocoles = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : protocoles'; en = 'See the screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
-    BtnImgAvance = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : onglet Avancé'; en = 'See the screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
     BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
     BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
-    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall, plus la ligne MPO.'; en = 'The boxes to tick in NVCleanstall, plus the MPO line.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
+    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall. La ligne MPO reste au script à cocher.'; en = 'The boxes to tick in NVCleanstall. The MPO line stays with the checkbox script.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
     BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
@@ -154,23 +159,28 @@ $Boutons = @{
 
     BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
     BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
-    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans une console. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in a console. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
+    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans la console qui accompagne la fenêtre. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in the console next to the window. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' -Ici } }
     BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
     BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
-    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans une console.'; en = 'powercfg /lastwake, /waketimers, /requests in a console.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' } }
+    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans la console qui accompagne la fenêtre.'; en = 'powercfg /lastwake, /waketimers, /requests in the console next to the window.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' -Ici } }
     BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
-    BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Fermer } }
+    BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport dans la console qui accompagne la fenêtre, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport in the console next to the window, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Ici } }
     BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
     BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
 
-    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Neuf résolveurs, une minute au plus. Ne change rien.'; en = 'Nine resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
-    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $Bagarre.DnsChoix; if ($i -lt 0) { Log $Bagarre.L.dnsSelection; return }; Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$i] } }
+    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Huit résolveurs, une minute au plus. Ne change rien.'; en = 'Eight resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
+    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
+        $p = $Bagarre.DnsChoix
+        if ($p -lt 0) { Log $Bagarre.L.dnsSelection; return }
+        $s = if ($Bagarre.DnsSecours -ge 0) { $Bagarre.DnsResultats[$Bagarre.DnsSecours] } else { $Bagarre.DnsResultats[$p] }
+        Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$p] $s ([bool]$Ctl.DnsDoh.IsChecked) ([bool]$Ctl.DnsIpv6.IsChecked)
+    } }
 
     BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
     BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
     BtnDossierAudit = @{ T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
 
-    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans une console. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in a console. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" } }
+    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
     BtnVoileSauvegarde = @{ Logo = 'microsoft'; T = @{ fr = 'Sauvegarder mes fichiers'; en = 'Back up my files' }; Tip = @{ fr = 'Paramètres > Sauvegarde Windows.'; en = 'Settings > Windows Backup.' }; Action = { Ouvrir 'ms-settings:backup' } }
     BtnVoileContinuer = @{ T = @{ fr = 'Continuer quand même'; en = 'Continue anyway' }; Tip = @{ fr = 'Ferme cet avertissement.'; en = 'Closes this warning.' }; Action = { $Ctl.Voile.Visibility = 'Collapsed' } }
 }
@@ -1099,7 +1109,7 @@ foreach ($it in $Items) {
 foreach ($id in 'BtnAppliquer', 'BtnDetecter', 'BtnRestaurer') { [void]$Ctl.BarreOptis.Children.Add((Bouton-Obtenir $id)) }
 $Ctl.BarreOptis.Children.Remove($Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Remove($Ctl.Presets)
 $Ctl.BarreOptis.Children.Insert(1, $Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Insert(2, $Ctl.Presets)
-foreach ($id in 'BtnReseau', 'BtnImgProtocoles', 'BtnImgAvance', 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
+foreach ($id in 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
 
 # Presets : une liste déroulante à la place de quarante boutons. Recommandé = les cases sûres, Minimal = celles sans
 # contrepartie, Tout décocher, Windows par défaut = restaure ce qui a été appliqué. Toucher une case passe en Personnalisé.
@@ -1204,27 +1214,77 @@ function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $Lo
 # ---------------------------------------------------------------------------
 $Bagarre.DnsAdapt = $null
 $Bagarre.DnsResultats = @()
-$Bagarre.DnsChoix = -1
+$Bagarre.DnsChoix = -1     # index du principal, -1 = rien de choisi
+$Bagarre.DnsSecours = -1   # index du secours, -1 = pas choisi (le principal fournit alors sa deuxième adresse)
 $Ctl.DnsPanneau = New-Object Windows.Controls.StackPanel
 $Ctl.DnsPanneau.Margin = '0,2,0,4'; $Ctl.DnsPanneau.MinWidth = 600
 $Ctl.DnsCarte = New-Object Windows.Controls.TextBlock
 $Ctl.DnsCarte.Foreground = $Pinceau.Sourd; $Ctl.DnsCarte.TextWrapping = 'Wrap'; $Ctl.DnsCarte.Margin = '0,0,0,8'
 $Ctl.DnsListe = New-Object Windows.Controls.StackPanel
-[void]$Ctl.DnsPanneau.Children.Add($Ctl.DnsCarte); [void]$Ctl.DnsPanneau.Children.Add($Ctl.DnsListe)
+$Ctl.DnsBadges = @{}
+# Sous la liste : la phrase qui résume le choix, puis les deux cases (chiffrement, IPv6)
+$Ctl.DnsResume = New-Object Windows.Controls.TextBlock
+$Ctl.DnsResume.Foreground = $Pinceau.Texte; $Ctl.DnsResume.FontSize = 13; $Ctl.DnsResume.TextWrapping = 'Wrap'; $Ctl.DnsResume.Margin = '0,2,0,6'; $Ctl.DnsResume.Visibility = 'Collapsed'
+$Ctl.DnsOptions = New-Object Windows.Controls.StackPanel
+$Ctl.DnsOptions.Orientation = 'Horizontal'; $Ctl.DnsOptions.Margin = '0,2,0,4'
+$Ctl.DnsDoh = New-Object Windows.Controls.CheckBox
+$Ctl.DnsDoh.IsChecked = $true; $Ctl.DnsDoh.Margin = '0,0,24,0'; $Ctl.DnsDoh.VerticalAlignment = 'Center'
+$Ctl.DnsIpv6 = New-Object Windows.Controls.CheckBox
+$Ctl.DnsIpv6.IsChecked = $false; $Ctl.DnsIpv6.VerticalAlignment = 'Center'
+foreach ($cb in $Ctl.DnsDoh, $Ctl.DnsIpv6) { [Windows.Controls.ToolTipService]::SetInitialShowDelay($cb, 250); [Windows.Controls.ToolTipService]::SetShowDuration($cb, 30000); [void]$Ctl.DnsOptions.Children.Add($cb) }
+foreach ($c in $Ctl.DnsCarte, $Ctl.DnsListe, $Ctl.DnsResume, $Ctl.DnsOptions) { [void]$Ctl.DnsPanneau.Children.Add($c) }
 
-function Dns-Choisir($i) {
-    $Bagarre.DnsChoix = $i
-    foreach ($row in $Ctl.DnsListe.Children) { $row.BorderBrush = if ([int]$row.Tag -eq $i) { $Pinceau.Accent } else { $Pinceau.Bordure } }
-    $Ctl.BtnDnsAppliquer.IsEnabled = $i -ge 0
+function Dns-Libeller {
+    $L = $Bagarre.L
+    $Ctl.DnsDoh.Content = $L.dnsDoh; $Ctl.DnsDoh.ToolTip = $L.dnsDohTip
+    $Ctl.DnsIpv6.Content = $L.dnsIpv6; $Ctl.DnsIpv6.ToolTip = $L.dnsIpv6Tip
+    if (-not (Dns-Doh-Possible)) { $Ctl.DnsDoh.IsChecked = $false; $Ctl.DnsDoh.IsEnabled = $false; $Ctl.DnsDoh.ToolTip = $L.dnsDohAbsent }
+    Dns-Resumer
 }
-# Une ligne de résultat : rang, logo, nom + note, barre proportionnelle, ms. Mediane est un nombre (jamais parsé
+# La phrase sous la liste : rien, le principal seul, ou principal et secours avec leurs adresses
+function Dns-Resumer {
+    $L = $Bagarre.L; $p = $Bagarre.DnsChoix; $s = $Bagarre.DnsSecours
+    if ($p -lt 0 -or $p -ge $Bagarre.DnsResultats.Count) { $Ctl.DnsResume.Text = ''; $Ctl.DnsResume.Visibility = 'Collapsed'; return }
+    $rp = $Bagarre.DnsResultats[$p]
+    $Ctl.DnsResume.Visibility = 'Visible'
+    if ($rp.Actuel) { $Ctl.DnsResume.Text = $L.dnsResumeBox; return }
+    if ($s -lt 0 -or ($s -eq $p -and $rp.Serveurs.Count -lt 2)) { $Ctl.DnsResume.Text = $L.dnsResume1 -f $rp.Nom, $rp.Serveurs[0]; return }
+    $rs = $Bagarre.DnsResultats[$s]
+    $adresse = if ($s -eq $p) { $rp.Serveurs[1] } else { $rs.Serveurs[0] }
+    $Ctl.DnsResume.Text = $L.dnsResume2 -f $rp.Nom, $rp.Serveurs[0], $rs.Nom, $adresse
+}
+# Cadre accent sur les lignes choisies, badge 1 / 2 / 1+2, bouton Utiliser actif dès qu'il y a un principal
+function Dns-Peindre {
+    $p = $Bagarre.DnsChoix; $s = $Bagarre.DnsSecours
+    foreach ($row in $Ctl.DnsListe.Children) {
+        $i = [int]$row.Tag
+        $encadre = if ($p -ge 0) { $i -eq $p -or $i -eq $s } else { $i -eq $Bagarre.DnsMeilleur }   # sans choix, le plus rapide garde son cadre
+        $row.BorderBrush = if ($encadre) { $Pinceau.Accent } else { $Pinceau.Bordure }
+        $badge = $Ctl.DnsBadges[$i]
+        if (-not $badge) { continue }
+        $badge.Texte.Text = if ($i -eq $p -and $i -eq $s) { '1+2' } elseif ($i -eq $p) { '1' } elseif ($i -eq $s) { '2' } else { '' }
+        $badge.Bord.Visibility = if ($badge.Texte.Text) { 'Visible' } else { 'Collapsed' }
+    }
+    $Ctl.BtnDnsAppliquer.IsEnabled = $p -ge 0
+    Dns-Resumer
+}
+# Un clic : pas de principal = principal ; un principal sans secours = secours (la même ligne compte) ; les deux posés = on recommence.
+# [int] obligatoire : "Dns-Choisir -1" passe la chaîne "-1", et "-1" -lt 0 est faux en comparaison de chaînes.
+function Dns-Choisir([int]$i) {
+    if ($i -lt 0) { $Bagarre.DnsChoix = -1; $Bagarre.DnsSecours = -1 }
+    elseif ($Bagarre.DnsChoix -lt 0) { $Bagarre.DnsChoix = $i }
+    elseif ($Bagarre.DnsSecours -lt 0 -and -not $Bagarre.DnsResultats[$Bagarre.DnsChoix].Actuel) { $Bagarre.DnsSecours = $i }
+    else { $Bagarre.DnsChoix = $i; $Bagarre.DnsSecours = -1 }
+    Dns-Peindre
+}
+# Une ligne de résultat : rang, logo, nom + note, barre proportionnelle, ms, badge du choix. Mediane est un nombre (jamais parsé
 # depuis une chaîne : "12,3" en français cassait tout). $null = mesure en cours, la ligne est grisée.
 function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     $row = New-Object Windows.Controls.Border
     $row.Tag = $i; $row.Background = $Pinceau.Surface2; $row.BorderThickness = '1'; $row.CornerRadius = '8'; $row.Padding = '10,8'; $row.Margin = '0,0,0,6'; $row.Cursor = 'Hand'
     $row.BorderBrush = if ($plusRapide) { $Pinceau.Accent } else { $Pinceau.Bordure }
     $g = New-Object Windows.Controls.Grid
-    foreach ($w in '26', '34', '230', '*', '70') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+    foreach ($w in '26', '34', '230', '*', '70', '46') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
     $num = New-Object Windows.Controls.TextBlock
     $num.Text = if ($rang -gt 0) { "$rang" } else { '' }; $num.FontSize = 11; $num.FontWeight = 'SemiBold'; $num.VerticalAlignment = 'Center'
     $num.Foreground = if ($plusRapide) { $Pinceau.AccentClair } else { $Pinceau.Sourd }
@@ -1258,7 +1318,14 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     $ms.TextAlignment = 'Right'; $ms.VerticalAlignment = 'Center'; $ms.FontWeight = 'SemiBold'
     if ($ok) { $ms.Text = '{0} ms' -f [math]::Round($med) } else { $ms.Text = $Bagarre.L.dnsTest; $ms.FontSize = 11; $ms.Foreground = $Pinceau.Sourd; $ms.FontWeight = 'Normal' }
     [Windows.Controls.Grid]::SetColumn($ms, 4)
-    foreach ($c in $num, $logo, $bloc, $barre, $ms) { [void]$g.Children.Add($c) }
+    $badge = New-Object Windows.Controls.Border
+    $badge.Background = $Pinceau.Accent; $badge.CornerRadius = '9'; $badge.Padding = '7,1'; $badge.HorizontalAlignment = 'Right'; $badge.VerticalAlignment = 'Center'; $badge.Visibility = 'Collapsed'
+    $bt = New-Object Windows.Controls.TextBlock
+    $bt.FontSize = 10; $bt.FontWeight = 'Bold'; $bt.Foreground = $Pinceau.Fond
+    $badge.Child = $bt
+    [Windows.Controls.Grid]::SetColumn($badge, 5)
+    $Ctl.DnsBadges[$i] = @{ Bord = $badge; Texte = $bt }
+    foreach ($c in $num, $logo, $bloc, $barre, $ms, $badge) { [void]$g.Children.Add($c) }
     $row.Child = $g
     if (-not $ok) { $row.Opacity = 0.55; $row.Cursor = 'Arrow' } else { $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) }) }
     $row
@@ -1266,6 +1333,7 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
 # Redessine la liste : rang par médiane croissante, le plus rapide encadré. Les lignes sans mesure restent à leur place.
 function Dns-Redessiner {
     $Ctl.DnsListe.Children.Clear()
+    $Ctl.DnsBadges.Clear()
     $mesures = @($Bagarre.DnsResultats | Where-Object { $null -ne $_.Mediane })
     $max = 0.0
     foreach ($r in $mesures) { if ([double]$r.Mediane -gt $max) { $max = [double]$r.Mediane } }
@@ -1273,25 +1341,33 @@ function Dns-Redessiner {
     $rangs = @{}
     for ($k = 0; $k -lt $tries.Count; $k++) { $rangs[$tries[$k].Cle] = $k + 1 }
     $meilleur = if ($tries.Count -gt 0 -and $tries.Count -eq $Bagarre.DnsResultats.Count) { $tries[0].Cle } else { $null }
+    $Bagarre.DnsMeilleur = -1
     for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) {
         $r = $Bagarre.DnsResultats[$i]
+        if ($r.Cle -eq $meilleur) { $Bagarre.DnsMeilleur = $i }
         [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $r $max $rangs[$r.Cle] ($r.Cle -eq $meilleur)))
     }
+    Dns-Peindre
     Rafraichir
+}
+# Prépare la liste pour une carte : sa ligne d'en-tête, les candidats sans mesure, la case IPv6 selon la connexion
+function Dns-Preparer($adapt) {
+    $Bagarre.DnsAdapt = $adapt
+    $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
+    $Ctl.DnsIpv6.IsChecked = Dns-AIpv6 $adapt
+    Dns-Choisir -1
+    $Bagarre.DnsResultats = @()
+    foreach ($c in (Dns-Candidats $adapt)) {
+        if (-not $c.Serveurs[0]) { continue }
+        $Bagarre.DnsResultats += Dns-Resultat $c
+    }
 }
 function Dns-Tester {
     $adapt = Dns-Carte
     if (-not $adapt) { Log $Bagarre.L.aucuneCarte; return }
-    $Bagarre.DnsAdapt = $adapt
-    $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
-    Dns-Choisir -1
+    Dns-Preparer $adapt
     $Ctl.BtnDnsTester.IsEnabled = $false
     Log $Bagarre.L.dnsEnCours
-    $Bagarre.DnsResultats = @()
-    foreach ($c in (Dns-Candidats $adapt)) {
-        if (-not $c.Serveurs[0]) { continue }
-        $Bagarre.DnsResultats += [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Mediane = $null; Actuel = ($c.Cle -eq 'actuel') }
-    }
     Dns-Redessiner
     foreach ($r in $Bagarre.DnsResultats) {
         $r.Mediane = Dns-Mesurer-Un $r.Serveurs[0]
@@ -1338,6 +1414,7 @@ function Appliquer-Langue {
     foreach ($p in $PagesNoms) { if ($p -ne 'Optis') { Page-Construire $p } }
     Etapes-Construire
     Boutons-Libeller
+    Dns-Libeller
     $Ctl.Legende.Text = $L.legende
     $Ctl.OptiEtiquette1.Text = $L.pourquoi; $Ctl.OptiEtiquette2.Text = $L.perds
     foreach ($g in $Groupes) {
@@ -1386,6 +1463,15 @@ if ($Capture) {
     $racine.Arrange((New-Object Windows.Rect 0, 0, 1320, 860))
     Opti-Montrer (Item-Titre $Items[0]) (Item-Pourquoi $Items[0]) (Item-Attention $Items[0])   # le volet d'explication rempli, comme au survol
     $Ctl.Voile.Visibility = 'Collapsed'
+    # La page DNS comme après un test : des médianes inventées, Cloudflare en principal et Quad9 en secours
+    $adaptCapture = Dns-Carte
+    if ($adaptCapture) {
+        Dns-Preparer $adaptCapture
+        $faux = 14.2, 9.8, 8.1, 12.1, 13.7, 15.9, 21.4, 12.8
+        for ($k = 0; $k -lt $Bagarre.DnsResultats.Count; $k++) { $Bagarre.DnsResultats[$k].Mediane = $faux[$k % $faux.Count] }
+        Dns-Redessiner
+        Dns-Choisir 2; Dns-Choisir 1
+    }
     function Capture-Png($nom) {
         $racine.UpdateLayout()
         $bmp = New-Object Windows.Media.Imaging.RenderTargetBitmap 1320, 860, 96, 96, ([Windows.Media.PixelFormats]::Pbgra32)

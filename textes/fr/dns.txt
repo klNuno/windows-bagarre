@@ -2,11 +2,12 @@ Le DNS transforme un nom (youtube.com) en adresse. i@ Un DNS lent ajoute quelque
 
 ## Tester depuis chez toi
 @BtnDnsTester
-Le test interroge neuf résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
+Le test interroge huit résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; DNS4EU, AdGuard et Control D surtout en Europe et en Amérique du Nord.
+Un premier clic choisit le principal, un deuxième le secours, sur la même ligne ou une autre. Un troisième clic recommence. i@ Le secours répond quand le principal ne répond pas. La même ligne en secours prend la deuxième adresse du résolveur ; sans deuxième clic, c'est ce que tu obtiens.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Lequel garder
 Un écart de moins de 5 ms ne se sent pas. Si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
-Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9 et dns0 les sites malveillants, Google garde des journaux, Mullvad n'en garde pas. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
-"Tout remettre comme avant" remet aussi le DNS d'avant.
+Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9, DNS4EU et Control D les sites malveillants, Google garde des journaux, Cloudflare ne filtre rien. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
+"Tout remettre comme avant" remet aussi le DNS d'avant, chiffrement et IPv6 compris.

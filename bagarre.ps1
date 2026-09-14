@@ -60,7 +60,7 @@ CONTEXT: WHAT THE PACK HAS ALREADY DONE
 This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/windows-bagarre):
 - Fresh Windows 11, Windows Update current, chipset and network drivers from the manufacturer.
 - Win11Debloat (default mode) and WinUtil (Standard tweaks).
-- NVIDIA card: bare driver via NVCleanstall (no NVIDIA App, MSI High, HDCP off, Ansel off, MPO off,
+- NVIDIA card: bare driver via NVCleanstall (no NVIDIA App, MSI High, HDCP off, Ansel off,
   signature rebuilt with the EAC compatible method). Classic Control Panel from the Store: Low Latency Mode On,
   unlimited shader cache, threaded optimization, RGB output full range. The rest at default, set per game when
   needed (power management, filtering, V-Sync, G-Sync).
@@ -76,7 +76,8 @@ This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/
   Boxes unticked by default, to propose only with a reason specific to this PC: SvcHostSplitThreshold,
   Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
   LLMNR off, clipboard, Dynamic Lighting, NVIDIA P0, core parking, Aggressive boost (Intel only).
-- DNS tested from the PC (nine resolvers), the fastest applied if the gap with the router was over 5 ms.
+- DNS tested from the PC (eight resolvers), the fastest applied if the gap with the router was over 5 ms, with a
+  fallback, DNS over HTTPS encryption and IPv6 when the connection has it.
 
 DO NOT PROPOSE, IT IS DECIDED
 - Disabling HVCI / memory integrity, Secure Boot, Defender, the firewall, Windows Update, UAC.
@@ -124,14 +125,15 @@ DNS turns a name (youtube.com) into an address. i@ A slow DNS adds a few tens of
 
 ## Test from home
 @BtnDnsTester
-The test queries nine resolvers for six common names, three times each, and keeps the median. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
+The test queries eight resolvers for six common names, three times each, and keeps the median. Lines fill in as it runs, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; DNS4EU, AdGuard and Control D mostly in Europe and North America.
+A first click picks the primary, a second the fallback, on the same line or another one. A third click starts over. i@ The fallback answers when the primary does not. The same line as fallback takes the resolver's second address; without a second click, that is what you get.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Which one to keep
 A gap under 5 ms cannot be felt. If your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
-The fastest is not always the right one. i@ AdGuard blocks ads, Quad9 and dns0 block malicious sites, Google keeps logs, Mullvad keeps none. A DNS that blocks domains can break a site or a launcher: if something stops loading, go back to Cloudflare or your router.
-"Restore everything" also puts the previous DNS back.
+The fastest is not always the right one. i@ AdGuard blocks ads, Quad9, DNS4EU and Control D block malicious sites, Google keeps logs, Cloudflare filters nothing. A DNS that blocks domains can break a site or a launcher: if something stops loading, go back to Cloudflare or your router.
+"Restore everything" also puts the previous DNS back, encryption and IPv6 included.
 '@
 $Textes['en']['dur'] = @'
 One tweak at a time. You apply it, you play half an hour with RivaTuner open, and you keep it only if you see a difference. i@ Without a measurement, you will never know whether it did anything.
@@ -167,8 +169,7 @@ Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnVcredist, BtnDirectX
 
 ## 4. Sound, to avoid crackling
-- Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
-- Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
+Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz. i@ The volume drop when Discord rings (Communications "Do nothing") is a box in the checkbox script.
 @BtnSon
 '@
 $Textes['en']['installation'] = @'
@@ -223,7 +224,7 @@ NVCleanstall installs the driver without the NVIDIA App, then you put the OG Con
 @BtnNvclean, BtnImgNvclean
 - "Manual", latest Game Ready driver for your card.
 - Components: Display Driver, PhysX. Nothing else. i@ NVIDIA HD Audio only if your sound goes through the monitor cable. No NVIDIA App, no telemetry, no GeForce Experience.
-- Installation Tweaks: tick as on the screenshot, MPO line included. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. Once off, Windows composes everything itself, with no effect in full screen. The checkbox script sets the same key, ticked by default.
+- Installation Tweaks: tick as on the screenshot, except the "Disable MPO" line, which you leave to the checkbox script. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. The script box sets the same key, ticked by default, and "Restore everything" can put it back, which NVCleanstall cannot.
 - HDCP: on = Netflix and Disney+ in 4K in the browser, off = slight fps boost. i@ The screenshot turns it off. A game never uses it, 1080p always works. You want 4K: untick "Disable HDCP".
 ! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. A game refuses to start: reinstall without those two boxes.
 The screen flickers and red messages scroll by during the install, that is normal.
@@ -240,17 +241,6 @@ Leave the rest at default. i@ Power management, texture filtering, V-Sync: set p
 ## 3. Afterburner and RivaTuner to measure
 @BtnAfterburner
 The RivaTuner overlay shows FPS and frame time. Without it, you will not know whether a tweak changes anything. i@ One overlay at a time: RivaTuner or Steam or Discord. If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.
-'@
-$Textes['en']['reseau'] = @'
-The Network card group of the script does all of this by itself. This guide is for checking, or doing it by hand.
-
-Control Panel > Network and Sharing Center > Change adapter settings > right-click your card > Properties.
-
-1. Configure > Power Management: untick "Allow the computer to turn off this device". Otherwise the network drops for 2 seconds after sleep.
-
-2. Advanced tab: Energy Efficient Ethernet, Green Ethernet, Power Saving Mode set to Disabled. Interrupt Moderation set to Medium, not Disabled. The rest at default, Jumbo Frame and Receive Buffers bring nothing in games.
-
-3. Protocols to untick: Microsoft LLDP Protocol Driver, Link-Layer Topology Discovery Responder, Link-Layer Topology Discovery Mapper I/O Driver. Keep TCP/IPv4 and IPv6.
 '@
 $Textes['fr'] = @{}
 $Textes['fr']['accueil'] = @'
@@ -307,7 +297,7 @@ CONTEXTE : CE QUE LE PACK A DÉJÀ FAIT
 Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windows-bagarre) :
 - Windows 11 frais, Windows Update à jour, pilotes chipset et réseau du constructeur.
 - Win11Debloat (mode par défaut) et WinUtil (tweaks Standard).
-- Carte NVIDIA : pilote nu via NVCleanstall (sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé, MPO coupé,
+- Carte NVIDIA : pilote nu via NVCleanstall (sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé,
   signature reconstruite méthode compatible EAC). Panneau de configuration classique depuis le Store : faible latence
   Activé, cache de shaders illimité, optimisation threadée, sortie RGB plage complète. Le reste par défaut,
   réglé jeu par jeu si besoin (gestion de l'alimentation, filtrage, V-Sync, G-Sync).
@@ -323,7 +313,8 @@ Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windo
   Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC : SvcHostSplitThreshold,
   Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
   LLMNR off, presse-papiers, Dynamic Lighting, P0 NVIDIA, core parking, boost Aggressive (Intel seulement).
-- DNS testé depuis le PC (neuf résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms.
+- DNS testé depuis le PC (huit résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms, avec un
+  secours, le chiffrement DNS over HTTPS et l'IPv6 quand la connexion en a.
 
 NE PROPOSE PAS, C'EST DÉCIDÉ
 - Désactiver HVCI / intégrité de la mémoire, Secure Boot, Defender, le pare-feu, Windows Update, l'UAC.
@@ -371,14 +362,15 @@ Le DNS transforme un nom (youtube.com) en adresse. i@ Un DNS lent ajoute quelque
 
 ## Tester depuis chez toi
 @BtnDnsTester
-Le test interroge neuf résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
+Le test interroge huit résolveurs sur six noms courants, trois fois chacun, et garde la médiane. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; DNS4EU, AdGuard et Control D surtout en Europe et en Amérique du Nord.
+Un premier clic choisit le principal, un deuxième le secours, sur la même ligne ou une autre. Un troisième clic recommence. i@ Le secours répond quand le principal ne répond pas. La même ligne en secours prend la deuxième adresse du résolveur ; sans deuxième clic, c'est ce que tu obtiens.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Lequel garder
 Un écart de moins de 5 ms ne se sent pas. Si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
-Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9 et dns0 les sites malveillants, Google garde des journaux, Mullvad n'en garde pas. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
-"Tout remettre comme avant" remet aussi le DNS d'avant.
+Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9, DNS4EU et Control D les sites malveillants, Google garde des journaux, Cloudflare ne filtre rien. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
+"Tout remettre comme avant" remet aussi le DNS d'avant, chiffrement et IPv6 compris.
 '@
 $Textes['fr']['dur'] = @'
 Une opti à la fois. Tu la fais, tu joues une demi-heure avec RivaTuner ouvert, et tu la gardes seulement si tu vois une différence. i@ Sans mesure, tu ne sauras jamais si elle a servi à quelque chose.
@@ -414,8 +406,7 @@ Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 @BtnVcredist, BtnDirectX
 
 ## 4. Le son, pour éviter les crépitements
-- Communications "Ne rien faire" (sinon Windows baisse ton son quand Discord sonne) : c'est une case du script à cocher, déjà cochée.
-- Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz.
+Périphérique de lecture > Propriétés > Améliorations : tout désactiver. Onglet Avancé : 24 bits, 48000 Hz. i@ La baisse de volume quand Discord sonne (Communications "Ne rien faire") est une case du script à cocher.
 @BtnSon
 '@
 $Textes['fr']['installation'] = @'
@@ -470,7 +461,7 @@ NVCleanstall installe le pilote sans la NVIDIA App, puis tu remets le Panneau de
 @BtnNvclean, BtnImgNvclean
 - "Manual", dernier pilote Game Ready pour ta carte.
 - Composants : Display Driver, PhysX. Rien d'autre. i@ NVIDIA HD Audio seulement si ton son sort par le câble de l'écran. Pas de NVIDIA App, pas de télémétrie, pas de GeForce Experience.
-- Installation Tweaks : coche comme sur la capture, ligne MPO comprise. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. Une fois coupé, Windows compose tout lui-même, sans effet en plein écran. Le script à cocher pose la même clé, la case est cochée d'office.
+- Installation Tweaks : coche comme sur la capture, sauf la ligne "Disable MPO", que tu laisses au script à cocher. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. La case du script pose la même clé, cochée d'office, et "Tout remettre" peut la rendre, ce que NVCleanstall ne sait pas faire.
 - HDCP : activé = Netflix et Disney+ en 4K dans le navigateur, désactivé = léger boost de fps. i@ La capture le coupe. Un jeu ne s'en sert jamais, la 1080p passe toujours. Tu veux le 4K : décoche "Disable HDCP".
 ! Rebuild digital signature + méthode compatible Easy Anti-Cheat : le fichier du pilote reste intact, seul l'installeur est re-signé. Un jeu refuse de se lancer : réinstalle sans ces deux cases.
 L'écran clignote et des messages rouges passent pendant l'installation, c'est normal.
@@ -488,17 +479,6 @@ Le reste, laisse par défaut. i@ Gestion de l'alimentation, filtrage des texture
 @BtnAfterburner
 L'overlay RivaTuner affiche les FPS et le temps d'image. Sans lui, tu ne sauras pas si une opti change quelque chose. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord. Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.
 '@
-$Textes['fr']['reseau'] = @'
-Le groupe Carte réseau du script fait tout ça tout seul. Ce tuto sert à vérifier, ou à le faire à la main.
-
-Panneau de configuration > Centre réseau > Modifier les paramètres de la carte > clic droit sur ta carte > Propriétés.
-
-1. Configurer > Gestion de l'alimentation : décoche "Autoriser l'ordinateur à éteindre ce périphérique". Sinon le réseau lâche 2 secondes après une veille.
-
-2. Onglet Avancé : Energy Efficient Ethernet, Green Ethernet, Power Saving Mode sur Désactivé. Interrupt Moderation sur Medium, pas Désactivé. Le reste par défaut, Jumbo Frame et Receive Buffers n'apportent rien en jeu.
-
-3. Protocoles à décocher : pilote LLDP Microsoft, répondeur de découverte de topologie, pilote E/S de mappage de topologie. On garde TCP/IPv4 et IPv6.
-'@
 $Logos = @{}
 $Logos['adguard'] = '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'
 $Logos['bitsum'] = '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'
@@ -506,13 +486,12 @@ $Logos['christitus'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IA
 $Logos['cloudflare'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVZSURBVFhH7ZhdaBxVFMdvmo+dmaVgBeuTL4L4JIgviog23TRpkt2Z2XxZP6gPggHRKlbE2o9YiqkUKlQFtdRqLcbSF6UlNS1qVNI29FP7ZS2WFvWhEdKiTXZ3duaev5w7M+lkd5OWdDEL9sKfmb333Ht/99xzz7BXCCEEdQidLL3bs/WjZOuXZ0uuqf1BbcYH2ZZYPXNNlLypbUGXAXQYQNssqysOmdbHXEtPKbisGWuQbfq4arQrRF0GPFM7Tk/fGRfS0tcxdZHRbCptgGwjB1t7RJClvYPOCgRMGy61xxKCLH1jRQLaRp7aYvW3AGek/y9gazWwSAANAmgUgKmpyYrsrqeyAlo60CRACwWoaz7otQRoZQvw4oOglhqA6xm8sN90KgtgOg4kayAbBWj5Y6CBT4GLp0D5DIhc4Opl4PSPoL71oM75QEIUjzGVygKYrAXMuZCfrQX9M4qJQg5AOQDutaqzh0Gv1oOahO/xwrEKddOAZkzFGn25KUCQgDteWl7GN7kyAlq+AMQxWjheoWYEuFj4B4C90CBA69oBmQfgFUOVEi/j3FEVp2itKR5/xoBmHWRCQHbfD/lWJ2jZQ0D7HcD5475nCkGmUuBJ+vAVdXCmPd03DJiqg0zF4fX1gi6PgHiGsVHg3DDgXAW8bDHIdGLAXw9BpuYCC4IdSdUVz3vDgIsEvPdf9j2l9igS/OyRQoDriWN15ALojVZQTwfk603w2m8Hcd7kuObMcMOAnGRba0E/D/pAhZPNRFz2bQXt3OC/O2OgU0PAmybQXANKBrE5LSCvIlUH4rzVNAf480x5AD32PkFuXgE6stcfE3zI/MIZQZq6v+VTAnJDSxXQUgPqsUH9W4C/RwDpRCbL+LGnFLzLqHJ+HgylwsJTEN5gH5wldwMXT/tU3MZjkA8qt63xt7utFGA6rhKpu/QeyKGvADdYHQ/ijl0DVKvmCf1JVUyq5MzK+8B8gHghajE5YOwK5O6PkGm7jbKPCpJfrAccPmB8sr0gsUvQlUuQ3fcBrVUlAJO1kNY8eAd2BxPnC7aIV+pAHtwFb+tqeNvXwduxAd62tXA/Xh1oDdzNK+Bteh7ofRxYvwT09hPIP/sAMvWCMs2CMosEZVvikKtaId99QfWnkz9MHD75ySr/227pBYCc63qfinitVBxlQJd+A50dBp0ZAp0eAv1yAHRmP+jEd6ATg6CT36snjvYDx/YAP+1Vi8mm51FmoSBn6b3wdm4Eju+d6IO/Lvie51g81A80zwFZWgSwQwcaq0Dffh7sWgm4SVvMGZElIyqsm1zyKy04HXcBF09EalVm9cODw4h7sjebqosB3cZqyPPHIp3LW/K9z0AO7iisLirekX2ghqoooKEAZXM1aFsPvOEBePt3lU8H+yG/6YN86WHIr7fCO7in2CbU8ADovWWgxbzFHIPxazFIFnuxChwn5dT4QkG5hCAvWUtuUzWcRBWyJexCOY2CYOsgi09xBFBa6t88nFQdZZLllZuKwU1p8FhmDNkSNqHy/AWzJgHyFjOcrpRPaZSJaDyiaH2obEqjnKnDSWnk8NPUEbapupRG4djh+PnQPuiTC965nm1KepC3mBtdHiSQ6mhOFk/ANoHU5GzLHuK6cAwlrovUT9emPBwCTvWpI0s1qKf03Rz89t9DG25jgdsDTdiHYttQpexsQ317Weo9GFPNMxVgxegW4M1qMmCFXr/Zhqeu3zxb66nQC0xXXWA6Se1JdTc93b+s/1qdKnPsQ1IYAp2iLm/GtnNlpVyiU1q/SlYsMXHLT4tFDLbxnGcbh8nSR2dFaX2UbON3atcHonD/AsNCW8rpOz1wAAAAAElFTkSuQmCC'
 $Logos['controld'] = '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'
 $Logos['crystaldiskinfo'] = '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'
-$Logos['dns0'] = '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'
+$Logos['dns4eu'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ8SURBVFhH7Zc9axVBFEDzP5LKLlVIkUIwIAaSN7ugRSCNghAEBZtXBLFQULRJIUIgjWCKCIJYpBBik8ouXapUdlb+iglnl4u79+187ogPTHGyefs1Z+7Mnbm7sLhS315crV/NKwv8WVqt7bxyLTiW/09wZX323BiKC355Z+yNtdnzuWQL3tuuer+nj409PZzY39+37I+jid1/bnrXzd06SzxL8NZm1Ujo8x/ftoJnH7ZmZD7tG/vgfl86hmRBIoME/DyZ9CKJhERSztGZi8/t/cA9Wt5HsiAQPRp7s9ePiDTMsStB5Lj/17fZyIZIFqSBF1PTZCtHfX2I3YemieSTR5XdqP5EPEY2ShCR5Zv9pCiBTqQhvII7O1UzjJdf27lTQpSoPXtq7OFr0ww57yfC+j7BKwi8SOYPS4W+nsPandqeH7fzmITydTooSNSIHpkYM2diIdF4L0uTvtYlKEhvOdLLUtsYHSVp+F+OLoKC/xqvIBHTW1ppQm0MCspD718ae3LQ7hYy1KWIbWNQEHhQticqFF+m5RLThlOQHrK06P22JDFtOAXZksgwXpJThcQQ04ZTcF6IEuxu8CWJeW+UIBO41DYnMKxsd/q8xitIscAEDmVaCuwi3ewlSShy9X2CVxCoNKR61tfGwNrHe5HV17oEBekdmUbRMLSQ5kAUqZJ4r67KNUFBF7HVtEA1nVNsJAsyL+k9Q46krka0BL8pUEkI5jBTJqVsSxYkm6mwmT/MI500+sNdhlMSwrUgu0gWBKLBt293gvs+3BlezhF13aEQyYI0IMOqF1rXh7usoTybmmjJgj6GPtzHUlTQ9eE+hqKCf4NrwbHMveAVWwlOh/CaKGAAAAAASUVORK5CYII='
 $Logos['drapeau-en'] = 'iVBORw0KGgoAAAANSUhEUgAAAEgAAAAwCAYAAACynDzrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANOSURBVGhD7Zq/axRBFMfH/0A7rcRC7LTSxiqChdpY2AgWahexUEGtBDtTBCIeGFBEIrFRkCsC4o/CQoi/tfBAFIN4xuCpnBfNXbwzjryDGWd3Z3Z23r6ZbebBN+TH7Mzc530SkkfY0d2n+KPVm4d5vfMA776d42q1O11+6OQUX7VhlCQj+yf42fMzw1w4VuPTe49bA+vEM/B8ek9sdh2s8YVWJ/F6+1++8jf7RiUT9nTjiPwA8mTtVj4/cSXxENTtBw2+btvpzCGugRcpqnnuYuJsU2CdKHg+vadr1mw5wa/enJV7impdr/Nn67cnzmbPN+3IXAjiy6aqARWxRg3782ORvz9yJvMFiA+bqgLkYo0ISMLEwvb9hzyETVUAcrVGFUMCggphU0hAWGtUGZhuA582hQJUxhq1mGkzXzb5BkRhDZRo+hBQ3sbUNvkEpGs0xhq10RJQ3iGUNvkAZGou1hp17wygvAMpbKIGpGtoWWusgPIOL2sTFSBTEymsKQwo7yJYmygA6RpHaY0TIBHdpTA2vfvQku9jAL1sNOX7oqitUVMYEITKJlEYQGr5skaNEyARKpvKAPJpjRqmzmdcMjZ5R6t7b+4j/1yb4p/GJjNpXbvFV7o9uRYD6G+/z7/dmMnsDZkfv8QXZ1/ItaLg23r88r3MaygSBm+qKgyg0BUBWYrBOBMuUEUaew5nYOgC69LPhgqDmW/6QjH/EwFZEgFZEgFZEgFZEgFZEgFZEgFZEgFZEn+TtiT+LWapCMhS6HkQZLr+mP9cWk5suPJrKXde87u5INdiAA3andx50+B7W66F6i0PeP3uq8zdiwY1UTSNXl2nfBhAUJjppeuoVcQZkG7cipkNQ2EBiXKdhWPGroUBUVkDyovCAEp/S/u2qRAgKmvgYjAbFoUBBLNwXaN82ZQLiMoa9TLwg08UBhA8D/vomubDJiMg3QWw1qgXoAIEMTWQ0qYMINOhZaxRQwlIRNdMKpsSgHQHUVjjGxDE1NiyNg0BmTansiYEIBFdk8vYxHQbUlsTEhDE1HCMTYn/coXyYY2aEIBEdM13tUkC8mmNmpCAIGVtGgLybY2a0IBEsDaxENaoqQoQBGMTAxDpT1Jbo6ZKQCIuNv0D76xzXBJnmLUAAAAASUVORK5CYII='
 $Logos['drapeau-fr'] = 'iVBORw0KGgoAAAANSUhEUgAAAEgAAAAwCAYAAACynDzrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACLSURBVGhD7dAxEYBAEATBN4UAROAQf0iA/JNJuKy3qgXsrHXd76TpPecxau2H/ja9/dDfBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFD4AO3KjiyUFE3SAAAAAElFTkSuQmCC'
 $Logos['google'] = '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'
 $Logos['microsoft'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAK3SURBVFhH7ZZNTxNRGIVPVEgIJmykbEygA7QNW4QOhp3y4UJpQXYujCv/BJQWFv4FE6PSDvVrpRuZmZYCCXHDwoX/wZhAh+nQ0jp4X3OnE1q0i96uhmQmeTKrk/v03ElzgKvw/Foeu2k+GoqaDwdl5y1IOT4on8SCk0y+3TN+iK4VHRMJDXJyB1FReI7z4hB9F4Lm0lDUjEln5bhkm7GgMJVFyS7FpFM2EQnNWAisqjBSedirqjhJHfaaBjuhYrYhGB+USzGJfi+OUCU+LIy9NEKlBemcxkMRV/BsYw+UzIuzXgCldkAJHfMNQX5VvIn4MHFRUc4WeS5YZXfCYVfQcg7RxEnmQGs6aEXD3KUGfcE2uaKC/jfYPq0F/Qbbp7Wg5xv0vKB/xe3TWtDzDbprhq8Sfpgo549HyFyQ/jStmerG/v9LpR3Wd0Gpwj9rho9NMxYsl2NSjTchSiXu5Ep8D86X0L+q4TiVRy2hoSpKUkdtTUd1JYeZC0Emo4dNI8TuItwx0wjRGLqXCdefahh9nkf42dcOcHNP0ui9EMQhdeE7C+AbG3DeovDcAQugQDeIcI3to5/lMMBUBIT5XM/RD3Q3BN+eTEIpGshaFjKGODynGEd4zUYdORU/WQ4W2+4ADRZTYZGO+w3BLXMKWyeET1XC+1NxeE4pMryhiNtclfZAlO+AAoh2QEzFg4Zg1owiU7TxziIohjj1XBWvWJgdIMCbcA5TO0AHkQZizX8zyJgyFC8L+g0K0FLQ8w16XtC/YgFaCvoNCnA1Bf0rFqCl4KY55ayRDxVCtiQOzymGjZcUcQUrtOseJgr/YTkQa578zhVniufOdOKzSxSeU4xaU4OnfDLxJoTJ1UUvN/ix2IfM0SzSx/PYPJ4ThufSRzNIs16+hJmGe7wBfogw2/UcfcGthqCHn781AQSrxMzkmAAAAABJRU5ErkJggg=='
 $Logos['msi'] = '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'
-$Logos['mullvad'] = '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'
 $Logos['nvidia'] = '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'
 $Logos['opendns'] = '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'
 $Logos['quad9'] = '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'
@@ -537,7 +516,7 @@ $ErrorActionPreference = 'Continue'
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
 # Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
-$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null; Cartes = @() }
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @() }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : les images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, elles sont ouvertes depuis $Depot.
@@ -588,6 +567,7 @@ $Messages = @{
         finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
         rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
         consoleOk = 'Terminé sans erreur, cette console se ferme.'; consoleErreur = 'Il y a eu une erreur, lis ce qui est au-dessus. Entrée pour fermer.'
+        consoleFini = 'Terminé.'; consoleOccupee = 'La console est encore occupée, celle-ci part dans sa propre fenêtre.'
     }
     en = @{
         rienRestaurer = 'Nothing to restore: bagarre-avant.json is empty.'; restauration = 'Restoring {0} settings...'
@@ -596,6 +576,7 @@ $Messages = @{
         finApplication = 'Done. The previous values are in {0}, the detail in {1}. Reboot the PC.'
         rapportEcrit = 'Report written: {0} ({1} KB)'; fenetreFermee = 'window closed'
         consoleOk = 'Finished without error, this console closes.'; consoleErreur = 'Something failed, read what is above. Enter to close.'
+        consoleFini = 'Done.'; consoleOccupee = 'The console is still busy, this one opens in its own window.'
     }
 }
 function Msg($cle) { $Messages[$Bagarre.Langue][$cle] }
@@ -813,23 +794,31 @@ function Logo-Image($nom) {
     $bi
 }
 
-# Lance une commande PowerShell dans une console à part (visible, admin comme nous).
+# Lance une commande PowerShell dans une console (visible, admin comme nous).
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
-# Par défaut la console reste ouverte (commandes dont on lit le résultat : powercfg, DISM analyse, rapport Defender).
-# -Fermer (installations) : elle se ferme toute seule si tout s'est bien passé, et reste ouverte sur une erreur
-# (exception PowerShell, ou code de sortie non nul d'un exe ; la commande pose $Echec = $true pour le reste).
+# Par défaut, une console à part qui reste ouverte. -Fermer (installations) : elle se ferme toute seule si tout s'est
+# bien passé, et reste ouverte sur une erreur (exception PowerShell, ou code de sortie non nul d'un exe ; la commande
+# pose $Echec = $true pour le reste).
+# -Ici : pas de nouvelle fenêtre, la commande tourne dans la console qui accompagne la fenêtre (celle de la relance admin),
+# en processus fils qui partage la console, la fenêtre reste vivante. Pour les commandes courtes et non interactives
+# (fsutil, powercfg, DISM nettoyage, rapport Wi-Fi, point de restauration). Une seule à la fois : si la précédente
+# tourne encore, celle-ci part dans sa propre fenêtre. Les outils interactifs (Win11Debloat, WinUtil, winget,
+# l'enregistrement Defender qui attend Entrée) gardent leur console à part.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
 $Bagarre.ConsoleN = 0
-function Console-Lancer($titre, $commande, [switch]$Fermer) {
+function Console-Lancer($titre, $commande, [switch]$Fermer, [switch]$Ici) {
     $Bagarre.ConsoleN++
-    $fin = if ($Fermer) {
+    if ($Ici -and $Bagarre.ConsoleProc -and -not $Bagarre.ConsoleProc.HasExited) { Log (Msg 'consoleOccupee'); $Ici = $false }
+    $fin = if ($Ici) {
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleFini')' -ForegroundColor Green }`r`nWrite-Host ''"
+    } elseif ($Fermer) {
         "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleOk')' -ForegroundColor Green; Start-Sleep 2 }"
     } else {
         "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }"
     }
+    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`n" }
     $texte = @"
-`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'
-Write-Host ''
+${entete}Write-Host ''
 Write-Host '  $titre' -ForegroundColor Cyan
 Write-Host ''
 `$Echec = `$false
@@ -841,8 +830,12 @@ $fin
 "@
     $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $Bagarre.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
-    $sortie = if ($Fermer) { '' } else { '-NoExit ' }
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass $sortie-File `"$fichier`"" | Out-Null
+    if ($Ici) {
+        $Bagarre.ConsoleProc = Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$fichier`"" -NoNewWindow -PassThru
+    } else {
+        $sortie = if ($Fermer) { '' } else { '-NoExit ' }
+        Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass $sortie-File `"$fichier`"" | Out-Null
+    }
     Log "console   $titre"
 }
 
@@ -1069,7 +1062,7 @@ Ajouter $G 'priv-relance' 'Ne plus rouvrir les applis toutes seules après une m
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' 'DisableAutomaticRestartSignOn' 1
 }
 Ajouter $G 'priv-metadata' 'Ne plus télécharger les fiches et icônes des périphériques chez Microsoft' `
-    'Chaque périphérique branché déclenche un téléchargement de son icône et de sa fiche depuis Microsoft. Purement cosmétique dans "Périphériques et imprimantes".' $true 'Les périphériques ont une icône générique.' {
+    'Chaque périphérique branché déclenche un téléchargement de son icône et de sa fiche depuis Microsoft. Purement cosmétique dans "Périphériques et imprimantes".' $false 'Les périphériques ont une icône générique.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata' 'PreventDeviceMetadataFromNetwork' 1
 }
 Ajouter $G 'priv-presse-papiers' 'Couper l historique du presse-papiers (Win+V) et sa synchro cloud' `
@@ -1099,7 +1092,7 @@ Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (Gl
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
 }
 Ajouter $G 'jeu-mpo' 'Couper le Multiplane Overlay (MPO, OverlayTestMode = 5)' `
-    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. NVCleanstall pose la même clé avec sa case "Disable MPO".' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
+    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. La clé vient de cette case et pas de NVCleanstall, pour que Tout remettre puisse la rendre.' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\Dwm' 'OverlayTestMode' 5
 }
 Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
@@ -1261,7 +1254,7 @@ Ajouter $G 'conf-fin' 'Fermer les programmes bloqués sans demander (AutoEndTask
     Reg-Ecrire 'HKCU:\Control Panel\Desktop' 'AutoEndTasks' '1' 'String'
 }
 Ajouter $G 'conf-transparence' 'Couper la transparence' `
-    'Les effets de flou derrière le menu Démarrer et la barre des tâches. Coûte un peu de GPU en permanence.' $true 'Interface plus plate.' {
+    'Les effets de flou derrière le menu Démarrer et la barre des tâches. Coûte un peu de GPU en permanence.' $false 'Interface plus plate.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'EnableTransparency' 0
 }
 Ajouter $G 'conf-animations' 'Couper les animations de fenêtres' `
@@ -1474,7 +1467,7 @@ $TraductionsEn = @{
     'adv-throttling' = @{ Titre = 'Turn off Power Throttling (PowerThrottlingOff)'; Pourquoi = 'Windows throttles programs it considers "in the background" (EcoQoS) to save power. On a desktop PC we do not want to throttle anything: Discord, your launcher, the overlay run at full speed even behind the game.'; Attention = 'On a laptop, less battery life. On a desktop, nothing.' }
     'adv-nagle' = @{ Titre = 'Turn off Nagle''s algorithm (TcpAckFrequency, TCPNoDelay) on the active card'; Pourquoi = 'Nagle groups small TCP packets before sending them, and delays acknowledgments. A few ms saved on a game using TCP (MMOs, some Unity games). Zero effect on a game using UDP, which is nearly every FPS.'; Attention = 'A few more small packets on the line. Nothing visible.' }
     'adv-dyntick' = @{ Titre = 'Turn off dynamic tick (bcdedit disabledynamictick)'; Pourquoi = 'The kernel stops its clock when nothing happens and restarts it on demand. With a 0.5 ms timer this can drift. Check this only if you see micro-stutter that RivaTuner confirms, and uncheck it if nothing changes.'; Attention = 'Idle power draw a bit higher.' }
-    'jeu-mpo' = @{ Titre = 'Turn off Multiplane Overlay (MPO, OverlayTestMode = 5)'; Pourquoi = 'MPO lets the graphics card draw some windows directly, bypassing the Windows compositor (DWM). It is the cause of the black screens, flickering and windowed stutter that NVIDIA documents (article 5157, 2022) and that AMD cards know too. Off, DWM composes everything: zero effect in fullscreen, no more surprises in windowed or multi-monitor. NVCleanstall sets the same key with its "Disable MPO" box.'; Attention = 'A video in a window costs a bit more GPU (no more hardware overlay). On 24H2 and later, Windows sometimes ignores the key: then nothing changes.' }
+    'jeu-mpo' = @{ Titre = 'Turn off Multiplane Overlay (MPO, OverlayTestMode = 5)'; Pourquoi = 'MPO lets the graphics card draw some windows directly, bypassing the Windows compositor (DWM). It is the cause of the black screens, flickering and windowed stutter that NVIDIA documents (article 5157, 2022) and that AMD cards know too. Off, DWM composes everything: zero effect in fullscreen, no more surprises in windowed or multi-monitor. This box sets the key, not NVCleanstall, so Restore can put it back.'; Attention = 'A video in a window costs a bit more GPU (no more hardware overlay). On 24H2 and later, Windows sometimes ignores the key: then nothing changes.' }
     'adv-boost' = @{ Titre = 'CPU boost mode set to Aggressive (PERFBOOSTMODE)'; Pourquoi = 'The power plan boost mode decides how fast the CPU ramps its frequency when load arrives. Aggressive ramps it up right away instead of waiting. Intel key: on AMD the firmware handles boost.'; Attention = 'On a laptop: heat and battery for nothing. On a desktop, slightly more idle power.' }
     'adv-rawmouse' = @{ Titre = 'RawMouseThrottleDuration = 8 (mouse report batching)'; Pourquoi = 'Windows groups mouse Raw Input reports into time windows. With a mouse at 1000 Hz or more, a shorter window delivers movement to the game sooner. Documented range is 3 to 20. On recent Windows 11 builds the default is already 8: in that case the key changes nothing (check on your machine with ?, the previous value is written to bagarre.log). Verify with MouseTester: zero missed reports.'; Attention = 'No known downside. If the cursor feels off, R restores the previous value.' }
     'adv-fth' = @{ Titre = 'Turn off the Fault Tolerant Heap (FTH)'; Pourquoi = 'When a program crashes several times, Windows relaunches it with a "tolerant", slower memory allocator, without telling you. A game that crashed three times then runs throttled. With this off, it still crashes the same way but runs at full speed the rest of the time. Documented by Microsoft (FTH, Win32 apps).'; Attention = 'An old unstable program that FTH was keeping alive can start crashing again.' }
@@ -1485,28 +1478,46 @@ $TraductionsEn = @{
 
 # ===== 20-dns.ps1 =====
 # ---------------------------------------------------------------------------
-# Test DNS : mesure les résolveurs depuis chez toi, applique celui que tu choisis
+# Test DNS : mesure les résolveurs depuis chez toi, applique celui que tu choisis, avec un secours,
+# le chiffrement (DNS over HTTPS) et l'IPv6 si la connexion en a.
 # ---------------------------------------------------------------------------
 function Dns-Carte {
     Get-NetAdapter | Where-Object { $_.Status -eq 'Up' -and $_.InterfaceDescription -notmatch 'Virtual|VMware|Hyper-V|Tailscale|TAP|WireGuard|Bluetooth' } | Sort-Object -Property LinkSpeed -Descending | Select-Object -First 1
 }
 
-function Dns-Actuels($adapt) {
-    @((Get-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -AddressFamily IPv4).ServerAddresses)
+# Les serveurs que la carte utilise (statiques ou reçus de la box). En IPv6, Windows rend fec0:0:0:ffff::1..3
+# quand rien n'est configuré : ce sont des adresses de site obsolètes, pas des serveurs, on les retire.
+function Dns-Actuels($adapt, $famille = 'IPv4') {
+    @((Get-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -AddressFamily $famille).ServerAddresses | Where-Object { $_ -and $_ -notmatch '^fec0:' })
+}
+
+# Les serveurs posés à la main (vide = DHCP). C'est ce qu'on mémorise pour Tout remettre : Get-DnsClientServerAddress
+# rend aussi ceux de la box, et les remettre en statique aurait figé la box.
+function Dns-Statique($adapt, $famille = 'IPv4') {
+    $racine = if ($famille -eq 'IPv6') { 'Tcpip6' } else { 'Tcpip' }
+    $v = Reg-Lire "HKLM:\SYSTEM\CurrentControlSet\Services\$racine\Parameters\Interfaces\$($adapt.InterfaceGuid)" 'NameServer'
+    @(([string]$v) -split '[,\s]+' | Where-Object { $_ })
+}
+
+# La connexion a-t-elle une adresse IPv6 publique (2000::/3) ? Sans ça, un DNS en IPv6 ne répond pas.
+function Dns-AIpv6($adapt) {
+    [bool](Get-NetIPAddress -InterfaceIndex $adapt.ifIndex -AddressFamily IPv6 -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -match '^[23]' })
 }
 
 # Les résolveurs testés, dans l'ordre d'affichage. Cle sert au logo et à la note traduite, Serveurs[0] est celui mesuré.
+# Adresses relevées le 2026-09-14 sur les pages officielles : joindns4.eu/for-public (Protective), developers.cloudflare.com,
+# developers.google.com/speed/public-dns, quad9.net, adguard-dns.io (Default), opendns.com/setupguide (IPv6 non publié,
+# donc absent), docs.controld.com/docs/free-dns (p1, malware). Mullvad et dns0.eu retirés : ne répondaient pas chez le mainteneur.
 function Dns-Candidats($adapt) {
     @(
-        @{ Cle = 'actuel';     Nom = 'Actuel (box / FAI)';   Serveurs = @(Dns-Actuels $adapt) }
-        @{ Cle = 'quad9';      Nom = 'Quad9';                Serveurs = @('9.9.9.9', '149.112.112.112') }
-        @{ Cle = 'cloudflare'; Nom = 'Cloudflare';           Serveurs = @('1.1.1.1', '1.0.0.1') }
-        @{ Cle = 'google';     Nom = 'Google';               Serveurs = @('8.8.8.8', '8.8.4.4') }
-        @{ Cle = 'adguard';    Nom = 'AdGuard DNS';          Serveurs = @('94.140.14.14', '94.140.15.15') }
-        @{ Cle = 'opendns';    Nom = 'OpenDNS';              Serveurs = @('208.67.222.222', '208.67.220.220') }
-        @{ Cle = 'mullvad';    Nom = 'Mullvad';              Serveurs = @('194.242.2.2') }
-        @{ Cle = 'dns0';       Nom = 'dns0.eu';              Serveurs = @('193.110.81.0', '185.253.5.0') }
-        @{ Cle = 'controld';   Nom = 'Control D';            Serveurs = @('76.76.2.0', '76.76.10.0') }
+        @{ Cle = 'actuel';     Nom = 'Actuel (box / FAI)'; Serveurs = @(Dns-Actuels $adapt);                  Ipv6 = @(Dns-Actuels $adapt 'IPv6');                          Doh = $null }
+        @{ Cle = 'quad9';      Nom = 'Quad9';              Serveurs = @('9.9.9.9', '149.112.112.112');       Ipv6 = @('2620:fe::fe', '2620:fe::9');                        Doh = 'https://dns.quad9.net/dns-query' }
+        @{ Cle = 'cloudflare'; Nom = 'Cloudflare';         Serveurs = @('1.1.1.1', '1.0.0.1');               Ipv6 = @('2606:4700:4700::1111', '2606:4700:4700::1001');     Doh = 'https://cloudflare-dns.com/dns-query' }
+        @{ Cle = 'google';     Nom = 'Google';             Serveurs = @('8.8.8.8', '8.8.4.4');               Ipv6 = @('2001:4860:4860::8888', '2001:4860:4860::8844');     Doh = 'https://dns.google/dns-query' }
+        @{ Cle = 'dns4eu';     Nom = 'DNS4EU';             Serveurs = @('86.54.11.1', '86.54.11.201');       Ipv6 = @('2a13:1001::86:54:11:1', '2a13:1001::86:54:11:201'); Doh = 'https://protective.joindns4.eu/dns-query' }
+        @{ Cle = 'adguard';    Nom = 'AdGuard DNS';        Serveurs = @('94.140.14.14', '94.140.15.15');     Ipv6 = @('2a10:50c0::ad1:ff', '2a10:50c0::ad2:ff');           Doh = 'https://dns.adguard-dns.com/dns-query' }
+        @{ Cle = 'opendns';    Nom = 'OpenDNS';            Serveurs = @('208.67.222.222', '208.67.220.220'); Ipv6 = @();                                                   Doh = 'https://dns.opendns.com/dns-query' }
+        @{ Cle = 'controld';   Nom = 'Control D';          Serveurs = @('76.76.2.1', '76.76.10.1');          Ipv6 = @('2606:1a40::1', '2606:1a40:1::1');                   Doh = 'https://freedns.controld.com/p1' }
     )
 }
 
@@ -1528,24 +1539,95 @@ function Dns-Mesurer-Un($serveur) {
     [math]::Round([double]$tri[[int]($tri.Count / 2)], 1)
 }
 
+# Un candidat en objet de résultat (la fenêtre les remplit au fur et à mesure, Mediane = $null tant que ce n'est pas mesuré)
+function Dns-Resultat($c) {
+    [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Ipv6 = $c.Ipv6; Doh = $c.Doh; Mediane = $null; Actuel = ($c.Cle -eq 'actuel') }
+}
+
 # Tous les candidats d'un coup (le journal, la fenêtre mesure un par un pour afficher au fur et à mesure)
 function Dns-Mesurer($adapt) {
     $resultats = @()
     foreach ($c in (Dns-Candidats $adapt)) {
         if (-not $c.Serveurs[0]) { continue }
-        $mediane = Dns-Mesurer-Un $c.Serveurs[0]
-        $resultats += [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Mediane = $mediane; Actuel = ($c.Cle -eq 'actuel') }
-        Log ("dns       {0,-20} {1,7} ms" -f $c.Nom, $mediane)
+        $r = Dns-Resultat $c
+        $r.Mediane = Dns-Mesurer-Un $c.Serveurs[0]
+        $resultats += $r
+        Log ("dns       {0,-20} {1,7} ms" -f $c.Nom, $r.Mediane)
     }
     $resultats
 }
 
-function Dns-Appliquer($adapt, $r) {
-    Memoriser "dns|$($adapt.ifIndex)" @{ ifIndex = $adapt.ifIndex; serveurs = (Dns-Actuels $adapt) }
-    if ($r.Actuel) { Set-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -ResetServerAddresses }
-    else { Set-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -ServerAddresses $r.Serveurs }
+# La liste à poser : la première adresse du principal, puis le secours. Le même résolveur en secours = sa deuxième
+# adresse, un autre = sa première. $champ vaut Serveurs (IPv4) ou Ipv6.
+function Dns-Serveurs($principal, $secours, $champ) {
+    $liste = @()
+    if ($principal.$champ.Count -gt 0) { $liste += $principal.$champ[0] }
+    if ($secours) {
+        $s = if ($secours.Cle -eq $principal.Cle) { if ($principal.$champ.Count -gt 1) { $principal.$champ[1] } } else { $secours.$champ[0] }
+        if ($s -and $s -notin $liste) { $liste += $s }
+    }
+    @($liste)
+}
+
+# Un serveur dans la liste DoH connue de Windows (Get-DnsClientDohServerAddress), avec le passage automatique en HTTPS
+# et le repli en clair si le HTTPS échoue. Ce que Microsoft documente pour ce cmdlet ; le drapeau par interface que
+# posent les Paramètres n'est pas documenté, on ne le touche pas. Rend ce qu'il y avait avant, pour Tout remettre.
+function Dns-Doh-Poser($ip, $modele) {
+    $avant = Get-DnsClientDohServerAddress -ServerAddress $ip -ErrorAction SilentlyContinue
+    if ($avant) {
+        $etat = @{ ip = $ip; existait = $true; modele = $avant.DohTemplate; auto = [bool]$avant.AutoUpgrade; repli = [bool]$avant.AllowFallbackToUdp }
+        Set-DnsClientDohServerAddress -ServerAddress $ip -DohTemplate $modele -AutoUpgrade $true -AllowFallbackToUdp $true -ErrorAction Stop | Out-Null
+    } else {
+        $etat = @{ ip = $ip; existait = $false }
+        Add-DnsClientDohServerAddress -ServerAddress $ip -DohTemplate $modele -AutoUpgrade $true -AllowFallbackToUdp $true -ErrorAction Stop | Out-Null
+    }
+    $etat
+}
+
+# Le cmdlet DoH n'existe que sur Windows 11 (et Server 2022) : sur un Windows 10 la case est grisée.
+function Dns-Doh-Possible { [bool](Get-Command Add-DnsClientDohServerAddress -ErrorAction SilentlyContinue) }
+
+# Pose principal + secours sur la carte, en IPv4, en IPv6 si demandé (et si le résolveur en a), et déclare les serveurs
+# en DoH si demandé. Principal = la box : on remet la carte en automatique, le reste ne s'applique pas.
+# Mémorisé pour Tout remettre : les serveurs statiques d'avant (v4 et v6, vides = DHCP) et l'état DoH de chaque adresse touchée.
+function Dns-Appliquer($adapt, $principal, $secours, $doh, $ipv6) {
+    Memoriser "dns|$($adapt.ifIndex)" @{ ifIndex = $adapt.ifIndex; serveurs = @(Dns-Statique $adapt); serveurs6 = @(Dns-Statique $adapt 'IPv6'); doh = @() }
+    $etat = $Avant["dns|$($adapt.ifIndex)"]
+    if ($principal.Actuel) {
+        Set-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -ResetServerAddresses
+        Clear-DnsClientCache
+        SauverEtat
+        Log "dns       $($adapt.Name) = automatique ($($principal.Nom))"
+        return
+    }
+    $v4 = Dns-Serveurs $principal $secours 'Serveurs'
+    $v6 = if ($ipv6) { Dns-Serveurs $principal $secours 'Ipv6' } else { @() }
+    Set-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -ResetServerAddresses
+    Set-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -ServerAddresses (@($v4) + @($v6))
+    $dohFait = @()
+    if ($doh -and (Dns-Doh-Possible)) {
+        $touches = @()
+        foreach ($r in @($principal, $secours)) {
+            if (-not $r -or -not $r.Doh) { continue }
+            foreach ($ip in (@($r.Serveurs) + @($r.Ipv6))) { if ($ip -in (@($v4) + @($v6)) -and $ip -notin $touches) { $touches += $ip; $dohFait += ,@($ip, $r.Doh) } }
+        }
+        $etats = @()
+        foreach ($paire in $dohFait) {
+            try { $etats += Dns-Doh-Poser $paire[0] $paire[1] } catch { Log "dns       DoH $($paire[0]) : $_" }
+        }
+        # Memoriser ne garde que le premier passage ; l'état DoH s'ajoute à celui-ci sans écraser ce qui y était déjà.
+        # Relu depuis le JSON, l'état est un objet et non une table, et ceux d'avant le 2026-09-14 n'ont pas de champ doh.
+        if ($etat -isnot [hashtable] -and -not $etat.PSObject.Properties['doh']) { $etat | Add-Member -NotePropertyName doh -NotePropertyValue @() }
+        $deja = @($etat.doh | ForEach-Object { $_.ip })
+        $etat.doh = @($etat.doh) + @($etats | Where-Object { $_.ip -notin $deja })
+    }
+    Clear-DnsClientCache
     SauverEtat
-    Log "dns       $($adapt.Name) = $($r.Serveurs -join ', ') ($($r.Nom))"
+    $detail = $v4 -join ', '
+    if ($v6.Count -gt 0) { $detail += ' + ' + ($v6 -join ', ') }
+    if ($dohFait.Count -gt 0) { $detail += ', DoH' }
+    $noms = if ($secours -and $secours.Cle -ne $principal.Cle) { "$($principal.Nom) puis $($secours.Nom)" } else { $principal.Nom }
+    Log "dns       $($adapt.Name) = $detail ($noms)"
 }
 
 # ===== 30-restaurer.ps1 =====
@@ -1595,8 +1677,16 @@ function Tout-Restaurer {
                 'netadv|*' { Set-NetAdapterAdvancedProperty -Name $v.carte -RegistryKeyword $v.mot -RegistryValue $v.valeur -ErrorAction SilentlyContinue }
                 'netb|*' { if ($v.actif) { Enable-NetAdapterBinding -Name $v.carte -ComponentID $v.composant -ErrorAction SilentlyContinue } }
                 'dns|*' {
-                    if ($v.serveurs -and $v.serveurs.Count -gt 0) { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ServerAddresses $v.serveurs }
-                    else { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ResetServerAddresses }
+                    # serveurs = statiques IPv4 d'avant, serveurs6 = IPv6 (absents dans les états d'avant le 2026-09-14), vides = DHCP
+                    $liste = @($v.serveurs) + @($v.serveurs6) | Where-Object { $_ }
+                    Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ResetServerAddresses
+                    if ($liste.Count -gt 0) { Set-DnsClientServerAddress -InterfaceIndex $v.ifIndex -ServerAddresses $liste }
+                    foreach ($d in @($v.doh)) {
+                        if (-not $d -or -not $d.ip) { continue }
+                        if ($d.existait) { Set-DnsClientDohServerAddress -ServerAddress $d.ip -DohTemplate $d.modele -AutoUpgrade ([bool]$d.auto) -AllowFallbackToUdp ([bool]$d.repli) -ErrorAction SilentlyContinue | Out-Null }
+                        else { Remove-DnsClientDohServerAddress -ServerAddress $d.ip -ErrorAction SilentlyContinue | Out-Null }
+                    }
+                    Clear-DnsClientCache
                 }
             }
             Log ((Msg 'restaure') -f $id)
@@ -1837,14 +1927,18 @@ $UI = @{
         appliquerN = 'Appliquer les {0} cases cochées'; appliquer0 = 'Appliquer (rien de coché)'; appliquer1 = 'Appliquer la case cochée'
         legende = 'Coché = fait quand tu cliques Appliquer. Décoché = rien ne change. Si tu ne comprends pas une ligne, ne la coche pas.'
         seraFait = 'sera fait'; laisse = 'laissé tel quel'; dejaFait = 'déjà fait'
-        reseauTitre = 'Carte réseau à la main'; langue = 'Français'
+        langue = 'Français'
         rienCoche = 'Rien de coché.'; confirmAppliquer = "Appliquer {0} réglages ?`n`nL'état d'avant est sauvé dans {1}, le bouton Tout remettre le restaure."
         termine = 'Terminé. Redémarre le PC pour que tout prenne effet.'; rienRestaurer = 'Rien à restaurer : aucun réglage appliqué sur ce PC.'
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
         aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte {0} ({1}). DNS actuel : {2}, souvent ta box.'
-        dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Clique une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
-        dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
-        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; mullvad = 'pas de journal, serveurs en Europe'; dns0 = 'européen, bloque les sites malveillants'; controld = 'bloque les sites malveillants' }
+        dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Un clic sur une ligne choisit le principal, un deuxième le secours, puis "Utiliser les DNS choisis".'
+        dnsSelection = 'Clique d abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
+        dnsResume1 = 'Principal {0} ({1}). Un deuxième clic choisit le secours, la même ligne donne sa deuxième adresse.'
+        dnsResume2 = 'Principal {0} ({1}), secours {2} ({3}).'; dnsResumeBox = 'La carte repasse en automatique, sur le DNS de ta box.'
+        dnsDoh = 'Chiffrer les requêtes (DNS over HTTPS)'; dnsDohTip = 'Windows passe en HTTPS avec ces serveurs et revient en clair si ça échoue. Ta box et ton FAI ne lisent plus les noms que tu demandes.'; dnsDohAbsent = 'Windows 11 seulement.'
+        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d adresse IPv6, la case ne change rien pour lui.'
+        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
         preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
         presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
         ou = 'ou'
@@ -1874,14 +1968,18 @@ $UI = @{
         appliquerN = 'Apply the {0} checked boxes'; appliquer0 = 'Apply (nothing checked)'; appliquer1 = 'Apply the checked box'
         legende = 'Checked = done when you click Apply. Unchecked = nothing changes. If you do not understand a line, do not check it.'
         seraFait = 'will be done'; laisse = 'left as is'; dejaFait = 'already done'
-        reseauTitre = 'Network card by hand'; langue = 'English'
+        langue = 'English'
         rienCoche = 'Nothing checked.'; confirmAppliquer = "Apply {0} settings?`n`nThe previous state is saved in {1}, the Restore button puts it back."
         termine = 'Done. Reboot the PC so everything takes effect.'; rienRestaurer = 'Nothing to restore: no setting applied on this PC.'
         confirmRestaurer = 'Put the {0} settings back as they were?'; restaure = 'Restored. Reboot the PC.'
         aucuneCarte = 'No active network card found.'; dnsCarte = 'Card {0} ({1}). Current DNS: {2}, usually your router.'
-        dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Click a line then "Use the selected DNS", or change nothing.'
-        dnsSelection = 'Click a result line.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
-        dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; mullvad = 'no logs, servers in Europe'; dns0 = 'European, blocks malicious sites'; controld = 'blocks malicious sites' }
+        dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. One click on a line picks the primary, a second the fallback, then "Use the chosen DNS".'
+        dnsSelection = 'Click a result line first.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
+        dnsResume1 = 'Primary {0} ({1}). A second click picks the fallback, the same line gives its second address.'
+        dnsResume2 = 'Primary {0} ({1}), fallback {2} ({3}).'; dnsResumeBox = 'The card goes back to automatic, on your router DNS.'
+        dnsDoh = 'Encrypt queries (DNS over HTTPS)'; dnsDohTip = 'Windows switches to HTTPS with these servers and falls back to plain text if that fails. Your router and your ISP no longer read the names you ask for.'; dnsDohAbsent = 'Windows 11 only.'
+        dnsIpv6 = 'IPv6 too'; dnsIpv6Tip = 'Ticked by default when your connection has a public IPv6 address. OpenDNS publishes no IPv6 address, the box changes nothing for it.'
+        dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; dns4eu = 'European, blocks malicious sites'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; controld = 'blocks malicious sites' }
         preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
         presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
         ou = 'or'
@@ -1932,7 +2030,7 @@ $Boutons = @{
     BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
     BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot | iex"); Log $Bagarre.L.commandeCopiee } }
 
-    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' } }
+    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
     BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
     BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
     BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Télécharge le zip officiel (celui que winget connaît) dans le dossier bagarre et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Downloads the official zip (the one winget knows) into the bagarre folder and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
@@ -1946,15 +2044,12 @@ $Boutons = @{
     BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
     BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
     BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
-    BtnReseau = @{ Zone = 'Volet'; T = @{ fr = 'Lire : la carte réseau à la main'; en = 'Read: the network card by hand' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
-    BtnImgProtocoles = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : protocoles'; en = 'See the screenshot: protocols' }; Tip = @{ fr = 'La liste des protocoles de la carte, ce qu on décoche.'; en = 'The card protocol list, what gets unticked.' }; Action = { Image-Ouvrir 'reseau-protocoles.png' } }
-    BtnImgAvance = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : onglet Avancé'; en = 'See the screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
     BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
     BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
-    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall, plus la ligne MPO.'; en = 'The boxes to tick in NVCleanstall, plus the MPO line.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
+    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall. La ligne MPO reste au script à cocher.'; en = 'The boxes to tick in NVCleanstall. The MPO line stays with the checkbox script.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
     BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
@@ -1964,23 +2059,28 @@ $Boutons = @{
 
     BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
     BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
-    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans une console. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in a console. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
+    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans la console qui accompagne la fenêtre. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in the console next to the window. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' -Ici } }
     BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
     BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
-    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans une console.'; en = 'powercfg /lastwake, /waketimers, /requests in a console.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' } }
+    BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans la console qui accompagne la fenêtre.'; en = 'powercfg /lastwake, /waketimers, /requests in the console next to the window.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' -Ici } }
     BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
-    BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Fermer } }
+    BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport dans la console qui accompagne la fenêtre, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport in the console next to the window, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Ici } }
     BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
     BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
 
-    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Neuf résolveurs, une minute au plus. Ne change rien.'; en = 'Nine resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
-    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $Bagarre.DnsChoix; if ($i -lt 0) { Log $Bagarre.L.dnsSelection; return }; Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$i] } }
+    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Huit résolveurs, une minute au plus. Ne change rien.'; en = 'Eight resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
+    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
+        $p = $Bagarre.DnsChoix
+        if ($p -lt 0) { Log $Bagarre.L.dnsSelection; return }
+        $s = if ($Bagarre.DnsSecours -ge 0) { $Bagarre.DnsResultats[$Bagarre.DnsSecours] } else { $Bagarre.DnsResultats[$p] }
+        Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$p] $s ([bool]$Ctl.DnsDoh.IsChecked) ([bool]$Ctl.DnsIpv6.IsChecked)
+    } }
 
     BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
     BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
     BtnDossierAudit = @{ T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
 
-    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans une console. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in a console. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" } }
+    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
     BtnVoileSauvegarde = @{ Logo = 'microsoft'; T = @{ fr = 'Sauvegarder mes fichiers'; en = 'Back up my files' }; Tip = @{ fr = 'Paramètres > Sauvegarde Windows.'; en = 'Settings > Windows Backup.' }; Action = { Ouvrir 'ms-settings:backup' } }
     BtnVoileContinuer = @{ T = @{ fr = 'Continuer quand même'; en = 'Continue anyway' }; Tip = @{ fr = 'Ferme cet avertissement.'; en = 'Closes this warning.' }; Action = { $Ctl.Voile.Visibility = 'Collapsed' } }
 }
@@ -2909,7 +3009,7 @@ foreach ($it in $Items) {
 foreach ($id in 'BtnAppliquer', 'BtnDetecter', 'BtnRestaurer') { [void]$Ctl.BarreOptis.Children.Add((Bouton-Obtenir $id)) }
 $Ctl.BarreOptis.Children.Remove($Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Remove($Ctl.Presets)
 $Ctl.BarreOptis.Children.Insert(1, $Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Insert(2, $Ctl.Presets)
-foreach ($id in 'BtnReseau', 'BtnImgProtocoles', 'BtnImgAvance', 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
+foreach ($id in 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
 
 # Presets : une liste déroulante à la place de quarante boutons. Recommandé = les cases sûres, Minimal = celles sans
 # contrepartie, Tout décocher, Windows par défaut = restaure ce qui a été appliqué. Toucher une case passe en Personnalisé.
@@ -3014,27 +3114,77 @@ function Journal-Ouvrir { if (Test-Path $LogFichier) { Start-Process notepad $Lo
 # ---------------------------------------------------------------------------
 $Bagarre.DnsAdapt = $null
 $Bagarre.DnsResultats = @()
-$Bagarre.DnsChoix = -1
+$Bagarre.DnsChoix = -1     # index du principal, -1 = rien de choisi
+$Bagarre.DnsSecours = -1   # index du secours, -1 = pas choisi (le principal fournit alors sa deuxième adresse)
 $Ctl.DnsPanneau = New-Object Windows.Controls.StackPanel
 $Ctl.DnsPanneau.Margin = '0,2,0,4'; $Ctl.DnsPanneau.MinWidth = 600
 $Ctl.DnsCarte = New-Object Windows.Controls.TextBlock
 $Ctl.DnsCarte.Foreground = $Pinceau.Sourd; $Ctl.DnsCarte.TextWrapping = 'Wrap'; $Ctl.DnsCarte.Margin = '0,0,0,8'
 $Ctl.DnsListe = New-Object Windows.Controls.StackPanel
-[void]$Ctl.DnsPanneau.Children.Add($Ctl.DnsCarte); [void]$Ctl.DnsPanneau.Children.Add($Ctl.DnsListe)
+$Ctl.DnsBadges = @{}
+# Sous la liste : la phrase qui résume le choix, puis les deux cases (chiffrement, IPv6)
+$Ctl.DnsResume = New-Object Windows.Controls.TextBlock
+$Ctl.DnsResume.Foreground = $Pinceau.Texte; $Ctl.DnsResume.FontSize = 13; $Ctl.DnsResume.TextWrapping = 'Wrap'; $Ctl.DnsResume.Margin = '0,2,0,6'; $Ctl.DnsResume.Visibility = 'Collapsed'
+$Ctl.DnsOptions = New-Object Windows.Controls.StackPanel
+$Ctl.DnsOptions.Orientation = 'Horizontal'; $Ctl.DnsOptions.Margin = '0,2,0,4'
+$Ctl.DnsDoh = New-Object Windows.Controls.CheckBox
+$Ctl.DnsDoh.IsChecked = $true; $Ctl.DnsDoh.Margin = '0,0,24,0'; $Ctl.DnsDoh.VerticalAlignment = 'Center'
+$Ctl.DnsIpv6 = New-Object Windows.Controls.CheckBox
+$Ctl.DnsIpv6.IsChecked = $false; $Ctl.DnsIpv6.VerticalAlignment = 'Center'
+foreach ($cb in $Ctl.DnsDoh, $Ctl.DnsIpv6) { [Windows.Controls.ToolTipService]::SetInitialShowDelay($cb, 250); [Windows.Controls.ToolTipService]::SetShowDuration($cb, 30000); [void]$Ctl.DnsOptions.Children.Add($cb) }
+foreach ($c in $Ctl.DnsCarte, $Ctl.DnsListe, $Ctl.DnsResume, $Ctl.DnsOptions) { [void]$Ctl.DnsPanneau.Children.Add($c) }
 
-function Dns-Choisir($i) {
-    $Bagarre.DnsChoix = $i
-    foreach ($row in $Ctl.DnsListe.Children) { $row.BorderBrush = if ([int]$row.Tag -eq $i) { $Pinceau.Accent } else { $Pinceau.Bordure } }
-    $Ctl.BtnDnsAppliquer.IsEnabled = $i -ge 0
+function Dns-Libeller {
+    $L = $Bagarre.L
+    $Ctl.DnsDoh.Content = $L.dnsDoh; $Ctl.DnsDoh.ToolTip = $L.dnsDohTip
+    $Ctl.DnsIpv6.Content = $L.dnsIpv6; $Ctl.DnsIpv6.ToolTip = $L.dnsIpv6Tip
+    if (-not (Dns-Doh-Possible)) { $Ctl.DnsDoh.IsChecked = $false; $Ctl.DnsDoh.IsEnabled = $false; $Ctl.DnsDoh.ToolTip = $L.dnsDohAbsent }
+    Dns-Resumer
 }
-# Une ligne de résultat : rang, logo, nom + note, barre proportionnelle, ms. Mediane est un nombre (jamais parsé
+# La phrase sous la liste : rien, le principal seul, ou principal et secours avec leurs adresses
+function Dns-Resumer {
+    $L = $Bagarre.L; $p = $Bagarre.DnsChoix; $s = $Bagarre.DnsSecours
+    if ($p -lt 0 -or $p -ge $Bagarre.DnsResultats.Count) { $Ctl.DnsResume.Text = ''; $Ctl.DnsResume.Visibility = 'Collapsed'; return }
+    $rp = $Bagarre.DnsResultats[$p]
+    $Ctl.DnsResume.Visibility = 'Visible'
+    if ($rp.Actuel) { $Ctl.DnsResume.Text = $L.dnsResumeBox; return }
+    if ($s -lt 0 -or ($s -eq $p -and $rp.Serveurs.Count -lt 2)) { $Ctl.DnsResume.Text = $L.dnsResume1 -f $rp.Nom, $rp.Serveurs[0]; return }
+    $rs = $Bagarre.DnsResultats[$s]
+    $adresse = if ($s -eq $p) { $rp.Serveurs[1] } else { $rs.Serveurs[0] }
+    $Ctl.DnsResume.Text = $L.dnsResume2 -f $rp.Nom, $rp.Serveurs[0], $rs.Nom, $adresse
+}
+# Cadre accent sur les lignes choisies, badge 1 / 2 / 1+2, bouton Utiliser actif dès qu'il y a un principal
+function Dns-Peindre {
+    $p = $Bagarre.DnsChoix; $s = $Bagarre.DnsSecours
+    foreach ($row in $Ctl.DnsListe.Children) {
+        $i = [int]$row.Tag
+        $encadre = if ($p -ge 0) { $i -eq $p -or $i -eq $s } else { $i -eq $Bagarre.DnsMeilleur }   # sans choix, le plus rapide garde son cadre
+        $row.BorderBrush = if ($encadre) { $Pinceau.Accent } else { $Pinceau.Bordure }
+        $badge = $Ctl.DnsBadges[$i]
+        if (-not $badge) { continue }
+        $badge.Texte.Text = if ($i -eq $p -and $i -eq $s) { '1+2' } elseif ($i -eq $p) { '1' } elseif ($i -eq $s) { '2' } else { '' }
+        $badge.Bord.Visibility = if ($badge.Texte.Text) { 'Visible' } else { 'Collapsed' }
+    }
+    $Ctl.BtnDnsAppliquer.IsEnabled = $p -ge 0
+    Dns-Resumer
+}
+# Un clic : pas de principal = principal ; un principal sans secours = secours (la même ligne compte) ; les deux posés = on recommence.
+# [int] obligatoire : "Dns-Choisir -1" passe la chaîne "-1", et "-1" -lt 0 est faux en comparaison de chaînes.
+function Dns-Choisir([int]$i) {
+    if ($i -lt 0) { $Bagarre.DnsChoix = -1; $Bagarre.DnsSecours = -1 }
+    elseif ($Bagarre.DnsChoix -lt 0) { $Bagarre.DnsChoix = $i }
+    elseif ($Bagarre.DnsSecours -lt 0 -and -not $Bagarre.DnsResultats[$Bagarre.DnsChoix].Actuel) { $Bagarre.DnsSecours = $i }
+    else { $Bagarre.DnsChoix = $i; $Bagarre.DnsSecours = -1 }
+    Dns-Peindre
+}
+# Une ligne de résultat : rang, logo, nom + note, barre proportionnelle, ms, badge du choix. Mediane est un nombre (jamais parsé
 # depuis une chaîne : "12,3" en français cassait tout). $null = mesure en cours, la ligne est grisée.
 function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     $row = New-Object Windows.Controls.Border
     $row.Tag = $i; $row.Background = $Pinceau.Surface2; $row.BorderThickness = '1'; $row.CornerRadius = '8'; $row.Padding = '10,8'; $row.Margin = '0,0,0,6'; $row.Cursor = 'Hand'
     $row.BorderBrush = if ($plusRapide) { $Pinceau.Accent } else { $Pinceau.Bordure }
     $g = New-Object Windows.Controls.Grid
-    foreach ($w in '26', '34', '230', '*', '70') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+    foreach ($w in '26', '34', '230', '*', '70', '46') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
     $num = New-Object Windows.Controls.TextBlock
     $num.Text = if ($rang -gt 0) { "$rang" } else { '' }; $num.FontSize = 11; $num.FontWeight = 'SemiBold'; $num.VerticalAlignment = 'Center'
     $num.Foreground = if ($plusRapide) { $Pinceau.AccentClair } else { $Pinceau.Sourd }
@@ -3068,7 +3218,14 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     $ms.TextAlignment = 'Right'; $ms.VerticalAlignment = 'Center'; $ms.FontWeight = 'SemiBold'
     if ($ok) { $ms.Text = '{0} ms' -f [math]::Round($med) } else { $ms.Text = $Bagarre.L.dnsTest; $ms.FontSize = 11; $ms.Foreground = $Pinceau.Sourd; $ms.FontWeight = 'Normal' }
     [Windows.Controls.Grid]::SetColumn($ms, 4)
-    foreach ($c in $num, $logo, $bloc, $barre, $ms) { [void]$g.Children.Add($c) }
+    $badge = New-Object Windows.Controls.Border
+    $badge.Background = $Pinceau.Accent; $badge.CornerRadius = '9'; $badge.Padding = '7,1'; $badge.HorizontalAlignment = 'Right'; $badge.VerticalAlignment = 'Center'; $badge.Visibility = 'Collapsed'
+    $bt = New-Object Windows.Controls.TextBlock
+    $bt.FontSize = 10; $bt.FontWeight = 'Bold'; $bt.Foreground = $Pinceau.Fond
+    $badge.Child = $bt
+    [Windows.Controls.Grid]::SetColumn($badge, 5)
+    $Ctl.DnsBadges[$i] = @{ Bord = $badge; Texte = $bt }
+    foreach ($c in $num, $logo, $bloc, $barre, $ms, $badge) { [void]$g.Children.Add($c) }
     $row.Child = $g
     if (-not $ok) { $row.Opacity = 0.55; $row.Cursor = 'Arrow' } else { $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) }) }
     $row
@@ -3076,6 +3233,7 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
 # Redessine la liste : rang par médiane croissante, le plus rapide encadré. Les lignes sans mesure restent à leur place.
 function Dns-Redessiner {
     $Ctl.DnsListe.Children.Clear()
+    $Ctl.DnsBadges.Clear()
     $mesures = @($Bagarre.DnsResultats | Where-Object { $null -ne $_.Mediane })
     $max = 0.0
     foreach ($r in $mesures) { if ([double]$r.Mediane -gt $max) { $max = [double]$r.Mediane } }
@@ -3083,25 +3241,33 @@ function Dns-Redessiner {
     $rangs = @{}
     for ($k = 0; $k -lt $tries.Count; $k++) { $rangs[$tries[$k].Cle] = $k + 1 }
     $meilleur = if ($tries.Count -gt 0 -and $tries.Count -eq $Bagarre.DnsResultats.Count) { $tries[0].Cle } else { $null }
+    $Bagarre.DnsMeilleur = -1
     for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) {
         $r = $Bagarre.DnsResultats[$i]
+        if ($r.Cle -eq $meilleur) { $Bagarre.DnsMeilleur = $i }
         [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $r $max $rangs[$r.Cle] ($r.Cle -eq $meilleur)))
     }
+    Dns-Peindre
     Rafraichir
+}
+# Prépare la liste pour une carte : sa ligne d'en-tête, les candidats sans mesure, la case IPv6 selon la connexion
+function Dns-Preparer($adapt) {
+    $Bagarre.DnsAdapt = $adapt
+    $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
+    $Ctl.DnsIpv6.IsChecked = Dns-AIpv6 $adapt
+    Dns-Choisir -1
+    $Bagarre.DnsResultats = @()
+    foreach ($c in (Dns-Candidats $adapt)) {
+        if (-not $c.Serveurs[0]) { continue }
+        $Bagarre.DnsResultats += Dns-Resultat $c
+    }
 }
 function Dns-Tester {
     $adapt = Dns-Carte
     if (-not $adapt) { Log $Bagarre.L.aucuneCarte; return }
-    $Bagarre.DnsAdapt = $adapt
-    $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
-    Dns-Choisir -1
+    Dns-Preparer $adapt
     $Ctl.BtnDnsTester.IsEnabled = $false
     Log $Bagarre.L.dnsEnCours
-    $Bagarre.DnsResultats = @()
-    foreach ($c in (Dns-Candidats $adapt)) {
-        if (-not $c.Serveurs[0]) { continue }
-        $Bagarre.DnsResultats += [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Mediane = $null; Actuel = ($c.Cle -eq 'actuel') }
-    }
     Dns-Redessiner
     foreach ($r in $Bagarre.DnsResultats) {
         $r.Mediane = Dns-Mesurer-Un $r.Serveurs[0]
@@ -3148,6 +3314,7 @@ function Appliquer-Langue {
     foreach ($p in $PagesNoms) { if ($p -ne 'Optis') { Page-Construire $p } }
     Etapes-Construire
     Boutons-Libeller
+    Dns-Libeller
     $Ctl.Legende.Text = $L.legende
     $Ctl.OptiEtiquette1.Text = $L.pourquoi; $Ctl.OptiEtiquette2.Text = $L.perds
     foreach ($g in $Groupes) {
@@ -3196,6 +3363,15 @@ if ($Capture) {
     $racine.Arrange((New-Object Windows.Rect 0, 0, 1320, 860))
     Opti-Montrer (Item-Titre $Items[0]) (Item-Pourquoi $Items[0]) (Item-Attention $Items[0])   # le volet d'explication rempli, comme au survol
     $Ctl.Voile.Visibility = 'Collapsed'
+    # La page DNS comme après un test : des médianes inventées, Cloudflare en principal et Quad9 en secours
+    $adaptCapture = Dns-Carte
+    if ($adaptCapture) {
+        Dns-Preparer $adaptCapture
+        $faux = 14.2, 9.8, 8.1, 12.1, 13.7, 15.9, 21.4, 12.8
+        for ($k = 0; $k -lt $Bagarre.DnsResultats.Count; $k++) { $Bagarre.DnsResultats[$k].Mediane = $faux[$k % $faux.Count] }
+        Dns-Redessiner
+        Dns-Choisir 2; Dns-Choisir 1
+    }
     function Capture-Png($nom) {
         $racine.UpdateLayout()
         $bmp = New-Object Windows.Media.Imaging.RenderTargetBitmap 1320, 860, 96, 96, ([Windows.Media.PixelFormats]::Pbgra32)

@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Continue'
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
 # Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
-$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; DnsAdapt = $null; DnsResultats = @(); Simulation = $false; Verif = $null; Cartes = @() }
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @() }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : les images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, elles sont ouvertes depuis $Depot.
@@ -61,6 +61,7 @@ $Messages = @{
         finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
         rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
         consoleOk = 'Terminé sans erreur, cette console se ferme.'; consoleErreur = 'Il y a eu une erreur, lis ce qui est au-dessus. Entrée pour fermer.'
+        consoleFini = 'Terminé.'; consoleOccupee = 'La console est encore occupée, celle-ci part dans sa propre fenêtre.'
     }
     en = @{
         rienRestaurer = 'Nothing to restore: bagarre-avant.json is empty.'; restauration = 'Restoring {0} settings...'
@@ -69,6 +70,7 @@ $Messages = @{
         finApplication = 'Done. The previous values are in {0}, the detail in {1}. Reboot the PC.'
         rapportEcrit = 'Report written: {0} ({1} KB)'; fenetreFermee = 'window closed'
         consoleOk = 'Finished without error, this console closes.'; consoleErreur = 'Something failed, read what is above. Enter to close.'
+        consoleFini = 'Done.'; consoleOccupee = 'The console is still busy, this one opens in its own window.'
     }
 }
 function Msg($cle) { $Messages[$Bagarre.Langue][$cle] }
@@ -286,23 +288,31 @@ function Logo-Image($nom) {
     $bi
 }
 
-# Lance une commande PowerShell dans une console à part (visible, admin comme nous).
+# Lance une commande PowerShell dans une console (visible, admin comme nous).
 # Sert à tout ce qui est interactif ou bavard : winget, Win11Debloat, WinUtil, DISM.
-# Par défaut la console reste ouverte (commandes dont on lit le résultat : powercfg, DISM analyse, rapport Defender).
-# -Fermer (installations) : elle se ferme toute seule si tout s'est bien passé, et reste ouverte sur une erreur
-# (exception PowerShell, ou code de sortie non nul d'un exe ; la commande pose $Echec = $true pour le reste).
+# Par défaut, une console à part qui reste ouverte. -Fermer (installations) : elle se ferme toute seule si tout s'est
+# bien passé, et reste ouverte sur une erreur (exception PowerShell, ou code de sortie non nul d'un exe ; la commande
+# pose $Echec = $true pour le reste).
+# -Ici : pas de nouvelle fenêtre, la commande tourne dans la console qui accompagne la fenêtre (celle de la relance admin),
+# en processus fils qui partage la console, la fenêtre reste vivante. Pour les commandes courtes et non interactives
+# (fsutil, powercfg, DISM nettoyage, rapport Wi-Fi, point de restauration). Une seule à la fois : si la précédente
+# tourne encore, celle-ci part dans sa propre fenêtre. Les outils interactifs (Win11Debloat, WinUtil, winget,
+# l'enregistrement Defender qui attend Entrée) gardent leur console à part.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
 $Bagarre.ConsoleN = 0
-function Console-Lancer($titre, $commande, [switch]$Fermer) {
+function Console-Lancer($titre, $commande, [switch]$Fermer, [switch]$Ici) {
     $Bagarre.ConsoleN++
-    $fin = if ($Fermer) {
+    if ($Ici -and $Bagarre.ConsoleProc -and -not $Bagarre.ConsoleProc.HasExited) { Log (Msg 'consoleOccupee'); $Ici = $false }
+    $fin = if ($Ici) {
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleFini')' -ForegroundColor Green }`r`nWrite-Host ''"
+    } elseif ($Fermer) {
         "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleOk')' -ForegroundColor Green; Start-Sleep 2 }"
     } else {
         "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }"
     }
+    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`n" }
     $texte = @"
-`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'
-Write-Host ''
+${entete}Write-Host ''
 Write-Host '  $titre' -ForegroundColor Cyan
 Write-Host ''
 `$Echec = `$false
@@ -314,8 +324,12 @@ $fin
 "@
     $fichier = Join-Path $Dossier ("console-{0}.ps1" -f $Bagarre.ConsoleN)
     [IO.File]::WriteAllText($fichier, $texte, (New-Object Text.UTF8Encoding $true))
-    $sortie = if ($Fermer) { '' } else { '-NoExit ' }
-    Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass $sortie-File `"$fichier`"" | Out-Null
+    if ($Ici) {
+        $Bagarre.ConsoleProc = Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$fichier`"" -NoNewWindow -PassThru
+    } else {
+        $sortie = if ($Fermer) { '' } else { '-NoExit ' }
+        Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass $sortie-File `"$fichier`"" | Out-Null
+    }
     Log "console   $titre"
 }
 

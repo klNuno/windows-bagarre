@@ -14,6 +14,5 @@ Without them a game crashes with "VCRUNTIME140.dll not found".
 @BtnVcredist, BtnDirectX
 
 ## 4. Sound, to avoid crackling
-- Communications "Do nothing" (otherwise Windows lowers your volume when Discord rings): it is a box in the checkbox script, already ticked.
-- Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz.
+Playback device > Properties > Enhancements: disable all. Advanced tab: 24 bit, 48000 Hz. i@ The volume drop when Discord rings (Communications "Do nothing") is a box in the checkbox script.
 @BtnSon

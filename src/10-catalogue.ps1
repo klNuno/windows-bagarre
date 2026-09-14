@@ -212,7 +212,7 @@ Ajouter $G 'priv-relance' 'Ne plus rouvrir les applis toutes seules après une m
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' 'DisableAutomaticRestartSignOn' 1
 }
 Ajouter $G 'priv-metadata' 'Ne plus télécharger les fiches et icônes des périphériques chez Microsoft' `
-    'Chaque périphérique branché déclenche un téléchargement de son icône et de sa fiche depuis Microsoft. Purement cosmétique dans "Périphériques et imprimantes".' $true 'Les périphériques ont une icône générique.' {
+    'Chaque périphérique branché déclenche un téléchargement de son icône et de sa fiche depuis Microsoft. Purement cosmétique dans "Périphériques et imprimantes".' $false 'Les périphériques ont une icône générique.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata' 'PreventDeviceMetadataFromNetwork' 1
 }
 Ajouter $G 'priv-presse-papiers' 'Couper l historique du presse-papiers (Win+V) et sa synchro cloud' `
@@ -242,7 +242,7 @@ Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (Gl
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
 }
 Ajouter $G 'jeu-mpo' 'Couper le Multiplane Overlay (MPO, OverlayTestMode = 5)' `
-    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. NVCleanstall pose la même clé avec sa case "Disable MPO".' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
+    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. La clé vient de cette case et pas de NVCleanstall, pour que Tout remettre puisse la rendre.' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\Dwm' 'OverlayTestMode' 5
 }
 Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
@@ -404,7 +404,7 @@ Ajouter $G 'conf-fin' 'Fermer les programmes bloqués sans demander (AutoEndTask
     Reg-Ecrire 'HKCU:\Control Panel\Desktop' 'AutoEndTasks' '1' 'String'
 }
 Ajouter $G 'conf-transparence' 'Couper la transparence' `
-    'Les effets de flou derrière le menu Démarrer et la barre des tâches. Coûte un peu de GPU en permanence.' $true 'Interface plus plate.' {
+    'Les effets de flou derrière le menu Démarrer et la barre des tâches. Coûte un peu de GPU en permanence.' $false 'Interface plus plate.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'EnableTransparency' 0
 }
 Ajouter $G 'conf-animations' 'Couper les animations de fenêtres' `
