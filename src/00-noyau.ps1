@@ -88,10 +88,15 @@ if ($Amd) { $Dediee = 'AMD Radeon RX (simulée par -Amd)' }
 $Gpu = if ($Dediee) { $Dediee } else { $Cartes | Select-Object -First 1 }
 $EstNvidia = [bool]($Dediee -match 'NVIDIA|GeForce')
 $EstAmd = [bool]($Dediee -match 'Radeon')
+# Processeur : les groupes "Processeur Intel" et "Processeur AMD" du script n'apparaissent que sur la marque détectée.
+$Cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
+$CpuNom = if ($Cpu.Name) { ($Cpu.Name -replace '\s+', ' ').Trim() } else { 'CPU inconnu' }
+$EstIntelCpu = [bool]($Cpu.Manufacturer -match 'Intel')
+$EstAmdCpu = [bool]($Cpu.Manufacturer -match 'AMD')
 $EstPortable = (Get-CimInstance Win32_SystemEnclosure).ChassisTypes | Where-Object { $_ -in 8, 9, 10, 11, 12, 14, 18, 21, 30, 31, 32 }
 $DisqueSysteme = Get-PhysicalDisk | Where-Object { $_.DeviceId -eq ((Get-Partition -DriveLetter $env:SystemDrive[0]).DiskNumber) } | Select-Object -First 1
 $EstHdd = $DisqueSysteme -and $DisqueSysteme.MediaType -eq 'HDD'
-$Machine = "$RamGo Go RAM, $Gpu, disque système $(if ($EstHdd) { 'HDD' } else { 'SSD' })$(if ($EstPortable) { ', portable' })"
+$Machine = "$CpuNom, $RamGo Go RAM, $Gpu, disque système $(if ($EstHdd) { 'HDD' } else { 'SSD' })$(if ($EstPortable) { ', portable' })"
 # Âge de l'installation de Windows : au-delà d'un mois la fenêtre propose de se protéger avant de toucher (point de restauration, sauvegarde).
 $InstallDate = try { (Get-CimInstance Win32_OperatingSystem).InstallDate } catch { $null }
 $InstallJours = if ($InstallDate) { [int]((Get-Date) - $InstallDate).TotalDays } else { 0 }

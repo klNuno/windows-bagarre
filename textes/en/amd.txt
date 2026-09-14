@@ -1,27 +1,22 @@
-Your card is an AMD: no NVCleanstall and no NVIDIA Control Panel here. The driver comes from AMD's site, Adrenalin is its settings panel, and everything below happens inside it.
+Your card is an AMD: the driver comes from AMD's site, Adrenalin is its panel, everything is set inside it.
 
 ## 1. The driver, from AMD's site
-@BtnAmd, BtnDdu
-- Pick your card on AMD's site and take the latest "Recommended" driver. Not the Auto-Detect tool, not Windows Update.
-- In the installer: "Minimal install". The driver and Adrenalin, nothing else.
-- A driver acting up after an update: DDU in safe mode, then a clean reinstall.
+@BtnAmd
+- Pick your card and take the latest "Recommended" driver. i@ Not the Auto-Detect tool, not Windows Update: one installs the full suite, the other an outdated driver.
+- In the installer: "Minimal install". i@ The driver and Adrenalin, nothing else.
 ! Do not tick "Factory reset" in the installer without a reason: it wipes your Adrenalin profiles.
 
 ## 2. Adrenalin: Gaming > Global settings
-- Radeon Anti-Lag: On. Anti-Lag 2 per game when the game has it.
-- Radeon Boost, Radeon Chill, Image Sharpening: Off. They change the rendering or the FPS behind your back.
-- Radeon Enhanced Sync: Off. V-Sync: Off here and in every game, FPS cap 3 below the refresh rate (RivaTuner).
-- AMD FreeSync: On if your screen supports it, with the FPS cap.
-- AFMF (frame generation): never globally. Per game, single-player only.
-- Texture filtering quality: Performance. Tessellation mode: AMD optimized.
-- Shader cache: AMD optimized. A game stutters after a driver update: "Reset shader cache", once.
-Windows Settings > Display > Graphics: optimizations for windowed games on, HAGS kept, Auto HDR off in competitive.
-@BtnGraphiques
+- Radeon Anti-Lag: On. i@ Anti-Lag 2 per game when the game has it.
+- Radeon Boost, Radeon Chill, Image Sharpening: Off. i@ They change the rendering or the FPS behind your back.
+- AFMF (frame generation): never globally. i@ Per game, single-player only: in multiplayer the added latency is felt.
+- Shader cache: AMD optimized. i@ A game stutters after a driver update: "Reset shader cache", once.
+Leave the rest at default. i@ Enhanced Sync, FreeSync, V-Sync, texture filtering: screen by screen and game by game, never globally.
 ! On a Ryzen X3D, leave core parking alone: it is what keeps the game on the CCD with the cache.
 
 ## 3. What Adrenalin runs for nothing
 - Record and stream: Instant Replay OFF, Desktop recording OFF.
-- In-game overlay (Alt+R): OFF. One overlay at a time: RivaTuner or Steam or Discord.
+- In-game overlay (Alt+R): OFF. i@ One overlay at a time: RivaTuner or Steam or Discord.
 - Preferences: "Open on startup" OFF, "Automatic updates" set to Notify only.
 @BtnAfterburner
 The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything.

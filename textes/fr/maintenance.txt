@@ -1,38 +1,27 @@
-Des mois après l'installation, quand le PC a vécu.
+Des mois après l'installation, quand le PC a vécu. Un bouton, une phrase : tu sais ce que tu ouvres.
 
 ## Ce qui se lance tout seul
-@BtnAutoruns, BtnGeek
-Autoruns : Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas (launchers, updaters). Décoche, ne supprime pas.
-Ventilos et LED sans la suite du constructeur, si tu préfères :
-@BtnFan, BtnRgb
+@BtnAutoruns
+Autoruns liste tout ce qui démarre avec Windows. Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas. i@ Launchers, updaters, suites RGB : chacun prend de la RAM et du CPU en fond. Décoche, ne supprime pas : recocher suffit si un truc manque.
 
-## Nettoyage disque, dans l'ordre
-@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Assistant de stockage : tous les mois, corbeille 30 jours, Téléchargements jamais.
+## Le disque se remplit
+@BtnCleanmgr
+Nettoyage de disque, puis "Nettoyer les fichiers système". i@ Anciennes mises à jour, corbeille, fichiers temporaires, rapports d'erreur.
+@BtnDismNettoyer
+Compacte les vieilles mises à jour dans WinSxS, plusieurs Go après un an. i@ Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.
 @BtnStockage
-@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
-! BleachBit : jamais "Free disk space" ni "Memory". DISM : jamais /ResetBase.
-
-## Pilotes
-Windows Update ne les touche plus (case jeu-pilotes). La carte graphique comme à l'étape 4, le reste depuis le site du constructeur, seulement si un truc marche mal.
-@BtnDdu
-DDU quand tu changes de marque de carte graphique, ou pour repartir propre après un pilote qui déconne.
+L'Assistant de stockage fait le ménage tout seul. i@ Tous les mois, corbeille 30 jours, Téléchargements jamais.
+@BtnCrystal
+Santé et température des disques. i@ Un disque "Prudence" ou "Mauvais" se remplace, il ne se répare pas.
 
 ## Le PC se réveille tout seul, ne dort pas, plante
 @BtnReveil
-lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir (souvent un navigateur avec une vidéo).
-Écrans bleus : journal Système, source "WHEA-Logger". Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
+lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir. i@ Souvent un navigateur avec une vidéo, ou une carte réseau autorisée à réveiller le PC.
 @BtnEvenements
-Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
+Écrans bleus : journal Système, source "WHEA-Logger". i@ Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
 @BtnWlan
+Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
 
-## Defender qui pompe
-@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
-Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. Jamais tout le disque.
-
-## Mesurer avant / après
-@BtnCapframe
-- Même jeu, même scène, même résolution.
-- Une passe de chauffe, puis 3 passes de 60 s avant, 3 après.
-- Médiane, 1 % low, p99 du temps d'image. Jamais la moyenne.
-- Un écart sous 3 % = pas d'effet. Remets comme avant.
+## Defender qui pompe en jeu
+@BtnDefenderEnregistrer, BtnDefenderExclusions
+Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque, jamais Téléchargements : c'est par là que les saletés arrivent.

@@ -1,39 +1,15 @@
-Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
+Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. i@ Une opti que tu ne peux pas mesurer n'existe pas.
 
-## 1. Souris
-@BtnSouris
-Accélération coupée par le script. Ensuite : 1000 Hz dans le logiciel de la souris, DPI natif (400 / 800 / 1600), sensibilité dans le jeu, jamais dans Windows (6/11).
-La case RawMouseThrottleDuration du script : seulement à 4000 Hz et plus.
+## 1. Priorité et cœurs par jeu
+@BtnThreadPilot | BtnLasso
+ThreadPilot : open source, gratuit, Windows 11 seulement. Par programme, une priorité, des cœurs, un plan d'alimentation. i@ Ses règles tiennent tant qu'il tourne : mets-le au démarrage. Utile sur un Ryzen à deux CCD ou un Intel avec des E-cores, pour garder un jeu sur les bons cœurs.
+Process Lasso : gratuit avec un rappel d'achat, version Pro payante. Les mêmes règles par programme, plus ProBalance. i@ ProBalance baisse tout seul la priorité de ce qui pompe le CPU en fond. Certaines fonctions avancées se coupent après 14 jours sans la Pro.
+Si tu n'as pas de saccades, tu n'as besoin d'aucun des deux.
 
-## 2. Trois cases Avancé du script, une à la fois
-- Win32PrioritySeparation 0x26 : aide un jeu CPU-bound avec Discord et un navigateur derrière. Peut faire crépiter l'audio.
-- Nagle (TcpAckFrequency) : quelques ms sur un jeu en TCP (MMO). Zéro effet sur un FPS en UDP.
-- Boost CPU Aggressive : PC fixe Intel seulement. Sur AMD la clé ne fait rien, sur portable ça chauffe pour rien.
-
-## 3. Priorité et cœurs par jeu, facultatif
-@BtnThreadPilot
-ThreadPilot fait ce qu'on demandait à Process Lasso, en open source et sans nag : par programme, une priorité, des cœurs (utile sur un Ryzen à deux CCD ou un Intel avec des E-cores), un plan d'alimentation. Windows 11 seulement, et ses règles ne tiennent que quand il tourne : mets-le au démarrage.
-! Il ne remplace pas ProBalance (Lasso baissait tout seul la priorité de ce qui pompe). Si tu n'as pas de saccades, tu n'en as pas besoin.
-
-## 4. Mémoire : 16 Go et des jeux récents
+## 2. Opti mémoire : 16 Go et des jeux récents
 @BtnIslc
-ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go, ça évite les saccades de swap. 32 Go et plus : inutile. La compression mémoire de Windows reste activée.
+ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go. i@ Ça évite les saccades de swap sur un jeu récent avec 16 Go. 32 Go et plus : inutile. La compression mémoire de Windows reste activée.
 
-## 5. Stockage
-Les jeux DirectStorage sur le NVMe. Jamais de compression NTFS sur un dossier de jeu. Le cache de shaders ne se "nettoie" pas : le vider fait tout recompiler.
-
-## 6. Le cœur de l'interruption GPU, facultatif
+## 3. Le cœur de l'interruption GPU
 @BtnAutoGpu
-AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. Une heure, sur un PC déjà stable.
-
-## 7. Grosses mises à jour Windows
-@BtnUpdateOptions
-Suspendre jusqu'à 5 semaines quand une grosse version sort (25H2, 26H1), le temps que pilotes et anti-cheats suivent. Pas plus, les correctifs de sécurité en dépendent.
-
-## Ce que le pack refuse, et pourquoi
-- HVCI off : les anti-cheats le demandent, gain de 1 à 3 %.
-- Nettoyeur de registre : rien à gagner, tout à casser.
-- Plan "Ultimate performance" : identique à Hautes performances depuis 1903.
-- Windows Update, Defender, pare-feu coupés : non.
-- Un outil qui force le timer à 0,5 ms en permanence : à laisser tourner en fond pour rien, les jeux le demandent eux-mêmes (case GlobalTimerResolutionRequests).
-- Prefetch, "débrider les 20 % de bande passante", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled : rien de mesurable ou nuisible.
+AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. i@ Une heure, sur un PC déjà stable. À refaire après un changement de carte ou de pilote.

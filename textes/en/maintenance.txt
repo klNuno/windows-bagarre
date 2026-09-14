@@ -1,38 +1,27 @@
-Months after the install, when the PC has lived a while.
+Months after the install, once the PC has lived. One button, one sentence: you know what you are opening.
 
 ## What starts on its own
-@BtnAutoruns, BtnGeek
-Autoruns: Options > Hide Microsoft entries, then untick what you do not recognize (launchers, updaters). Untick, do not delete.
-Fans and LEDs without the vendor suite, if you prefer:
-@BtnFan, BtnRgb
+@BtnAutoruns
+Autoruns lists everything that starts with Windows. Options > Hide Microsoft entries, then untick what you do not recognize. i@ Launchers, updaters, RGB suites: each one takes RAM and CPU in the background. Untick, do not delete: ticking again is enough if something is missing.
 
-## Disk cleanup, in order
-@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Storage Sense: monthly, recycle bin 30 days, Downloads never.
+## The drive fills up
+@BtnCleanmgr
+Disk Cleanup, then "Clean up system files". i@ Old updates, recycle bin, temporary files, error reports.
+@BtnDismNettoyer
+Compacts old updates in WinSxS, several GB after a year. i@ Never /ResetBase: you would lose update uninstall.
 @BtnStockage
-@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
-! BleachBit: never "Free disk space" nor "Memory". DISM: never /ResetBase.
+Storage Sense cleans up on its own. i@ Monthly, recycle bin 30 days, Downloads never.
+@BtnCrystal
+Drive health and temperature. i@ A "Caution" or "Bad" drive gets replaced, it does not get repaired.
 
-## Drivers
-Windows Update no longer touches them (jeu-pilotes box). The graphics card as in step 4, the rest from the maker's site, only when something misbehaves.
-@BtnDdu
-DDU when you switch graphics card brand, or to start clean after a misbehaving driver.
-
-## The PC wakes up on its own, does not sleep, crashes
+## The PC wakes on its own, does not sleep, crashes
 @BtnReveil
-lastwake says who woke it, requests what keeps it awake (often a browser with a video).
-Blue screens: System log, source "WHEA-Logger". A WHEA error = hardware (RAM, overclock, PSU), not Windows.
+lastwake says who woke it, requests what keeps it awake. i@ Often a browser with a video, or a network card allowed to wake the PC.
 @BtnEvenements
-Wi-Fi dropping: the Windows Wi-Fi report says when and why.
+Blue screens: System log, source "WHEA-Logger". i@ A WHEA error = hardware (RAM, overclock, PSU), not Windows.
 @BtnWlan
+Wi-Fi dropping: the Windows Wi-Fi report says when and why.
 
-## Defender hogging
-@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
-Start the recording, play ten minutes, press Enter in the console. The report lists the most scanned folders: the game's one goes into Exclusions. Never the whole disk.
-
-## Measure before / after
-@BtnCapframe
-- Same game, same scene, same resolution.
-- One warm-up run, then 3 runs of 60 s before, 3 after.
-- Median, 1% low, p99 frame time. Never the average.
-- A gap under 3% = no effect. Put it back.
+## Defender hogging while you play
+@BtnDefenderEnregistrer, BtnDefenderExclusions
+Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive, never Downloads: that is where the nasty stuff comes in.

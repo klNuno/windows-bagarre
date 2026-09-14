@@ -1,27 +1,22 @@
-Ta carte est une AMD : pas de NVCleanstall ni de Panneau NVIDIA ici. Le pilote vient du site AMD, Adrenalin est son panneau de réglages, et tout ce qui suit se fait dedans.
+Ta carte est une AMD : le pilote vient du site AMD, Adrenalin est son panneau, tout se règle dedans.
 
 ## 1. Le pilote, depuis le site AMD
-@BtnAmd, BtnDdu
-- Choisis ta carte sur le site AMD et prends le dernier pilote "Recommended". Pas l'outil Auto-Detect, pas Windows Update.
-- Dans l'installeur : "Installation minimale". Le pilote et Adrenalin, sans le reste.
-- Un pilote qui fait des siennes après une mise à jour : DDU en mode sans échec, puis réinstalle propre.
+@BtnAmd
+- Choisis ta carte et prends le dernier pilote "Recommended". i@ Pas l'outil Auto-Detect, pas Windows Update : l'un installe la suite complète, l'autre un pilote en retard.
+- Dans l'installeur : "Installation minimale". i@ Le pilote et Adrenalin, sans le reste.
 ! Ne coche pas "Réinitialisation d'usine" dans l'installeur sans raison : ça efface tes profils Adrenalin.
 
 ## 2. Adrenalin : Jeux > Paramètres globaux
-- Radeon Anti-Lag : Activé. Anti-Lag 2 par jeu quand le jeu l'a.
-- Radeon Boost, Radeon Chill, Netteté de l'image : Désactivé. Ils changent le rendu ou les FPS derrière ton dos.
-- Radeon Enhanced Sync : Désactivé. V-Sync : Désactivé ici et dans chaque jeu, cap de FPS 3 sous le taux de l'écran (RivaTuner).
-- AMD FreeSync : Activé si ton écran le fait, avec le cap de FPS.
-- AFMF (génération d'images) : jamais en global. Par jeu, solo seulement.
-- Qualité du filtrage des textures : Performance. Mode de tessellation : Optimisé AMD.
-- Cache de shaders : Optimisé AMD. Un jeu saccade après une mise à jour du pilote : "Réinitialiser le cache de shaders", une fois.
-Paramètres Windows > Affichage > Graphiques : optimisations pour les jeux fenêtrés activées, HAGS gardé, Auto HDR off en compétitif.
-@BtnGraphiques
+- Radeon Anti-Lag : Activé. i@ Anti-Lag 2 par jeu quand le jeu l'a.
+- Radeon Boost, Radeon Chill, Netteté de l'image : Désactivé. i@ Ils changent le rendu ou les FPS derrière ton dos.
+- AFMF (génération d'images) : jamais en global. i@ Par jeu, solo seulement : en multi la latence ajoutée se sent.
+- Cache de shaders : Optimisé AMD. i@ Un jeu saccade après une mise à jour du pilote : "Réinitialiser le cache de shaders", une fois.
+Le reste, laisse par défaut. i@ Enhanced Sync, FreeSync, V-Sync, filtrage des textures : c'est écran par écran et jeu par jeu, jamais en global.
 ! Sur un Ryzen X3D, laisse le core parking : c'est lui qui garde le jeu sur le CCD avec le cache.
 
 ## 3. Ce qu'Adrenalin fait tourner pour rien
 - Enregistrer et diffuser : Relecture instantanée OFF, Enregistrement du bureau OFF.
-- Superposition dans le jeu (Alt+R) : OFF. Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
+- Superposition dans le jeu (Alt+R) : OFF. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
 - Préférences : "Ouvrir au démarrage" OFF, "Mises à jour automatiques" sur Notifier seulement.
 @BtnAfterburner
 L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose.

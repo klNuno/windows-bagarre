@@ -241,6 +241,10 @@ Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (Gl
     'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. Un jeu qui demande un timer fin le garde même quand une autre fenêtre passe devant.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
 }
+Ajouter $G 'jeu-mpo' 'Couper le Multiplane Overlay (MPO, OverlayTestMode = 5)' `
+    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. NVCleanstall pose la même clé avec sa case "Disable MPO".' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
+    Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\Dwm' 'OverlayTestMode' 5
+}
 Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
     'Avec l accélération, la distance parcourue par le curseur dépend de la vitesse du geste : le même mouvement de main ne donne jamais le même mouvement à l écran. Ta mémoire musculaire ne peut rien apprendre. Tout joueur la coupe, c est la première chose à faire.' $true 'Le curseur demande un peu plus de mouvement de main sur le bureau. Monte le DPI de la souris si besoin.' {
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseSpeed' '0' 'String'
@@ -453,10 +457,6 @@ Ajouter $G 'adv-nagle' 'Couper l algorithme de Nagle (TcpAckFrequency, TCPNoDela
         if (Test-Path $chemin) { Reg-Ecrire $chemin 'TcpAckFrequency' 1; Reg-Ecrire $chemin 'TCPNoDelay' 1 }
     }
 }
-Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE), PC fixe Intel' `
-    'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Sur AMD le boost est géré par le firmware, la valeur ne change rien.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
-    Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
-}
 Ajouter $G 'adv-dyntick' 'Couper le tick dynamique (bcdedit disabledynamictick)' `
     'Le noyau arrête son horloge quand rien ne se passe et la relance à la demande. Avec un timer à 0,5 ms ça peut dériver. À cocher seulement si tu vois des micro-saccades que RivaTuner confirme, et à décocher si ça ne change rien.' $false 'Consommation au repos un peu plus haute.' {
     Memoriser 'cmd|dyntick' @{ valeur = ((bcdedit /enum '{current}') | Select-String 'disabledynamictick') -replace '.*disabledynamictick\s+', '' }
@@ -476,9 +476,16 @@ Ajouter $G 'adv-llmnr' 'Couper LLMNR (résolution de noms multicast)' `
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' 'EnableMulticast' 0
 }
 
-# ----- NVIDIA ------------------------------------------------------------------
+# ----- Groupes par marque : seulement sur la machine concernée ----------------------
+if ($EstIntelCpu) {
+    $G = 'Processeur Intel'
+    Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE)' `
+        'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Clé Intel : sur AMD le boost est géré par le firmware.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
+        Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
+    }
+}
 if ($EstNvidia) {
-    $G = 'NVIDIA'
+    $G = 'Carte graphique NVIDIA'
     Ajouter $G 'nv-telemetrie' 'Couper la télémétrie NVIDIA' `
         'Le pilote envoie des statistiques à NVIDIA. Deux clés, aucun effet sur le jeu.' $true '' {
         Reg-Ecrire 'HKLM:\SOFTWARE\NVIDIA Corporation\NvControlPanel2\Client' 'OptInOrOutPreference' 0

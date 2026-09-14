@@ -10,4 +10,4 @@ irm https://bagarre.mtsu.dev | iex
 
 Nothing else to download. The command always fetches today's version. Everything the checkbox script changes is saved first and can be restored from the window.
 
-The rest, in French, is in `LIS-MOI.txt`.
+What the pack refuses to do, and why, is in [docs/decisions.md](docs/decisions.md). The rest, in French, is in `LIS-MOI.txt`.

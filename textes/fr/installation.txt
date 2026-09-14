@@ -1,7 +1,7 @@
 ## Juste après le premier bureau
-Avant d'installer quoi que ce soit, ça ne se rattrape pas après.
+Avant d'installer quoi que ce soit.
 @BtnFsutil
-Coupe les noms courts PROGRA~1 sur les disques neufs : moins d'écritures par fichier créé.
+Coupe les noms courts PROGRA~1 sur les disques neufs. i@ Chaque fichier créé coûtait une écriture de plus pour un nom 8.3 dont plus rien ne se sert. Ça ne se rattrape pas une fois les programmes installés.
 
 ## Windows Update
 Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
@@ -9,7 +9,6 @@ Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
 
 ## Pilotes, dans l'ordre
 - Chipset et carte réseau : site du fabricant de ta carte mère (ou du portable), ton modèle exact.
-- Carte graphique : pas maintenant, c'est l'étape 4 (la page s'adapte à ta carte, NVIDIA ou AMD).
-- Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
+- Carte graphique : pas maintenant, c'est l'étape 4.
 - Un point d'exclamation dans le Gestionnaire de périphériques = un pilote qui manque. Dernier recours : Snappy, ne coche que ce qui manque.
 @BtnPeripheriques, BtnSnappy

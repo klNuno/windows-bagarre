@@ -13,30 +13,25 @@ Everything the script changes is written to C:\ProgramData\bagarre. "Restore eve
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
 '@
 $Textes['en']['amd'] = @'
-Your card is an AMD: no NVCleanstall and no NVIDIA Control Panel here. The driver comes from AMD's site, Adrenalin is its settings panel, and everything below happens inside it.
+Your card is an AMD: the driver comes from AMD's site, Adrenalin is its panel, everything is set inside it.
 
 ## 1. The driver, from AMD's site
-@BtnAmd, BtnDdu
-- Pick your card on AMD's site and take the latest "Recommended" driver. Not the Auto-Detect tool, not Windows Update.
-- In the installer: "Minimal install". The driver and Adrenalin, nothing else.
-- A driver acting up after an update: DDU in safe mode, then a clean reinstall.
+@BtnAmd
+- Pick your card and take the latest "Recommended" driver. i@ Not the Auto-Detect tool, not Windows Update: one installs the full suite, the other an outdated driver.
+- In the installer: "Minimal install". i@ The driver and Adrenalin, nothing else.
 ! Do not tick "Factory reset" in the installer without a reason: it wipes your Adrenalin profiles.
 
 ## 2. Adrenalin: Gaming > Global settings
-- Radeon Anti-Lag: On. Anti-Lag 2 per game when the game has it.
-- Radeon Boost, Radeon Chill, Image Sharpening: Off. They change the rendering or the FPS behind your back.
-- Radeon Enhanced Sync: Off. V-Sync: Off here and in every game, FPS cap 3 below the refresh rate (RivaTuner).
-- AMD FreeSync: On if your screen supports it, with the FPS cap.
-- AFMF (frame generation): never globally. Per game, single-player only.
-- Texture filtering quality: Performance. Tessellation mode: AMD optimized.
-- Shader cache: AMD optimized. A game stutters after a driver update: "Reset shader cache", once.
-Windows Settings > Display > Graphics: optimizations for windowed games on, HAGS kept, Auto HDR off in competitive.
-@BtnGraphiques
+- Radeon Anti-Lag: On. i@ Anti-Lag 2 per game when the game has it.
+- Radeon Boost, Radeon Chill, Image Sharpening: Off. i@ They change the rendering or the FPS behind your back.
+- AFMF (frame generation): never globally. i@ Per game, single-player only: in multiplayer the added latency is felt.
+- Shader cache: AMD optimized. i@ A game stutters after a driver update: "Reset shader cache", once.
+Leave the rest at default. i@ Enhanced Sync, FreeSync, V-Sync, texture filtering: screen by screen and game by game, never globally.
 ! On a Ryzen X3D, leave core parking alone: it is what keeps the game on the CCD with the cache.
 
 ## 3. What Adrenalin runs for nothing
 - Record and stream: Instant Replay OFF, Desktop recording OFF.
-- In-game overlay (Alt+R): OFF. One overlay at a time: RivaTuner or Steam or Discord.
+- In-game overlay (Alt+R): OFF. i@ One overlay at a time: RivaTuner or Steam or Discord.
 - Preferences: "Open on startup" OFF, "Automatic updates" set to Notify only.
 @BtnAfterburner
 The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything.
@@ -59,127 +54,101 @@ Read the answer like the rest of the pack: a proposal with no source or no downs
 $Textes['en']['audit-prompt'] = @'
 You are a Windows 11 expert focused on gaming and latency, careful, who prefers one measurable tweak to ten forum tweaks.
 You are auditing a PC whose state is in the file rapport-pc.txt (next to this prompt, or attached to the message).
-Answer in the language of the person asking, informal, direct, no filler.
+Answer in the language of the person asking, informal, direct, no filler. If the report is missing, ask for it first.
 
-CONTEXT
-This PC went through the "windows bagarre edition" pack:
-- Fresh Windows 11, Windows Update current, chipset/network drivers from the manufacturer.
+CONTEXT: WHAT THE PACK HAS ALREADY DONE
+This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/windows-bagarre):
+- Fresh Windows 11, Windows Update current, chipset and network drivers from the manufacturer.
 - Win11Debloat (default mode) and WinUtil (Standard tweaks).
-- NVIDIA driver installed bare via NVCleanstall: no NVIDIA App, MSI High, HDCP off, Ansel off, MPO kept
-  (off only in case of black screen or flicker), signature rebuilt (EAC compatible method).
-  Classic NVIDIA Control Panel from the Store, Low Latency Mode On (Ultra if no FPS cap),
-  max performance, unlimited shader cache, G-Sync + V-Sync On in the Panel + RTSS cap under the screen's refresh rate.
-  AMD card instead: driver from AMD's site in minimal install, Anti-Lag on, Boost/Chill/Enhanced Sync
-  and AFMF off, FreeSync + RTSS cap, instant replay and the Adrenalin overlay off.
-- Checkbox script bagarre.ps1: useless services (telemetry, fax, demo, Edge update...), telemetry, CEIP and error
-  reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI cut, Game DVR and PresenceWriter off,
-  GlobalTimerResolutionRequests=1, mouse acceleration off,
-  hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off,
-  drivers excluded from Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card
-  (power management, EEE, LLDP/topology unchecked, Interrupt Moderation Medium), comfort (classic right-click menu,
-  End task in the taskbar, Edge without Startup Boost, File Explorer).
-  Options unchecked by default: SvcHostSplitThreshold (placebo), Win32PrioritySeparation 0x26, PowerThrottlingOff,
-  Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off, LLMNR off, clipboard, Dynamic Lighting,
-  NVIDIA P0, core parking.
+- NVIDIA card: bare driver via NVCleanstall (no NVIDIA App, MSI High, HDCP off, Ansel off, MPO off,
+  signature rebuilt with the EAC compatible method). Classic Control Panel from the Store: Low Latency Mode On,
+  unlimited shader cache, threaded optimization, RGB output full range. The rest at default, set per game when
+  needed (power management, filtering, V-Sync, G-Sync).
+  AMD card instead: driver from AMD's site in minimal install, Anti-Lag on, Boost/Chill/AFMF off, instant replay and
+  the Adrenalin overlay off, the rest at default.
+- Checkbox script bagarre.ps1, boxes ticked by default: useless services (telemetry, fax, demo, Edge update),
+  telemetry, CEIP and error reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI off,
+  Game DVR and PresenceWriter off, GlobalTimerResolutionRequests=1, MPO off (OverlayTestMode=5), mouse acceleration
+  off, hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off, drivers excluded from
+  Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card (power management,
+  EEE, LLDP/topology unticked, Interrupt Moderation Medium), comfort (classic right-click menu, End task in the
+  taskbar, Edge without Startup Boost, File Explorer, Communications "Do nothing").
+  Boxes unticked by default, to propose only with a reason specific to this PC: SvcHostSplitThreshold,
+  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
+  LLMNR off, clipboard, Dynamic Lighting, NVIDIA P0, core parking, Aggressive boost (Intel only).
+- DNS tested from the PC (nine resolvers), the fastest applied if the gap with the router was over 5 ms.
 
-WHAT THE PACK REFUSES, DO NOT PROPOSE IT
+DO NOT PROPOSE, IT IS DECIDED
 - Disabling HVCI / memory integrity, Secure Boot, Defender, the firewall, Windows Update, UAC.
 - Registry cleaners, paid "optimizers", scripts that make 200 changes at once.
-- BIOS settings (out of scope for the pack).
-- "Ultimate performance" plan, prefetch/superfetch tweaks, "unlocking the 20% reserved bandwidth", placebo tweaks
-  (LargeSystemCache, IRQ8Priority, mouse/keyboard data queues, TcpWindowSize, disabling the page file).
+- BIOS settings: out of the pack's scope, only point them out.
+- "Ultimate performance" plan, prefetch/superfetch, "unlocking the 20% reserved bandwidth", LargeSystemCache,
+  IRQ8Priority, mouse/keyboard data queues, TcpWindowSize, page file off, HPET, TdrLevel, IPv6 off, C-states off,
+  Interrupt Moderation Disabled, a timer resolution tool running in the background.
 - Disabling a service you are not sure about: NvContainer, Windows Audio, Themes, Cryptographic Services,
-  Windows Time, Storage Service, Device Install, Windows Management Instrumentation stay on.
+  Windows Time, Storage Service, Device Install, WMI stay.
+- A global NVIDIA or AMD setting that belongs per game (max performance, filtering, V-Sync, Smooth Motion).
 
 YOUR MISSION, IN THIS ORDER
-1. Pack check: for each point in the CONTEXT, say whether it is DONE, NOT DONE or UNCERTAIN based on the report,
-   with the report line that proves it. List what is missing, with the script checkbox or the tutorial step to redo.
-
-2. What is off: old drivers (compare the GPU and network driver date to today), MSI missing on the GPU or the
-   network card, useless auto-start programs, third-party services set to automatic (launchers, updaters,
-   RGB), Store bloat still present, a duplicate antivirus, repeated system errors (WHEA, disk, driver),
-   an almost full disk, HAGS or windowed optimizations inconsistent with the GPU, slow or ISP DNS.
-
-3. Tweaks specific to THIS config, that the generic pack cannot know:
-   - the exact CPU model (E-cores / P-cores, X3D, laptop), GPU, network card (Realtek, Intel, Killer,
-     Marvell) and exactly what to set for each ;
-   - the installed programs (Discord, launchers, RGB, overlays) and which ones cost you in-game ;
-   - the screen (Hz, G-Sync) and the consistency of V-Sync / FPS cap / low latency ;
-   - the RAM (sticks, rated speed vs likely XMP, but with no BIOS step: just flag it).
-
-4. For EVERY proposal, this format, otherwise it is worthless:
+1. CHECK: for every point of the CONTEXT, DONE / NOT DONE / UNCERTAIN based on the report, with the report line that
+   proves it. List what is missing with the script box or the pack step to redo.
+2. WHAT IS WRONG: old drivers (compare the GPU and network driver dates to today), MSI missing on the GPU or the
+   network card, useless startup programs, third-party services set to automatic (launchers, updaters, RGB), Store
+   bloat still present, duplicate antivirus, repeated system errors (WHEA, disk, driver), drive almost full, HAGS or
+   windowed optimizations inconsistent with the GPU, slow or ISP DNS.
+3. TWEAKS SPECIFIC TO THIS BUILD, which the generic pack cannot know:
+   - the exact CPU (E-cores / P-cores, X3D, laptop), the GPU, the network card (Realtek, Intel, Killer, Marvell)
+     and what exactly to set for them;
+   - the installed programs (Discord, launchers, RGB, overlays) and which ones cost in game;
+   - the screen (Hz, G-Sync / FreeSync) and the consistency of V-Sync / FPS cap / low latency;
+   - the RAM (sticks, advertised speed vs probable XMP): point it out only, no BIOS step.
+4. FORMAT OF EVERY PROPOSAL, otherwise it is worthless:
    - What: the exact setting (registry key, command, menu), ready to apply.
-   - Why: the mechanism in two sentences, not "it optimizes things".
+   - Why: the mechanism in two sentences, not "it optimizes".
    - What you lose: the tradeoff, even a small one. "Nothing" is rarely true.
-   - Source: manufacturer doc, Microsoft doc, maintained repo, with the name and the year. No videos, no "people say".
+   - Source: manufacturer doc, Microsoft doc, maintained repo, with the name and the year. No video, no "people say".
    - Expected gain: measurable or not, and how to measure it (RivaTuner frame time, ping, LatencyMon).
-   - Reversible: how to roll it back.
-   Sort them: DO (clear gain, no risk) / TEST (one at a time, measure) / NO (placebo or harmful, say why).
-
-5. Finish with the 5 most useful actions for this exact PC, in order, one line each.
+   - Reversible: how to go back.
+   Rank: DO (net gain, no risk) / TEST (one at a time, measure) / NO (placebo or harmful, say why).
+5. END: the 5 most useful actions for this specific PC, in order, one line each.
 
 RULES
-- You do not change anything yourself, even if you have terminal access. You propose, the user applies.
-  If you are an agent with access to the PC, you can read (registry, Get-*, powercfg /query) to clarify a point,
-  never write.
-- If the report does not allow a conclusion, say UNCERTAIN and say which command to run to decide.
-- No made-up FPS estimate. "A few ms of latency" only if you can say where it comes from.
-- Keep it short. A tweak that needs a paragraph to justify itself is probably not a tweak.
+- You change nothing yourself, even with terminal access. You propose, the user applies. An agent with access to the
+  PC may read (registry, Get-*, powercfg /query) to clarify a point, never write.
+- If the report does not allow a conclusion, say UNCERTAIN and give the command that settles it.
+- No made-up FPS estimate. "A few ms of latency" only if you can say where they come from.
+- Short. A tweak that needs a paragraph to justify itself is probably not a tweak.
 '@
 $Textes['en']['dns'] = @'
-DNS turns a name (youtube.com) into an address. A slow DNS adds tens of ms to every new site or game server you contact.
+DNS turns a name (youtube.com) into an address. i@ A slow DNS adds a few tens of ms to every new site or game server contacted. Zero effect on ping once in a match.
 
-## Test from your place
+## Test from home
 @BtnDnsTester
-Six common names, three times per server, median kept. About thirty seconds, the window does not respond meanwhile.
+Nine resolvers, six common names each, three times, median kept. The lines fill in as it goes, the fastest gets a frame. i@ A server unreachable on the first round does not get the other two. Cloudflare, Google and Quad9 have servers everywhere; the others mostly in Europe and North America.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Which one to keep
-A gap under 5 ms cannot be felt: if your router is within 5 ms of the best, keep it.
-Quad9 blocks known malicious domains and does not log your IP. Cloudflare is often the fastest. Google keeps logs.
+A gap under 5 ms cannot be felt: if your router is within 5 ms of the best, keep it. i@ Your router relays to your ISP's DNS with a cache: fast for the sites you already visit.
+The fastest is not always the right one. i@ AdGuard blocks ads, Quad9 and dns0 block malicious sites, Google keeps logs, Mullvad keeps none. A DNS that blocks domains can break a site or a launcher: if something stops loading, go back to Cloudflare or your router.
 "Restore everything" also puts the previous DNS back.
 '@
 $Textes['en']['dur'] = @'
-One thing at a time. You change it, you play half an hour with RivaTuner open, you keep it or put it back. A tweak you cannot measure does not exist.
+One thing at a time. You change, you play half an hour with RivaTuner open, you keep or you revert. i@ A tweak you cannot measure does not exist.
 
-## 1. Mouse
-@BtnSouris
-Acceleration turned off by the script. Then: 1000 Hz in the mouse software, native DPI (400 / 800 / 1600), sensitivity in the game, never in Windows (6/11).
-The RawMouseThrottleDuration box in the script: only at 4000 Hz and above.
+## 1. Priority and cores per game
+@BtnThreadPilot | BtnLasso
+ThreadPilot: open source, free, Windows 11 only. Per program, a priority, cores, a power plan. i@ Its rules hold as long as it runs: put it on startup. Useful on a two-CCD Ryzen or an Intel with E-cores, to keep a game on the right cores.
+Process Lasso: free with a purchase reminder, paid Pro edition. The same per-program rules, plus ProBalance. i@ ProBalance lowers on its own the priority of whatever hogs the CPU in the background. Some advanced features turn off after 14 days without Pro.
+If you have no stutter, you need neither.
 
-## 2. Three Advanced boxes in the script, one at a time
-- Win32PrioritySeparation 0x26: helps a CPU-bound game with Discord and a browser behind. Can make the audio crackle.
-- Nagle (TcpAckFrequency): a few ms on a TCP game (MMO). Zero effect on a UDP shooter.
-- CPU boost Aggressive: desktop Intel only. On AMD the key does nothing, on a laptop it heats up for nothing.
-
-## 3. Priority and cores per game, optional
-@BtnThreadPilot
-ThreadPilot does what people used Process Lasso for, open source and without the nag: per program, a priority, a set of cores (useful on a two-CCD Ryzen or an Intel with E-cores), a power plan. Windows 11 only, and its rules only hold while it runs: set it to start with Windows.
-! It does not replace ProBalance (Lasso lowered the priority of whatever hogged the CPU on its own). If you have no stutter, you do not need it.
-
-## 4. Memory: 16 GB and recent games
+## 2. Memory tweak: 16 GB and recent games
 @BtnIslc
-ISLC empties the standby list when free RAM drops under 1 GB, which avoids swap stutter. 32 GB and more: useless. Windows memory compression stays on.
+ISLC empties the standby list when free RAM drops under 1 GB. i@ It avoids swap stutter on a recent game with 16 GB. 32 GB and more: useless. Windows memory compression stays on.
 
-## 5. Storage
-DirectStorage games on the NVMe. Never NTFS compression on a game folder. The shader cache does not get "cleaned": emptying it recompiles everything.
-
-## 6. The GPU interrupt core, optional
+## 3. The GPU interrupt core
 @BtnAutoGpu
-AutoGpuAffinity tests which core to put the GPU interrupt on and keeps the best one. One hour, on an already stable PC.
-
-## 7. Big Windows updates
-@BtnUpdateOptions
-Pause up to 5 weeks when a big version ships (25H2, 26H1), until drivers and anti-cheats catch up. No longer, security fixes depend on it.
-
-## What the pack refuses, and why
-- HVCI off: anti-cheats require it, gain of 1 to 3%.
-- Registry cleaner: nothing to gain, everything to break.
-- "Ultimate performance" plan: identical to High performance since 1903.
-- Windows Update, Defender, firewall off: no.
-- A tool that forces the 0.5 ms timer all the time: something to keep running in the background for nothing, games request it themselves (GlobalTimerResolutionRequests box).
-- Prefetch, "unlock the reserved 20% bandwidth", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled: nothing measurable or harmful.
+AutoGpuAffinity tests which core to put the GPU interrupt on and keeps the best one. i@ One hour, on an already stable PC. Redo it after a card or driver change.
 '@
 $Textes['en']['facile'] = @'
 Two tools, each in its own console. They fetch today's version, nothing to update here.
@@ -204,92 +173,73 @@ Without them a game crashes with "VCRUNTIME140.dll not found".
 '@
 $Textes['en']['installation'] = @'
 ## Right after the first desktop
-Before installing anything. It cannot be done afterwards.
+Before you install anything.
 @BtnFsutil
-Stops the PROGRA~1 short names on new disks: fewer writes per file created.
+Turns off PROGRA~1 short names on new drives. i@ Every file created cost one more write for an 8.3 name nothing uses anymore. It cannot be fixed once programs are installed.
 
 ## Windows Update
-Click until nothing is left, reboot between each batch.
+Click until there is nothing left, reboot between each batch.
 @BtnWindowsUpdate
 
 ## Drivers, in order
 - Chipset and network card: your motherboard (or laptop) maker's site, your exact model.
-- Graphics card: not now, that is step 4 (the page adapts to your card, NVIDIA or AMD).
-- Windows Update once more: since 24H2 it finishes the rest (audio, USB, Bluetooth).
-- An exclamation mark in Device Manager = a missing driver. Last resort: Snappy, only tick what is missing.
+- Graphics card: not now, that is step 4.
+- An exclamation mark in Device Manager = a missing driver. Last resort: Snappy, tick only what is missing.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['en']['maintenance'] = @'
-Months after the install, when the PC has lived a while.
+Months after the install, once the PC has lived. One button, one sentence: you know what you are opening.
 
 ## What starts on its own
-@BtnAutoruns, BtnGeek
-Autoruns: Options > Hide Microsoft entries, then untick what you do not recognize (launchers, updaters). Untick, do not delete.
-Fans and LEDs without the vendor suite, if you prefer:
-@BtnFan, BtnRgb
+@BtnAutoruns
+Autoruns lists everything that starts with Windows. Options > Hide Microsoft entries, then untick what you do not recognize. i@ Launchers, updaters, RGB suites: each one takes RAM and CPU in the background. Untick, do not delete: ticking again is enough if something is missing.
 
-## Disk cleanup, in order
-@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Storage Sense: monthly, recycle bin 30 days, Downloads never.
+## The drive fills up
+@BtnCleanmgr
+Disk Cleanup, then "Clean up system files". i@ Old updates, recycle bin, temporary files, error reports.
+@BtnDismNettoyer
+Compacts old updates in WinSxS, several GB after a year. i@ Never /ResetBase: you would lose update uninstall.
 @BtnStockage
-@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
-! BleachBit: never "Free disk space" nor "Memory". DISM: never /ResetBase.
+Storage Sense cleans up on its own. i@ Monthly, recycle bin 30 days, Downloads never.
+@BtnCrystal
+Drive health and temperature. i@ A "Caution" or "Bad" drive gets replaced, it does not get repaired.
 
-## Drivers
-Windows Update no longer touches them (jeu-pilotes box). The graphics card as in step 4, the rest from the maker's site, only when something misbehaves.
-@BtnDdu
-DDU when you switch graphics card brand, or to start clean after a misbehaving driver.
-
-## The PC wakes up on its own, does not sleep, crashes
+## The PC wakes on its own, does not sleep, crashes
 @BtnReveil
-lastwake says who woke it, requests what keeps it awake (often a browser with a video).
-Blue screens: System log, source "WHEA-Logger". A WHEA error = hardware (RAM, overclock, PSU), not Windows.
+lastwake says who woke it, requests what keeps it awake. i@ Often a browser with a video, or a network card allowed to wake the PC.
 @BtnEvenements
-Wi-Fi dropping: the Windows Wi-Fi report says when and why.
+Blue screens: System log, source "WHEA-Logger". i@ A WHEA error = hardware (RAM, overclock, PSU), not Windows.
 @BtnWlan
+Wi-Fi dropping: the Windows Wi-Fi report says when and why.
 
-## Defender hogging
-@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
-Start the recording, play ten minutes, press Enter in the console. The report lists the most scanned folders: the game's one goes into Exclusions. Never the whole disk.
-
-## Measure before / after
-@BtnCapframe
-- Same game, same scene, same resolution.
-- One warm-up run, then 3 runs of 60 s before, 3 after.
-- Median, 1% low, p99 frame time. Never the average.
-- A gap under 3% = no effect. Put it back.
+## Defender hogging while you play
+@BtnDefenderEnregistrer, BtnDefenderExclusions
+Start the recording, play ten minutes, press Enter in the console. The report gives the most scanned folders: the game's one goes into Exclusions. i@ Never the whole drive, never Downloads: that is where the nasty stuff comes in.
 '@
 $Textes['en']['nvidia'] = @'
-Since driver 610.47 (May 2026) the classic Control Panel is no longer in the driver. It comes from the Store and disappears on every clean install: you reinstall it afterwards.
+The bare driver through NVCleanstall, then the OG Control Panel from the Store. i@ Since driver 610.47 (May 2026) the OG Control Panel is no longer in the driver. It comes from the Store and disappears with every clean install: you reinstall it afterwards.
 
 ## 1. NVCleanstall: the bare driver
 @BtnNvclean, BtnImgNvclean
 - "Manual", latest Game Ready driver for your card.
-- Components: Display Driver, PhysX if a game uses it. Nothing else. NVIDIA HD Audio only if your sound goes through the monitor cable.
-- Installation Tweaks: tick as on the screenshot, EXCEPT the MPO line.
-! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. Validated on the common anti-cheats. A game refuses to start: reinstall without those two boxes.
-! HDCP off: you lose Netflix and Disney+ in 4K in the browser (1080p still works). You gain zero micro-stutter on alt-tab.
-MPO (Multiplane Overlay): only turn it off if you get black screens or flickering with several monitors.
-The screen flickers and red messages scroll during the install, that is normal.
+- Components: Display Driver, PhysX. Nothing else. i@ NVIDIA HD Audio only if your sound goes through the monitor cable. No NVIDIA App, no telemetry, no GeForce Experience.
+- Installation Tweaks: tick as on the screenshot, MPO line included. i@ MPO (Multiplane Overlay) is behind the black screens, flicker and windowed stutter NVIDIA has documented since 2022. Off, Windows composes everything itself: zero effect in full screen. The checkbox script sets the same key, ticked by default.
+- HDCP: on = Netflix and Disney+ in 4K in the browser, off = slight fps boost. i@ The screenshot turns it off. A game never uses it, 1080p always works. You want 4K: untick "Disable HDCP".
+! Rebuild digital signature + Easy Anti-Cheat compatible method: the driver file stays intact, only the installer is re-signed. A game refuses to start: reinstall without those two boxes.
+The screen flickers and red messages scroll by during the install, that is normal.
 
-## 2. The NVIDIA Control Panel, the classic one
-@BtnPanneau, BtnImgPanneau
+## 2. The OG Control Panel
+@BtnPanneau
 Manage 3D settings > Global settings:
-- Low latency mode: On, not Ultra. Reflex takes over when a game has it.
-- Power management: prefer maximum performance.
-- Shader cache size: Unlimited. The default fills up and recompiles mid-game.
-- Texture filtering: High performance. Threaded optimization: On.
-- G-Sync monitor: G-Sync on, V-Sync On here, V-Sync OFF in every game, FPS cap 3 below the refresh rate (RivaTuner or Reflex). No G-Sync: V-Sync Off, RivaTuner cap alone.
-- Smooth Motion: never globally. Per game, single-player only.
-Change resolution: dynamic range "Full", RGB 4:4:4. Otherwise blacks are grey.
-Windows Settings > Display > Graphics: optimizations for windowed games on, HAGS kept, Auto HDR off in competitive.
-@BtnGraphiques
-! Never disable the NVIDIA Display Container service (NvContainer), the Control Panel needs it.
+- Low Latency Mode: On. i@ Not Ultra: Ultra sets a hidden FPS cap. Reflex takes over when a game has it.
+- Shader Cache Size: Unlimited. i@ The default fills up and recompiles mid-game: stutter after a few hours of play.
+- Threaded Optimization: On.
+Change resolution: Output color format RGB, Output dynamic range Full. i@ Otherwise blacks can look grey: the card sends a limited range (16-235) to a screen expecting 0-255. On many screens it is already right.
+Leave the rest at default. i@ Power management, texture filtering, V-Sync: set per game if a game asks for it, never globally. Globally it costs watts or sharpness for nothing.
 
 ## 3. Afterburner and RivaTuner: to see, not to overclock
 @BtnAfterburner
-The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything. One overlay at a time: RivaTuner or Steam or Discord.
-If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.
+The RivaTuner overlay (FPS, frame time) is your only way to know that a tweak changes anything. i@ One overlay at a time: RivaTuner or Steam or Discord. If the NVIDIA App got installed anyway: overlay OFF, Instant Replay OFF, "optimize automatically" OFF.
 '@
 $Textes['en']['reseau'] = @'
 The Network card group of the script does all of this by itself. This guide is for checking, or doing it by hand.
@@ -310,30 +260,25 @@ Tout ce que le script modifie est noté dans C:\ProgramData\bagarre. "Tout remet
 @BtnRestaurerAccueil, BtnJournalAccueil, BtnCommande
 '@
 $Textes['fr']['amd'] = @'
-Ta carte est une AMD : pas de NVCleanstall ni de Panneau NVIDIA ici. Le pilote vient du site AMD, Adrenalin est son panneau de réglages, et tout ce qui suit se fait dedans.
+Ta carte est une AMD : le pilote vient du site AMD, Adrenalin est son panneau, tout se règle dedans.
 
 ## 1. Le pilote, depuis le site AMD
-@BtnAmd, BtnDdu
-- Choisis ta carte sur le site AMD et prends le dernier pilote "Recommended". Pas l'outil Auto-Detect, pas Windows Update.
-- Dans l'installeur : "Installation minimale". Le pilote et Adrenalin, sans le reste.
-- Un pilote qui fait des siennes après une mise à jour : DDU en mode sans échec, puis réinstalle propre.
+@BtnAmd
+- Choisis ta carte et prends le dernier pilote "Recommended". i@ Pas l'outil Auto-Detect, pas Windows Update : l'un installe la suite complète, l'autre un pilote en retard.
+- Dans l'installeur : "Installation minimale". i@ Le pilote et Adrenalin, sans le reste.
 ! Ne coche pas "Réinitialisation d'usine" dans l'installeur sans raison : ça efface tes profils Adrenalin.
 
 ## 2. Adrenalin : Jeux > Paramètres globaux
-- Radeon Anti-Lag : Activé. Anti-Lag 2 par jeu quand le jeu l'a.
-- Radeon Boost, Radeon Chill, Netteté de l'image : Désactivé. Ils changent le rendu ou les FPS derrière ton dos.
-- Radeon Enhanced Sync : Désactivé. V-Sync : Désactivé ici et dans chaque jeu, cap de FPS 3 sous le taux de l'écran (RivaTuner).
-- AMD FreeSync : Activé si ton écran le fait, avec le cap de FPS.
-- AFMF (génération d'images) : jamais en global. Par jeu, solo seulement.
-- Qualité du filtrage des textures : Performance. Mode de tessellation : Optimisé AMD.
-- Cache de shaders : Optimisé AMD. Un jeu saccade après une mise à jour du pilote : "Réinitialiser le cache de shaders", une fois.
-Paramètres Windows > Affichage > Graphiques : optimisations pour les jeux fenêtrés activées, HAGS gardé, Auto HDR off en compétitif.
-@BtnGraphiques
+- Radeon Anti-Lag : Activé. i@ Anti-Lag 2 par jeu quand le jeu l'a.
+- Radeon Boost, Radeon Chill, Netteté de l'image : Désactivé. i@ Ils changent le rendu ou les FPS derrière ton dos.
+- AFMF (génération d'images) : jamais en global. i@ Par jeu, solo seulement : en multi la latence ajoutée se sent.
+- Cache de shaders : Optimisé AMD. i@ Un jeu saccade après une mise à jour du pilote : "Réinitialiser le cache de shaders", une fois.
+Le reste, laisse par défaut. i@ Enhanced Sync, FreeSync, V-Sync, filtrage des textures : c'est écran par écran et jeu par jeu, jamais en global.
 ! Sur un Ryzen X3D, laisse le core parking : c'est lui qui garde le jeu sur le CCD avec le cache.
 
 ## 3. Ce qu'Adrenalin fait tourner pour rien
 - Enregistrer et diffuser : Relecture instantanée OFF, Enregistrement du bureau OFF.
-- Superposition dans le jeu (Alt+R) : OFF. Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
+- Superposition dans le jeu (Alt+R) : OFF. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
 - Préférences : "Ouvrir au démarrage" OFF, "Mises à jour automatiques" sur Notifier seulement.
 @BtnAfterburner
 L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose.
@@ -356,127 +301,101 @@ Lis la réponse comme le reste du pack : une proposition sans source ou sans con
 $Textes['fr']['audit-prompt'] = @'
 Tu es un expert Windows 11 orienté jeu et latence, prudent, qui préfère une opti mesurable à dix optis de forum.
 Tu audites un PC dont l'état est dans le fichier rapport-pc.txt (à côté de ce prompt, ou joint au message).
-Réponds en français, tutoiement, ton direct, pas de blabla.
+Réponds en français, tutoiement, ton direct, pas de blabla. Si le rapport manque, demande-le avant tout.
 
-CONTEXTE
-Ce PC a suivi le pack "windows bagarre edition" :
-- Windows 11 frais, Windows Update à jour, pilotes chipset/réseau du constructeur.
+CONTEXTE : CE QUE LE PACK A DÉJÀ FAIT
+Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windows-bagarre) :
+- Windows 11 frais, Windows Update à jour, pilotes chipset et réseau du constructeur.
 - Win11Debloat (mode par défaut) et WinUtil (tweaks Standard).
-- Pilote NVIDIA installé nu via NVCleanstall : sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé, MPO gardé
-  (coupé seulement en cas d écran noir ou scintillement), signature reconstruite (méthode compatible EAC).
-  Panneau de configuration NVIDIA classique depuis le Store, faible latence Activé (Ultra si pas de cap FPS),
-  performances max, cache shaders illimité, G-Sync + V-Sync Activé dans le Panneau + cap RTSS sous le taux de l écran.
-  Carte AMD à la place : pilote depuis le site AMD en installation minimale, Anti-Lag activé, Boost/Chill/Enhanced Sync
-  et AFMF coupés, FreeSync + cap RTSS, relecture instantanée et overlay Adrenalin coupés.
-- Script à cocher bagarre.ps1 : services inutiles (télémétrie, fax, démo, Edge update...), télémétrie, CEIP et rapports
-  d erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés, Game DVR et PresenceWriter coupés,
-  GlobalTimerResolutionRequests=1, accélération souris coupée,
-  veille prolongée et démarrage rapide coupés, suspension USB, USB3 LPM, ASPM PCIe et minuteurs de réveil coupés,
-  pilotes exclus de Windows Update, Continuous Innovation refusé, menu F8, AutoRun coupé, ARSO coupé, carte réseau
-  (alimentation, EEE, LLDP/topologie décochés, Interrupt Moderation Medium), confort (menu clic droit classique,
-  Fin de tâche dans la barre, Edge sans Startup Boost, Explorateur).
-  Options décochées par défaut : SvcHostSplitThreshold (placebo), Win32PrioritySeparation 0x26, PowerThrottlingOff,
-  Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off, LLMNR off, presse-papiers, Dynamic Lighting,
-  P0 NVIDIA, core parking.
+- Carte NVIDIA : pilote nu via NVCleanstall (sans NVIDIA App, MSI High, HDCP coupé, Ansel coupé, MPO coupé,
+  signature reconstruite méthode compatible EAC). Panneau de configuration classique depuis le Store : faible latence
+  Activé, cache de shaders illimité, optimisation threadée, sortie RGB plage complète. Le reste par défaut,
+  réglé jeu par jeu si besoin (gestion de l'alimentation, filtrage, V-Sync, G-Sync).
+  Carte AMD à la place : pilote du site AMD en installation minimale, Anti-Lag activé, Boost/Chill/AFMF coupés,
+  relecture instantanée et overlay Adrenalin coupés, le reste par défaut.
+- Script à cocher bagarre.ps1, cases cochées par défaut : services inutiles (télémétrie, fax, démo, Edge update),
+  télémétrie, CEIP et rapports d'erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés,
+  Game DVR et PresenceWriter coupés, GlobalTimerResolutionRequests=1, MPO coupé (OverlayTestMode=5), accélération
+  souris coupée, veille prolongée et démarrage rapide coupés, suspension USB, USB3 LPM, ASPM PCIe et minuteurs de
+  réveil coupés, pilotes exclus de Windows Update, Continuous Innovation refusé, menu F8, AutoRun coupé, ARSO coupé,
+  carte réseau (alimentation, EEE, LLDP/topologie décochés, Interrupt Moderation Medium), confort (menu clic droit
+  classique, Fin de tâche dans la barre, Edge sans Startup Boost, Explorateur, Communications "Ne rien faire").
+  Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC : SvcHostSplitThreshold,
+  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
+  LLMNR off, presse-papiers, Dynamic Lighting, P0 NVIDIA, core parking, boost Aggressive (Intel seulement).
+- DNS testé depuis le PC (neuf résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms.
 
-CE QUE LE PACK REFUSE, NE LE PROPOSE PAS
+NE PROPOSE PAS, C'EST DÉCIDÉ
 - Désactiver HVCI / intégrité de la mémoire, Secure Boot, Defender, le pare-feu, Windows Update, l'UAC.
 - Nettoyeurs de registre, "optimiseurs" payants, scripts qui font 200 changements d'un coup.
-- Réglages BIOS (hors de portée du pack).
-- Plan "Ultimate performance", tweaks prefetch/superfetch, "débrider les 20 % de bande passante", tweaks placebo
-  (LargeSystemCache, IRQ8Priority, files d'attente souris/clavier, TcpWindowSize, désactiver le fichier d'échange).
+- Réglages BIOS : hors de portée du pack, signale seulement.
+- Plan "Ultimate performance", prefetch/superfetch, "débrider les 20 % de bande passante", LargeSystemCache,
+  IRQ8Priority, files d'attente souris/clavier, TcpWindowSize, fichier d'échange coupé, HPET, TdrLevel, IPv6 off,
+  C-states off, Interrupt Moderation Disabled, outil de timer resolution en fond.
 - Désactiver un service dont tu n'es pas sûr : NvContainer, Windows Audio, Themes, Cryptographic Services,
-  Windows Time, Storage Service, Device Install, Windows Management Instrumentation restent.
+  Windows Time, Storage Service, Device Install, WMI restent.
+- Un réglage NVIDIA ou AMD en global qui se règle jeu par jeu (performances max, filtrage, V-Sync, Smooth Motion).
 
 TA MISSION, DANS CET ORDRE
-1. Vérification du pack : pour chaque point du CONTEXTE, dis s'il est FAIT, PAS FAIT ou INCERTAIN d'après le rapport,
-   avec la ligne du rapport qui le prouve. Liste ce qui manque, avec la case du script ou l'étape du tuto à refaire.
-
-2. Ce qui cloche : pilotes vieux (compare la date du pilote GPU et réseau à aujourd'hui), MSI absent sur le GPU ou la
+1. VÉRIFICATION : pour chaque point du CONTEXTE, FAIT / PAS FAIT / INCERTAIN d'après le rapport, avec la ligne du
+   rapport qui le prouve. Liste ce qui manque avec la case du script ou l'étape du pack à refaire.
+2. CE QUI CLOCHE : pilotes vieux (compare la date du pilote GPU et réseau à aujourd'hui), MSI absent sur le GPU ou la
    carte réseau, programmes en démarrage automatique inutiles, services tiers en automatique (launchers, updaters,
-   RGB), bloat Store encore présent, autre antivirus en doublon, erreurs système répétées (WHEA, disque, pilote),
-   disque presque plein, HAGS ou optimisations fenêtrées incohérentes avec le GPU, DNS lent ou du FAI.
-
-3. Optis propres à CETTE config, que le pack générique ne peut pas connaître :
-   - le modèle exact de CPU (E-cores / P-cores, X3D, portable), de GPU, de carte réseau (Realtek, Intel, Killer,
-     Marvell) et ce qu'il faut régler chez eux précisément ;
+   RGB), bloat Store encore présent, antivirus en doublon, erreurs système répétées (WHEA, disque, pilote), disque
+   presque plein, HAGS ou optimisations fenêtrées incohérentes avec le GPU, DNS lent ou du FAI.
+3. OPTIS PROPRES À CETTE CONFIG, que le pack générique ne peut pas connaître :
+   - le CPU exact (E-cores / P-cores, X3D, portable), le GPU, la carte réseau (Realtek, Intel, Killer, Marvell)
+     et ce qu'il faut régler chez eux précisément ;
    - les programmes installés (Discord, launchers, RGB, overlays) et lesquels coûtent en jeu ;
-   - l'écran (Hz, G-Sync) et la cohérence V-Sync / cap FPS / faible latence ;
-   - la RAM (barrettes, vitesse annoncée vs XMP probable, mais sans étape BIOS : signale seulement).
-
-4. Pour CHAQUE proposition, ce format, sinon elle ne vaut rien :
+   - l'écran (Hz, G-Sync / FreeSync) et la cohérence V-Sync / cap FPS / faible latence ;
+   - la RAM (barrettes, vitesse annoncée vs XMP probable) : signale seulement, pas d'étape BIOS.
+4. FORMAT DE CHAQUE PROPOSITION, sinon elle ne vaut rien :
    - Quoi : le réglage exact (clé de registre, commande, menu), prêt à appliquer.
    - Pourquoi : le mécanisme en deux phrases, pas "ça optimise".
    - Ce que tu perds : la contrepartie, même petite. "Rien" est rarement vrai.
    - Source : doc constructeur, doc Microsoft, dépôt maintenu, avec le nom et l'année. Pas de vidéo, pas de "on dit".
    - Gain attendu : mesurable ou pas, et comment le mesurer (RivaTuner temps d'image, ping, LatencyMon).
    - Réversible : comment revenir en arrière.
-   Classe-les : FAIRE (gain net, sans risque) / TESTER (une à la fois, mesurer) / NON (placebo ou nuisible, dis pourquoi).
-
-5. Termine par les 5 actions les plus utiles pour ce PC précis, dans l'ordre, une ligne chacune.
+   Classe : FAIRE (gain net, sans risque) / TESTER (une à la fois, mesurer) / NON (placebo ou nuisible, dis pourquoi).
+5. FIN : les 5 actions les plus utiles pour ce PC précis, dans l'ordre, une ligne chacune.
 
 RÈGLES
-- Tu ne modifies rien toi-même, même si tu as accès au terminal. Tu proposes, l'utilisateur applique.
-  Si tu es un agent avec accès au PC, tu peux lire (registre, Get-*, powercfg /query) pour préciser un point,
-  jamais écrire.
-- Si le rapport ne permet pas de conclure, dis INCERTAIN et dis quelle commande lancer pour trancher.
+- Tu ne modifies rien toi-même, même avec accès au terminal. Tu proposes, l'utilisateur applique. Un agent avec accès
+  au PC peut lire (registre, Get-*, powercfg /query) pour préciser un point, jamais écrire.
+- Si le rapport ne permet pas de conclure, dis INCERTAIN et donne la commande qui tranche.
 - Pas d'estimation de FPS inventée. "Quelques ms de latence" seulement si tu peux dire d'où elles viennent.
 - Court. Une opti qui demande un paragraphe pour se justifier n'est probablement pas une opti.
 '@
 $Textes['fr']['dns'] = @'
-Le DNS transforme un nom (youtube.com) en adresse. Un DNS lent ajoute quelques dizaines de ms à chaque nouveau site ou serveur de jeu contacté.
+Le DNS transforme un nom (youtube.com) en adresse. i@ Un DNS lent ajoute quelques dizaines de ms à chaque nouveau site ou serveur de jeu contacté. Zéro effet sur le ping une fois en partie.
 
 ## Tester depuis chez toi
 @BtnDnsTester
-Six noms courants, trois fois par serveur, médiane gardée. Une trentaine de secondes, la fenêtre ne répond pas pendant ce temps.
+Neuf résolveurs, six noms courants chacun, trois fois, médiane gardée. Les lignes se remplissent au fur et à mesure, le plus rapide est encadré. i@ Un serveur injoignable au premier tour n'a pas droit aux deux autres. Cloudflare, Google et Quad9 ont des serveurs partout ; les autres surtout en Europe et en Amérique du Nord.
 @DnsListe
 @BtnDnsAppliquer
 
 ## Lequel garder
-Un écart sous 5 ms ne se sent pas : si ta box est à moins de 5 ms de la meilleure, garde-la.
-Quad9 bloque les domaines malveillants et ne journalise pas ton IP. Cloudflare est souvent le plus rapide. Google garde des journaux.
+Un écart sous 5 ms ne se sent pas : si ta box est à moins de 5 ms de la meilleure, garde-la. i@ Ta box relaie vers le DNS de ton FAI avec un cache : rapide pour les sites que tu visites déjà.
+Le plus rapide n'est pas forcément le bon. i@ AdGuard bloque les pubs, Quad9 et dns0 les sites malveillants, Google garde des journaux, Mullvad n'en garde pas. Un DNS qui bloque des domaines peut casser un site ou un launcher : si un truc ne charge plus, reviens sur Cloudflare ou ta box.
 "Tout remettre comme avant" remet aussi le DNS d'avant.
 '@
 $Textes['fr']['dur'] = @'
-Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. Une opti que tu ne peux pas mesurer n'existe pas.
+Une chose à la fois. Tu changes, tu joues une demi-heure avec RivaTuner ouvert, tu gardes ou tu remets. i@ Une opti que tu ne peux pas mesurer n'existe pas.
 
-## 1. Souris
-@BtnSouris
-Accélération coupée par le script. Ensuite : 1000 Hz dans le logiciel de la souris, DPI natif (400 / 800 / 1600), sensibilité dans le jeu, jamais dans Windows (6/11).
-La case RawMouseThrottleDuration du script : seulement à 4000 Hz et plus.
+## 1. Priorité et cœurs par jeu
+@BtnThreadPilot | BtnLasso
+ThreadPilot : open source, gratuit, Windows 11 seulement. Par programme, une priorité, des cœurs, un plan d'alimentation. i@ Ses règles tiennent tant qu'il tourne : mets-le au démarrage. Utile sur un Ryzen à deux CCD ou un Intel avec des E-cores, pour garder un jeu sur les bons cœurs.
+Process Lasso : gratuit avec un rappel d'achat, version Pro payante. Les mêmes règles par programme, plus ProBalance. i@ ProBalance baisse tout seul la priorité de ce qui pompe le CPU en fond. Certaines fonctions avancées se coupent après 14 jours sans la Pro.
+Si tu n'as pas de saccades, tu n'as besoin d'aucun des deux.
 
-## 2. Trois cases Avancé du script, une à la fois
-- Win32PrioritySeparation 0x26 : aide un jeu CPU-bound avec Discord et un navigateur derrière. Peut faire crépiter l'audio.
-- Nagle (TcpAckFrequency) : quelques ms sur un jeu en TCP (MMO). Zéro effet sur un FPS en UDP.
-- Boost CPU Aggressive : PC fixe Intel seulement. Sur AMD la clé ne fait rien, sur portable ça chauffe pour rien.
-
-## 3. Priorité et cœurs par jeu, facultatif
-@BtnThreadPilot
-ThreadPilot fait ce qu'on demandait à Process Lasso, en open source et sans nag : par programme, une priorité, des cœurs (utile sur un Ryzen à deux CCD ou un Intel avec des E-cores), un plan d'alimentation. Windows 11 seulement, et ses règles ne tiennent que quand il tourne : mets-le au démarrage.
-! Il ne remplace pas ProBalance (Lasso baissait tout seul la priorité de ce qui pompe). Si tu n'as pas de saccades, tu n'en as pas besoin.
-
-## 4. Mémoire : 16 Go et des jeux récents
+## 2. Opti mémoire : 16 Go et des jeux récents
 @BtnIslc
-ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go, ça évite les saccades de swap. 32 Go et plus : inutile. La compression mémoire de Windows reste activée.
+ISLC vide la liste d'attente quand la RAM libre passe sous 1 Go. i@ Ça évite les saccades de swap sur un jeu récent avec 16 Go. 32 Go et plus : inutile. La compression mémoire de Windows reste activée.
 
-## 5. Stockage
-Les jeux DirectStorage sur le NVMe. Jamais de compression NTFS sur un dossier de jeu. Le cache de shaders ne se "nettoie" pas : le vider fait tout recompiler.
-
-## 6. Le cœur de l'interruption GPU, facultatif
+## 3. Le cœur de l'interruption GPU
 @BtnAutoGpu
-AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. Une heure, sur un PC déjà stable.
-
-## 7. Grosses mises à jour Windows
-@BtnUpdateOptions
-Suspendre jusqu'à 5 semaines quand une grosse version sort (25H2, 26H1), le temps que pilotes et anti-cheats suivent. Pas plus, les correctifs de sécurité en dépendent.
-
-## Ce que le pack refuse, et pourquoi
-- HVCI off : les anti-cheats le demandent, gain de 1 à 3 %.
-- Nettoyeur de registre : rien à gagner, tout à casser.
-- Plan "Ultimate performance" : identique à Hautes performances depuis 1903.
-- Windows Update, Defender, pare-feu coupés : non.
-- Un outil qui force le timer à 0,5 ms en permanence : à laisser tourner en fond pour rien, les jeux le demandent eux-mêmes (case GlobalTimerResolutionRequests).
-- Prefetch, "débrider les 20 % de bande passante", HPET, TdrLevel, IPv6 off, C-states off, Interrupt Moderation Disabled : rien de mesurable ou nuisible.
+AutoGpuAffinity teste sur quel cœur poser l'interruption GPU et garde le meilleur. i@ Une heure, sur un PC déjà stable. À refaire après un changement de carte ou de pilote.
 '@
 $Textes['fr']['facile'] = @'
 Deux outils, chacun dans sa console. Ils téléchargent la version du jour, rien à mettre à jour ici.
@@ -501,9 +420,9 @@ Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".
 '@
 $Textes['fr']['installation'] = @'
 ## Juste après le premier bureau
-Avant d'installer quoi que ce soit, ça ne se rattrape pas après.
+Avant d'installer quoi que ce soit.
 @BtnFsutil
-Coupe les noms courts PROGRA~1 sur les disques neufs : moins d'écritures par fichier créé.
+Coupe les noms courts PROGRA~1 sur les disques neufs. i@ Chaque fichier créé coûtait une écriture de plus pour un nom 8.3 dont plus rien ne se sert. Ça ne se rattrape pas une fois les programmes installés.
 
 ## Windows Update
 Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
@@ -511,82 +430,63 @@ Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
 
 ## Pilotes, dans l'ordre
 - Chipset et carte réseau : site du fabricant de ta carte mère (ou du portable), ton modèle exact.
-- Carte graphique : pas maintenant, c'est l'étape 4 (la page s'adapte à ta carte, NVIDIA ou AMD).
-- Windows Update encore une fois : depuis 24H2 il finit le reste (audio, USB, Bluetooth).
+- Carte graphique : pas maintenant, c'est l'étape 4.
 - Un point d'exclamation dans le Gestionnaire de périphériques = un pilote qui manque. Dernier recours : Snappy, ne coche que ce qui manque.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['fr']['maintenance'] = @'
-Des mois après l'installation, quand le PC a vécu.
+Des mois après l'installation, quand le PC a vécu. Un bouton, une phrase : tu sais ce que tu ouvres.
 
 ## Ce qui se lance tout seul
-@BtnAutoruns, BtnGeek
-Autoruns : Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas (launchers, updaters). Décoche, ne supprime pas.
-Ventilos et LED sans la suite du constructeur, si tu préfères :
-@BtnFan, BtnRgb
+@BtnAutoruns
+Autoruns liste tout ce qui démarre avec Windows. Options > Hide Microsoft entries, puis décoche ce que tu ne reconnais pas. i@ Launchers, updaters, suites RGB : chacun prend de la RAM et du CPU en fond. Décoche, ne supprime pas : recocher suffit si un truc manque.
 
-## Nettoyage disque, dans l'ordre
-@BtnCleanmgr, BtnDismAnalyse, BtnDismNettoyer
-Assistant de stockage : tous les mois, corbeille 30 jours, Téléchargements jamais.
+## Le disque se remplit
+@BtnCleanmgr
+Nettoyage de disque, puis "Nettoyer les fichiers système". i@ Anciennes mises à jour, corbeille, fichiers temporaires, rapports d'erreur.
+@BtnDismNettoyer
+Compacte les vieilles mises à jour dans WinSxS, plusieurs Go après un an. i@ Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.
 @BtnStockage
-@BtnBleach, BtnRapr, BtnTrim, BtnCrystal
-! BleachBit : jamais "Free disk space" ni "Memory". DISM : jamais /ResetBase.
-
-## Pilotes
-Windows Update ne les touche plus (case jeu-pilotes). La carte graphique comme à l'étape 4, le reste depuis le site du constructeur, seulement si un truc marche mal.
-@BtnDdu
-DDU quand tu changes de marque de carte graphique, ou pour repartir propre après un pilote qui déconne.
+L'Assistant de stockage fait le ménage tout seul. i@ Tous les mois, corbeille 30 jours, Téléchargements jamais.
+@BtnCrystal
+Santé et température des disques. i@ Un disque "Prudence" ou "Mauvais" se remplace, il ne se répare pas.
 
 ## Le PC se réveille tout seul, ne dort pas, plante
 @BtnReveil
-lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir (souvent un navigateur avec une vidéo).
-Écrans bleus : journal Système, source "WHEA-Logger". Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
+lastwake dit qui l'a réveillé, requests ce qui l'empêche de dormir. i@ Souvent un navigateur avec une vidéo, ou une carte réseau autorisée à réveiller le PC.
 @BtnEvenements
-Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
+Écrans bleus : journal Système, source "WHEA-Logger". i@ Une erreur WHEA = matériel (RAM, overclock, alim), pas Windows.
 @BtnWlan
+Wi-Fi qui décroche : le rapport Wi-Fi de Windows dit quand et pourquoi.
 
-## Defender qui pompe
-@BtnDefenderEnregistrer, BtnDefenderRapport, BtnDefenderExclusions
-Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. Jamais tout le disque.
-
-## Mesurer avant / après
-@BtnCapframe
-- Même jeu, même scène, même résolution.
-- Une passe de chauffe, puis 3 passes de 60 s avant, 3 après.
-- Médiane, 1 % low, p99 du temps d'image. Jamais la moyenne.
-- Un écart sous 3 % = pas d'effet. Remets comme avant.
+## Defender qui pompe en jeu
+@BtnDefenderEnregistrer, BtnDefenderExclusions
+Tu lances l'enregistrement, tu joues dix minutes, Entrée dans la console. Le rapport donne les dossiers les plus scannés : celui du jeu va dans Exclusions. i@ Jamais tout le disque, jamais Téléchargements : c'est par là que les saletés arrivent.
 '@
 $Textes['fr']['nvidia'] = @'
-Depuis le pilote 610.47 (mai 2026) le Panneau de configuration classique n'est plus dans le pilote. Il vient du Store et disparaît à chaque installation propre : tu le réinstalles après.
+Le pilote nu par NVCleanstall, puis le Panneau de configuration OG depuis le Store. i@ Depuis le pilote 610.47 (mai 2026) le Panneau OG n'est plus dans le pilote. Il vient du Store et disparaît à chaque installation propre : tu le réinstalles après.
 
 ## 1. NVCleanstall : le pilote nu
 @BtnNvclean, BtnImgNvclean
 - "Manual", dernier pilote Game Ready pour ta carte.
-- Composants : Display Driver, PhysX si un jeu l'utilise. Rien d'autre. NVIDIA HD Audio seulement si ton son sort par le câble de l'écran.
-- Installation Tweaks : coche comme sur la capture, SAUF la ligne MPO.
-! Rebuild digital signature + méthode compatible Easy Anti-Cheat : le fichier du pilote reste intact, seul l'installeur est re-signé. Validé sur les anti-cheats courants. Un jeu refuse de se lancer : réinstalle sans ces deux cases.
-! HDCP coupé : tu perds Netflix et Disney+ en 4K dans le navigateur (la 1080p passe). Tu gagnes zéro micro-coupure à l'alt-tab.
-MPO (Multiplane Overlay) : ne le coupe que si tu as des écrans noirs ou des scintillements en multi-écran.
+- Composants : Display Driver, PhysX. Rien d'autre. i@ NVIDIA HD Audio seulement si ton son sort par le câble de l'écran. Pas de NVIDIA App, pas de télémétrie, pas de GeForce Experience.
+- Installation Tweaks : coche comme sur la capture, ligne MPO comprise. i@ Le MPO (Multiplane Overlay) est derrière les écrans noirs, scintillements et saccades en fenêtré que NVIDIA documente depuis 2022. Coupé, Windows compose tout lui-même : zéro effet en plein écran. Le script à cocher pose la même clé, la case est cochée d'office.
+- HDCP : activé = Netflix et Disney+ en 4K dans le navigateur, désactivé = léger boost de fps. i@ La capture le coupe. Un jeu ne s'en sert jamais, la 1080p passe toujours. Tu veux le 4K : décoche "Disable HDCP".
+! Rebuild digital signature + méthode compatible Easy Anti-Cheat : le fichier du pilote reste intact, seul l'installeur est re-signé. Un jeu refuse de se lancer : réinstalle sans ces deux cases.
 L'écran clignote et des messages rouges passent pendant l'installation, c'est normal.
 
-## 2. Le Panneau de configuration NVIDIA, l'ancien
-@BtnPanneau, BtnImgPanneau
+## 2. Le Panneau de configuration OG
+@BtnPanneau
 Gérer les paramètres 3D > Paramètres globaux :
-- Mode de faible latence : Activé, pas Ultra. Reflex prend le dessus quand un jeu l'a.
-- Gestion de l'alimentation : performances maximales.
-- Taille du cache de shaders : Illimitée. Le défaut sature et recompile en pleine partie.
-- Filtrage de texture : Hautes performances. Optimisation threadée : Activé.
-- Écran G-Sync : G-Sync activé, V-Sync Activé ici, V-Sync OFF dans chaque jeu, cap de FPS 3 sous le taux de l'écran (RivaTuner ou Reflex). Sans G-Sync : V-Sync Désactivé, cap RivaTuner seul.
-- Smooth Motion : jamais en global. Par jeu, solo seulement.
-Modifier la résolution : plage dynamique "Complète", RGB 4:4:4. Sinon les noirs sont gris.
-Paramètres Windows > Affichage > Graphiques : optimisations pour les jeux fenêtrés activées, HAGS gardé, Auto HDR off en compétitif.
-@BtnGraphiques
-! Ne désactive jamais le service NVIDIA Display Container (NvContainer), le Panneau en a besoin.
+- Mode de faible latence : Activé. i@ Pas Ultra : Ultra pose un cap de FPS caché. Reflex prend le dessus quand un jeu l'a.
+- Taille du cache de shaders : Illimitée. i@ Le défaut sature et recompile en pleine partie : saccades après quelques heures de jeu.
+- Optimisation threadée : Activé.
+Modifier la résolution : Format de couleur de sortie RGB, Plage dynamique de sortie Complète. i@ Sinon les noirs peuvent être gris : la carte envoie une plage limitée (16-235) à un écran qui attend du 0-255. Sur beaucoup d'écrans c'est déjà bon.
+Le reste, laisse par défaut. i@ Gestion de l'alimentation, filtrage des textures, V-Sync : ça se règle jeu par jeu si un jeu le demande, jamais en global. En global ça coûte des watts ou de la netteté pour rien.
 
 ## 3. Afterburner et RivaTuner : pour voir, pas pour overclocker
 @BtnAfterburner
-L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose. Un seul overlay à la fois : RivaTuner ou Steam ou Discord.
-Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.
+L'overlay RivaTuner (FPS, temps d'image) est ton seul moyen de savoir qu'une opti change quelque chose. i@ Un seul overlay à la fois : RivaTuner ou Steam ou Discord. Si la NVIDIA App s'est installée quand même : overlay OFF, Instant Replay OFF, "optimiser automatiquement" OFF.
 '@
 $Textes['fr']['reseau'] = @'
 Le groupe Carte réseau du script fait tout ça tout seul. Ce tuto sert à vérifier, ou à le faire à la main.
@@ -600,23 +500,23 @@ Panneau de configuration > Centre réseau > Modifier les paramètres de la carte
 3. Protocoles à décocher : pilote LLDP Microsoft, répondeur de découverte de topologie, pilote E/S de mappage de topologie. On garde TCP/IPv4 et IPv6.
 '@
 $Logos = @{}
-$Logos['bleachbit'] = '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'
+$Logos['adguard'] = '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'
+$Logos['bitsum'] = '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'
 $Logos['christitus'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAABNhSURBVFhHbZh5VFvXnccfoOVpA4PZBQLtOxIIEEJIQkJsBm+AAa8YY/BKvMRLjO3YsZ3FW7w7tmOniZ3FiWs7W5O47TTuftqZ9LRNJ21n2rRpmjntmUo9M+2c+fMz5z2cpnNm/vied9/TOfd99P0t974raBr7f6WKrsjktW/KFIyeyMxdcTqjTG7JaMLLMrpAX0bt7czoXenMXEcqU+Roz+hdiYzKlcjo3OlMcWB+RvR1ZER3ImPwxjNF7lim3BvP1AR6MjWBvoze1JoxOCIZnSOa0TmTGYO3NyM60xmNuz2jcUUyOl8ko3HFMhpnLKN1tM3Klcho3cmMwtGe0fq6fy0YO1f9pWLBFspGDuHe9iLe7S9ROH8P2sgytME+1P5u9N4uCt2dFLrT6HwdKDwp1K4UBd5eChsXI7qSFHhiVPijtPYNsuvx4zz72l0mHt7DHFcYvSOKwd2BwTcP0dmJ1pNG64mR72vD4Emid7f/TdK91p1E7WyX3vtXQdPQl9FERtGmN1IyfIiKkSNo29cjhgbRB+eh9kuTpcl3p9F7OlH50uR421E4YojmKCX+XoyBburi/TTF2/GHfMSTjSwaiLP/8DYGJzeiNQcpcMcxeLsQnWk0zjQ6Z5x8d4J8CcSRQO+UNDvWORIYXEkMzmRWUAd7M2LzIKqW5Siia1C1TSCGl6NtWIS2rhu1vwONN43O04Xo7SbX20GOO4pob6bAVEdrWy+xaAf2qmr8NaUkg2a6GkzUG3NpthcwvGIp5voWdLUB5riTiI4UGmcHWls7+Y52DPYEOnsSja0djS2JaE1Q4Eox191BvrU1K6j93Rmxvh+xYRHq0BBiaAna+sXo6/rQ+btQ+doRPR1o3d2o3N2oA53MaUhQ7m3A6/Gxel6cR1cv4vz2cd4+PsOPrp/hl7eucu/oPk6uXcquTRMsGR5irsmBvrYBjS2Gzp5CZ0lisLWjsyXQ2lNoHJ2o7Wl07i4KvV3MsScoskaygtrbkRH93Wh83Wj9vWh9PWi93WjdnWjcKdTedjQPAEV3N4a6FDVNUZxOG+sXp7m5f5xvn93Bh889xscvneCzW8/w16/e5r+/8S6/u32Tn9+7xdsvXuLgo/uxBCKINQ3kO5MUOFKyRFsCg68XQ2Ah+aFBChoGEG3tGGxR5trCWUHpTmbUUtK62tG7EhjkZE2id6XQulNovEl0njR6Zw96Vxf5zhaq7XZWzYvy4p41vHNwkg/O7ebnzz3Gb18+yh9fv8i/f+VL/Of9u2S/cYf/+v6b/PnH9/ng/j1WTWxAY3STb4+it8Yx2BKzcwcXYO7bTM28aVSBRSgcSQpcbRjM9VlB7UpmNJ4UOlccg6uNfOkHZ1xOWJ0zhd6dQufunAW0JynzNDG0uI+T0yO8tnMp3z2xi4+uHeVXN07w2e1z/PHdK3x27yr/dv8Gf/ruq/zHP7xI9pu3+f0P3+fA3r1UOOsx2MNorK1yYYieNKJ/HuWpceZEV5Ln7UPpTKJ3RjHYQllB505mNM52NBKUux2dK4HOJV0lR9spcqTQOTtRuNPkWepJ9HZy8KGVXNq2lG8c284H5/fy4aWDfPzCCT69eZ7f37nCZ+88z++/doNPvnqdj+9e5tM7l/nz+3f54Zu3CMVT5FqD5LljiM42NI4Y+d4U+b4O9F6pgBLyM60zhtbRmhX07lRGCqXoiMs/in8nrSNOgVVK4jS5rnZEe5D+wXk8tW0lrx5cz/fPP8pPrx7hNy+f4pOb5/ndzYt8+uVn+fSN5/nsvZf5w/tf5pP3bvDJ3cv84e3r/OZb77Fqcj1CjR+FO47WFUdjj6JzxtDLQFG09gdyxhEd0awgOuIZg68Tg7cDtT0mg34ujSNOvlWaJIXCKZV/PYsHejmze4LXj0xzZ+8UN/dMcmtmih9eOsJvb13md7ev8cmd5/nkjev89u0X+dP33uDP92/yi5fP8tO3bvLE0eMY3GFUjigFriR6Rxy9Q6rsNhlMY2udlb0N0SZVsT2W0UghlQrDk5KLRbZZctCZkBNZK1Wbs41yTz0TKxbz7N5JnplayKWpxZzbMMLMojgXJof4ztkD/PjZ43z/7BFe3bGex4d7ubJznH+89ji/u3uZ71w/z/atWynxRlBbI/Kf18tgregcUVkaW2RW9lZEW4sEGM/IIX0QYglUDvUDB7V2yc0EGmuYaqeXdUv7ubx9OedWdXFqWRcnJ5ZwYnyAAwtj3Nmzjl++cIp7B7dxeF6CC+NLuPHoRl7evZpvHtvBd649zaLeboocDYjmFvTmGFpLC1rbrDSW8BdjawuipelzwPYvwvoAUnLyc0jREUNvCWF1uJke7uHGrlUcXdzCgZ4mdnZFObpsAZcmB3lr7ySf3brAz648waklXUxHfEy2eTm0MMIbu8b44PnTDPR0Umitkx3SWePoJLcsTWgszeisYTTmJlmipRm1+f8BlCQt1p87qZYhY1JPwuf2sn1JF28cXMednSt4a2Ydd/Zs5d7hR/jB6Ud5d+84/3x5Px89e4gXN45yaEGca1vGeHl6hHd3r+a7F46wfuUIc2x+FJYwGnsCraWZfLukMFpLCK35gayNaCyN/z+g5JhGWrSltVOuphiG2gYa6oLsXdrDm/vG+acze/jw6nF+duUMv7h6ih+ceIR7M+N89Mx+fnJhPz+9cIhvHZvhW2cO868vnOS3zz3F984fYtvalRRafeTUNqOyx9FZW9Bbm9Bbm9FbmtCaG9FZmjDYwtKzrKB2tGXUrjhqZ5tcCJK0jllJ1ZXvjKGyJVDVhknFk1zdNsrX943yk0uH+Ojm83zy4jP86NR+bm8f481H1vLZqxf51XPH+faBLfzgiT38yyvX+OObL/DxjWPcP7OXfetWU2xyklvbSJ7sYASdOfxALfJVb4lgsLaiNTdnBY07nhE9CRlQ7Wj934D2KPlS0/R0klfbQkeqiy/tGuMru5bw3RO7uX/2OG/s3sCXJgZ4YkGcQ/OjXJ0c4tRgmlemRnl22QJe37eNX798ng/OzfCtCwc4unsLJdV2VNYmFFIrkaG+kAQmXfWWVmksASYyWm87oiuG2hFFJZf3rLS2VlRSRfm70LoT2L1Bzu6Y4NaOZby4aSkH53cy09PKubFFHB3p4aF4HRtb3GyPBXht2wTX169ka5uf27tW87UjG3n/0mH2TW+goNyCztaEytKMxhxGW/uFa9JVuteZI9I4K4iueEbjaUfjjstS/x2gxhpBZY+gcCVQOdsoMrmYXjbEKzMbObdiPtNhHzu7Wzk41MNTKxZwcmyAGzvW8eqezVzdsIpzq4fY0e7n8PwmubBuHd9HZzxOvtGJpiaIxtKApqYRba3kmAyEpqb5b4BiTdMXDsqArpi8/EjhlZcgqbM7WlE6o3Ln11b76Ono5uzOaa5sWMHRgRRrIz66a8o4MbaEd57cz9dPHuaFbetYWWejv2oOW+IuLk7289K+DRzZso7qWic6Ux2a2np0NQG0NU1/g5sFexBu6d4cnnVQdEtr7xdFIrkndXppxyE3TFsEteRqbQiTM8TuDes5OTXKxTX9XN68klNrhjg/McLbB3fxndOP8/Wn9nNsdD6XppZxZk0f17Yv48KudQz09KCrdKMyh+W58msDGKRGXRuWnZMg/w+gSq7iGCpHq5x/siwtKKVJpGStnc0RtaVFfq6u9NPRnuapTcu5vm2UO/uneWXnel6aXsPllQNcGx/h5vQa7u7axDeenOHLj05x4aFRdq4axGRyoKppRrDE5fkNlnoZUFMjAc7m4edjTW14NsQqe1tG5YyhtLeitEk514pSyj0JRvp31SH0NWHUNRFyzFEU5jAlJgcPjfZxZfMgr81McXtmM6/v3MDrW6a4Oz3JWzs28pWZLbx/bB+3H9vEk5ODtHpsFFbYUFnbEMxxFFJYrVLfk5yTikNysglNzQN9DqiwJjIKexKFLYbCFiXP2kKeLYxCVhNKSxDRHEZt7kCwdiFITd3iZ3heL0+ODXHmoSXcOryZe0d286PTx/jw/Gm+d/JJ3jt2gNeffISn1y9noK2FslITBpMXsTaI3hFG64iglNyTW0oYrbke0eRFa66Tx9JzdW1LVtC40hmtpxut9N3hSf6tmjWeGKKnDbU/guiR9mdJRHcShSNEocvJ6iUL2TvazyOjSU5vHeWlg1v52uknuX/hFO+cfpKr+7exY7iXpeE6Rrrm4QimUFQ3oqoNycumrtqP3tww61xNA6LJj7bWi87sQ2euQyctd5KDamd7RnR3yB/foishu6iwRWTl2SMInggKZxiVyYuqohqjx0a6J8LM+mEOruxjui/MVE8jq7qaGU2HGemK0N8aoCNgpd1RybJGD2cPPcH+ky9RFVuNwtGFUB6koLqOIsnNmkZEUz0akx99rR9djRd9jZd8Ux2GqrqsoLK1ZZSOOCqHVCizYVbYWlFYJcAogtS8bSFKrA4GB3p4YmaSp3et4uz2pZycXMSh4W7WxIO0OSuonJOHJldgjlLAUaRloMHN44Mprh05zMyxG3iHDuAZfZyK+ARFvnloqiPkltWjrArJVa021aGTQKvdFFZ7KTS6soLSHpWL5HNASWrnLLDSHsPgTKExBUikO7lz7QwvH5nmhYeX8sK2pTwzNcC5lQPsXdDJaFs9AdNcyrVKHHMNLGwIcGhkEdfW9nNp5mH6l27DvGAv7vEL+MbOEBp7mrqhAzg7p8j3dqGoiSCYGsmrDsr9Mb/KQ2GFIyuonK0Z0R2XlzqVo41cixTemPxNXBTso6puHspiB/nFpRzcvp43ju3h7sw6XtkxxpVNw1yeHOXYssVsn59mVTJCb8DD/DovO/v7Ob92jBu7JphaspiaUD/WwQNYVpzGOHgU29IzBNdcIr7uNK1rHicwspeqzkk0vh5yjQ3oqwLMqfRIjVpqM61y1crfCYEuqtqWYIovozI8iMHUgpBvQtDosdiqeWb/w9w7+Riv7NvIlV1jnN+8lGPjA+xYkGYs2sRQ0M/mrhQn16zk8tZNTAwOUlpbR3HLCOYlB6gdPox56DHMg0cwLTyEsW8v5sFD+Mefpmn9GRrHH6e0eQhlZQh9ZTAr5NnCGYUzSmm4D1t6Oc7uMUyxEflESzA2IxS6EYqtCMUVCGo1DlMVT02v4/bZI1w/sZuLeya4sHOcc1vXMDM8n0dHB3np4D5uPnGQyf5etEVWDHX9lHc/hGXkEI6RA1gX7aKmdxumebsx9h+gfMFjGIeOYF9xnPqJp4mvfYrK5iFyS4JZQelNZyoTK3DN24C1Y4LS0IC8080zNSBUeBGKPQhzHQiFtQgFRoQcHXPyixlePMjFEye4feE4b104yrdvXOT+9Yt89foVnjl+lI5kGjG/EsEYpji6ksrOjdQu2E3Ngkeo7ttBWXozVT1bqO7ZjqlvF6aFe6nsn6Fm4QyBkccIDjyC6OzNChWJ5Rlz11qKm0coqFuEXjokqm0ltypATrkbocyLUDILmVtoQVVYQ562FEFRQHm5lY5IOysWLmbd6ChrhofoTqWZU2JCEEvJLa9D7ezEUD9IZWqKsvQmSju3UNm7nfKuLRi7H6KqYzPlyU0Ut2+kKL6RgtYpjB0bqe3YgDk5kRXKWocyBcH58pmdaO+Qj8HyTE0IpW6EEic5FX5yy/3klftRlnlRlrpQFztQF9nI0VYjqKsRcksQlCUIeUUIYjlCkROhvIEcs9S2UsxpGKIsNk55agNz2zdS1budqp6tGNObKY1PUhyfwhAeIz88hiY4QkV0NcWhJRgjI1mhMNCbUdsS5FQ3k2dqQWFqJs9Yj1DsJrfMh8IYQGkMPlA9yoogqsp6lGUBlGUN5FaGESpC5JTWoaqoJ7ekjtyKEHmmNnJq4qhtHZQ0DVMRG6csMUlh2xSmnu1Ud2+hon0dZfFJ+ZrfuBSNbxEaZy8GzzxES5J8V0dWEC3RjLq2hdzKILmVUlj9KCoDCKVeciWYqgYU1fXkGuvJrWxAYWxEWR0mr7IZoSxETkUjORUhcsuDKCvqUZUHUVc1oTQ2oa5uocDTRXH9YkpbllMcWc3c6FqMHZtlqLmR1ZS0raG4ZRUFwUEM7l4UVREUlU2ojY0YpB21qqIhI+1ehRKXnHOS8ip85JT5ZUBFVYi8qgZZMqD08qom8iqbUFSEUFeHUFc1oK4MoiqvQ1XqR10WQCwPojeFMdils+x5FDUsobBxGcWt45THJylvm6CibUK+z68fpsDXR5G7k7wSPzn5NsQyP1pjMCso5vr+oqluRJhrI6fMTk65g9xyD4rKevIqQ+RUNZJb3UheVaO82KtNTSjK61GUBdFUNaKtDiJWBVBWBskrC5JbGkA0NqOtCqMzRTDYkhT6+igODVPUtJySyBqMifVUxNZSGVtLaXQCQ2CIOb5e5rqSqOY6EcRK1EV21MXOvwqCwfZxTqE9Kxiqs0JRTTan1JoVSpxZZUUwm1cRygqVoWyOMZRVGBuzSmNDNrfUm1WV1WXF8rqsstSTzSt1ZnNK3dmcUl9WKAlkc8ubsnkVLdm8inBWXdWa1Znj2Tnu7uzcwEC2sGE0W9a6JlsaGc8WN63IlkfGssXhVVmdb1FWyjd9TWNWNceaFVRl2VxNZTbXUPvx/wDVBsq3XGXBOAAAAABJRU5ErkJggg=='
 $Logos['cloudflare'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAVZSURBVFhH7ZhdaBxVFMdvmo+dmaVgBeuTL4L4JIgviog23TRpkt2Z2XxZP6gPggHRKlbE2o9YiqkUKlQFtdRqLcbSF6UlNS1qVNI29FP7ZS2WFvWhEdKiTXZ3duaev5w7M+lkd5OWdDEL9sKfmb333Ht/99xzz7BXCCEEdQidLL3bs/WjZOuXZ0uuqf1BbcYH2ZZYPXNNlLypbUGXAXQYQNssqysOmdbHXEtPKbisGWuQbfq4arQrRF0GPFM7Tk/fGRfS0tcxdZHRbCptgGwjB1t7RJClvYPOCgRMGy61xxKCLH1jRQLaRp7aYvW3AGek/y9gazWwSAANAmgUgKmpyYrsrqeyAlo60CRACwWoaz7otQRoZQvw4oOglhqA6xm8sN90KgtgOg4kayAbBWj5Y6CBT4GLp0D5DIhc4Opl4PSPoL71oM75QEIUjzGVygKYrAXMuZCfrQX9M4qJQg5AOQDutaqzh0Gv1oOahO/xwrEKddOAZkzFGn25KUCQgDteWl7GN7kyAlq+AMQxWjheoWYEuFj4B4C90CBA69oBmQfgFUOVEi/j3FEVp2itKR5/xoBmHWRCQHbfD/lWJ2jZQ0D7HcD5475nCkGmUuBJ+vAVdXCmPd03DJiqg0zF4fX1gi6PgHiGsVHg3DDgXAW8bDHIdGLAXw9BpuYCC4IdSdUVz3vDgIsEvPdf9j2l9igS/OyRQoDriWN15ALojVZQTwfk603w2m8Hcd7kuObMcMOAnGRba0E/D/pAhZPNRFz2bQXt3OC/O2OgU0PAmybQXANKBrE5LSCvIlUH4rzVNAf480x5AD32PkFuXgE6stcfE3zI/MIZQZq6v+VTAnJDSxXQUgPqsUH9W4C/RwDpRCbL+LGnFLzLqHJ+HgylwsJTEN5gH5wldwMXT/tU3MZjkA8qt63xt7utFGA6rhKpu/QeyKGvADdYHQ/ijl0DVKvmCf1JVUyq5MzK+8B8gHghajE5YOwK5O6PkGm7jbKPCpJfrAccPmB8sr0gsUvQlUuQ3fcBrVUlAJO1kNY8eAd2BxPnC7aIV+pAHtwFb+tqeNvXwduxAd62tXA/Xh1oDdzNK+Bteh7ofRxYvwT09hPIP/sAMvWCMs2CMosEZVvikKtaId99QfWnkz9MHD75ySr/227pBYCc63qfinitVBxlQJd+A50dBp0ZAp0eAv1yAHRmP+jEd6ATg6CT36snjvYDx/YAP+1Vi8mm51FmoSBn6b3wdm4Eju+d6IO/Lvie51g81A80zwFZWgSwQwcaq0Dffh7sWgm4SVvMGZElIyqsm1zyKy04HXcBF09EalVm9cODw4h7sjebqosB3cZqyPPHIp3LW/K9z0AO7iisLirekX2ghqoooKEAZXM1aFsPvOEBePt3lU8H+yG/6YN86WHIr7fCO7in2CbU8ADovWWgxbzFHIPxazFIFnuxChwn5dT4QkG5hCAvWUtuUzWcRBWyJexCOY2CYOsgi09xBFBa6t88nFQdZZLllZuKwU1p8FhmDNkSNqHy/AWzJgHyFjOcrpRPaZSJaDyiaH2obEqjnKnDSWnk8NPUEbapupRG4djh+PnQPuiTC965nm1KepC3mBtdHiSQ6mhOFk/ANoHU5GzLHuK6cAwlrovUT9emPBwCTvWpI0s1qKf03Rz89t9DG25jgdsDTdiHYttQpexsQ317Weo9GFPNMxVgxegW4M1qMmCFXr/Zhqeu3zxb66nQC0xXXWA6Se1JdTc93b+s/1qdKnPsQ1IYAp2iLm/GtnNlpVyiU1q/SlYsMXHLT4tFDLbxnGcbh8nSR2dFaX2UbON3atcHonD/AsNCW8rpOz1wAAAAAElFTkSuQmCC'
+$Logos['controld'] = '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'
 $Logos['crystaldiskinfo'] = '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'
-$Logos['cxworld'] = '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'
+$Logos['dns0'] = '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'
 $Logos['drapeau-en'] = 'iVBORw0KGgoAAAANSUhEUgAAAEgAAAAwCAYAAACynDzrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANOSURBVGhD7Zq/axRBFMfH/0A7rcRC7LTSxiqChdpY2AgWahexUEGtBDtTBCIeGFBEIrFRkCsC4o/CQoi/tfBAFIN4xuCpnBfNXbwzjryDGWd3Z3Z23r6ZbebBN+TH7Mzc530SkkfY0d2n+KPVm4d5vfMA776d42q1O11+6OQUX7VhlCQj+yf42fMzw1w4VuPTe49bA+vEM/B8ek9sdh2s8YVWJ/F6+1++8jf7RiUT9nTjiPwA8mTtVj4/cSXxENTtBw2+btvpzCGugRcpqnnuYuJsU2CdKHg+vadr1mw5wa/enJV7impdr/Nn67cnzmbPN+3IXAjiy6aqARWxRg3782ORvz9yJvMFiA+bqgLkYo0ISMLEwvb9hzyETVUAcrVGFUMCggphU0hAWGtUGZhuA582hQJUxhq1mGkzXzb5BkRhDZRo+hBQ3sbUNvkEpGs0xhq10RJQ3iGUNvkAZGou1hp17wygvAMpbKIGpGtoWWusgPIOL2sTFSBTEymsKQwo7yJYmygA6RpHaY0TIBHdpTA2vfvQku9jAL1sNOX7oqitUVMYEITKJlEYQGr5skaNEyARKpvKAPJpjRqmzmdcMjZ5R6t7b+4j/1yb4p/GJjNpXbvFV7o9uRYD6G+/z7/dmMnsDZkfv8QXZ1/ItaLg23r88r3MaygSBm+qKgyg0BUBWYrBOBMuUEUaew5nYOgC69LPhgqDmW/6QjH/EwFZEgFZEgFZEgFZEgFZEgFZEgFZEgFZEn+TtiT+LWapCMhS6HkQZLr+mP9cWk5suPJrKXde87u5INdiAA3andx50+B7W66F6i0PeP3uq8zdiwY1UTSNXl2nfBhAUJjppeuoVcQZkG7cipkNQ2EBiXKdhWPGroUBUVkDyovCAEp/S/u2qRAgKmvgYjAbFoUBBLNwXaN82ZQLiMoa9TLwg08UBhA8D/vomubDJiMg3QWw1qgXoAIEMTWQ0qYMINOhZaxRQwlIRNdMKpsSgHQHUVjjGxDE1NiyNg0BmTansiYEIBFdk8vYxHQbUlsTEhDE1HCMTYn/coXyYY2aEIBEdM13tUkC8mmNmpCAIGVtGgLybY2a0IBEsDaxENaoqQoQBGMTAxDpT1Jbo6ZKQCIuNv0D76xzXBJnmLUAAAAASUVORK5CYII='
 $Logos['drapeau-fr'] = 'iVBORw0KGgoAAAANSUhEUgAAAEgAAAAwCAYAAACynDzrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACLSURBVGhD7dAxEYBAEATBN4UAROAQf0iA/JNJuKy3qgXsrHXd76TpPecxau2H/ja9/dDfBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFD4AO3KjiyUFE3SAAAAAElFTkSuQmCC'
-$Logos['geek'] = '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'
 $Logos['google'] = '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'
-$Logos['lostindark'] = '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'
 $Logos['microsoft'] = 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAK3SURBVFhH7ZZNTxNRGIVPVEgIJmykbEygA7QNW4QOhp3y4UJpQXYujCv/BJQWFv4FE6PSDvVrpRuZmZYCCXHDwoX/wZhAh+nQ0jp4X3OnE1q0i96uhmQmeTKrk/v03ElzgKvw/Foeu2k+GoqaDwdl5y1IOT4on8SCk0y+3TN+iK4VHRMJDXJyB1FReI7z4hB9F4Lm0lDUjEln5bhkm7GgMJVFyS7FpFM2EQnNWAisqjBSedirqjhJHfaaBjuhYrYhGB+USzGJfi+OUCU+LIy9NEKlBemcxkMRV/BsYw+UzIuzXgCldkAJHfMNQX5VvIn4MHFRUc4WeS5YZXfCYVfQcg7RxEnmQGs6aEXD3KUGfcE2uaKC/jfYPq0F/Qbbp7Wg5xv0vKB/xe3TWtDzDbprhq8Sfpgo549HyFyQ/jStmerG/v9LpR3Wd0Gpwj9rho9NMxYsl2NSjTchSiXu5Ep8D86X0L+q4TiVRy2hoSpKUkdtTUd1JYeZC0Emo4dNI8TuItwx0wjRGLqXCdefahh9nkf42dcOcHNP0ui9EMQhdeE7C+AbG3DeovDcAQugQDeIcI3to5/lMMBUBIT5XM/RD3Q3BN+eTEIpGshaFjKGODynGEd4zUYdORU/WQ4W2+4ADRZTYZGO+w3BLXMKWyeET1XC+1NxeE4pMryhiNtclfZAlO+AAoh2QEzFg4Zg1owiU7TxziIohjj1XBWvWJgdIMCbcA5TO0AHkQZizX8zyJgyFC8L+g0K0FLQ8w16XtC/YgFaCvoNCnA1Bf0rFqCl4KY55ayRDxVCtiQOzymGjZcUcQUrtOseJgr/YTkQa578zhVniufOdOKzSxSeU4xaU4OnfDLxJoTJ1UUvN/ix2IfM0SzSx/PYPJ4ThufSRzNIs16+hJmGe7wBfogw2/UcfcGthqCHn781AQSrxMzkmAAAAABJRU5ErkJggg=='
 $Logos['msi'] = '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'
+$Logos['mullvad'] = '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'
 $Logos['nvidia'] = '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'
-$Logos['openrgb'] = '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'
+$Logos['opendns'] = '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'
 $Logos['quad9'] = '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'
 $Logos['raphire'] = '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'
-$Logos['rem0o'] = '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'
 $Logos['snappy'] = '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'
 $Logos['techpowerup'] = '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'
 $Logos['threadpilot'] = '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'
@@ -715,10 +615,15 @@ if ($Amd) { $Dediee = 'AMD Radeon RX (simulée par -Amd)' }
 $Gpu = if ($Dediee) { $Dediee } else { $Cartes | Select-Object -First 1 }
 $EstNvidia = [bool]($Dediee -match 'NVIDIA|GeForce')
 $EstAmd = [bool]($Dediee -match 'Radeon')
+# Processeur : les groupes "Processeur Intel" et "Processeur AMD" du script n'apparaissent que sur la marque détectée.
+$Cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
+$CpuNom = if ($Cpu.Name) { ($Cpu.Name -replace '\s+', ' ').Trim() } else { 'CPU inconnu' }
+$EstIntelCpu = [bool]($Cpu.Manufacturer -match 'Intel')
+$EstAmdCpu = [bool]($Cpu.Manufacturer -match 'AMD')
 $EstPortable = (Get-CimInstance Win32_SystemEnclosure).ChassisTypes | Where-Object { $_ -in 8, 9, 10, 11, 12, 14, 18, 21, 30, 31, 32 }
 $DisqueSysteme = Get-PhysicalDisk | Where-Object { $_.DeviceId -eq ((Get-Partition -DriveLetter $env:SystemDrive[0]).DiskNumber) } | Select-Object -First 1
 $EstHdd = $DisqueSysteme -and $DisqueSysteme.MediaType -eq 'HDD'
-$Machine = "$RamGo Go RAM, $Gpu, disque système $(if ($EstHdd) { 'HDD' } else { 'SSD' })$(if ($EstPortable) { ', portable' })"
+$Machine = "$CpuNom, $RamGo Go RAM, $Gpu, disque système $(if ($EstHdd) { 'HDD' } else { 'SSD' })$(if ($EstPortable) { ', portable' })"
 # Âge de l'installation de Windows : au-delà d'un mois la fenêtre propose de se protéger avant de toucher (point de restauration, sauvegarde).
 $InstallDate = try { (Get-CimInstance Win32_OperatingSystem).InstallDate } catch { $null }
 $InstallJours = if ($InstallDate) { [int]((Get-Date) - $InstallDate).TotalDays } else { 0 }
@@ -1193,6 +1098,10 @@ Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (Gl
     'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. Un jeu qui demande un timer fin le garde même quand une autre fenêtre passe devant.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
 }
+Ajouter $G 'jeu-mpo' 'Couper le Multiplane Overlay (MPO, OverlayTestMode = 5)' `
+    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. NVCleanstall pose la même clé avec sa case "Disable MPO".' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
+    Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\Dwm' 'OverlayTestMode' 5
+}
 Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
     'Avec l accélération, la distance parcourue par le curseur dépend de la vitesse du geste : le même mouvement de main ne donne jamais le même mouvement à l écran. Ta mémoire musculaire ne peut rien apprendre. Tout joueur la coupe, c est la première chose à faire.' $true 'Le curseur demande un peu plus de mouvement de main sur le bureau. Monte le DPI de la souris si besoin.' {
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseSpeed' '0' 'String'
@@ -1405,10 +1314,6 @@ Ajouter $G 'adv-nagle' 'Couper l algorithme de Nagle (TcpAckFrequency, TCPNoDela
         if (Test-Path $chemin) { Reg-Ecrire $chemin 'TcpAckFrequency' 1; Reg-Ecrire $chemin 'TCPNoDelay' 1 }
     }
 }
-Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE), PC fixe Intel' `
-    'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Sur AMD le boost est géré par le firmware, la valeur ne change rien.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
-    Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
-}
 Ajouter $G 'adv-dyntick' 'Couper le tick dynamique (bcdedit disabledynamictick)' `
     'Le noyau arrête son horloge quand rien ne se passe et la relance à la demande. Avec un timer à 0,5 ms ça peut dériver. À cocher seulement si tu vois des micro-saccades que RivaTuner confirme, et à décocher si ça ne change rien.' $false 'Consommation au repos un peu plus haute.' {
     Memoriser 'cmd|dyntick' @{ valeur = ((bcdedit /enum '{current}') | Select-String 'disabledynamictick') -replace '.*disabledynamictick\s+', '' }
@@ -1428,9 +1333,16 @@ Ajouter $G 'adv-llmnr' 'Couper LLMNR (résolution de noms multicast)' `
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' 'EnableMulticast' 0
 }
 
-# ----- NVIDIA ------------------------------------------------------------------
+# ----- Groupes par marque : seulement sur la machine concernée ----------------------
+if ($EstIntelCpu) {
+    $G = 'Processeur Intel'
+    Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE)' `
+        'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Clé Intel : sur AMD le boost est géré par le firmware.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
+        Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
+    }
+}
 if ($EstNvidia) {
-    $G = 'NVIDIA'
+    $G = 'Carte graphique NVIDIA'
     Ajouter $G 'nv-telemetrie' 'Couper la télémétrie NVIDIA' `
         'Le pilote envoie des statistiques à NVIDIA. Deux clés, aucun effet sur le jeu.' $true '' {
         Reg-Ecrire 'HKLM:\SOFTWARE\NVIDIA Corporation\NvControlPanel2\Client' 'OptInOrOutPreference' 0
@@ -1562,7 +1474,8 @@ $TraductionsEn = @{
     'adv-throttling' = @{ Titre = 'Turn off Power Throttling (PowerThrottlingOff)'; Pourquoi = 'Windows throttles programs it considers "in the background" (EcoQoS) to save power. On a desktop PC we do not want to throttle anything: Discord, your launcher, the overlay run at full speed even behind the game.'; Attention = 'On a laptop, less battery life. On a desktop, nothing.' }
     'adv-nagle' = @{ Titre = 'Turn off Nagle''s algorithm (TcpAckFrequency, TCPNoDelay) on the active card'; Pourquoi = 'Nagle groups small TCP packets before sending them, and delays acknowledgments. A few ms saved on a game using TCP (MMOs, some Unity games). Zero effect on a game using UDP, which is nearly every FPS.'; Attention = 'A few more small packets on the line. Nothing visible.' }
     'adv-dyntick' = @{ Titre = 'Turn off dynamic tick (bcdedit disabledynamictick)'; Pourquoi = 'The kernel stops its clock when nothing happens and restarts it on demand. With a 0.5 ms timer this can drift. Check this only if you see micro-stutter that RivaTuner confirms, and uncheck it if nothing changes.'; Attention = 'Idle power draw a bit higher.' }
-    'adv-boost' = @{ Titre = 'CPU boost mode set to Aggressive (PERFBOOSTMODE), desktop Intel'; Pourquoi = 'The power plan boost mode decides how fast the CPU ramps its frequency when load arrives. Aggressive ramps it up right away instead of waiting. On AMD the firmware handles boost, the value changes nothing.'; Attention = 'On a laptop: heat and battery for nothing. On a desktop, slightly more idle power.' }
+    'jeu-mpo' = @{ Titre = 'Turn off Multiplane Overlay (MPO, OverlayTestMode = 5)'; Pourquoi = 'MPO lets the graphics card draw some windows directly, bypassing the Windows compositor (DWM). It is the cause of the black screens, flickering and windowed stutter that NVIDIA documents (article 5157, 2022) and that AMD cards know too. Off, DWM composes everything: zero effect in fullscreen, no more surprises in windowed or multi-monitor. NVCleanstall sets the same key with its "Disable MPO" box.'; Attention = 'A video in a window costs a bit more GPU (no more hardware overlay). On 24H2 and later, Windows sometimes ignores the key: then nothing changes.' }
+    'adv-boost' = @{ Titre = 'CPU boost mode set to Aggressive (PERFBOOSTMODE)'; Pourquoi = 'The power plan boost mode decides how fast the CPU ramps its frequency when load arrives. Aggressive ramps it up right away instead of waiting. Intel key: on AMD the firmware handles boost.'; Attention = 'On a laptop: heat and battery for nothing. On a desktop, slightly more idle power.' }
     'adv-rawmouse' = @{ Titre = 'RawMouseThrottleDuration = 8 (mouse report batching)'; Pourquoi = 'Windows groups mouse Raw Input reports into time windows. With a mouse at 1000 Hz or more, a shorter window delivers movement to the game sooner. Documented range is 3 to 20. On recent Windows 11 builds the default is already 8: in that case the key changes nothing (check on your machine with ?, the previous value is written to bagarre.log). Verify with MouseTester: zero missed reports.'; Attention = 'No known downside. If the cursor feels off, R restores the previous value.' }
     'adv-fth' = @{ Titre = 'Turn off the Fault Tolerant Heap (FTH)'; Pourquoi = 'When a program crashes several times, Windows relaunches it with a "tolerant", slower memory allocator, without telling you. A game that crashed three times then runs throttled. With this off, it still crashes the same way but runs at full speed the rest of the time. Documented by Microsoft (FTH, Win32 apps).'; Attention = 'An old unstable program that FTH was keeping alive can start crashing again.' }
     'adv-llmnr' = @{ Titre = 'Turn off LLMNR (multicast name resolution)'; Pourquoi = 'When a name is not found by DNS, Windows shouts it out over multicast on the local network (LLMNR). This is a known entry point for credential interception (Responder) and pointless network noise. A standard enterprise security recommendation.'; Attention = 'Typing \\PC-NAME to reach another PC at home may stop working (use its IP or enable mDNS on the NAS side).' }
@@ -1582,32 +1495,47 @@ function Dns-Actuels($adapt) {
     @((Get-DnsClientServerAddress -InterfaceIndex $adapt.ifIndex -AddressFamily IPv4).ServerAddresses)
 }
 
-# Résout 6 noms courants sur chaque serveur, 3 fois, garde la médiane. Rend une liste Nom / Serveurs / Mediane.
-function Dns-Mesurer($adapt) {
-    $actuels = Dns-Actuels $adapt
-    $candidats = [ordered]@{
-        'Actuel (box / FAI)'   = @($actuels)
-        'Quad9 (9.9.9.9)'      = @('9.9.9.9', '149.112.112.112')
-        'Cloudflare (1.1.1.1)' = @('1.1.1.1', '1.0.0.1')
-        'Google (8.8.8.8)'     = @('8.8.8.8', '8.8.4.4')
-    }
+# Les résolveurs testés, dans l'ordre d'affichage. Cle sert au logo et à la note traduite, Serveurs[0] est celui mesuré.
+function Dns-Candidats($adapt) {
+    @(
+        @{ Cle = 'actuel';     Nom = 'Actuel (box / FAI)';   Serveurs = @(Dns-Actuels $adapt) }
+        @{ Cle = 'quad9';      Nom = 'Quad9';                Serveurs = @('9.9.9.9', '149.112.112.112') }
+        @{ Cle = 'cloudflare'; Nom = 'Cloudflare';           Serveurs = @('1.1.1.1', '1.0.0.1') }
+        @{ Cle = 'google';     Nom = 'Google';               Serveurs = @('8.8.8.8', '8.8.4.4') }
+        @{ Cle = 'adguard';    Nom = 'AdGuard DNS';          Serveurs = @('94.140.14.14', '94.140.15.15') }
+        @{ Cle = 'opendns';    Nom = 'OpenDNS';              Serveurs = @('208.67.222.222', '208.67.220.220') }
+        @{ Cle = 'mullvad';    Nom = 'Mullvad';              Serveurs = @('194.242.2.2') }
+        @{ Cle = 'dns0';       Nom = 'dns0.eu';              Serveurs = @('193.110.81.0', '185.253.5.0') }
+        @{ Cle = 'controld';   Nom = 'Control D';            Serveurs = @('76.76.2.0', '76.76.10.0') }
+    )
+}
+
+# Résout 6 noms courants sur un serveur, 3 tours, garde la médiane en ms (nombre, jamais une chaîne : la virgule
+# décimale française cassait la conversion). Un serveur injoignable au premier tour n'a pas droit aux deux autres.
+function Dns-Mesurer-Un($serveur) {
     $noms = 'youtube.com', 'steampowered.com', 'discord.com', 'twitch.tv', 'epicgames.com', 'wikipedia.org'
-    $resultats = @()
-    foreach ($nom in $candidats.Keys) {
-        $serveur = $candidats[$nom][0]
-        if (-not $serveur) { continue }
-        $temps = @()
-        foreach ($tour in 1..3) {
-            foreach ($d in $noms) {
-                $t = Measure-Command { try { Resolve-DnsName -Name $d -Server $serveur -Type A -DnsOnly -NoHostsFile -ErrorAction Stop | Out-Null } catch {} }
-                $temps += $t.TotalMilliseconds
-                Rafraichir
-            }
+    $temps = @()
+    foreach ($tour in 1..3) {
+        foreach ($d in $noms) {
+            $t = Measure-Command { try { Resolve-DnsName -Name $d -Server $serveur -Type A -DnsOnly -NoHostsFile -ErrorAction Stop | Out-Null } catch {} }
+            $temps += [double]$t.TotalMilliseconds
+            Rafraichir
         }
-        $tri = $temps | Sort-Object
-        $mediane = [math]::Round($tri[[int]($tri.Count / 2)], 1)
-        $resultats += [pscustomobject]@{ Nom = $nom; Serveurs = $candidats[$nom]; Mediane = $mediane; Actuel = ($nom -like 'Actuel*') }
-        Log ("dns       {0,-22} {1,7} ms" -f $nom, $mediane)
+        $tri = @($temps | Sort-Object)
+        if ($tour -eq 1 -and $tri[[int]($tri.Count / 2)] -gt 800) { break }
+    }
+    $tri = @($temps | Sort-Object)
+    [math]::Round([double]$tri[[int]($tri.Count / 2)], 1)
+}
+
+# Tous les candidats d'un coup (le journal, la fenêtre mesure un par un pour afficher au fur et à mesure)
+function Dns-Mesurer($adapt) {
+    $resultats = @()
+    foreach ($c in (Dns-Candidats $adapt)) {
+        if (-not $c.Serveurs[0]) { continue }
+        $mediane = Dns-Mesurer-Un $c.Serveurs[0]
+        $resultats += [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Mediane = $mediane; Actuel = ($c.Cle -eq 'actuel') }
+        Log ("dns       {0,-20} {1,7} ms" -f $c.Nom, $mediane)
     }
     $resultats
 }
@@ -1898,11 +1826,11 @@ $PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Mai
 $UI = @{
     fr = @{
         nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote nu, ancien Panneau de configuration', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote nu, Panneau de configuration OG', 'une chose à la fois, tu mesures', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
             Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
-            Nvidia = "Le pilote nu, puis l'ancien Panneau de configuration"; Dur = 'Une chose à la fois, tu mesures'
+            Nvidia = 'Le pilote nu, puis le Panneau de configuration OG'; Dur = 'Une chose à la fois, tu mesures'
             Maintenance = 'Quand le PC a vécu'; Dns = 'Qui répond le plus vite depuis chez toi ?'; Audit = 'Une IA vérifie ton PC'
         }
         survole = 'Passe la souris sur une ligne pour lire le pourquoi et ce que tu perds.'; pourquoi = 'Pourquoi'; perds = 'Ce que tu perds'; rien = 'Rien de notable.'
@@ -1915,13 +1843,17 @@ $UI = @{
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
         aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte {0} ({1}). DNS actuel : {2}, souvent ta box.'
         dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Clique une ligne puis "Utiliser le DNS sélectionné", ou ne change rien.'
-        dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'
+        dnsSelection = 'Clique une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
+        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; mullvad = 'pas de journal, serveurs en Europe'; dns0 = 'européen, bloque les sites malveillants'; controld = 'bloque les sites malveillants' }
+        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal : rien à perdre'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut : tout remettre'; presetPerso = 'Personnalisé'
+        presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
+        ou = 'ou'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
         commandeCopiee = 'Commande copiée. Colle-la dans un Terminal pour rouvrir bagarre.'
         pasRapport = "Pas encore de rapport : bouton 1 d'abord."; pasJournal = 'Pas encore de journal.'
         dejaApplique = '{0} réglages déjà appliqués sur ce PC (bagarre-avant.json). Tout remettre les restaure.'
         ouverte = 'Fenêtre ouverte. Si tu ne la vois pas, regarde la barre des tâches : elle peut être derrière ce terminal.'
-        filtrer = 'Chercher une ligne'; tout = 'tout'; rienBtn = 'rien'; coches = 'cochées'
+        filtrer = 'Chercher une ligne'; coches = 'cochées'
         detection = 'Détection de ce qui est déjà en place sur ce PC...'
         detectionFin = '{0} réglages déjà en place, décochés et marqués "déjà fait". Le reste est à faire.'
         vieuxTitre = 'Ton installation Windows a {0}.'
@@ -1931,11 +1863,11 @@ $UI = @{
     }
     en = @{
         nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'bare driver, classic Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'bare driver, OG Control Panel', 'one thing at a time, you measure', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
             Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
-            Nvidia = 'The bare driver, then the classic Control Panel'; Dur = 'One thing at a time, you measure'
+            Nvidia = 'The bare driver, then the OG Control Panel'; Dur = 'One thing at a time, you measure'
             Maintenance = 'When the PC has lived a while'; Dns = 'Who answers fastest from your place?'; Audit = 'An AI checks your PC'
         }
         survole = 'Hover a line to read the why and what you lose.'; pourquoi = 'Why'; perds = 'What you lose'; rien = 'Nothing notable.'
@@ -1948,13 +1880,17 @@ $UI = @{
         confirmRestaurer = 'Put the {0} settings back as they were?'; restaure = 'Restored. Reboot the PC.'
         aucuneCarte = 'No active network card found.'; dnsCarte = 'Card {0} ({1}). Current DNS: {2}, usually your router.'
         dnsEnCours = 'DNS test running...'; dnsFini = 'Test done. Click a line then "Use the selected DNS", or change nothing.'
-        dnsSelection = 'Click a result line.'; dnsBox = 'router'
+        dnsSelection = 'Click a result line.'; dnsBox = 'router'; dnsRapide = 'fastest'; dnsTest = 'testing'
+        dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; mullvad = 'no logs, servers in Europe'; dns0 = 'European, blocks malicious sites'; controld = 'blocks malicious sites' }
+        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal: nothing to lose'; presetAucun = 'Untick everything'; presetWindows = 'Windows default: restore everything'; presetPerso = 'Custom'
+        presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
+        ou = 'or'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
         commandeCopiee = 'Command copied. Paste it into a Terminal to reopen bagarre.'
         pasRapport = 'No report yet: button 1 first.'; pasJournal = 'No log yet.'
         dejaApplique = '{0} settings already applied on this PC (bagarre-avant.json). Restore puts them back.'
         ouverte = 'Window open. If you do not see it, check the taskbar: it may be behind this terminal.'
-        filtrer = 'Find a line'; tout = 'all'; rienBtn = 'none'; coches = 'checked'
+        filtrer = 'Find a line'; coches = 'checked'
         detection = 'Detecting what is already in place on this PC...'
         detectionFin = '{0} settings already in place, unchecked and marked "already done". The rest is to do.'
         vieuxTitre = 'Your Windows install is {0} old.'
@@ -2008,7 +1944,6 @@ $Boutons = @{
     BtnSon = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les périphériques de lecture'; en = 'Open playback devices' }; Tip = @{ fr = 'La fenêtre Son de Windows : ton haut-parleur > Propriétés > Améliorations et Avancé.'; en = 'The Windows Sound window: your speaker > Properties > Enhancements and Advanced.' }; Action = { Start-Process control.exe -ArgumentList 'mmsys.cpl' | Out-Null } }
 
     BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
-    BtnDefaut = @{ Zone = 'Barre'; T = @{ fr = 'Recocher les cases par défaut'; en = 'Re-tick the default boxes' }; Tip = @{ fr = 'Recoche exactement les cases sûres, décoche le reste.'; en = 'Re-ticks exactly the safe boxes, unticks the rest.' }; Action = { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } } }
     BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
     BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
     BtnReseau = @{ Zone = 'Volet'; T = @{ fr = 'Lire : la carte réseau à la main'; en = 'Read: the network card by hand' }; Tip = @{ fr = 'Le groupe Carte réseau fait tout seul. Ce tuto sert si tu veux vérifier ou le faire à la main.'; en = 'The Network card group does it all. This guide is for checking or doing it by hand.' }; Action = { Opti-Montrer $Bagarre.L.reseauTitre $Textes[$Bagarre.Langue]['reseau'] $null } }
@@ -2016,42 +1951,29 @@ $Boutons = @{
     BtnImgAvance = @{ Zone = 'Volet'; T = @{ fr = 'Voir la capture : onglet Avancé'; en = 'See the screenshot: Advanced tab' }; Tip = @{ fr = 'L onglet Avancé du pilote réseau.'; en = 'The Advanced tab of the network driver.' }; Action = { Image-Ouvrir 'reseau-avance.png' } }
     BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
-    BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App. Coche comme sur la capture.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App. Tick as on the screenshot.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
-    BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'L ancien Panneau, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The classic Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
-    BtnGraphiques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Affichage > Graphiques'; en = 'Open Display > Graphics' }; Tip = @{ fr = 'Les Paramètres Windows : optimisations fenêtrées, HAGS, Auto HDR.'; en = 'Windows Settings: windowed optimizations, HAGS, Auto HDR.' }; Action = { Ouvrir 'ms-settings:display-advancedgraphics' } }
+    BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
+    BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
     BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pas pour overclocker : pour VOIR le temps d image et poser un cap de FPS.'; en = 'Installs through winget. Not for overclocking: to SEE frame times and set an FPS cap.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
-    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall (sauf MPO).'; en = 'The boxes to tick in NVCleanstall (except MPO).' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
-    BtnImgPanneau = @{ T = @{ fr = 'Voir la capture : réglages 3D'; en = 'See the screenshot: 3D settings' }; Tip = @{ fr = 'Les réglages 3D globaux.'; en = 'The global 3D settings.' }; Action = { Image-Ouvrir 'panneau-nvidia.png' } }
+    BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall, plus la ligne MPO.'; en = 'The boxes to tick in NVCleanstall, plus the MPO line.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
-    BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Priorité et cœurs par programme, open source. Windows 11 seulement.'; en = 'Installs through winget. Per-program priority and cores, open source. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
-    BtnSouris = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les propriétés de la souris'; en = 'Open mouse properties' }; Tip = @{ fr = 'Onglet Options du pointeur : vitesse au cran 6/11, précision décochée par le script.'; en = 'Pointer Options tab: speed at notch 6/11, precision unticked by the script.' }; Action = { Start-Process control.exe -ArgumentList 'main.cpl' | Out-Null } }
+    BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
+    BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
     BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget. 16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
     BtnAutoGpu = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Ouvrir le dépôt AutoGpuAffinity'; en = 'Open the AutoGpuAffinity repo' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
     BtnAmd = @{ T = @{ fr = 'Ouvrir la page pilotes AMD'; en = 'Open the AMD drivers page' }; Tip = @{ fr = 'Le site AMD, pilote seul.'; en = 'AMD site, driver only.' }; Action = { Ouvrir 'https://www.amd.com/en/support/download/drivers.html' } }
-    BtnUpdateOptions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update > Options avancées'; en = 'Open Windows Update > Advanced options' }; Tip = @{ fr = 'Suspendre les mises à jour, jusqu à 5 semaines.'; en = 'Pause updates, up to 5 weeks.' }; Action = { Ouvrir 'ms-settings:windowsupdate-options' } }
 
     BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
-    BtnGeek = @{ Logo = 'geek'; T = @{ fr = 'Installer Geek Uninstaller'; en = 'Install Geek Uninstaller' }; Tip = @{ fr = 'Installe via winget. Désinstalle proprement et enlève les restes.'; en = 'Installs through winget. Uninstalls cleanly and removes leftovers.' }; Action = { Winget-Installer 'Geek Uninstaller' 'GeekUninstaller.GeekUninstaller' } }
-    BtnFan = @{ Logo = 'rem0o'; T = @{ fr = 'Installer FanControl'; en = 'Install FanControl' }; Tip = @{ fr = 'Installe via winget. Les ventilos, sans la suite constructeur.'; en = 'Installs through winget. Fans, without the vendor suite.' }; Action = { Winget-Installer 'FanControl' 'Rem0o.FanControl' } }
-    BtnRgb = @{ Logo = 'openrgb'; T = @{ fr = 'Installer OpenRGB'; en = 'Install OpenRGB' }; Tip = @{ fr = 'Installe via winget. Les LED, sans la suite constructeur.'; en = 'Installs through winget. LEDs, without the vendor suite.' }; Action = { Winget-Installer 'OpenRGB' 'OpenRGB.OpenRGB' } }
     BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
-    BtnDismAnalyse = @{ Logo = 'microsoft'; T = @{ fr = 'Analyser WinSxS (DISM)'; en = 'Analyze WinSxS (DISM)' }; Tip = @{ fr = 'Dit s il y a quelque chose à nettoyer.'; en = 'Says whether there is something to clean.' }; Action = { Console-Lancer 'DISM AnalyzeComponentStore' 'Dism /Online /Cleanup-Image /AnalyzeComponentStore' } }
-    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer WinSxS (DISM)'; en = 'Clean WinSxS (DISM)' }; Tip = @{ fr = 'Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
+    BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans une console. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in a console. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' } }
     BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
-    BtnBleach = @{ Logo = 'bleachbit'; T = @{ fr = 'Installer BleachBit'; en = 'Install BleachBit' }; Tip = @{ fr = 'Installe via winget. Caches navigateurs, logs. Jamais "Free disk space" ni "Memory".'; en = 'Installs through winget. Browser caches, logs. Never "Free disk space" nor "Memory".' }; Action = { Winget-Installer 'BleachBit' 'BleachBit.BleachBit' } }
-    BtnRapr = @{ Logo = 'lostindark'; T = @{ fr = 'Installer DriverStore Explorer'; en = 'Install DriverStore Explorer' }; Tip = @{ fr = 'Installe via winget. Supprime les vieux pilotes NVIDIA empilés (plusieurs Go).'; en = 'Installs through winget. Removes stacked old NVIDIA drivers (several GB).' }; Action = { Winget-Installer 'DriverStore Explorer' 'lostindark.DriverStoreExplorer' } }
-    BtnTrim = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer le TRIM du disque système'; en = 'Run TRIM on the system disk' }; Tip = @{ fr = 'Optimize-Volume -ReTrim. L Assistant de stockage le fait déjà tous les mois.'; en = 'Optimize-Volume -ReTrim. Storage Sense already does it monthly.' }; Action = { Console-Lancer 'TRIM' "Optimize-Volume -DriveLetter $($env:SystemDrive[0]) -ReTrim -Verbose" } }
     BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
-    BtnDdu = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer DDU'; en = 'Install DDU' }; Tip = @{ fr = 'Installe via winget. Quand tu changes de marque de carte, ou pour repartir propre après un pilote qui déconne.'; en = 'Installs through winget. When you switch card brand, or to start clean after a misbehaving driver.' }; Action = { Winget-Installer 'Display Driver Uninstaller' 'Wagnardsoft.DisplayDriverUninstaller' } }
     BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans une console.'; en = 'powercfg /lastwake, /waketimers, /requests in a console.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' } }
     BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
     BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Fermer } }
-    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender (10 min)'; en = 'Record Defender (10 min)' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue, puis Entrée dans la console pour arrêter.'; en = 'New-MpPerformanceRecording: play, then press Enter in the console to stop.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl' } }
-    BtnDefenderRapport = @{ Logo = 'microsoft'; T = @{ fr = 'Lire le rapport Defender'; en = 'Read the Defender report' }; Tip = @{ fr = 'Get-MpPerformanceReport : les 10 fichiers et dossiers les plus scannés.'; en = 'Get-MpPerformanceReport: the 10 most scanned files and folders.' }; Action = { Console-Lancer 'Defender' 'Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
+    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
     BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
-    BtnCapframe = @{ Logo = 'cxworld'; T = @{ fr = 'Installer CapFrameX + PresentMon'; en = 'Install CapFrameX + PresentMon' }; Tip = @{ fr = 'Installe via winget. Mesurer avant / après : médiane, 1 % low, p99.'; en = 'Installs through winget. Measure before / after: median, 1% low, p99.' }; Action = { Winget-Installer 'CapFrameX + PresentMon' 'CXWorld.CapFrameX', 'Intel.PresentMon' } }
 
-    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS (30 s)'; en = 'Test the DNS servers (30 s)' }; Tip = @{ fr = 'Une trentaine de secondes, ne change rien.'; en = 'About thirty seconds, changes nothing.' }; Action = { Dns-Tester } }
+    BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Neuf résolveurs, une minute au plus. Ne change rien.'; en = 'Nine resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
     BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser le DNS sélectionné'; en = 'Use the selected DNS' }; Tip = @{ fr = 'Sur la carte testée. Tout remettre le rend.'; en = 'On the tested card. Restore puts it back.' }; Action = { $i = $Bagarre.DnsChoix; if ($i -lt 0) { Log $Bagarre.L.dnsSelection; return }; Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$i] } }
 
     BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
@@ -2134,6 +2056,8 @@ $Xaml = @'
       <Setter Property="Margin" Value="0,0,8,8"/>
       <Setter Property="Cursor" Value="Hand"/>
       <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="250"/>
+      <Setter Property="ToolTipService.ShowDuration" Value="30000"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
@@ -2342,24 +2266,96 @@ $Xaml = @'
         </Setter.Value>
       </Setter>
     </Style>
+    <!-- bulle d'aide : carte sombre flottante, ombre, liseré accent, sans le cadre système -->
     <Style TargetType="ToolTip">
-      <Setter Property="Background" Value="{StaticResource Surface2}"/>
-      <Setter Property="Foreground" Value="{StaticResource Texte}"/>
-      <Setter Property="BorderBrush" Value="{StaticResource Bordure}"/>
-      <Setter Property="Padding" Value="10,6"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="#EAE5F3"/>
+      <Setter Property="FontSize" Value="12.5"/>
+      <Setter Property="HasDropShadow" Value="False"/>
+      <Setter Property="Placement" Value="Bottom"/>
+      <Setter Property="VerticalOffset" Value="2"/>
       <Setter Property="MaxWidth" Value="420"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="ToolTip">
-            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="{TemplateBinding Padding}">
-              <ContentPresenter/>
-            </Border>
+            <Grid Margin="12">
+              <Border Background="#F4201B2C" BorderBrush="#463E5C" BorderThickness="1" CornerRadius="10">
+                <Border.Effect><DropShadowEffect BlurRadius="22" ShadowDepth="5" Opacity="0.55" Color="#000000"/></Border.Effect>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Border Width="3" CornerRadius="2" Background="{StaticResource Accent}" Margin="9,10,0,10"/>
+                  <ContentPresenter Grid.Column="1" Margin="11,9,14,10"/>
+                </Grid>
+              </Border>
+            </Grid>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
       <Style.Resources>
-        <Style TargetType="TextBlock"><Setter Property="TextWrapping" Value="Wrap"/></Style>
+        <Style TargetType="TextBlock"><Setter Property="TextWrapping" Value="Wrap"/><Setter Property="LineHeight" Value="18"/></Style>
       </Style.Resources>
+    </Style>
+    <!-- liste déroulante (les presets du script à cocher) -->
+    <Style TargetType="ComboBox">
+      <Setter Property="Foreground" Value="{StaticResource Texte}"/>
+      <Setter Property="Margin" Value="0,0,8,8"/>
+      <Setter Property="MinWidth" Value="250"/>
+      <Setter Property="MinHeight" Value="34"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="250"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBox">
+            <Grid>
+              <ToggleButton Name="Bascule" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False" ClickMode="Press" Cursor="Hand">
+                <ToggleButton.Template>
+                  <ControlTemplate TargetType="ToggleButton">
+                    <Border Name="Fond" Background="{StaticResource Surface2}" BorderBrush="{StaticResource Bordure}" BorderThickness="1" CornerRadius="8">
+                      <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="10" Foreground="{StaticResource Sourd}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Fond" Property="BorderBrush" Value="{StaticResource Accent}"/></Trigger>
+                      <Trigger Property="IsChecked" Value="True"><Setter TargetName="Fond" Property="BorderBrush" Value="{StaticResource Accent}"/></Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </ToggleButton.Template>
+              </ToggleButton>
+              <ContentPresenter Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Margin="12,0,30,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+              <Popup Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Fade" StaysOpen="False">
+                <Border Background="{StaticResource Surface}" BorderBrush="#463E5C" BorderThickness="1" CornerRadius="10" Padding="6" Margin="0,4,0,0" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                  <Border.Effect><DropShadowEffect BlurRadius="18" ShadowDepth="4" Opacity="0.5" Color="#000000"/></Border.Effect>
+                  <StackPanel IsItemsHost="True"/>
+                </Border>
+              </Popup>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Foreground" Value="{StaticResource Texte}"/>
+      <Setter Property="Padding" Value="10,7"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="250"/>
+      <Setter Property="ToolTipService.Placement" Value="Right"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBoxItem">
+            <Border Name="Fond" Background="Transparent" CornerRadius="6" Padding="{TemplateBinding Padding}">
+              <ContentPresenter/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="Fond" Property="Background" Value="{StaticResource Surface2}"/></Trigger>
+              <Trigger Property="IsSelected" Value="True"><Setter TargetName="Fond" Property="Background" Value="{StaticResource AccentFond}"/><Setter Property="Foreground" Value="{StaticResource AccentClair}"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
     </Style>
     <Style TargetType="ProgressBar">
       <Setter Property="Foreground" Value="{StaticResource Accent}"/>
@@ -2490,7 +2486,10 @@ $Xaml = @'
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" LastChildFill="False">
-              <WrapPanel Name="BarreOptis" DockPanel.Dock="Left"/>
+              <WrapPanel Name="BarreOptis" DockPanel.Dock="Left">
+                <TextBlock Name="PresetsLabel" Foreground="{StaticResource Sourd}" VerticalAlignment="Center" Margin="4,0,8,8"/>
+                <ComboBox Name="Presets"/>
+              </WrapPanel>
               <Grid DockPanel.Dock="Right" Width="220" Margin="8,0,0,8">
                 <TextBox Name="Filtre" Style="{StaticResource Champ}"/>
                 <TextBlock Name="FiltreIndice" Foreground="#6E6683" Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
@@ -2595,10 +2594,39 @@ if (-not $Capture) {
 # ---------------------------------------------------------------------------
 # Briques : texte, carte, bouton avec logo
 # ---------------------------------------------------------------------------
-function Bloc-Texte($texte, $pinceau, $taille, $ligne) {
+function Bloc-Texte($texte, $brosse, $taille, $ligne) {   # pas $pinceau : masquerait $Pinceau
     $t = New-Object Windows.Controls.TextBlock
-    $t.Text = $texte; $t.TextWrapping = 'Wrap'; $t.Foreground = $pinceau; $t.FontSize = $taille; $t.LineHeight = $ligne; $t.Margin = '0,0,0,6'
+    $t.Text = $texte; $t.TextWrapping = 'Wrap'; $t.Foreground = $brosse; $t.FontSize = $taille; $t.LineHeight = $ligne; $t.Margin = '0,0,0,6'
     $t
+}
+# Texte avec, en option, une pastille "i" au bout : "texte visible i@ détail au survol". Le détail ne prend pas de place.
+function Bloc-Info($texte, $brosse, $taille, $ligne) {
+    $parts = $texte -split ' i@ ', 2
+    $t = Bloc-Texte $parts[0].TrimEnd() $brosse $taille $ligne
+    if ($parts.Count -lt 2 -or -not $parts[1].Trim()) { return $t }
+    $icone = New-Object Windows.Controls.Border
+    $icone.Width = 16; $icone.Height = 16; $icone.CornerRadius = '8'; $icone.Margin = '6,0,0,-3'; $icone.Cursor = 'Help'
+    $icone.Background = $Pinceau.AccentFond; $icone.BorderBrush = $Pinceau.Accent; $icone.BorderThickness = '1'
+    $lettre = New-Object Windows.Controls.TextBlock
+    $lettre.Text = 'i'; $lettre.FontFamily = 'Georgia'; $lettre.FontWeight = 'Bold'; $lettre.FontSize = 10; $lettre.Foreground = $Pinceau.AccentClair
+    $lettre.HorizontalAlignment = 'Center'; $lettre.VerticalAlignment = 'Center'; $lettre.Margin = '0,-1,0,0'; $lettre.LineHeight = [double]::NaN   # LineHeight hérité du bloc parent, sinon le i monte
+    $icone.Child = $lettre
+    $icone.ToolTip = $parts[1].Trim()
+    [Windows.Controls.ToolTipService]::SetInitialShowDelay($icone, 100)
+    [Windows.Controls.ToolTipService]::SetShowDuration($icone, 60000)
+    $enLigne = New-Object Windows.Documents.InlineUIContainer $icone
+    $enLigne.BaselineAlignment = 'Center'
+    [void]$t.Inlines.Add($enLigne)
+    $t
+}
+# La pastille "ou" entre deux groupes de boutons : "@BtnA | BtnB" = l'un ou l'autre
+function Pastille-Ou {
+    $b = New-Object Windows.Controls.Border
+    $b.Background = $Pinceau.AccentFond; $b.CornerRadius = '12'; $b.Padding = '10,4'; $b.Margin = '2,0,10,8'; $b.VerticalAlignment = 'Center'
+    $t = New-Object Windows.Controls.TextBlock
+    $t.Text = $Bagarre.L.ou; $t.FontWeight = 'Bold'; $t.FontSize = 11; $t.Foreground = $Pinceau.AccentClair
+    $b.Child = $t
+    $b
 }
 function Carte-Creer($titre) {
     $b = New-Object Windows.Controls.Border
@@ -2627,9 +2655,9 @@ function Bouton-Obtenir($id) {
     if ($img) {
         $logo = New-Object Windows.Controls.Border
         $logo.Width = 20; $logo.Height = 20; $logo.CornerRadius = '5'; $logo.Margin = '0,0,9,0'; $logo.VerticalAlignment = 'Center'
-        $pinceau = New-Object Windows.Media.ImageBrush $img
-        $pinceau.Stretch = 'UniformToFill'
-        $logo.Background = $pinceau
+        $brosse = New-Object Windows.Media.ImageBrush $img
+        $brosse.Stretch = 'UniformToFill'
+        $logo.Background = $brosse
         [void]$sp.Children.Add($logo)
     }
     $t = New-Object Windows.Controls.TextBlock
@@ -2665,10 +2693,15 @@ function Page-Construire($nom) {
         if ($ligne -match '^@(.+)$') {
             $wp = New-Object Windows.Controls.WrapPanel
             $wp.Margin = '0,4,0,2'
-            foreach ($id in ($Matches[1] -split ',')) {
-                $id = $id.Trim()
-                $c = switch ($id) { 'DnsListe' { $Ctl.DnsPanneau } default { Bouton-Obtenir $id } }
-                if ($c) { Detacher $c; [void]$wp.Children.Add($c) }
+            $groupesBtn = @($Matches[1] -split '\|')
+            for ($k = 0; $k -lt $groupesBtn.Count; $k++) {
+                if ($k -gt 0) { [void]$wp.Children.Add((Pastille-Ou)) }
+                foreach ($id in ($groupesBtn[$k] -split ',')) {
+                    $id = $id.Trim()
+                    if (-not $id) { continue }
+                    $c = switch ($id) { 'DnsListe' { $Ctl.DnsPanneau } default { Bouton-Obtenir $id } }
+                    if ($c) { Detacher $c; [void]$wp.Children.Add($c) }
+                }
             }
             [void]$pile.Children.Add($wp)
         } elseif ($ligne -match '^! (.+)$') {
@@ -2687,12 +2720,12 @@ function Page-Construire($nom) {
             $c2 = New-Object Windows.Controls.ColumnDefinition; [void]$g.ColumnDefinitions.Add($c2)
             $puce = New-Object Windows.Controls.Border
             $puce.Width = 6; $puce.Height = 6; $puce.CornerRadius = '3'; $puce.Background = $Pinceau.Accent; $puce.Margin = '2,7,10,0'; $puce.VerticalAlignment = 'Top'
-            $t = Bloc-Texte $Matches[1] $Pinceau.Texte 13 19; $t.Margin = '0,0,0,5'
+            $t = Bloc-Info $Matches[1] $Pinceau.Texte 13 19; $t.Margin = '0,0,0,5'
             [Windows.Controls.Grid]::SetColumn($t, 1)
             [void]$g.Children.Add($puce); [void]$g.Children.Add($t)
             [void]$pile.Children.Add($g)
         } else {
-            $t = if ($intro) { Bloc-Texte $ligne $Pinceau.Sourd 14 22 } else { Bloc-Texte $ligne $Pinceau.Texte 13 19 }
+            $t = if ($intro) { Bloc-Info $ligne $Pinceau.Sourd 14 22 } else { Bloc-Info $ligne $Pinceau.Texte 13 19 }
             if ($intro) { $t.Margin = '0,0,0,8' }
             [void]$pile.Children.Add($t)
         }
@@ -2808,7 +2841,7 @@ $Etiquettes = @{
 }
 $Lignes = @{}    # id -> Cb, Contenu, PillT, Titre, Statut, Ligne, Item
 $Defauts = @{}
-$Groupes = @()   # un objet par groupe : Nom, Entete, Titre, Compte, Tout, Rien, Ids
+$Groupes = @()   # un objet par groupe : Nom, Entete, Titre, Compte, Ids
 $Etat = @{}      # id -> résultat de la détection ($true déjà fait)
 
 function Ligne-Creer($it) {
@@ -2831,8 +2864,8 @@ function Ligne-Creer($it) {
     [void]$g.Children.Add($pill); [void]$g.Children.Add($titre); [void]$g.Children.Add($statut)
     $cb.Content = $g
     $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })
-    $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Ligne-Etat $s.Tag.Id; Compter-Coches })
-    $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Ligne-Etat $s.Tag.Id; Compter-Coches })
+    $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
+    $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
     $ligne = New-Object Windows.Controls.Border
     $ligne.Style = $Fenetre.FindResource('Ligne')
     $ligne.Child = $cb
@@ -2862,14 +2895,9 @@ foreach ($it in $Items) {
         $tb.Style = $Fenetre.FindResource('Groupe'); $tb.VerticalAlignment = 'Center'
         $compte = New-Object Windows.Controls.TextBlock
         $compte.Foreground = $Pinceau.Sourd; $compte.Margin = '10,0,0,0'; $compte.VerticalAlignment = 'Center'; $compte.FontSize = 11
-        $tout = New-Object Windows.Controls.Button; $tout.Style = $Fenetre.FindResource('Petit'); $tout.Margin = '14,0,0,0'
-        $rien = New-Object Windows.Controls.Button; $rien.Style = $Fenetre.FindResource('Petit')
-        foreach ($c in $tb, $compte, $tout, $rien) { [Windows.Controls.DockPanel]::SetDock($c, 'Left'); [void]$entete.Children.Add($c) }
+        foreach ($c in $tb, $compte) { [Windows.Controls.DockPanel]::SetDock($c, 'Left'); [void]$entete.Children.Add($c) }
         [void]$Ctl.ListeOptis.Children.Add($entete)
-        $groupe = @{ Nom = $it.Groupe; Entete = $entete; Titre = $tb; Compte = $compte; Tout = $tout; Rien = $rien; Ids = @() }
-        $tout.Tag = $groupe; $rien.Tag = $groupe
-        $tout.Add_Click({ param($s, $e) foreach ($x in $s.Tag.Ids) { if ($Lignes[$x].Ligne.Visibility -eq 'Visible') { $Lignes[$x].Cb.IsChecked = $true } } })
-        $rien.Add_Click({ param($s, $e) foreach ($x in $s.Tag.Ids) { if ($Lignes[$x].Ligne.Visibility -eq 'Visible') { $Lignes[$x].Cb.IsChecked = $false } } })
+        $groupe = @{ Nom = $it.Groupe; Entete = $entete; Titre = $tb; Compte = $compte; Ids = @() }
         $Groupes += $groupe
     }
     [void]$Ctl.ListeOptis.Children.Add((Ligne-Creer $it))
@@ -2877,9 +2905,47 @@ foreach ($it in $Items) {
     $Defauts[$it.Id] = [bool]$it.Coche
 }
 
-# Barre du script à cocher et volet : les boutons de zone Barre et Volet, créés une fois
-foreach ($id in 'BtnAppliquer', 'BtnDefaut', 'BtnDetecter', 'BtnRestaurer') { [void]$Ctl.BarreOptis.Children.Add((Bouton-Obtenir $id)) }
+# Barre du script à cocher et volet : les boutons de zone Barre et Volet, créés une fois. Le premier de la barre est la liste des presets.
+foreach ($id in 'BtnAppliquer', 'BtnDetecter', 'BtnRestaurer') { [void]$Ctl.BarreOptis.Children.Add((Bouton-Obtenir $id)) }
+$Ctl.BarreOptis.Children.Remove($Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Remove($Ctl.Presets)
+$Ctl.BarreOptis.Children.Insert(1, $Ctl.PresetsLabel); $Ctl.BarreOptis.Children.Insert(2, $Ctl.Presets)
 foreach ($id in 'BtnReseau', 'BtnImgProtocoles', 'BtnImgAvance', 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
+
+# Presets : une liste déroulante à la place de quarante boutons. Recommandé = les cases sûres, Minimal = celles sans
+# contrepartie, Tout décocher, Windows par défaut = restaure ce qui a été appliqué. Toucher une case passe en Personnalisé.
+$Bagarre.PresetEnCours = $false
+$PresetItems = @{}
+foreach ($cle in 'recommande', 'minimal', 'aucun', 'windows', 'perso') {
+    $cbi = New-Object Windows.Controls.ComboBoxItem
+    $cbi.Tag = $cle
+    if ($cle -eq 'perso') { $cbi.Visibility = 'Collapsed' }
+    [void]$Ctl.Presets.Items.Add($cbi)
+    $PresetItems[$cle] = $cbi
+}
+function Preset-Choisir($cle) {
+    $Bagarre.PresetEnCours = $true
+    try { $Ctl.Presets.SelectedItem = $PresetItems[$cle] } finally { $Bagarre.PresetEnCours = $false }
+}
+function Preset-Perso { if (-not $Bagarre.PresetEnCours) { Preset-Choisir 'perso' } }
+function Preset-Appliquer($cle) {
+    $Bagarre.PresetEnCours = $true
+    try {
+        switch ($cle) {
+            'recommande' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } }
+            'minimal' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and [string]::IsNullOrWhiteSpace($Lignes[$id].Item.Attention) } }
+            'aucun' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
+            'windows' { Restaurer-Demander; foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
+        }
+    } finally { $Bagarre.PresetEnCours = $false }
+}
+$Ctl.Presets.Add_SelectionChanged({
+    param($s, $e)
+    if ($Bagarre.PresetEnCours -or -not $s.SelectedItem) { return }
+    $cle = [string]$s.SelectedItem.Tag
+    if ($cle -eq 'perso') { return }
+    Preset-Appliquer $cle
+})
+Preset-Choisir 'recommande'
 
 # Filtre : tape un mot, seules les lignes dont le titre (ou le nom du groupe) le contient restent, les groupes vides disparaissent
 function Filtrer {
@@ -2902,12 +2968,15 @@ function Detecter-Tout {
     Log $Bagarre.L.detection
     Rafraichir
     $faits = 0
-    foreach ($it in $Items) {
-        $r = Detecter-Item $it
-        $Etat[$it.Id] = $r
-        if ($r -eq $true) { $Lignes[$it.Id].Cb.IsChecked = $false; $faits++ }
-        Ligne-Etat $it.Id
-    }
+    $Bagarre.PresetEnCours = $true   # décocher ce qui est déjà fait n'est pas un choix de l'utilisateur
+    try {
+        foreach ($it in $Items) {
+            $r = Detecter-Item $it
+            $Etat[$it.Id] = $r
+            if ($r -eq $true) { $Lignes[$it.Id].Cb.IsChecked = $false; $faits++ }
+            Ligne-Etat $it.Id
+        }
+    } finally { $Bagarre.PresetEnCours = $false }
     Log ($Bagarre.L.detectionFin -f $faits)
     Compter-Coches
 }
@@ -2917,7 +2986,8 @@ $GroupesEn = @{
     'Services Windows' = 'Windows services'; 'Vie privée et pubs' = 'Privacy and ads'; 'Jeu et réactivité' = 'Gaming and responsiveness'
     'Carte réseau (appliqué sur chaque carte physique active)' = 'Network card (applied to every active physical card)'
     'Confort (aucun gain de FPS, juste plus vif)' = 'Comfort (no FPS gain, just snappier)'
-    'Avancé (décoché par défaut, lis l explication avant)' = 'Advanced (unchecked by default, read the explanation first)'; 'NVIDIA' = 'NVIDIA'
+    'Avancé (décoché par défaut, lis l explication avant)' = 'Advanced (unchecked by default, read the explanation first)'
+    'Processeur Intel' = 'Intel processor'; 'Carte graphique NVIDIA' = 'NVIDIA graphics card'
 }
 
 function Appliquer-Demander {
@@ -2957,50 +3027,88 @@ function Dns-Choisir($i) {
     foreach ($row in $Ctl.DnsListe.Children) { $row.BorderBrush = if ([int]$row.Tag -eq $i) { $Pinceau.Accent } else { $Pinceau.Bordure } }
     $Ctl.BtnDnsAppliquer.IsEnabled = $i -ge 0
 }
-function Dns-Ligne($i, $r, $max) {
+# Une ligne de résultat : rang, logo, nom + note, barre proportionnelle, ms. Mediane est un nombre (jamais parsé
+# depuis une chaîne : "12,3" en français cassait tout). $null = mesure en cours, la ligne est grisée.
+function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     $row = New-Object Windows.Controls.Border
-    $row.Tag = $i; $row.Background = $Pinceau.Surface2; $row.BorderBrush = $Pinceau.Bordure; $row.BorderThickness = '1'; $row.CornerRadius = '8'; $row.Padding = '10,8'; $row.Margin = '0,0,0,6'; $row.Cursor = 'Hand'
+    $row.Tag = $i; $row.Background = $Pinceau.Surface2; $row.BorderThickness = '1'; $row.CornerRadius = '8'; $row.Padding = '10,8'; $row.Margin = '0,0,0,6'; $row.Cursor = 'Hand'
+    $row.BorderBrush = if ($plusRapide) { $Pinceau.Accent } else { $Pinceau.Bordure }
     $g = New-Object Windows.Controls.Grid
-    foreach ($w in '34', '190', '*', '70') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+    foreach ($w in '26', '34', '230', '*', '70') { $cd = New-Object Windows.Controls.ColumnDefinition; $cd.Width = $w; [void]$g.ColumnDefinitions.Add($cd) }
+    $num = New-Object Windows.Controls.TextBlock
+    $num.Text = if ($rang -gt 0) { "$rang" } else { '' }; $num.FontSize = 11; $num.FontWeight = 'SemiBold'; $num.VerticalAlignment = 'Center'
+    $num.Foreground = if ($plusRapide) { $Pinceau.AccentClair } else { $Pinceau.Sourd }
     $logo = New-Object Windows.Controls.Border
-    $logo.Width = 22; $logo.Height = 22; $logo.CornerRadius = '5'; $logo.HorizontalAlignment = 'Left'; $logo.VerticalAlignment = 'Center'
-    $nomLogo = switch -Regex ($r.Nom) { 'Quad9' { 'quad9' } 'Cloudflare' { 'cloudflare' } 'Google' { 'google' } default { $null } }
-    $img = if ($nomLogo) { Logo-Image $nomLogo } else { $null }
+    $logo.Width = 24; $logo.Height = 24; $logo.CornerRadius = '6'; $logo.HorizontalAlignment = 'Left'; $logo.VerticalAlignment = 'Center'
+    [Windows.Controls.Grid]::SetColumn($logo, 1)
+    $img = if ($r.Cle -ne 'actuel') { Logo-Image $r.Cle } else { $null }
     if ($img) { $ib = New-Object Windows.Media.ImageBrush $img; $ib.Stretch = 'UniformToFill'; $logo.Background = $ib }
     else {
         $logo.Background = $Pinceau.AccentFond
         $lt = New-Object Windows.Controls.TextBlock; $lt.Text = $Bagarre.L.dnsBox; $lt.FontSize = 8; $lt.Foreground = $Pinceau.AccentClair; $lt.HorizontalAlignment = 'Center'; $lt.VerticalAlignment = 'Center'
         $logo.Child = $lt
     }
+    $bloc = New-Object Windows.Controls.StackPanel
+    $bloc.VerticalAlignment = 'Center'; $bloc.Margin = '6,0,10,0'
+    [Windows.Controls.Grid]::SetColumn($bloc, 2)
     $nom = New-Object Windows.Controls.TextBlock
-    $nom.Text = $r.Nom; $nom.VerticalAlignment = 'Center'; $nom.Margin = '4,0,10,0'
-    [Windows.Controls.Grid]::SetColumn($nom, 1)
-    $med = 0.0; $ok = [double]::TryParse([string]$r.Mediane, [ref]$med)
+    $nom.Text = $r.Nom; $nom.FontWeight = 'SemiBold'
+    if ($plusRapide) { $nom.Text += '  ' + $Bagarre.L.dnsRapide; $nom.Foreground = $Pinceau.AccentClair }
+    $note = New-Object Windows.Controls.TextBlock
+    $note.Text = $Bagarre.L.dnsNotes[$r.Cle]; $note.FontSize = 11; $note.Foreground = $Pinceau.Sourd; $note.TextWrapping = 'Wrap'
+    [void]$bloc.Children.Add($nom); [void]$bloc.Children.Add($note)
+    $ok = $null -ne $r.Mediane
+    $med = if ($ok) { [double]$r.Mediane } else { 0.0 }
     $barre = New-Object Windows.Controls.Border
     $barre.Height = 8; $barre.CornerRadius = '4'; $barre.HorizontalAlignment = 'Left'; $barre.VerticalAlignment = 'Center'
     $barre.Width = if ($ok -and $max -gt 0) { 12 + 220 * $med / $max } else { 12 }
-    $barre.Background = if ($ok -and $med -le $max * 0.35) { $Pinceau.Accent } else { '#4A4260' }
-    [Windows.Controls.Grid]::SetColumn($barre, 2)
+    $barre.Background = if (-not $ok) { $Pinceau.Bordure } elseif ($med -le $max * 0.35) { $Pinceau.Accent } else { '#4A4260' }
+    [Windows.Controls.Grid]::SetColumn($barre, 3)
     $ms = New-Object Windows.Controls.TextBlock
-    $ms.Text = if ($ok) { '{0} ms' -f [math]::Round($med) } else { [string]$r.Mediane }; $ms.TextAlignment = 'Right'; $ms.VerticalAlignment = 'Center'; $ms.FontWeight = 'SemiBold'
-    [Windows.Controls.Grid]::SetColumn($ms, 3)
-    foreach ($c in $logo, $nom, $barre, $ms) { [void]$g.Children.Add($c) }
+    $ms.TextAlignment = 'Right'; $ms.VerticalAlignment = 'Center'; $ms.FontWeight = 'SemiBold'
+    if ($ok) { $ms.Text = '{0} ms' -f [math]::Round($med) } else { $ms.Text = $Bagarre.L.dnsTest; $ms.FontSize = 11; $ms.Foreground = $Pinceau.Sourd; $ms.FontWeight = 'Normal' }
+    [Windows.Controls.Grid]::SetColumn($ms, 4)
+    foreach ($c in $num, $logo, $bloc, $barre, $ms) { [void]$g.Children.Add($c) }
     $row.Child = $g
-    $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) })
+    if (-not $ok) { $row.Opacity = 0.55; $row.Cursor = 'Arrow' } else { $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) }) }
     $row
+}
+# Redessine la liste : rang par médiane croissante, le plus rapide encadré. Les lignes sans mesure restent à leur place.
+function Dns-Redessiner {
+    $Ctl.DnsListe.Children.Clear()
+    $mesures = @($Bagarre.DnsResultats | Where-Object { $null -ne $_.Mediane })
+    $max = 0.0
+    foreach ($r in $mesures) { if ([double]$r.Mediane -gt $max) { $max = [double]$r.Mediane } }
+    $tries = @($mesures | Sort-Object { [double]$_.Mediane })
+    $rangs = @{}
+    for ($k = 0; $k -lt $tries.Count; $k++) { $rangs[$tries[$k].Cle] = $k + 1 }
+    $meilleur = if ($tries.Count -gt 0 -and $tries.Count -eq $Bagarre.DnsResultats.Count) { $tries[0].Cle } else { $null }
+    for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) {
+        $r = $Bagarre.DnsResultats[$i]
+        [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $r $max $rangs[$r.Cle] ($r.Cle -eq $meilleur)))
+    }
+    Rafraichir
 }
 function Dns-Tester {
     $adapt = Dns-Carte
     if (-not $adapt) { Log $Bagarre.L.aucuneCarte; return }
     $Bagarre.DnsAdapt = $adapt
     $Ctl.DnsCarte.Text = $Bagarre.L.dnsCarte -f $adapt.Name, $adapt.InterfaceDescription, ((Dns-Actuels $adapt) -join ', ')
-    $Ctl.DnsListe.Children.Clear()
     Dns-Choisir -1
+    $Ctl.BtnDnsTester.IsEnabled = $false
     Log $Bagarre.L.dnsEnCours
-    $Bagarre.DnsResultats = @(Dns-Mesurer $adapt)
-    $max = 0.0
-    foreach ($r in $Bagarre.DnsResultats) { $v = 0.0; if ([double]::TryParse([string]$r.Mediane, [ref]$v) -and $v -gt $max) { $max = $v } }
-    for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) { [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $Bagarre.DnsResultats[$i] $max)) }
+    $Bagarre.DnsResultats = @()
+    foreach ($c in (Dns-Candidats $adapt)) {
+        if (-not $c.Serveurs[0]) { continue }
+        $Bagarre.DnsResultats += [pscustomobject]@{ Cle = $c.Cle; Nom = $c.Nom; Serveurs = $c.Serveurs; Mediane = $null; Actuel = ($c.Cle -eq 'actuel') }
+    }
+    Dns-Redessiner
+    foreach ($r in $Bagarre.DnsResultats) {
+        $r.Mediane = Dns-Mesurer-Un $r.Serveurs[0]
+        Log ("dns       {0,-20} {1,7} ms" -f $r.Nom, $r.Mediane)
+        Dns-Redessiner
+    }
+    $Ctl.BtnDnsTester.IsEnabled = $true
     Log $Bagarre.L.dnsFini
 }
 
@@ -3044,8 +3152,12 @@ function Appliquer-Langue {
     $Ctl.OptiEtiquette1.Text = $L.pourquoi; $Ctl.OptiEtiquette2.Text = $L.perds
     foreach ($g in $Groupes) {
         $g.Titre.Text = if ($Bagarre.Langue -eq 'en' -and $GroupesEn[$g.Nom]) { $GroupesEn[$g.Nom] } else { $g.Nom }
-        $g.Tout.Content = $L.tout; $g.Rien.Content = $L.rienBtn
     }
+    foreach ($cle in $PresetItems.Keys) {
+        $PresetItems[$cle].Content = $L["preset$($cle.Substring(0,1).ToUpper())$($cle.Substring(1))"]
+        $PresetItems[$cle].ToolTip = $L.presetTips[$cle]
+    }
+    $Ctl.PresetsLabel.Text = $L.preset
     $Ctl.FiltreIndice.Text = $L.filtrer
     foreach ($id in $Lignes.Keys) { Ligne-Libeller $id }
     foreach ($paire in @(@($Ctl.BtnFr, $Ctl.DrapeauFr, 'fr'), @($Ctl.BtnEn, $Ctl.DrapeauEn, 'en'))) {
