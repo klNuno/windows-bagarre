@@ -41,12 +41,10 @@ The pack does not know your PC. The audit takes a snapshot of it and hands it to
 
 ## 1. The report
 @BtnCollecter
-30 seconds, changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on your Desktop. No account name, no password, no license key. Open it anyway before sending it.
-
-## 2. The prompt
+Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on your Desktop, then copies the prompt to the clipboard. No account name, no password, no license key. Open the report anyway before sending it.
 @BtnPrompt, BtnDossierAudit
 
-## 3. Your AI
+## 2. Your AI
 - Terminal agent (Claude Code, Codex, Gemini CLI): open it in the bagarre-audit folder and paste the prompt. It reads the report by itself.
 - Web chat (ChatGPT, Claude.ai): paste the prompt, then attach rapport-pc.txt.
 A proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.
@@ -66,16 +64,11 @@ This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/
   needed (power management, filtering, V-Sync, G-Sync).
   AMD card instead: driver from AMD's site in minimal install, Anti-Lag on, Boost/Chill/AFMF off, instant replay and
   the Adrenalin overlay off, the rest at default.
-- Checkbox script bagarre.ps1, boxes ticked by default: useless services (telemetry, fax, demo, Edge update),
-  telemetry, CEIP and error reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI off,
-  Game DVR and PresenceWriter off, GlobalTimerResolutionRequests=1, MPO off (OverlayTestMode=5), mouse acceleration
-  off, hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off, drivers excluded from
-  Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card (power management,
-  EEE, LLDP/topology unticked, Interrupt Moderation Medium), comfort (classic right-click menu, End task in the
-  taskbar, Edge without Startup Boost, File Explorer, Communications "Do nothing").
-  Boxes unticked by default, to propose only with a reason specific to this PC: SvcHostSplitThreshold,
-  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
-  LLMNR off, clipboard, Dynamic Lighting, NVIDIA P0, core parking, Aggressive boost (Intel only).
+- Checkbox script bagarre.ps1 (list taken from this PC's catalogue). Boxes ticked by default, applied if the user
+  clicked Apply (the bagarre-avant.json section of the report says so):
+{{CASES_COCHEES}}
+  Boxes unticked by default, to propose only with a reason specific to this PC:
+{{CASES_DECOCHEES}}
 - DNS tested from the PC (eight resolvers), the fastest applied if the gap with the router was over 5 ms, with a
   fallback, DNS over HTTPS encryption and IPv6 when the connection has it.
 
@@ -85,7 +78,8 @@ DO NOT PROPOSE, IT IS DECIDED
 - BIOS settings: out of the pack's scope, only point them out.
 - "Ultimate performance" plan, prefetch/superfetch, "unlocking the 20% reserved bandwidth", LargeSystemCache,
   IRQ8Priority, mouse/keyboard data queues, TcpWindowSize, page file off, HPET, TdrLevel, IPv6 off, C-states off,
-  Interrupt Moderation Disabled, a timer resolution tool running in the background.
+  Interrupt Moderation Disabled, a timer resolution tool running in the background, Win32PrioritySeparation (0x26
+  gives the same split as the client default), SvcHostSplitThreshold, RawMouseThrottleDuration.
 - Disabling a service you are not sure about: NvContainer, Windows Audio, Themes, Cryptographic Services,
   Windows Time, Storage Service, Device Install, WMI stay.
 - A global NVIDIA or AMD setting that belongs per game (max performance, filtering, V-Sync, Smooth Motion).
@@ -189,7 +183,7 @@ Click until there is nothing left, reboot between each batch.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['en']['maintenance'] = @'
-For a PC installed months ago. Under each button, one sentence says what it opens.
+For a PC installed months ago.
 
 ## What starts on its own
 @BtnAutoruns
@@ -278,12 +272,10 @@ Le pack ne connaît pas ton PC. L'audit en prend une photo et la donne à une IA
 
 ## 1. Le rapport
 @BtnCollecter
-30 secondes, ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur ton Bureau. Ni nom de compte, ni mot de passe, ni clé de licence. Ouvre-le quand même avant de l'envoyer.
-
-## 2. Le prompt
+Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur ton Bureau, puis copie le prompt dans le presse-papiers. Ni nom de compte, ni mot de passe, ni clé de licence. Ouvre le rapport quand même avant de l'envoyer.
 @BtnPrompt, BtnDossierAudit
 
-## 3. Ton IA
+## 2. Ton IA
 - Agent en terminal (Claude Code, Codex, Gemini CLI) : ouvre-le dans le dossier bagarre-audit et colle le prompt. Il lit le rapport tout seul.
 - Chat web (ChatGPT, Claude.ai) : colle le prompt, puis joins rapport-pc.txt.
 Une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.
@@ -303,16 +295,11 @@ Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windo
   réglé jeu par jeu si besoin (gestion de l'alimentation, filtrage, V-Sync, G-Sync).
   Carte AMD à la place : pilote du site AMD en installation minimale, Anti-Lag activé, Boost/Chill/AFMF coupés,
   relecture instantanée et overlay Adrenalin coupés, le reste par défaut.
-- Script à cocher bagarre.ps1, cases cochées par défaut : services inutiles (télémétrie, fax, démo, Edge update),
-  télémétrie, CEIP et rapports d'erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés,
-  Game DVR et PresenceWriter coupés, GlobalTimerResolutionRequests=1, MPO coupé (OverlayTestMode=5), accélération
-  souris coupée, veille prolongée et démarrage rapide coupés, suspension USB, USB3 LPM, ASPM PCIe et minuteurs de
-  réveil coupés, pilotes exclus de Windows Update, Continuous Innovation refusé, menu F8, AutoRun coupé, ARSO coupé,
-  carte réseau (alimentation, EEE, LLDP/topologie décochés, Interrupt Moderation Medium), confort (menu clic droit
-  classique, Fin de tâche dans la barre, Edge sans Startup Boost, Explorateur, Communications "Ne rien faire").
-  Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC : SvcHostSplitThreshold,
-  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
-  LLMNR off, presse-papiers, Dynamic Lighting, P0 NVIDIA, core parking, boost Aggressive (Intel seulement).
+- Script à cocher bagarre.ps1 (liste tirée du catalogue de ce PC). Cases cochées par défaut, appliquées si
+  l'utilisateur a cliqué Appliquer (la section bagarre-avant.json du rapport le dit) :
+{{CASES_COCHEES}}
+  Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC :
+{{CASES_DECOCHEES}}
 - DNS testé depuis le PC (huit résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms, avec un
   secours, le chiffrement DNS over HTTPS et l'IPv6 quand la connexion en a.
 
@@ -322,7 +309,8 @@ NE PROPOSE PAS, C'EST DÉCIDÉ
 - Réglages BIOS : hors de portée du pack, signale seulement.
 - Plan "Ultimate performance", prefetch/superfetch, "débrider les 20 % de bande passante", LargeSystemCache,
   IRQ8Priority, files d'attente souris/clavier, TcpWindowSize, fichier d'échange coupé, HPET, TdrLevel, IPv6 off,
-  C-states off, Interrupt Moderation Disabled, outil de timer resolution en fond.
+  C-states off, Interrupt Moderation Disabled, outil de timer resolution en fond, Win32PrioritySeparation (0x26
+  donne le même découpage que le défaut client), SvcHostSplitThreshold, RawMouseThrottleDuration.
 - Désactiver un service dont tu n'es pas sûr : NvContainer, Windows Audio, Themes, Cryptographic Services,
   Windows Time, Storage Service, Device Install, WMI restent.
 - Un réglage NVIDIA ou AMD en global qui se règle jeu par jeu (performances max, filtrage, V-Sync, Smooth Motion).
@@ -426,7 +414,7 @@ Tu cliques jusqu'à ce qu'il n'y ait plus rien, redémarre entre chaque série.
 @BtnPeripheriques, BtnSnappy
 '@
 $Textes['fr']['maintenance'] = @'
-Pour un PC installé depuis des mois. Sous chaque bouton, une phrase dit ce qu'il ouvre.
+Pour un PC installé depuis des mois.
 
 ## Ce qui se lance tout seul
 @BtnAutoruns
@@ -516,7 +504,7 @@ $ErrorActionPreference = 'Continue'
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
 # Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
-$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @() }
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @(); RelancerExplorer = $false }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : les images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, elles sont ouvertes depuis $Depot.
@@ -564,7 +552,7 @@ $Messages = @{
         rienRestaurer = 'Rien à restaurer : bagarre-avant.json est vide.'; restauration = 'Restauration de {0} réglages...'
         restaure = 'restauré  {0}'; echecRestauration = 'ÉCHEC restauration {0} : {1}'; finRestauration = 'Terminé. Redémarre pour que tout reprenne effet.'
         rienCoche = 'Rien de coché.'; application = 'Application de {0} réglages...'; echecItem = 'ÉCHEC {0} : {1}'
-        finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
+        finApplication = 'Terminé. Les valeurs d''avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
         rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
         consoleOk = 'Terminé sans erreur, cette console se ferme.'; consoleErreur = 'Il y a eu une erreur, lis ce qui est au-dessus. Entrée pour fermer.'
         consoleFini = 'Terminé.'; consoleOccupee = 'La console est encore occupée, celle-ci part dans sa propre fenêtre.'
@@ -806,20 +794,24 @@ function Logo-Image($nom) {
 # l'enregistrement Defender qui attend Entrée) gardent leur console à part.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
 $Bagarre.ConsoleN = 0
+
+# Un texte posé entre apostrophes dans le script d'une console : l'apostrophe s'y double.
+function Echapper($texte) { ([string]$texte) -replace "'", "''" }
+
 function Console-Lancer($titre, $commande, [switch]$Fermer, [switch]$Ici) {
     $Bagarre.ConsoleN++
     if ($Ici -and $Bagarre.ConsoleProc -and -not $Bagarre.ConsoleProc.HasExited) { Log (Msg 'consoleOccupee'); $Ici = $false }
     $fin = if ($Ici) {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleFini')' -ForegroundColor Green }`r`nWrite-Host ''"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleFini'))' -ForegroundColor Green }`r`nWrite-Host ''"
     } elseif ($Fermer) {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleOk')' -ForegroundColor Green; Start-Sleep 2 }"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleOk'))' -ForegroundColor Green; Start-Sleep 2 }"
     } else {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow }"
     }
-    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`n" }
+    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $(Echapper $titre)'`r`n" }
     $texte = @"
 ${entete}Write-Host ''
-Write-Host '  $titre' -ForegroundColor Cyan
+Write-Host '  $(Echapper $titre)' -ForegroundColor Cyan
 Write-Host ''
 `$Echec = `$false
 try {
@@ -847,6 +839,24 @@ function Winget-Installer($titre, [string[]]$ids, $source) {
     Console-Lancer $titre $cmd -Fermer
 }
 
+# Raccourci sur le Bureau public et dans le menu Démarrer de tous les comptes, pour les outils posés sans raccourci
+# (ISLC par winget, Snappy par zip). Le Bureau public reste visible même si l'élévation s'est faite avec un autre compte.
+# Ce code est collé en tête du script de console, qui tourne dans son propre processus.
+$RaccourciCode = @'
+function Raccourci($nom, $exe) {
+    $shell = New-Object -ComObject WScript.Shell
+    foreach ($dossier in [Environment]::GetFolderPath('CommonDesktopDirectory'), [Environment]::GetFolderPath('CommonPrograms')) {
+        $chemin = Join-Path $dossier "$nom.lnk"
+        $lien = $shell.CreateShortcut($chemin)
+        $lien.TargetPath = $exe
+        $lien.WorkingDirectory = Split-Path -Parent $exe
+        $lien.IconLocation = "$exe,0"
+        $lien.Save()
+        Write-Host "  -> $chemin"
+    }
+}
+'@
+
 # ===== 10-catalogue.ps1 =====
 $Items = New-Object System.Collections.ArrayList
 
@@ -865,7 +875,7 @@ Ajouter $G 'svc-telemetrie' 'Télémétrie Microsoft (DiagTrack, dmwappushservic
     Service-Couper 'dmwappushservice' 'routage télémétrie'
 }
 Ajouter $G 'svc-geoloc' 'Géolocalisation (lfsvc)' `
-    'Position GPS pour les applis du Store. Un PC fixe ne bouge pas.' $true 'Les applis météo / cartes ne te localisent plus.' {
+    'Position GPS pour les applis du Store. Un PC fixe ne bouge pas.' $true 'Les applis météo / cartes ne te localisent plus, et le fuseau horaire automatique ne marche plus : règle-le une fois dans Paramètres > Heure et langue.' {
     Service-Couper 'lfsvc' 'géolocalisation'
 }
 Ajouter $G 'svc-phone' 'Téléphonie (PhoneSvc)' `
@@ -873,19 +883,19 @@ Ajouter $G 'svc-phone' 'Téléphonie (PhoneSvc)' `
     Service-Couper 'PhoneSvc' 'téléphonie'
 }
 Ajouter $G 'svc-maps' 'Cartes hors ligne (MapsBroker)' `
-    'Télécharge des cartes pour l appli Cartes. Personne ne l utilise.' $true '' {
+    'Télécharge des cartes pour l''appli Cartes. Personne ne l''utilise.' $true '' {
     Service-Couper 'MapsBroker' 'cartes hors ligne'
 }
 Ajouter $G 'svc-demo' 'Mode démo magasin (RetailDemo)' `
     'Le mode vitrine des PC en rayon.' $true '' {
     Service-Couper 'RetailDemo' 'mode démo'
 }
-Ajouter $G 'svc-wer' 'Rapport d erreurs Windows (WerSvc)' `
-    'Envoie un rapport à Microsoft quand un programme plante.' $true 'Plus de rapport automatique quand une appli plante (tu peux toujours lire l Observateur d événements).' {
-    Service-Couper 'WerSvc' 'rapport d erreurs'
+Ajouter $G 'svc-wer' 'Rapport d''erreurs Windows (WerSvc)' `
+    'Envoie un rapport à Microsoft quand un programme plante.' $true 'Plus de rapport automatique quand une appli plante (tu peux toujours lire l''Observateur d''événements).' {
+    Service-Couper 'WerSvc' 'rapport d''erreurs'
 }
 Ajouter $G 'svc-fax' 'Fax' `
-    'On est en 2026.' $true '' {
+    'Le service d''envoi de fax par modem. Un PC de jeu n''a pas de modem fax.' $true '' {
     Service-Couper 'Fax' 'fax'
 }
 Ajouter $G 'svc-compat' 'Assistant compatibilité des programmes (PcaSvc)' `
@@ -893,13 +903,13 @@ Ajouter $G 'svc-compat' 'Assistant compatibilité des programmes (PcaSvc)' `
     Service-Couper 'PcaSvc' 'assistant compatibilité'
 }
 Ajouter $G 'svc-xbox' 'Services Xbox (XblAuthManager, XblGameSave, XboxNetApiSvc)' `
-    'Connexion Xbox Live, sauvegardes cloud Xbox, réseau Xbox.' $false 'Game Pass PC, l appli Xbox et les jeux Microsoft Store ne se connectent plus. Laisse décoché si tu joues à un jeu Xbox / Game Pass.' {
+    'Connexion Xbox Live, sauvegardes cloud Xbox, réseau Xbox.' $false 'Game Pass PC, l''appli Xbox et les jeux Microsoft Store ne se connectent plus. Laisse décoché si tu joues à un jeu Xbox / Game Pass.' {
     Service-Couper 'XblAuthManager' 'auth Xbox Live'
     Service-Couper 'XblGameSave' 'sauvegardes Xbox'
     Service-Couper 'XboxNetApiSvc' 'réseau Xbox'
 }
 Ajouter $G 'svc-edge' 'Mises à jour Edge en fond (edgeupdate, edgeupdatem)' `
-    'Deux services qui vérifient Edge toutes les heures. Edge se met à jour tout seul à l ouverture de toute façon.' $true '' {
+    'Deux services qui vérifient Edge toutes les heures. Edge se met à jour tout seul à l''ouverture de toute façon.' $true '' {
     Service-Couper 'edgeupdate' 'maj Edge'
     Service-Couper 'edgeupdatem' 'maj Edge (machine)'
 }
@@ -908,11 +918,11 @@ Ajouter $G 'svc-wmp' 'Partage réseau Windows Media Player (WMPNetworkSvc)' `
     Service-Couper 'WMPNetworkSvc' 'partage WMP'
 }
 Ajouter $G 'svc-insider' 'Programme Windows Insider (wisvc)' `
-    'Ne sert qu à recevoir les versions bêta de Windows.' $true '' {
+    'Ne sert qu''à recevoir les versions bêta de Windows.' $true '' {
     Service-Couper 'wisvc' 'Windows Insider'
 }
 Ajouter $G 'svc-diag' 'Diagnostics automatiques (DPS, WdiServiceHost, WdiSystemHost)' `
-    'Les utilitaires de résolution de problèmes automatiques. Ils tournent en permanence pour un usage très rare.' $true 'Le bouton Résoudre les problèmes dans les paramètres ne marchera plus tant que c est coupé.' {
+    'Les utilitaires de résolution de problèmes automatiques. Ils tournent en permanence pour un usage très rare.' (-not $EstPortable) 'Le bouton Résoudre les problèmes dans les paramètres ne marchera plus tant que c''est coupé. Les pages Utilisation de la batterie et Utilisation des données restent vides : leur compteur (SRUM) tourne dans ce service.' {
     Service-Couper 'DPS' 'diagnostic policy'
     Service-Couper 'WdiServiceHost' 'diagnostic host'
     Service-Couper 'WdiSystemHost' 'diagnostic system host'
@@ -921,40 +931,32 @@ Ajouter $G 'svc-cdp' 'Plateforme appareils connectés (CDPSvc)' `
     'Partage de proximité, Phone Link, continuité entre appareils.' $true 'Partage de proximité et Phone Link ne marchent plus.' {
     Service-Couper 'CDPSvc' 'appareils connectés'
 }
-Ajouter $G 'svc-imprimante' 'Spouleur d impression (Spooler)' `
-    'Gère les imprimantes. Sans imprimante, il tourne pour rien.' $false 'Tu ne peux plus imprimer, même en PDF. Coche seulement si tu n as jamais d imprimante.' {
+Ajouter $G 'svc-imprimante' 'Spouleur d''impression (Spooler)' `
+    'Gère les imprimantes. Sans imprimante, il tourne pour rien.' $false 'Tu ne peux plus imprimer, même en PDF. Coche seulement si tu n''as jamais d''imprimante.' {
     Service-Couper 'Spooler' 'impression'
 }
 Ajouter $G 'svc-recherche' 'Indexation de la recherche (WSearch)' `
-    'Construit un index de tes fichiers pour que la recherche du menu Démarrer soit instantanée. Sur SSD, l indexation coûte très peu.' $false 'La recherche de fichiers dans Démarrer et l Explorateur devient lente. Outlook aussi.' {
+    'Construit un index de tes fichiers pour que la recherche du menu Démarrer soit instantanée. Sur SSD, l''indexation coûte très peu.' $false 'La recherche de fichiers dans Démarrer et l''Explorateur devient lente. Outlook aussi.' {
     Service-Couper 'WSearch' 'indexation'
 }
 Ajouter $G 'svc-sysmain' 'SysMain (ex Superfetch)' `
     ('Précharge en RAM les programmes que tu lances souvent. Sur SSD il ne gêne pas, sur disque dur il peut faire ramer. ' + $(if ($EstHdd) { 'Ton disque système est un HDD : coche.' } else { 'Ton disque système est un SSD : laisse.' })) $EstHdd 'Les lancements de programmes ne sont plus préchargés.' {
     Service-Couper 'SysMain' 'sysmain'
 }
-Ajouter $G 'svc-bits' 'Transfert en arrière-plan (BITS)' `
-    'Télécharge les mises à jour Windows et du Store discrètement en fond.' $false 'Windows Update, le Microsoft Store et les définitions Defender ne se téléchargent plus. Franchement, ne coche pas.' {
-    Service-Couper 'BITS' 'BITS'
-}
 Ajouter $G 'svc-bluetooth' 'Bluetooth (bthserv, BTAGService)' `
-    'Tout ce qui est Bluetooth.' $false 'Plus aucun appareil Bluetooth : casque, manette, souris. Coche uniquement si tu n en as aucun.' {
+    'Tout ce qui est Bluetooth.' $false 'Plus aucun appareil Bluetooth : casque, manette, souris. Coche uniquement si tu n''en as aucun.' {
     Service-Couper 'bthserv' 'bluetooth'
     Service-Couper 'BTAGService' 'bluetooth audio'
 }
 Ajouter $G 'svc-delivery' 'Optimisation de la distribution : ne plus envoyer les mises à jour aux inconnus' `
-    'Par défaut ton PC renvoie les mises à jour Windows qu il a téléchargées à d autres PC sur internet (du peer-to-peer). Ça prend de l upload pendant que tu joues. On garde le téléchargement, on coupe l envoi.' $true '' {
+    'Par défaut ton PC renvoie les mises à jour Windows qu''il a téléchargées à d''autres PC sur internet (du peer-to-peer). Ça prend de l''upload pendant que tu joues. On garde le téléchargement, on coupe l''envoi.' $true '' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization' 'DODownloadMode' 0
-}
-Ajouter $G 'svc-hyperv' 'Services invité Hyper-V (vmic*)' `
-    'Ne servent que si Windows tourne DANS une machine virtuelle Hyper-V. Sur un vrai PC ils ne démarrent jamais, les couper ne change rien.' $false '' {
-    foreach ($s in 'HvHost', 'vmickvpexchange', 'vmicguestinterface', 'vmicshutdown', 'vmicheartbeat', 'vmicvmsession', 'vmicrdv', 'vmictimesync', 'vmicvss') { Service-Couper $s 'Hyper-V invité' }
 }
 
 # ----- Vie privée : ce que Windows envoie et affiche sans te demander ----------
 $G = 'Vie privée et pubs'
-Ajouter $G 'priv-telemetrie' 'Télémétrie au minimum (AllowTelemetry, CEIP, rapports d erreur, PowerShell)' `
-    'Règle le niveau de données envoyées à Microsoft au plus bas. Honnêtement : sur Famille et Pro, AllowTelemetry=0 vaut 1 (le niveau "requis" reste), seules les éditions Entreprise et Éducation coupent tout. On coupe aussi le programme d amélioration (CEIP), l envoi des rapports de plantage, les demandes d avis et la télémétrie de PowerShell.' $true 'Les rapports de plantage ne partent plus chez Microsoft (ils restent lisibles dans l Observateur d événements).' {
+Ajouter $G 'priv-telemetrie' 'Télémétrie au minimum (AllowTelemetry, CEIP, rapports d''erreur, PowerShell)' `
+    'Règle le niveau de données envoyées à Microsoft au plus bas. Honnêtement : sur Famille et Pro, AllowTelemetry=0 vaut 1 (le niveau "requis" reste), seules les éditions Entreprise et Éducation coupent tout. On coupe aussi le programme d''amélioration (CEIP), l''envoi des rapports de plantage, les demandes d''avis et la télémétrie de PowerShell.' $true 'Les rapports de plantage ne partent plus chez Microsoft (ils restent lisibles dans l''Observateur d''événements).' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection' 'AllowTelemetry' 0
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection' 'AllowDeviceNameInTelemetry' 0
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection' 'LimitDiagnosticLogCollection' 1
@@ -973,7 +975,7 @@ Ajouter $G 'priv-telemetrie' 'Télémétrie au minimum (AllowTelemetry, CEIP, ra
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' 'EnableActivityFeed' 0
 }
 Ajouter $G 'priv-pub' 'Identifiant publicitaire, suggestions, section "Recommandé" de Démarrer, bouton Chat' `
-    'Coupe l ID de pub, les suggestions dans Démarrer et sa section "Recommandé", les conseils sur l écran de verrouillage, les pubs dans l Explorateur, l installation silencieuse d applis sponsorisées, les illustrations qui tournent dans la barre de recherche, le bouton Chat (Teams) de la barre des tâches et les astuces en ligne dans Paramètres.' $true 'La section "Recommandé" de Démarrer devient vide (les fichiers récents restent dans l Explorateur).' {
+    'Coupe l''ID de pub, les suggestions dans Démarrer et sa section "Recommandé", les conseils sur l''écran de verrouillage, les pubs dans l''Explorateur, l''installation silencieuse d''applis sponsorisées, les illustrations qui tournent dans la barre de recherche, le bouton Chat (Teams) de la barre des tâches et les astuces en ligne dans Paramètres.' $true 'La section "Recommandé" de Démarrer devient vide (les fichiers récents restent dans l''Explorateur).' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo' 'Enabled' 0
     Reg-Ecrire 'HKCU:\Control Panel\International\User Profile' 'HttpAcceptLanguageOptOut' 1
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced' 'Start_TrackProgs' 0
@@ -1007,12 +1009,12 @@ Ajouter $G 'priv-saisie' 'Personnalisation de la saisie et de la voix' `
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Input\Settings' 'InsightsEnabled' 0
 }
 Ajouter $G 'priv-fond' 'Applis du Store en arrière-plan' `
-    'Empêche les applis du Store de tourner quand elles sont fermées.' $true 'Les notifications de ces applis (Mail, Météo) n arrivent plus tant qu elles sont fermées.' {
+    'Empêche les applis du Store de tourner quand elles sont fermées.' $true 'Les notifications de ces applis (Mail, Météo) n''arrivent plus tant qu''elles sont fermées.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications' 'GlobalUserDisabled' 1
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search' 'BackgroundAppGlobalToggle' 0
 }
-Ajouter $G 'priv-copilot' 'Couper Copilot, Recall, Click to Do, les Widgets et l IA de Bloc-notes / Paint' `
-    'Copilot et les Widgets sont des processus qui restent en mémoire. Recall, quand il est actif, prend une capture d écran toutes les quelques secondes et l indexe : CPU et disque en permanence. Click to Do analyse l écran à la demande. Les stratégies AllowRecallEnablement et DisableClickToDo sont celles documentées par Microsoft (policy CSP WindowsAI, 2025). On passe aussi le service de la pile IA (WSAIFabricSvc) en manuel et on coupe les boutons IA de Bloc-notes et Paint.' $true 'Plus de Copilot, plus de Recall, plus de Click to Do (Win+clic), plus de panneau météo / actus, plus de "Réécrire" dans le Bloc-notes ni de Cocreator dans Paint.' {
+Ajouter $G 'priv-copilot' 'Couper Copilot, Recall, Click to Do, les Widgets et l''IA de Bloc-notes / Paint' `
+    'Copilot et les Widgets sont des processus qui restent en mémoire. Recall, quand il est actif, prend une capture d''écran toutes les quelques secondes et l''indexe : CPU et disque en permanence. Click to Do analyse l''écran à la demande. Les stratégies AllowRecallEnablement et DisableClickToDo sont celles documentées par Microsoft (policy CSP WindowsAI, 2025). On passe aussi le service de la pile IA (WSAIFabricSvc) en manuel et on coupe les boutons IA de Bloc-notes et Paint.' $true 'Plus de Copilot, plus de Recall, plus de Click to Do (Win+clic), plus de panneau météo / actus, plus de "Réécrire" dans le Bloc-notes ni de Cocreator dans Paint.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot' 'TurnOffWindowsCopilot' 1
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' 'DisableAIDataAnalysis' 1
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' 'AllowRecallEnablement' 0
@@ -1040,19 +1042,19 @@ Ajouter $G 'priv-taches' 'Tâches planifiées de télémétrie (Compatibility Ap
     Tache-Couper '\Microsoft\Windows\Maps\' 'MapsUpdateTask'
     Tache-Couper '\Microsoft\Windows\Autochk\' 'Proxy'
 }
-Ajouter $G 'priv-assistance' 'Couper l Assistance à distance' `
-    'Permet à quelqu un de prendre la main sur ton PC via Windows. Personne ne s en sert, et c est une porte de moins.' $true 'Le bouton "Assistance rapide" Windows ne marche plus (Discord, AnyDesk, Parsec ne sont pas concernés).' {
+Ajouter $G 'priv-assistance' 'Couper l''Assistance à distance' `
+    'Permet à quelqu un de prendre la main sur ton PC via Windows. Personne ne s''en sert, et c''est une porte de moins.' $true 'Le bouton "Assistance rapide" Windows ne marche plus (Discord, AnyDesk, Parsec ne sont pas concernés).' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Remote Assistance' 'fAllowToGetHelp' 0
 }
 Ajouter $G 'priv-sync' 'Synchronisation des paramètres avec le compte Microsoft' `
-    'Arrête d envoyer thème, mots de passe et paramètres sur le cloud Microsoft.' $true 'Tes paramètres ne suivent plus sur un autre PC connecté au même compte.' {
+    'Arrête d''envoyer thème, mots de passe et paramètres sur le cloud Microsoft.' $true 'Tes paramètres ne suivent plus sur un autre PC connecté au même compte.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SettingSync' 'SyncPolicy' 5
     foreach ($g in 'Personalization', 'BrowserSettings', 'Credentials', 'Accessibility', 'Windows') {
         Reg-Ecrire "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SettingSync\Groups\$g" 'Enabled' 0
     }
 }
-Ajouter $G 'priv-autorun' 'Couper l exécution automatique des clés USB et disques (AutoRun / AutoPlay)' `
-    'Une clé branchée ne lance plus rien toute seule. C est la recommandation de sécurité de base de Microsoft depuis 2011, encore ouverte par défaut pour la fenêtre "que voulez-vous faire ?".' $true 'Plus de fenêtre automatique quand tu branches une clé ou un téléphone : tu l ouvres depuis l Explorateur.' {
+Ajouter $G 'priv-autorun' 'Couper l''exécution automatique des clés USB et disques (AutoRun / AutoPlay)' `
+    'Une clé branchée ne lance plus rien toute seule. C est la recommandation de sécurité de base de Microsoft depuis 2011, encore ouverte par défaut pour la fenêtre "que voulez-vous faire ?".' $true 'Plus de fenêtre automatique quand tu branches une clé ou un téléphone : tu l''ouvres depuis l''Explorateur.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' 'NoDriveTypeAutoRun' 255
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' 'NoAutorun' 1
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' 'NoAutoplayfornonVolume' 1
@@ -1065,8 +1067,8 @@ Ajouter $G 'priv-metadata' 'Ne plus télécharger les fiches et icônes des pér
     'Chaque périphérique branché déclenche un téléchargement de son icône et de sa fiche depuis Microsoft. Purement cosmétique dans "Périphériques et imprimantes".' $false 'Les périphériques ont une icône générique.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Device Metadata' 'PreventDeviceMetadataFromNetwork' 1
 }
-Ajouter $G 'priv-presse-papiers' 'Couper l historique du presse-papiers (Win+V) et sa synchro cloud' `
-    'Windows garde en mémoire tout ce que tu copies, mots de passe compris, et peut l envoyer sur ton compte Microsoft.' $false 'Plus de Win+V. Si tu t en sers, laisse décoché : seule la synchro cloud mérite d être coupée, et c est dans Paramètres > Système > Presse-papiers.' {
+Ajouter $G 'priv-presse-papiers' 'Couper l''historique du presse-papiers (Win+V) et sa synchro cloud' `
+    'Windows garde en mémoire tout ce que tu copies, mots de passe compris, et peut l''envoyer sur ton compte Microsoft.' $false 'Plus de Win+V. Si tu t''en sers, laisse décoché : seule la synchro cloud mérite d''être coupée, et c''est dans Paramètres > Système > Presse-papiers.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' 'AllowClipboardHistory' 0
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' 'AllowCrossDeviceClipboard' 0
 }
@@ -1080,29 +1082,25 @@ Ajouter $G 'jeu-dvr' 'Couper Game DVR (enregistrement en fond de la Game Bar)' `
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR' 'AllowGameDVR' 0
 }
 Ajouter $G 'jeu-presence' 'Couper le GameBarPresenceWriter (le processus qui reste après avoir coupé la Game Bar)' `
-    'Même Game Bar coupée, un petit processus "Game Bar Presence Writer" se lance à chaque jeu pour dire au Xbox network à quoi tu joues. On désactive sa classe COM (ActivationType = 0) : il ne se lance plus. On ne renomme jamais l exécutable, une mise à jour le remettrait et casserait la Game Bar.' $true 'Tes amis Xbox ne voient plus "joue à ...". La Game Bar (Win+G) marche toujours.' {
+    'Même Game Bar coupée, un petit processus "Game Bar Presence Writer" se lance à chaque jeu pour dire au Xbox network à quoi tu joues. On désactive sa classe COM (ActivationType = 0) : il ne se lance plus. On ne renomme jamais l''exécutable, une mise à jour le remettrait et casserait la Game Bar.' $true 'Tes amis Xbox ne voient plus "joue à ...". La Game Bar (Win+G) marche toujours.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter' 'ActivationType' 0
 }
-Ajouter $G 'jeu-svchost' ("Regrouper les services système (SvcHostSplitThreshold, détecté $RamGo Go de RAM)") `
-    'Depuis Windows 10, chaque service a son propre processus dès que tu as plus de 3,5 Go de RAM. En montant le seuil à ta RAM réelle, ils se regroupent comme avant : moins de processus dans le Gestionnaire des tâches. Verdict après relecture : placebo, personne n a mesuré un gain de FPS ni de RAM significatif (quelques dizaines de Mo). Décoché par défaut, coche si tu aimes un Gestionnaire des tâches plus court.' $false 'Un service qui plante entraîne les autres du même processus avec lui, comme sur Windows 7.' {
-    Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control' 'SvcHostSplitThresholdInKB' ($RamGo * 1024 * 1024)
-}
 Ajouter $G 'jeu-timer' 'Autoriser la résolution de timer fine pour les jeux (GlobalTimerResolutionRequests)' `
-    'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. Un jeu qui demande un timer fin le garde même quand une autre fenêtre passe devant.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
+    'Depuis Windows 11, une appli qui demande un timer à 0,5 ms ne l''obtient que pour elle-même et seulement au premier plan. Cette clé rétablit le comportement Windows 10 : la demande vaut pour tout le système. Un jeu qui demande un timer fin le garde même quand une autre fenêtre passe devant.' $true 'Consommation au repos très légèrement plus haute quand un programme demande un timer fin.' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel' 'GlobalTimerResolutionRequests' 1
 }
 Ajouter $G 'jeu-mpo' 'Couper le Multiplane Overlay (MPO, OverlayTestMode = 5)' `
-    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. La clé vient de cette case et pas de NVCleanstall, pour que Tout remettre puisse la rendre.' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
+    'Le MPO laisse la carte graphique dessiner certaines fenêtres directement, sans passer par le compositeur de Windows (DWM). C est lui derrière les écrans noirs, les scintillements et les saccades en fenêtré que NVIDIA documente (article 5157, 2022) et que les cartes AMD connaissent aussi. Coupé, DWM compose tout : zéro effet en plein écran, plus de surprise en fenêtré ou en multi-écran. La clé vient de cette case et pas de NVCleanstall, pour que Tout remettre puisse la rendre.' $true 'Une vidéo en fenêtre coûte un peu plus de GPU (plus d''overlay matériel). Sur 24H2 et plus, Windows ignore parfois la clé : dans ce cas rien ne change.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\Dwm' 'OverlayTestMode' 5
 }
-Ajouter $G 'jeu-souris' 'Couper l accélération de la souris (Améliorer la précision du pointeur)' `
-    'Avec l accélération, la distance parcourue par le curseur dépend de la vitesse du geste : le même mouvement de main ne donne jamais le même mouvement à l écran. Ta mémoire musculaire ne peut rien apprendre. Tout joueur la coupe, c est la première chose à faire.' $true 'Le curseur demande un peu plus de mouvement de main sur le bureau. Monte le DPI de la souris si besoin.' {
+Ajouter $G 'jeu-souris' 'Couper l''accélération de la souris (Améliorer la précision du pointeur)' `
+    'Avec l''accélération, la distance parcourue par le curseur dépend de la vitesse du geste : le même mouvement de main ne donne jamais le même mouvement à l''écran. Ta mémoire musculaire ne peut rien apprendre. Tout joueur la coupe, c''est la première chose à faire.' $true 'Le curseur demande un peu plus de mouvement de main sur le bureau. Monte le DPI de la souris si besoin.' {
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseSpeed' '0' 'String'
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseThreshold1' '0' 'String'
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseThreshold2' '0' 'String'
 }
 Ajouter $G 'jeu-hiber' 'Couper la mise en veille prolongée et le démarrage rapide' `
-    'Libère hiberfil.sys (plusieurs Go) et force un vrai redémarrage à chaque boot au lieu de recharger une image figée. Un vrai boot évite les pilotes qui se retrouvent dans un état bizarre après une mise à jour.' $true 'Plus de mise en veille prolongée (la veille simple reste).' {
+    'Libère hiberfil.sys (plusieurs Go) et force un vrai redémarrage à chaque boot au lieu de recharger une image figée. Un vrai boot évite les pilotes qui se retrouvent dans un état bizarre après une mise à jour.' (-not $EstPortable) 'Plus de mise en veille prolongée (la veille simple reste). Sur portable, la veille ne bascule plus en veille prolongée : la batterie se vide si le PC dort longtemps.' {
     Memoriser 'cmd|hibernation' @{ actif = ((powercfg /a) -match 'Mise en veille prolongée|Hibernate' | Where-Object { $_ -notmatch 'non disponible|not available' }).Count -gt 0 }
     powercfg /h off | Out-Null
     Log 'alim      hibernation et démarrage rapide coupés'
@@ -1112,34 +1110,34 @@ Ajouter $G 'jeu-parking' 'Désactiver le core parking' `
     Powercfg-Regler 'SUB_PROCESSOR' 'CPMINCORES' 100 'cœurs minimum actifs (%)'
 }
 Ajouter $G 'jeu-usb' 'Couper la suspension sélective USB' `
-    'Windows éteint les ports USB inactifs pour économiser 0,1 W. Une souris ou un clavier qui se rendort peut mettre quelques millisecondes à répondre. Sur PC fixe, aucun intérêt à économiser.' (-not $EstPortable) 'Sur portable, un peu moins d autonomie.' {
+    'Windows éteint les ports USB inactifs pour économiser 0,1 W. Une souris ou un clavier qui se rendort peut mettre quelques millisecondes à répondre. Sur PC fixe, aucun intérêt à économiser.' (-not $EstPortable) 'Sur portable, un peu moins d''autonomie.' {
     Powercfg-Regler '2a737441-1930-4402-8d77-b2bebba308a3' '48e6b7a6-50f5-4782-a5d4-53bb50f7e1e4' 0 'suspension sélective USB'
 }
-Ajouter $G 'jeu-pcie' 'Couper l économie d énergie PCI Express (ASPM)' `
-    'Le lien PCIe de la carte graphique et du SSD peut passer en basse consommation au repos, avec un délai de réveil. Sur PC fixe, on laisse le lien toujours ouvert.' (-not $EstPortable) 'Sur portable, un peu moins d autonomie.' {
+Ajouter $G 'jeu-pcie' 'Couper l''économie d''énergie PCI Express (ASPM)' `
+    'Le lien PCIe de la carte graphique et du SSD peut passer en basse consommation au repos, avec un délai de réveil. Sur PC fixe, on laisse le lien toujours ouvert.' (-not $EstPortable) 'Sur portable, un peu moins d''autonomie.' {
     Powercfg-Regler '501a4d13-42af-4429-9fd1-a8218c268e20' 'ee12f906-d277-404b-b6da-e5fa1a576df5' 0 'PCIe link state'
 }
 Ajouter $G 'jeu-reveil' 'Interdire aux minuteurs de réveil de sortir le PC de veille' `
-    'Windows Update et certaines tâches peuvent réveiller le PC en pleine nuit pour faire leur travail. On coupe les minuteurs de réveil dans le plan d alimentation actif.' $true 'Le PC ne se réveille plus tout seul pour une mise à jour : elle se fera quand tu l allumes.' {
+    'Windows Update et certaines tâches peuvent réveiller le PC en pleine nuit pour faire leur travail. On coupe les minuteurs de réveil dans le plan d''alimentation actif.' $true 'Le PC ne se réveille plus tout seul pour une mise à jour : elle se fera quand tu l''allumes.' {
     Powercfg-Regler '238c9fa8-0aad-41ed-83f4-97be242c8f20' 'bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d' 0 'minuteurs de réveil'
 }
-Ajouter $G 'jeu-usb3' 'Couper la gestion d énergie des liens USB 3 (Link Power Management)' `
-    'Comme la suspension sélective mais pour la couche USB 3 : le lien passe en basse consommation entre deux transferts. Un disque externe ou une manette USB peut caler une fraction de seconde au réveil. Sur fixe on garde le lien à fond.' (-not $EstPortable) 'Sur portable, un peu moins d autonomie.' {
+Ajouter $G 'jeu-usb3' 'Couper la gestion d''énergie des liens USB 3 (Link Power Management)' `
+    'Comme la suspension sélective mais pour la couche USB 3 : le lien passe en basse consommation entre deux transferts. Un disque externe ou une manette USB peut caler une fraction de seconde au réveil. Sur fixe on garde le lien à fond.' (-not $EstPortable) 'Sur portable, un peu moins d''autonomie.' {
     Powercfg-Regler '2a737441-1930-4402-8d77-b2bebba308a3' 'd4e98f31-5ffe-4ce1-be31-1b38b384c009' 0 'USB 3 Link Power Management'
 }
 if ($EstHdd) {
     Ajouter $G 'jeu-hdd' 'Ne jamais arrêter le disque dur (détecté : disque système HDD)' `
-        'Windows arrête le disque dur après 20 minutes sans accès, et le relancer prend 2 à 5 secondes de blocage. Sur un HDD on garde le plateau en rotation.' $true 'Le disque tourne en permanence : un poil plus de bruit et d usure.' {
+        'Windows arrête le disque dur après 20 minutes sans accès, et le relancer prend 2 à 5 secondes de blocage. Sur un HDD on garde le plateau en rotation.' $true 'Le disque tourne en permanence : un poil plus de bruit et d''usure.' {
         Powercfg-Regler '0012ee47-9041-4b5d-9b77-535fba8b1442' '6738e2c4-e8a5-4a42-b16a-e040e769756e' 0 'arrêt du disque dur'
     }
 }
-Ajouter $G 'jeu-pilotes' 'Empêcher Windows Update d écraser tes pilotes' `
-    'Windows Update installe parfois un pilote graphique plus vieux ou générique par-dessus celui que tu as posé (NVCleanstall, AMD). Cette clé garde la main.' $true 'Windows ne mettra plus aucun pilote à jour tout seul, c est toi qui les gères (Snappy, constructeur).' {
+Ajouter $G 'jeu-pilotes' 'Empêcher Windows Update d''écraser tes pilotes' `
+    'Windows Update installe parfois un pilote graphique plus vieux ou générique par-dessus celui que tu as posé (NVCleanstall, AMD). Cette clé garde la main.' $true 'Windows ne mettra plus aucun pilote à jour tout seul, c''est toi qui les gères (Snappy, constructeur).' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DriverSearching' 'SearchOrderConfig' 0
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate' 'ExcludeWUDriversInQualityUpdate' 1
 }
 Ajouter $G 'jeu-nouveautes' 'Ne plus recevoir les nouveautés Windows en avance (Continuous Innovation)' `
-    'Windows 11 propose "les dernières mises à jour dès qu elles sont disponibles" : ce sont les nouvelles fonctions poussées avant leur sortie officielle, celles qui cassent le plus souvent un pilote ou un anti-cheat. On reste sur les versions stables. Les correctifs de sécurité arrivent pareil.' $true 'Les nouvelles fonctions arrivent quelques semaines ou mois plus tard.' {
+    'Windows 11 propose "les dernières mises à jour dès qu''elles sont disponibles" : ce sont les nouvelles fonctions poussées avant leur sortie officielle, celles qui cassent le plus souvent un pilote ou un anti-cheat. On reste sur les versions stables. Les correctifs de sécurité arrivent pareil.' $true 'Les nouvelles fonctions arrivent quelques semaines ou mois plus tard.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings' 'IsContinuousInnovationOptedIn' 0
 }
 Ajouter $G 'jeu-f8' 'Remettre le menu F8 au démarrage (mode sans échec)' `
@@ -1151,83 +1149,83 @@ Ajouter $G 'jeu-f8' 'Remettre le menu F8 au démarrage (mode sans échec)' `
 
 # ----- Carte réseau -------------------------------------------------------------
 $G = 'Carte réseau (appliqué sur chaque carte physique active)'
-Ajouter $G 'net-alim' 'Interdire à Windows d éteindre la carte réseau pour économiser l énergie' `
-    'Windows peut couper la carte au repos, et elle met une seconde à revenir : c est le "le réseau a lâché 2 secondes" en pleine partie, surtout après une veille.' $true 'Sur portable, un peu moins d autonomie.' {
+Ajouter $G 'net-alim' 'Interdire à Windows d''éteindre la carte réseau pour économiser l''énergie' `
+    'Windows peut couper la carte au repos, et elle met une seconde à revenir : c''est le "le réseau a lâché 2 secondes" en pleine partie, surtout après une veille.' $true 'Sur portable, un peu moins d''autonomie.' {
     foreach ($c in Cartes-Reseau) {
         $pm = Get-NetAdapterPowerManagement -Name $c.Name -ErrorAction SilentlyContinue
         if ($pm) { Memoriser "netpm|$($c.Name)" @{ carte = $c.Name; valeur = [string]$pm.AllowComputerToTurnOffDevice } }
         Disable-NetAdapterPowerManagement -Name $c.Name -ErrorAction SilentlyContinue
-        Log "réseau    $($c.Name) : gestion de l alimentation coupée"
+        Log "réseau    $($c.Name) : gestion de l'alimentation coupée"
         Net-Attendre $c
     }
 }
 Ajouter $G 'net-eee' 'Couper Energy Efficient Ethernet / Green Ethernet' `
-    'Même logique : la puce réseau s endort entre deux paquets pour économiser quelques milliwatts, et se réveille avec un délai. En jeu on veut la carte toujours réveillée.' $true 'Rien de visible.' {
+    'Même logique : la puce réseau s''endort entre deux paquets pour économiser quelques milliwatts, et se réveille avec un délai. En jeu on veut la carte toujours réveillée.' $true 'Rien de visible.' {
     # Libellés vus : "Energy Efficient Ethernet", "Ethernet à économie d'énergie", "Green Ethernet", "Ethernet vert", "Advanced EEE",
     # "Power Saving Mode", "Gigabit Lite" (Realtek). Pas "EEE Max Support Speed", qui n'a pas de valeur Désactivé.
-    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Energy.Efficient|conomie d|Green Ethernet|Ethernet vert|^Advanced EEE$|Power Saving|Gigabit Lite' '^(Disabled|Désactivé|Off)$' 'économie d énergie de la puce' }
+    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Energy.Efficient|conomie d|Green Ethernet|Ethernet vert|^Advanced EEE$|Power Saving|Gigabit Lite' '^(Disabled|Désactivé|Off)$' 'économie d''énergie de la puce' }
 }
 Ajouter $G 'net-moderation' 'Modération des interruptions sur Medium (pas Désactivé)' `
-    'La carte regroupe ses interruptions pour ne pas réveiller le CPU à chaque paquet. Medium garde le CPU disponible pour le jeu tout en livrant les paquets vite. Tout couper fait l inverse de ce que promettent les tutos : plus d interruptions, plus de temps CPU volé au jeu (mesuré au xperf par djdallmann sur trafic UDP de jeu).' $false 'Si ta carte n a pas cette option (souvent le cas sur Realtek), rien ne se passe.' {
+    'La carte regroupe ses interruptions pour ne pas réveiller le CPU à chaque paquet. Medium garde le CPU disponible pour le jeu tout en livrant les paquets vite. Tout couper fait l''inverse de ce que promettent les tutos : plus d''interruptions, plus de temps CPU volé au jeu (mesuré au xperf par djdallmann sur trafic UDP de jeu).' $false 'Si ta carte n''a pas cette option (souvent le cas sur Realtek), rien ne se passe.' {
     # Intel : "Interrupt Moderation Rate" (Off / Low / Medium / High / Adaptive). Realtek : "Modération interruption" (Désactivé / Activé), on garde Activé.
-    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Interrupt Moderation|Modération interruption' '^(Medium|Moyen|Enabled|Activé)$' 'modération d interruptions' }
+    foreach ($c in Cartes-Reseau) { Net-Propriete-Regler $c 'Interrupt Moderation|Modération interruption' '^(Medium|Moyen|Enabled|Activé)$' 'modération d''interruptions' }
 }
 Ajouter $G 'net-decouverte' 'Décocher les protocoles de découverte réseau (LLDP, topologie de liaison)' `
-    'Trois protocoles qui servent à dessiner la carte du réseau local. Ils tournent sur chaque paquet pour rien. TCP/IPv4 et IPv6 restent.' $true 'Le "mappage réseau" du Centre réseau ne voit plus les autres appareils. Personne ne l utilise.' {
+    'Trois protocoles qui servent à dessiner la carte du réseau local. Aucun gain de vitesse mesuré : on retire ce dont un PC de jeu ne se sert pas. TCP/IPv4 et IPv6 restent.' $true 'Le "mappage réseau" du Centre réseau ne voit plus les autres appareils. Personne ne l''utilise.' {
     foreach ($c in Cartes-Reseau) {
         Net-Liaison-Couper $c 'ms_lldp' 'pilote LLDP'
         Net-Liaison-Couper $c 'ms_lltdio' 'découverte de topologie (E/S)'
         Net-Liaison-Couper $c 'ms_rspndr' 'répondeur de topologie'
     }
 }
-Ajouter $G 'net-partage' 'Décocher le partage de fichiers et d imprimantes Microsoft' `
-    'Le protocole SMB côté serveur et client. Utile seulement si tu partages des dossiers entre PC de la maison ou vers un NAS.' $false 'Plus d accès aux dossiers partagés des autres PC ni au NAS, et les autres ne voient plus les tiens. Coche seulement si tu n as rien de tout ça.' {
+Ajouter $G 'net-partage' 'Décocher le partage de fichiers et d''imprimantes Microsoft' `
+    'Le protocole SMB côté serveur et client. Utile seulement si tu partages des dossiers entre PC de la maison ou vers un NAS.' $false 'Plus d''accès aux dossiers partagés des autres PC ni au NAS, et les autres ne voient plus les tiens. Coche seulement si tu n''as rien de tout ça.' {
     foreach ($c in Cartes-Reseau) {
-        Net-Liaison-Couper $c 'ms_server' 'partage de fichiers et d imprimantes'
+        Net-Liaison-Couper $c 'ms_server' 'partage de fichiers et d''imprimantes'
         Net-Liaison-Couper $c 'ms_msclient' 'client pour les réseaux Microsoft'
     }
 }
 Ajouter $G 'net-qos' 'Décocher le Planificateur de paquets QoS' `
-    'QoS priorise certains paquets quand la ligne est saturée. Sur une connexion normale il ne sert pas. Si tu as du lag en jeu pendant qu un autre appareil télécharge, c est justement lui qu il faut remettre.' $false 'Plus de priorisation quand la ligne sature.' {
+    'QoS priorise certains paquets quand la ligne est saturée. Sur une connexion normale il ne sert pas. Si tu as du lag en jeu pendant qu''un autre appareil télécharge, c''est justement lui qu''il faut remettre.' $false 'Plus de priorisation quand la ligne sature.' {
     foreach ($c in Cartes-Reseau) { Net-Liaison-Couper $c 'ms_pacer' 'planificateur QoS' }
 }
 
 # ----- Confort : Windows plus vif, sans effet sur les FPS ---------------------
 $G = 'Confort (aucun gain de FPS, juste plus vif)'
 Ajouter $G 'conf-bing' 'Plus de résultats web Bing dans le menu Démarrer' `
-    'Chaque frappe dans Démarrer part sur Bing avant de chercher tes fichiers. On cherche en local seulement : plus rapide et rien n est envoyé.' $true 'Plus de suggestions web dans Démarrer.' {
+    'Chaque frappe dans Démarrer part sur Bing avant de chercher tes fichiers. On cherche en local seulement : plus rapide et rien n''est envoyé.' $true 'Plus de suggestions web dans Démarrer.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search' 'BingSearchEnabled' 0
     Reg-Ecrire 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer' 'DisableSearchBoxSuggestions' 1
 }
 Ajouter $G 'conf-explorateur' 'Explorateur : extensions de fichiers visibles, ouvrir sur "Ce PC"' `
-    'Voir ".exe" et ".txt" évite de lancer un faux fichier, et "Ce PC" est plus utile que l accueil avec les fichiers récents.' $true '' {
+    'Voir ".exe" et ".txt" évite de lancer un faux fichier, et "Ce PC" est plus utile que l''accueil avec les fichiers récents.' $true '' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced' 'HideFileExt' 0
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced' 'LaunchTo' 1
 }
-Ajouter $G 'conf-menu-classique' 'Menu clic droit complet directement (sans "Afficher plus d options")' `
-    'Le menu clic droit de Windows 11 cache la moitié des entrées derrière "Afficher plus d options". Cette clé rétablit le menu complet de Windows 10 d un seul clic. L Explorateur est relancé pour appliquer.' $true 'Le menu est plus long et sans icônes modernes. Les entrées Windows 11 (Copier le chemin, Partager) restent accessibles par Maj+clic droit.' {
+Ajouter $G 'conf-menu-classique' 'Menu clic droit complet directement (sans "Afficher plus d''options")' `
+    'Le menu clic droit de Windows 11 cache la moitié des entrées derrière "Afficher plus d''options". Cette clé rétablit le menu complet de Windows 10 d''un seul clic. L Explorateur est relancé pour appliquer.' $true 'Le menu est plus long et sans icônes modernes. Les entrées Windows 11 (Copier le chemin, Partager) restent accessibles par Maj+clic droit.' {
     $cle = 'HKCU:\SOFTWARE\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32'
     Memoriser 'cmd|menuclassique' @{ existait = [bool](Test-Path 'HKCU:\SOFTWARE\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}') }
     if (-not (Test-Path $cle)) { New-Item -Path $cle -Force | Out-Null }
     Set-ItemProperty -Path $cle -Name '(default)' -Value '' -ErrorAction SilentlyContinue
     Log 'registre  menu contextuel classique activé'
-    Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+    $Bagarre.RelancerExplorer = $true   # une seule relance, à la fin de l'application
 }
 Ajouter $G 'conf-fin-tache' 'Bouton "Fin de tâche" dans le clic droit de la barre des tâches' `
     'Un clic droit sur une icône de la barre des tâches propose "Fin de tâche" : un programme figé se tue sans ouvrir le Gestionnaire des tâches. Option Windows 11 (Paramètres > Système > Pour les développeurs), juste cachée.' $true '' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings' 'TaskbarEndTask' 1
 }
-Ajouter $G 'conf-ducking' 'Son : "Ne rien faire" quand Discord ou un appel s ouvre' `
-    'Par défaut Windows baisse tous les autres sons de 80 % dès qu une appli de communication (Discord, Teams) prend le micro. Le jeu devient inaudible en vocal. C est l onglet Communications de la fenêtre Son, réglé sur "Ne rien faire".' $true '' {
+Ajouter $G 'conf-ducking' 'Son : "Ne rien faire" quand Discord ou un appel s''ouvre' `
+    'Par défaut Windows baisse tous les autres sons de 80 % dès qu''une appli de communication (Discord, Teams) prend le micro. Le jeu devient inaudible en vocal. C est l''onglet Communications de la fenêtre Son, réglé sur "Ne rien faire".' $true '' {
     Reg-Ecrire 'HKCU:\Software\Microsoft\Multimedia\Audio' 'UserDuckingPreference' 3
 }
 Ajouter $G 'conf-edge' 'Edge : plus de préchargement au démarrage ni de processus en fond' `
-    'Edge se lance à moitié au démarrage de Windows (Startup Boost) et reste en mémoire fenêtre fermée (Background Mode), même si tu utilises un autre navigateur. Deux stratégies documentées par Microsoft.' $true 'Edge met une seconde de plus à s ouvrir la première fois.' {
+    'Edge se lance à moitié au démarrage de Windows (Startup Boost) et reste en mémoire fenêtre fermée (Background Mode), même si tu utilises un autre navigateur. Deux stratégies documentées par Microsoft.' $true 'Edge met une seconde de plus à s''ouvrir la première fois.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'StartupBoostEnabled' 0
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'BackgroundModeEnabled' 0
 }
-Ajouter $G 'conf-eclairage' 'Couper l éclairage dynamique (Dynamic Lighting)' `
-    'Windows 11 pilote lui-même les LED RGB des périphériques compatibles, et son service tourne même sans LED. Si tu as iCUE, OpenRGB ou Armoury, ils se battent avec lui.' $false 'Windows ne gère plus tes LED : ton logiciel constructeur (ou rien) s en charge.' {
+Ajouter $G 'conf-eclairage' 'Couper l''éclairage dynamique (Dynamic Lighting)' `
+    'Windows 11 pilote lui-même les LED RGB des périphériques compatibles, et son service tourne même sans LED. Si tu as iCUE, OpenRGB ou Armoury, ils se battent avec lui.' $false 'Windows ne gère plus tes LED : ton logiciel constructeur (ou rien) s''en charge.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Lighting' 'AmbientLightingEnabled' 0
 }
 Ajouter $G 'conf-accueil-parametres' 'Cacher la page "Accueil" de Paramètres (pubs Microsoft 365, Game Pass)' `
@@ -1241,7 +1239,7 @@ Ajouter $G 'conf-reserve' 'Libérer le stockage réservé de Windows Update (env
     Log 'disque    stockage réservé désactivé'
 }
 Ajouter $G 'conf-menus' 'Menus instantanés (MenuShowDelay 0, MouseHoverTime 10)' `
-    'Windows attend 400 ms avant d ouvrir un sous-menu. On le passe à 0.' $true '' {
+    'Windows attend 400 ms avant d''ouvrir un sous-menu. On le passe à 0.' $true '' {
     Reg-Ecrire 'HKCU:\Control Panel\Desktop' 'MenuShowDelay' '0' 'String'
     Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'MouseHoverTime' '10' 'String'
 }
@@ -1249,8 +1247,8 @@ Ajouter $G 'conf-demarrage' 'Lancer les programmes de démarrage sans attendre (
     'Windows retarde de 10 secondes les programmes qui se lancent au démarrage. On enlève le délai.' $true 'Si tu as beaucoup de programmes au démarrage, le bureau peut être moins réactif les premières secondes.' {
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Serialize' 'StartupDelayInMSec' 0
 }
-Ajouter $G 'conf-fin' 'Fermer les programmes bloqués sans demander (AutoEndTasks)' `
-    'À l extinction, Windows tue les programmes qui ne répondent pas au lieu d afficher la fenêtre "ce programme empêche l arrêt".' $true 'Un document non enregistré dans un programme figé est perdu à l extinction.' {
+Ajouter $G 'conf-fin' 'Fermer sans demander les programmes qui retardent l''extinction (AutoEndTasks)' `
+    'À l''extinction, Windows ferme de force tout programme qui retarde l''arrêt au lieu d''afficher la fenêtre "ce programme empêche l''arrêt". Ça vaut aussi pour un programme qui attend que tu enregistres.' $false 'Un document non enregistré est perdu à l''extinction, même dans un programme qui répond.' {
     Reg-Ecrire 'HKCU:\Control Panel\Desktop' 'AutoEndTasks' '1' 'String'
 }
 Ajouter $G 'conf-transparence' 'Couper la transparence' `
@@ -1258,19 +1256,19 @@ Ajouter $G 'conf-transparence' 'Couper la transparence' `
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' 'EnableTransparency' 0
 }
 Ajouter $G 'conf-animations' 'Couper les animations de fenêtres' `
-    'Les fenêtres apparaissent d un coup au lieu de glisser. Windows semble plus rapide parce qu il n attend plus la fin de l animation.' $false 'Interface plus sèche. Goût personnel.' {
+    'Les fenêtres apparaissent d''un coup au lieu de glisser. Windows semble plus rapide parce qu''il n''attend plus la fin de l''animation.' $false 'Interface plus sèche. Goût personnel.' {
     Reg-Ecrire 'HKCU:\Control Panel\Desktop\WindowMetrics' 'MinAnimate' '0' 'String'
     Reg-Ecrire 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects' 'VisualFXSetting' 3
     Reg-Ecrire 'HKCU:\Control Panel\Desktop' 'UserPreferencesMask' ([byte[]](0x90, 0x12, 0x03, 0x80, 0x10, 0x00, 0x00, 0x00)) 'Binary'
 }
-Ajouter $G 'conf-accessibilite' 'Couper les raccourcis d accessibilité (touches rémanentes, filtre)' `
+Ajouter $G 'conf-accessibilite' 'Couper les raccourcis d''accessibilité (touches rémanentes, filtre)' `
     'Appuyer 5 fois sur Shift en jeu ouvre la fenêtre des touches rémanentes. Plus jamais.' $true '' {
     Reg-Ecrire 'HKCU:\Control Panel\Accessibility\StickyKeys' 'Flags' '506' 'String'
     Reg-Ecrire 'HKCU:\Control Panel\Accessibility\Keyboard Response' 'Flags' '122' 'String'
     Reg-Ecrire 'HKCU:\Control Panel\Accessibility\ToggleKeys' 'Flags' '58' 'String'
 }
 Ajouter $G 'conf-acces-rapide' 'Explorateur : retirer "Accès rapide" du volet de gauche (HubMode)' `
-    'Le volet de gauche de l Explorateur commence par "Accès rapide" et ses dossiers récents. Cette clé le retire, le volet commence à "Ce PC". Source : tenforums.com, tutoriel 4844 (Shawn Brink, 2018), toujours valable sur Windows 11.' $false 'Plus de raccourcis "Accès rapide" ni de dossiers récents dans le volet.' {
+    'Le volet de gauche de l''Explorateur commence par "Accès rapide" et ses dossiers récents. Cette clé le retire, le volet commence à "Ce PC". Source : tenforums.com, tutoriel 4844 (Shawn Brink, 2018), toujours valable sur Windows 11.' $false 'Plus de raccourcis "Accès rapide" ni de dossiers récents dans le volet.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer' 'HubMode' 1
 }
 Ajouter $G 'conf-corbeille' 'Explorateur : la Corbeille dans "Ce PC"' `
@@ -1290,17 +1288,13 @@ Ajouter $G 'conf-vlc-pistes' 'VLC : clic droit "VLC with mixed audio tracks" sur
 }
 
 # ----- Avancé : décoché par défaut, tu lis avant de cocher ---------------------
-$G = 'Avancé (décoché par défaut, lis l explication avant)'
-Ajouter $G 'adv-priosep' 'Win32PrioritySeparation = 0x26 (quantum court, variable, boost x3 au premier plan)' `
-    'Règle comment le planificateur découpe le temps CPU entre le programme au premier plan et le reste. 0x26 donne des tranches courtes et variables avec un boost x3 pour le jeu. Effet réel sur la répartition, aucun gain de FPS reproductible publié : à garder seulement si tu mesures un mieux (CapFrameX, 3 passes).' $false 'Les tâches de fond (téléchargement, encodage) avancent moins vite pendant que tu joues.' {
-    Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\PriorityControl' 'Win32PrioritySeparation' 38
-}
+$G = 'Avancé (décoché par défaut, lis l''explication avant)'
 Ajouter $G 'adv-throttling' 'Couper le Power Throttling (PowerThrottlingOff)' `
-    'Windows bride les programmes qu il juge "en arrière-plan" (EcoQoS) pour économiser de l énergie. Sur un PC fixe on ne veut brider personne : Discord, ton launcher, l overlay tournent à pleine vitesse même derrière le jeu.' $false 'Sur portable, moins d autonomie. Sur fixe, rien.' {
+    'Windows bride les programmes qu''il juge "en arrière-plan" (EcoQoS) pour économiser de l''énergie. Sur un PC fixe on ne veut brider personne : Discord, ton launcher, l''overlay tournent à pleine vitesse même derrière le jeu.' $false 'Sur portable, moins d''autonomie. Sur fixe, rien.' {
     Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling' 'PowerThrottlingOff' 1
 }
-Ajouter $G 'adv-nagle' 'Couper l algorithme de Nagle (TcpAckFrequency, TCPNoDelay) sur la carte active' `
-    'Nagle regroupe les petits paquets TCP avant de les envoyer, et retarde les accusés de réception. Quelques ms de gagnées sur un jeu en TCP (MMO, certains jeux Unity). Zéro effet sur un jeu en UDP, c est-à-dire quasiment tous les FPS.' $false 'Un peu plus de petits paquets sur la ligne. Rien de visible.' {
+Ajouter $G 'adv-nagle' 'Couper l''algorithme de Nagle (TcpAckFrequency, TCPNoDelay) sur la carte active' `
+    'Nagle regroupe les petits paquets TCP avant de les envoyer, et retarde les accusés de réception. Quelques ms de gagnées sur un jeu en TCP (MMO, certains jeux Unity). Zéro effet sur un jeu en UDP, c''est-à-dire quasiment tous les FPS.' $false 'Un peu plus de petits paquets sur la ligne. Rien de visible.' {
     foreach ($c in Cartes-Reseau) {
         $guid = (Get-NetAdapter -Name $c.Name).InterfaceGuid
         $chemin = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\$guid"
@@ -1313,16 +1307,12 @@ Ajouter $G 'adv-dyntick' 'Couper le tick dynamique (bcdedit disabledynamictick)'
     bcdedit /set '{current}' disabledynamictick yes | Out-Null
     Log 'boot      disabledynamictick = yes'
 }
-Ajouter $G 'adv-rawmouse' 'RawMouseThrottleDuration = 8 (regroupement des rapports souris)' `
-    'Windows regroupe les rapports Raw Input de la souris par fenêtres de temps. Avec une souris à 1000 Hz ou plus, une fenêtre plus courte livre les mouvements plus tôt au jeu. Plage documentée 3 à 20. Sur les builds récentes de Windows 11 la valeur par défaut est déjà 8 : la clé ne change alors rien (à vérifier chez toi avec ?, la valeur d avant est écrite dans bagarre.log). Contrôle avec MouseTester : zéro rapport manqué.' $false 'Aucune perte connue. Si le curseur devient bizarre, R remet la valeur d avant.' {
-    Reg-Ecrire 'HKCU:\Control Panel\Mouse' 'RawMouseThrottleDuration' 8
-}
 Ajouter $G 'adv-fth' 'Couper le Fault Tolerant Heap (FTH)' `
     'Quand un programme plante plusieurs fois, Windows le relance avec un allocateur mémoire "tolérant" et plus lent, sans le dire. Un jeu qui a crashé trois fois tourne ensuite bridé. Coupé, il plante pareil mais tourne à pleine vitesse le reste du temps. Documenté par Microsoft (FTH, Win32 apps).' $false 'Un vieux programme instable que le FTH maintenait en vie peut replanter.' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Microsoft\FTH' 'Enabled' 0
 }
 Ajouter $G 'adv-llmnr' 'Couper LLMNR (résolution de noms multicast)' `
-    'Quand un nom n est pas trouvé par le DNS, Windows le crie en multicast sur le réseau local (LLMNR). C est une porte d entrée connue pour intercepter des identifiants (Responder) et du bruit réseau pour rien. Recommandation sécurité standard en entreprise.' $false 'Taper \\NOM-DU-PC pour joindre un autre PC de la maison peut ne plus marcher (utilise son IP ou active mDNS côté NAS).' {
+    'Quand un nom n''est pas trouvé par le DNS, Windows le crie en multicast sur le réseau local (LLMNR). C est une porte d''entrée connue pour intercepter des identifiants (Responder) et du bruit réseau pour rien. Recommandation sécurité standard en entreprise.' $false 'Taper \\NOM-DU-PC pour joindre un autre PC de la maison peut ne plus marcher (utilise son IP ou active mDNS côté NAS).' {
     Reg-Ecrire 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' 'EnableMulticast' 0
 }
 
@@ -1330,7 +1320,7 @@ Ajouter $G 'adv-llmnr' 'Couper LLMNR (résolution de noms multicast)' `
 if ($EstIntelCpu) {
     $G = 'Processeur Intel'
     Ajouter $G 'adv-boost' 'Boost du processeur en Aggressive (PERFBOOSTMODE)' `
-        'Le mode boost du plan d alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d attendre. Clé Intel : sur AMD le boost est géré par le firmware.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
+        'Le mode boost du plan d''alimentation décide à quelle vitesse le processeur monte en fréquence quand la charge arrive. Aggressive le fait monter tout de suite au lieu d''attendre. Clé Intel : sur AMD le boost est géré par le firmware.' $false 'Sur portable : chauffe et batterie pour rien. Sur fixe, un peu plus de consommation au repos.' {
         Powercfg-Regler 'SUB_PROCESSOR' 'PERFBOOSTMODE' 2 'mode boost du processeur'
     }
 }
@@ -1342,7 +1332,7 @@ if ($EstNvidia) {
         Reg-Ecrire 'HKLM:\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\Startup' 'SendTelemetryData' 0
     }
     Ajouter $G 'nv-pstate' 'Bloquer la carte en P0 (DisableDynamicPstate)' `
-        'Au repos la carte descend en fréquence, et met quelques images à remonter quand une scène se charge d un coup : c est le micro-freeze après un menu ou un chargement. Cette clé la garde à sa fréquence max tant que Windows tourne. Vérifiable avec nvidia-smi (Perf P0). Le réglage "Privilégier les performances maximales" du panneau fait presque pareil sans redémarrage, cette clé est le cran au-dessus.' $false 'Carte plus chaude et plus gourmande au repos, ventilateurs qui ne s arrêtent plus sur certaines cartes.' {
+        'Au repos la carte descend en fréquence, et met quelques images à remonter quand une scène se charge d''un coup : c''est le micro-freeze après un menu ou un chargement. Cette clé la garde à sa fréquence max tant que Windows tourne. Vérifiable avec nvidia-smi (Perf P0). Le réglage "Privilégier les performances maximales" du panneau fait presque pareil sans redémarrage, cette clé est le cran au-dessus.' $false 'Carte plus chaude et plus gourmande au repos, ventilateurs qui ne s''arrêtent plus sur certaines cartes.' {
         $classe = 'HKLM:\SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}'
         $cle = Get-ChildItem $classe -ErrorAction SilentlyContinue | Where-Object { (Reg-Lire $_.PSPath 'DriverDesc') -match 'NVIDIA' } | Select-Object -First 1
         if ($cle) { Reg-Ecrire $cle.PSPath 'DisableDynamicPstate' 1 } else { Log 'nvidia    clé du pilote introuvable, DisableDynamicPstate non posé' }
@@ -1354,9 +1344,9 @@ if ($EstNvidia) {
 $Actions = @{
     'jeu-timer' = 'on'; 'jeu-f8' = 'on'
     'conf-menu-classique' = 'on'; 'conf-fin-tache' = 'on'; 'conf-corbeille' = 'on'; 'conf-vlc-pistes' = 'on'
-    'jeu-svchost' = 'set'; 'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
+    'jeu-hdd' = 'set'; 'net-moderation' = 'set'; 'conf-explorateur' = 'set'
     'conf-menus' = 'set'; 'conf-demarrage' = 'set'; 'conf-fin' = 'set'; 'conf-ducking' = 'set'
-    'adv-priosep' = 'set'; 'adv-rawmouse' = 'set'; 'adv-boost' = 'set'; 'nv-pstate' = 'set'
+    'adv-boost' = 'set'; 'nv-pstate' = 'set'
 }
 function Item-Action($it) { if ($Actions[$it.Id]) { $Actions[$it.Id] } else { 'off' } }
 
@@ -1392,26 +1382,24 @@ function Detecter-Item($it) {
 # ---------------------------------------------------------------------------
 $TraductionsEn = @{
     'svc-telemetrie' = @{ Titre = 'Microsoft telemetry (DiagTrack, dmwappushservice)'; Pourquoi = 'Sends your usage to Microsoft continuously. No role for you.'; Attention = '' }
-    'svc-geoloc' = @{ Titre = 'Location services (lfsvc)'; Pourquoi = 'GPS position for Store apps. A desktop PC does not move.'; Attention = 'Weather and map apps no longer locate you.' }
+    'svc-geoloc' = @{ Titre = 'Location services (lfsvc)'; Pourquoi = 'GPS position for Store apps. A desktop PC does not move.'; Attention = 'Weather and map apps no longer locate you, and automatic time zone stops working: set it once in Settings > Time & language.' }
     'svc-phone' = @{ Titre = 'Telephony (PhoneSvc)'; Pourquoi = 'Used by Phone Link to make calls from the PC.'; Attention = 'Phone Link loses call support.' }
     'svc-maps' = @{ Titre = 'Offline maps (MapsBroker)'; Pourquoi = 'Downloads maps for the Maps app. Nobody uses it.'; Attention = '' }
     'svc-demo' = @{ Titre = 'Retail demo mode (RetailDemo)'; Pourquoi = 'The showcase mode for PCs on a store shelf.'; Attention = '' }
     'svc-wer' = @{ Titre = 'Windows Error Reporting (WerSvc)'; Pourquoi = 'Sends a report to Microsoft when a program crashes.'; Attention = 'No more automatic report when an app crashes (you can still read Event Viewer).' }
-    'svc-fax' = @{ Titre = 'Fax'; Pourquoi = 'It is 2026.'; Attention = '' }
+    'svc-fax' = @{ Titre = 'Fax'; Pourquoi = 'The service that sends faxes through a modem. A gaming PC has no fax modem.'; Attention = '' }
     'svc-compat' = @{ Titre = 'Program Compatibility Assistant (PcaSvc)'; Pourquoi = 'Watches every launch of an old program to suggest a compatibility mode.'; Attention = 'Windows no longer offers to fix an old program on its own.' }
     'svc-xbox' = @{ Titre = 'Xbox services (XblAuthManager, XblGameSave, XboxNetApiSvc)'; Pourquoi = 'Xbox Live sign-in, Xbox cloud saves, Xbox networking.'; Attention = 'Game Pass for PC, the Xbox app and Microsoft Store games stop connecting. Leave unchecked if you play an Xbox or Game Pass title.' }
     'svc-edge' = @{ Titre = 'Edge background updates (edgeupdate, edgeupdatem)'; Pourquoi = 'Two services that check Edge every hour. Edge updates itself on launch anyway.'; Attention = '' }
     'svc-wmp' = @{ Titre = 'Windows Media Player network sharing (WMPNetworkSvc)'; Pourquoi = 'Streams your WMP library on the local network.'; Attention = '' }
     'svc-insider' = @{ Titre = 'Windows Insider Program (wisvc)'; Pourquoi = 'Only used to receive beta versions of Windows.'; Attention = '' }
-    'svc-diag' = @{ Titre = 'Automatic diagnostics (DPS, WdiServiceHost, WdiSystemHost)'; Pourquoi = 'The automatic troubleshooting utilities. They run permanently for very rare use.'; Attention = 'The Troubleshoot button in Settings stops working while this is off.' }
+    'svc-diag' = @{ Titre = 'Automatic diagnostics (DPS, WdiServiceHost, WdiSystemHost)'; Pourquoi = 'The automatic troubleshooting utilities. They run permanently for very rare use.'; Attention = 'The Troubleshoot button in Settings stops working while this is off. The Battery usage and Data usage pages stay empty: their counter (SRUM) runs in this service.' }
     'svc-cdp' = @{ Titre = 'Connected Devices Platform (CDPSvc)'; Pourquoi = 'Nearby Sharing, Phone Link, continuity between devices.'; Attention = 'Nearby Sharing and Phone Link stop working.' }
     'svc-imprimante' = @{ Titre = 'Print spooler (Spooler)'; Pourquoi = 'Manages printers. Without a printer, it runs for nothing.'; Attention = 'You can no longer print, not even to PDF. Check this only if you never have a printer.' }
     'svc-recherche' = @{ Titre = 'Search indexing (WSearch)'; Pourquoi = 'Builds an index of your files so Start menu search is instant. On an SSD, indexing costs very little.'; Attention = 'File search in Start and File Explorer becomes slow. Outlook too.' }
     'svc-sysmain' = @{ Titre = 'SysMain (formerly Superfetch)'; Pourquoi = ('Preloads into RAM the programs you launch often. On an SSD it does not get in the way, on a hard drive it can cause slowdowns. ' + $(if ($EstHdd) { 'Your system disk is an HDD: check it.' } else { 'Your system disk is an SSD: leave it.' })); Attention = 'Program launches are no longer preloaded.' }
-    'svc-bits' = @{ Titre = 'Background Intelligent Transfer Service (BITS)'; Pourquoi = 'Downloads Windows and Store updates quietly in the background.'; Attention = 'Windows Update, the Microsoft Store and Defender definitions stop downloading. Honestly, do not check this one.' }
     'svc-bluetooth' = @{ Titre = 'Bluetooth (bthserv, BTAGService)'; Pourquoi = 'Everything Bluetooth.'; Attention = 'No more Bluetooth devices: headset, controller, mouse. Check this only if you have none at all.' }
     'svc-delivery' = @{ Titre = 'Delivery Optimization: stop sending updates to strangers'; Pourquoi = 'By default your PC re-sends the Windows updates it downloaded to other PCs on the internet (peer to peer). That uses upload bandwidth while you play. We keep the download, we cut the upload.'; Attention = '' }
-    'svc-hyperv' = @{ Titre = 'Hyper-V guest services (vmic*)'; Pourquoi = 'Only useful if Windows runs INSIDE a Hyper-V virtual machine. On a real PC they never start, cutting them changes nothing.'; Attention = '' }
     'priv-telemetrie' = @{ Titre = 'Telemetry at the minimum (AllowTelemetry, CEIP, error reports, PowerShell)'; Pourquoi = 'Sets the level of data sent to Microsoft to the lowest. Honestly: on Home and Pro, AllowTelemetry=0 behaves like 1 (the "required" level stays), only Enterprise and Education editions cut everything. We also cut the Customer Experience Improvement Program (CEIP), crash report sending, feedback requests and PowerShell telemetry.'; Attention = 'Crash reports no longer go to Microsoft (they stay readable in Event Viewer).' }
     'priv-pub' = @{ Titre = 'Advertising ID, suggestions, Start menu "Recommended" section, Chat button'; Pourquoi = 'Cuts the advertising ID, suggestions in Start and its "Recommended" section, tips on the lock screen, ads in File Explorer, silent installation of sponsored apps, the rotating illustrations in the search box, the Chat (Teams) button on the taskbar and online tips in Settings.'; Attention = 'The Start menu "Recommended" section becomes empty (recent files stay in File Explorer).' }
     'priv-saisie' = @{ Titre = 'Typing and voice personalization'; Pourquoi = 'Windows learns your typing, handwriting and voice to send them to the cloud. Useless outside Cortana.'; Attention = '' }
@@ -1426,10 +1414,9 @@ $TraductionsEn = @{
     'priv-presse-papiers' = @{ Titre = 'Turn off clipboard history (Win+V) and its cloud sync'; Pourquoi = 'Windows keeps in memory everything you copy, passwords included, and can send it to your Microsoft account.'; Attention = 'No more Win+V. If you use it, leave this unchecked: only the cloud sync is worth cutting, and that is in Settings > System > Clipboard.' }
     'jeu-dvr' = @{ Titre = 'Turn off Game DVR (Game Bar background recording)'; Pourquoi = 'Game Bar constantly records the last 30 seconds of gameplay "just in case". That is an encoder running while you play.'; Attention = 'No more instant clip with Win+Alt+G. Game Bar itself stays (Win+G).' }
     'jeu-presence' = @{ Titre = 'Turn off GameBarPresenceWriter (the process that remains after turning off Game Bar)'; Pourquoi = 'Even with Game Bar off, a small "Game Bar Presence Writer" process launches with every game to tell the Xbox network what you are playing. We disable its COM class (ActivationType = 0): it no longer launches. We never rename the executable, an update would restore it and break Game Bar.'; Attention = 'Your Xbox friends no longer see "playing ...". Game Bar (Win+G) still works.' }
-    'jeu-svchost' = @{ Titre = "Group system services (SvcHostSplitThreshold, $RamGo GB of RAM detected)"; Pourquoi = 'Since Windows 10, every service gets its own process once you have more than 3.5 GB of RAM. Raising the threshold to your real RAM groups them back together like before: fewer processes in Task Manager. Verdict after review: placebo, nobody has measured a significant FPS or RAM gain (a few dozen MB). Unchecked by default, check it if you like a shorter Task Manager.'; Attention = 'A service that crashes takes down the others in the same process with it, like on Windows 7.' }
     'jeu-timer' = @{ Titre = 'Allow fine timer resolution for games (GlobalTimerResolutionRequests)'; Pourquoi = 'Since Windows 11, an app that requests a 0.5 ms timer only gets it for itself and only in the foreground. This key restores the Windows 10 behavior: the request applies to the whole system. A game that requests a fine timer keeps it even when another window comes in front.'; Attention = 'Idle power draw goes very slightly higher when a program requests a fine timer.' }
     'jeu-souris' = @{ Titre = 'Turn off mouse acceleration (Enhance pointer precision)'; Pourquoi = 'With acceleration, the distance the cursor travels depends on how fast you move your hand: the same hand movement never gives the same on-screen movement. Your muscle memory cannot learn anything. Every gamer turns it off, it is the first thing to do.'; Attention = 'The cursor needs a bit more hand movement on the desktop. Raise your mouse DPI if needed.' }
-    'jeu-hiber' = @{ Titre = 'Turn off hibernation and fast startup'; Pourquoi = 'Frees hiberfil.sys (several GB) and forces a real restart on every boot instead of reloading a frozen image. A real boot avoids drivers ending up in a weird state after an update.'; Attention = 'No more hibernation (regular sleep stays).' }
+    'jeu-hiber' = @{ Titre = 'Turn off hibernation and fast startup'; Pourquoi = 'Frees hiberfil.sys (several GB) and forces a real restart on every boot instead of reloading a frozen image. A real boot avoids drivers ending up in a weird state after an update.'; Attention = 'No more hibernation (regular sleep stays). On a laptop, sleep no longer falls back to hibernation: the battery drains if the PC sleeps for a long time.' }
     'jeu-parking' = @{ Titre = 'Disable core parking'; Pourquoi = 'Windows can put idle cores to sleep, and takes a moment to wake them when a game needs them. On a Ryzen with the AMD chipset driver or a recent Intel CPU, Windows handles this well on its own. Mostly useful on older CPUs or laptops.'; Attention = 'Idle power draw a bit higher.' }
     'jeu-usb' = @{ Titre = 'Turn off USB selective suspend'; Pourquoi = 'Windows turns off idle USB ports to save 0.1 W. A mouse or keyboard that falls asleep can take a few milliseconds to respond. On a desktop PC, there is no point saving that.'; Attention = 'On a laptop, a bit less battery life.' }
     'jeu-pcie' = @{ Titre = 'Turn off PCI Express power saving (ASPM)'; Pourquoi = 'The PCIe link of the graphics card and SSD can drop to low power at idle, with a wake delay. On a desktop PC, we leave the link always open.'; Attention = 'On a laptop, a bit less battery life.' }
@@ -1442,7 +1429,7 @@ $TraductionsEn = @{
     'net-alim' = @{ Titre = 'Stop Windows from turning off the network card to save power'; Pourquoi = 'Windows can turn off the card at idle, and it takes a second to come back: that is the "network dropped for 2 seconds" in the middle of a match, especially after sleep.'; Attention = 'On a laptop, a bit less battery life.' }
     'net-eee' = @{ Titre = 'Turn off Energy Efficient Ethernet / Green Ethernet'; Pourquoi = 'Same logic: the network chip sleeps between packets to save a few milliwatts, and wakes up with a delay. While gaming you want the card always awake.'; Attention = 'Nothing visible.' }
     'net-moderation' = @{ Titre = 'Interrupt Moderation set to Medium (not Disabled)'; Pourquoi = 'The card groups its interrupts so it does not wake the CPU on every packet. Medium keeps the CPU available for the game while still delivering packets fast. Turning it off entirely does the opposite of what the tutorials promise: more interrupts, more CPU time stolen from the game (measured with xperf by djdallmann on game UDP traffic).'; Attention = 'If your card does not have this option (often the case on Realtek), nothing happens.' }
-    'net-decouverte' = @{ Titre = 'Uncheck the network discovery protocols (LLDP, link layer topology)'; Pourquoi = 'Three protocols used to draw a map of the local network. They run on every packet for nothing. TCP/IPv4 and IPv6 stay on.'; Attention = 'The Network and Sharing Center "network map" no longer sees other devices. Nobody uses it.' }
+    'net-decouverte' = @{ Titre = 'Uncheck the network discovery protocols (LLDP, link layer topology)'; Pourquoi = 'Three protocols used to draw a map of the local network. No measured speed gain: we remove what a gaming PC does not use. TCP/IPv4 and IPv6 stay on.'; Attention = 'The Network and Sharing Center "network map" no longer sees other devices. Nobody uses it.' }
     'net-partage' = @{ Titre = 'Uncheck Microsoft file and printer sharing'; Pourquoi = 'The SMB protocol, both server and client side. Only useful if you share folders between PCs at home or with a NAS.'; Attention = 'No more access to other PCs'' shared folders or to a NAS, and others no longer see yours. Check this only if you have none of that.' }
     'net-qos' = @{ Titre = 'Uncheck the QoS Packet Scheduler'; Pourquoi = 'QoS prioritizes certain packets when the line is saturated. On a normal connection it does nothing. If you get lag in games while another device is downloading, this is exactly what you should turn back on.'; Attention = 'No more prioritization when the line saturates.' }
     'conf-bing' = @{ Titre = 'No more Bing web results in the Start menu'; Pourquoi = 'Every keystroke in Start goes to Bing before searching your files. We search locally only: faster and nothing gets sent out.'; Attention = 'No more web suggestions in Start.' }
@@ -1456,20 +1443,18 @@ $TraductionsEn = @{
     'conf-reserve' = @{ Titre = 'Free up Windows Update reserved storage (about 7 GB)'; Pourquoi = 'Windows sets 7 GB aside for its updates. With a disk that has room, updates work just as well without that reserve.'; Attention = 'A big update can fail if the disk is nearly full (Windows will tell you).' }
     'conf-menus' = @{ Titre = 'Instant menus (MenuShowDelay 0, MouseHoverTime 10)'; Pourquoi = 'Windows waits 400 ms before opening a submenu. We set it to 0.'; Attention = '' }
     'conf-demarrage' = @{ Titre = 'Launch startup programs without delay (StartupDelayInMSec 0)'; Pourquoi = 'Windows delays startup programs by 10 seconds. We remove the delay.'; Attention = 'If you have many startup programs, the desktop can feel less responsive for the first few seconds.' }
-    'conf-fin' = @{ Titre = 'Close stuck programs without asking (AutoEndTasks)'; Pourquoi = 'At shutdown, Windows kills programs that stop responding instead of showing the "this program is preventing shutdown" window.'; Attention = 'An unsaved document in a frozen program is lost at shutdown.' }
+    'conf-fin' = @{ Titre = 'Close programs that delay shutdown without asking (AutoEndTasks)'; Pourquoi = 'At shutdown, Windows force-closes any program that delays it instead of showing the "this program is preventing shutdown" window. That includes a program waiting for you to save.'; Attention = 'An unsaved document is lost at shutdown, even in a program that responds.' }
     'conf-transparence' = @{ Titre = 'Turn off transparency'; Pourquoi = 'The blur effects behind the Start menu and taskbar. Costs a bit of GPU constantly.'; Attention = 'A flatter interface.' }
     'conf-animations' = @{ Titre = 'Turn off window animations'; Pourquoi = 'Windows appear instantly instead of sliding in. Windows feels faster because it no longer waits for the animation to finish.'; Attention = 'A blunter interface. Personal taste.' }
     'conf-accessibilite' = @{ Titre = 'Turn off accessibility shortcuts (Sticky Keys, Filter Keys)'; Pourquoi = 'Pressing Shift 5 times during a game opens the Sticky Keys window. Never again.'; Attention = '' }
     'conf-acces-rapide' = @{ Titre = 'File Explorer: remove "Quick access" from the left pane (HubMode)'; Pourquoi = 'File Explorer''s left pane starts with "Quick access" and its recent folders. This key removes it, the pane starts at "This PC". Source: tenforums.com, tutorial 4844 (Shawn Brink, 2018), still valid on Windows 11.'; Attention = 'No more "Quick access" shortcuts or recent folders in the pane.' }
     'conf-corbeille' = @{ Titre = 'File Explorer: Recycle Bin in "This PC"'; Pourquoi = 'Adds the Recycle Bin next to the drives in "This PC" and in the left pane. Source: howtogeek.com, article 282820 (Walter Glenn).'; Attention = 'Nothing, the key removes cleanly on rollback.' }
     'conf-vlc-pistes' = @{ Titre = 'VLC: right-click "VLC with mixed audio tracks" on .mp4 files'; Pourquoi = 'Adds a right-click entry on .mp4 files that launches VLC with all audio tracks mixed together (--sout-all). Useful for gameplay recordings with voice and game audio on two separate tracks. Requires VLC installed at C:\Program Files\VideoLAN.'; Attention = 'One more entry in the .mp4 right-click menu.' }
-    'adv-priosep' = @{ Titre = 'Win32PrioritySeparation = 0x26 (short, variable quantum, x3 boost for the foreground)'; Pourquoi = 'Sets how the scheduler splits CPU time between the foreground program and the rest. 0x26 gives short, variable time slices with a x3 boost for the game. A real effect on the split, no reproducible FPS gain has been published: keep it only if you measure an improvement (CapFrameX, 3 runs).'; Attention = 'Background tasks (downloads, encoding) progress more slowly while you play.' }
     'adv-throttling' = @{ Titre = 'Turn off Power Throttling (PowerThrottlingOff)'; Pourquoi = 'Windows throttles programs it considers "in the background" (EcoQoS) to save power. On a desktop PC we do not want to throttle anything: Discord, your launcher, the overlay run at full speed even behind the game.'; Attention = 'On a laptop, less battery life. On a desktop, nothing.' }
     'adv-nagle' = @{ Titre = 'Turn off Nagle''s algorithm (TcpAckFrequency, TCPNoDelay) on the active card'; Pourquoi = 'Nagle groups small TCP packets before sending them, and delays acknowledgments. A few ms saved on a game using TCP (MMOs, some Unity games). Zero effect on a game using UDP, which is nearly every FPS.'; Attention = 'A few more small packets on the line. Nothing visible.' }
     'adv-dyntick' = @{ Titre = 'Turn off dynamic tick (bcdedit disabledynamictick)'; Pourquoi = 'The kernel stops its clock when nothing happens and restarts it on demand. With a 0.5 ms timer this can drift. Check this only if you see micro-stutter that RivaTuner confirms, and uncheck it if nothing changes.'; Attention = 'Idle power draw a bit higher.' }
     'jeu-mpo' = @{ Titre = 'Turn off Multiplane Overlay (MPO, OverlayTestMode = 5)'; Pourquoi = 'MPO lets the graphics card draw some windows directly, bypassing the Windows compositor (DWM). It is the cause of the black screens, flickering and windowed stutter that NVIDIA documents (article 5157, 2022) and that AMD cards know too. Off, DWM composes everything: zero effect in fullscreen, no more surprises in windowed or multi-monitor. This box sets the key, not NVCleanstall, so Restore can put it back.'; Attention = 'A video in a window costs a bit more GPU (no more hardware overlay). On 24H2 and later, Windows sometimes ignores the key: then nothing changes.' }
     'adv-boost' = @{ Titre = 'CPU boost mode set to Aggressive (PERFBOOSTMODE)'; Pourquoi = 'The power plan boost mode decides how fast the CPU ramps its frequency when load arrives. Aggressive ramps it up right away instead of waiting. Intel key: on AMD the firmware handles boost.'; Attention = 'On a laptop: heat and battery for nothing. On a desktop, slightly more idle power.' }
-    'adv-rawmouse' = @{ Titre = 'RawMouseThrottleDuration = 8 (mouse report batching)'; Pourquoi = 'Windows groups mouse Raw Input reports into time windows. With a mouse at 1000 Hz or more, a shorter window delivers movement to the game sooner. Documented range is 3 to 20. On recent Windows 11 builds the default is already 8: in that case the key changes nothing (check on your machine with ?, the previous value is written to bagarre.log). Verify with MouseTester: zero missed reports.'; Attention = 'No known downside. If the cursor feels off, R restores the previous value.' }
     'adv-fth' = @{ Titre = 'Turn off the Fault Tolerant Heap (FTH)'; Pourquoi = 'When a program crashes several times, Windows relaunches it with a "tolerant", slower memory allocator, without telling you. A game that crashed three times then runs throttled. With this off, it still crashes the same way but runs at full speed the rest of the time. Documented by Microsoft (FTH, Win32 apps).'; Attention = 'An old unstable program that FTH was keeping alive can start crashing again.' }
     'adv-llmnr' = @{ Titre = 'Turn off LLMNR (multicast name resolution)'; Pourquoi = 'When a name is not found by DNS, Windows shouts it out over multicast on the local network (LLMNR). This is a known entry point for credential interception (Responder) and pointless network noise. A standard enterprise security recommendation.'; Attention = 'Typing \\PC-NAME to reach another PC at home may stop working (use its IP or enable mDNS on the NAS side).' }
     'nv-telemetrie' = @{ Titre = 'Turn off NVIDIA telemetry'; Pourquoi = 'The driver sends statistics to NVIDIA. Two keys, no effect on gaming.'; Attention = '' }
@@ -1713,6 +1698,8 @@ function Appliquer-Items($liste) {
         if ($barre) { $barre.Value = 100 * $n / $liste.Count; Rafraichir }
     }
     if ($barre) { $barre.Visibility = 'Collapsed' }
+    # Un item qui touche l'Explorateur (menu clic droit) demande une relance : une seule, après tous les items.
+    if ($Bagarre.RelancerExplorer) { Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; $Bagarre.RelancerExplorer = $false }
     Log ((Msg 'finApplication') -f $EtatFichier, $LogFichier)
 }
 
@@ -1771,7 +1758,7 @@ Ligne "Panneau NVIDIA (Store) : $([bool](Get-AppxPackage NVIDIACorp.NVIDIAContro
 Ligne "Optimisations jeux fenêtrés / HAGS : DirectXUserGlobalSettings = $(Reg 'HKCU:\SOFTWARE\Microsoft\DirectX\UserGpuPreferences' 'DirectXUserGlobalSettings'), HwSchMode = $(Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers' 'HwSchMode') (2 = HAGS activé)"
 Ligne "Game DVR : AppCaptureEnabled=$(Reg 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR' 'AppCaptureEnabled') AllowGameDVR(policy)=$(Reg 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR' 'AllowGameDVR') GameMode(AutoGameModeEnabled)=$(Reg 'HKCU:\SOFTWARE\Microsoft\GameBar' 'AutoGameModeEnabled')"
 
-Ligne "Pilote inpoutx64.sys présent (MSI Util / outils d accès matériel, bloqué par KB5121003) : $(Test-Path "$env:SystemRoot\System32\drivers\inpoutx64.sys")"
+Ligne "Pilote inpoutx64.sys présent (MSI Util / outils d'accès matériel, bloqué par KB5121003) : $(Test-Path "$env:SystemRoot\System32\drivers\inpoutx64.sys")"
 
 Titre 'Interruptions MSI des périphériques PCI (GPU, réseau, USB, stockage)'
 Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -in 'Display', 'Net', 'USB', 'SCSIAdapter', 'HDC', 'MEDIA' -and $_.DeviceID -like 'PCI\*' } | ForEach-Object {
@@ -1784,7 +1771,7 @@ Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -in 'Display', 'Net
 Titre 'Disques'
 Get-PhysicalDisk | ForEach-Object { Ligne "$($_.FriendlyName) : $($_.MediaType) $($_.BusType) $([math]::Round($_.Size / 1GB)) Go, santé $($_.HealthStatus)" }
 Get-Volume | Where-Object DriveLetter | ForEach-Object { Ligne "$($_.DriveLetter): $($_.FileSystem) $([math]::Round($_.SizeRemaining / 1GB)) Go libres sur $([math]::Round($_.Size / 1GB))" }
-Ligne "Fichier d échange : $((Get-CimInstance Win32_PageFileUsage | ForEach-Object { "$($_.Name) $($_.AllocatedBaseSize) Mo" }) -join ', ') ; géré auto = $((Get-CimInstance Win32_ComputerSystem).AutomaticManagedPagefile)"
+Ligne "Fichier d'échange : $((Get-CimInstance Win32_PageFileUsage | ForEach-Object { "$($_.Name) $($_.AllocatedBaseSize) Mo" }) -join ', ') ; géré auto = $((Get-CimInstance Win32_ComputerSystem).AutomaticManagedPagefile)"
 Ligne "Veille prolongée : HibernateEnabled = $(Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\Power' 'HibernateEnabled'), démarrage rapide HiberbootEnabled = $(Reg 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power' 'HiberbootEnabled')"
 Ligne "Stockage réservé : $(Essai { (Get-WindowsReservedStorageState).ReservedStorageState })"
 Ligne "TRIM : $(fsutil behavior query DisableDeleteNotify)"
@@ -1820,7 +1807,7 @@ Bloc (Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name, 
 Titre 'Souris et clavier'
 $m = Get-ItemProperty 'HKCU:\Control Panel\Mouse'
 Ligne "Accélération : MouseSpeed=$($m.MouseSpeed) Threshold1=$($m.MouseThreshold1) Threshold2=$($m.MouseThreshold2) (0/0/0 = coupée), sensibilité Windows MouseSensitivity=$($m.MouseSensitivity) (10 = 6/11), RawMouseThrottleDuration=$($m.RawMouseThrottleDuration)"
-Ligne "Files d attente : souris MouseDataQueueSize=$(Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\mouclass\Parameters' 'MouseDataQueueSize') clavier KeyboardDataQueueSize=$(Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\kbdclass\Parameters' 'KeyboardDataQueueSize')"
+Ligne "Files d'attente : souris MouseDataQueueSize=$(Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\mouclass\Parameters' 'MouseDataQueueSize') clavier KeyboardDataQueueSize=$(Reg 'HKLM:\SYSTEM\CurrentControlSet\Services\kbdclass\Parameters' 'KeyboardDataQueueSize')"
 Ligne "Souris USB : $((Get-CimInstance Win32_PointingDevice | ForEach-Object Name) -join ', ')"
 
 Titre 'Réseau'
@@ -1886,7 +1873,7 @@ Titre 'Script bagarre'
 if (Test-Path $EtatFichier) {
     $etat = Get-Content $EtatFichier -Raw | ConvertFrom-Json
     Ligne "bagarre-avant.json trouvé ($((Get-Item $EtatFichier).LastWriteTime.ToString('yyyy-MM-dd HH:mm'))), réglages appliqués : $(($etat.PSObject.Properties | ForEach-Object Name) -join ', ')"
-} else { Ligne 'bagarre-avant.json introuvable : le script à cocher n a pas été appliqué sur ce PC, ou a été restauré.' }
+} else { Ligne 'bagarre-avant.json introuvable : le script à cocher n''a pas été appliqué sur ce PC, ou a été restauré.' }
 
 Titre 'Événements récents (erreurs système et WHEA, 7 jours)'
 Get-WinEvent -FilterHashtable @{ LogName = 'System'; Level = 1, 2; StartTime = (Get-Date).AddDays(-7) } -MaxEvents 300 | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object -First 15 | ForEach-Object { Ligne "$($_.Count.ToString().PadLeft(4)) x $($_.Name) : $(($_.Group[0].Message -split "`n")[0].Substring(0, [math]::Min(120, ($_.Group[0].Message -split "`n")[0].Length)))" }
@@ -1912,11 +1899,11 @@ if ($Liste) {
 # "## " ouvre une carte, "@Id, Id2" pose des boutons, "! " une mise en garde, "> " une commande, "- " une puce),
 # les items dans le catalogue (français) et $TraductionsEn (anglais).
 # ---------------------------------------------------------------------------
-$PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Maintenance', 'Dns', 'Audit'
+$PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dns', 'Dur', 'Maintenance', 'Audit'
 $UI = @{
     fr = @{
-        nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'DNS', 'Dur', 'Maintenance', 'Audit IA'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'le résolveur le plus rapide depuis chez toi', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
             Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
@@ -1933,14 +1920,14 @@ $UI = @{
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
         aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte {0} ({1}). DNS actuel : {2}, souvent ta box.'
         dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Un clic sur une ligne choisit le principal, un deuxième le secours, puis "Utiliser les DNS choisis".'
-        dnsSelection = 'Clique d abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
+        dnsSelection = 'Clique d''abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
         dnsResume1 = 'Principal {0} ({1}). Un deuxième clic choisit le secours, la même ligne donne sa deuxième adresse.'
         dnsResume2 = 'Principal {0} ({1}), secours {2} ({3}).'; dnsResumeBox = 'La carte repasse en automatique, sur le DNS de ta box.'
         dnsDoh = 'Chiffrer les requêtes (DNS over HTTPS)'; dnsDohTip = 'Windows passe en HTTPS avec ces serveurs et revient en clair si ça échoue. Ta box et ton FAI ne lisent plus les noms que tu demandes.'; dnsDohAbsent = 'Windows 11 seulement.'
-        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d adresse IPv6, la case ne change rien pour lui.'
-        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
-        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
-        presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
+        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d''office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d''adresse IPv6, la case ne change rien pour lui.'
+        dnsNotes = @{ actuel = 'ce que tu as aujourd''hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
+        preset = 'Sélection'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetPerso = 'Personnalisé'
+        presetTips = @{ recommande = 'Les cases sûres, cochées à l''ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.' }
         ou = 'ou'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
         commandeCopiee = 'Commande copiée. Colle-la dans un Terminal pour rouvrir bagarre.'
@@ -1956,8 +1943,8 @@ $UI = @{
         an = 'an', 'ans'; mois = 'mois', 'mois'; jour = 'jour', 'jours'; et = 'et'
     }
     en = @{
-        nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'one tweak at a time, measured', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'DNS', 'Hard', 'Maintenance', 'AI audit'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'the fastest resolver from your place', 'one tweak at a time, measured', 'clean and check, months later', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
             Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
@@ -1980,8 +1967,8 @@ $UI = @{
         dnsDoh = 'Encrypt queries (DNS over HTTPS)'; dnsDohTip = 'Windows switches to HTTPS with these servers and falls back to plain text if that fails. Your router and your ISP no longer read the names you ask for.'; dnsDohAbsent = 'Windows 11 only.'
         dnsIpv6 = 'IPv6 too'; dnsIpv6Tip = 'Ticked by default when your connection has a public IPv6 address. OpenDNS publishes no IPv6 address, the box changes nothing for it.'
         dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; dns4eu = 'European, blocks malicious sites'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; controld = 'blocks malicious sites' }
-        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
-        presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
+        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetPerso = 'Custom'
+        presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.' }
         ou = 'or'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
         commandeCopiee = 'Command copied. Paste it into a Terminal to reopen bagarre.'
@@ -2026,14 +2013,14 @@ if ($EstAmd) {
 }
 
 $Boutons = @{
-    BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
+    BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d''avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
     BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
     BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot | iex"); Log $Bagarre.L.commandeCopiee } }
 
-    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
-    BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
-    BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
-    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Télécharge le zip officiel (celui que winget connaît) dans le dossier bagarre et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Downloads the official zip (the one winget knows) into the bagarre folder and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
+    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d''installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
+    BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu''à ce qu''il n''y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
+    BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d''exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
+    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Installe le zip officiel (celui que winget connaît) dans Program Files, pose un raccourci sur le Bureau et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Installs the official zip (the one winget knows) in Program Files, puts a shortcut on the Desktop and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
 
     BtnDebloat = @{ Logo = 'raphire'; T = @{ fr = 'Lancer Win11Debloat'; en = 'Run Win11Debloat' }; Tip = @{ fr = 'Retire les applis sponsorisées, Copilot, les pubs, la télémétrie. Demande avant chaque groupe. Mode par défaut.'; en = 'Removes sponsored apps, Copilot, ads, telemetry. Asks before each group. Default mode.' }; Action = { Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' -Fermer } }
     BtnWinUtil = @{ Logo = 'christitus'; T = @{ fr = 'Lancer WinUtil (Chris Titus)'; en = 'Run WinUtil (Chris Titus)' }; Tip = @{ fr = 'Onglet Install pour tes programmes, onglet Tweaks preset Standard seulement.'; en = 'Install tab for your programs, Tweaks tab with the Standard preset only.' }; Action = { Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' -Fermer } }
@@ -2041,75 +2028,107 @@ $Boutons = @{
     BtnVcredist = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Visual C++ 2005 à 2022'; en = 'Install Visual C++ 2005 to 2022' }; Tip = @{ fr = 'Installe via winget. Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".'; en = 'Installs through winget. Without them a game crashes with "VCRUNTIME140.dll not found".' }; Action = { $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }; Winget-Installer 'Visual C++ 2005-2022' $ids } }
     BtnSon = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les périphériques de lecture'; en = 'Open playback devices' }; Tip = @{ fr = 'La fenêtre Son de Windows : ton haut-parleur > Propriétés > Améliorations et Avancé.'; en = 'The Windows Sound window: your speaker > Properties > Enhancements and Advanced.' }; Action = { Start-Process control.exe -ArgumentList 'mmsys.cpl' | Out-Null } }
 
-    BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
+    BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d''avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
     BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
-    BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
-    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
+    BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d''avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
+    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d''avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
-    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d''image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
     BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall. La ligne MPO reste au script à cocher.'; en = 'The boxes to tick in NVCleanstall. The MPO line stays with the checkbox script.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
-    BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
-    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget. 16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
+    BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d''achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
+    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget et pose un raccourci sur le Bureau. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget and puts a shortcut on the Desktop. 16 GB of RAM and recent games only.' }; Action = { Islc-Installer } }
     BtnAutoGpu = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Ouvrir le dépôt AutoGpuAffinity'; en = 'Open the AutoGpuAffinity repo' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
     BtnAmd = @{ T = @{ fr = 'Ouvrir la page pilotes AMD'; en = 'Open the AMD drivers page' }; Tip = @{ fr = 'Le site AMD, pilote seul.'; en = 'AMD site, driver only.' }; Action = { Ouvrir 'https://www.amd.com/en/support/download/drivers.html' } }
 
     BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
     BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
     BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans la console qui accompagne la fenêtre. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in the console next to the window. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' -Ici } }
-    BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
+    BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l''Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
     BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
     BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans la console qui accompagne la fenêtre.'; en = 'powercfg /lastwake, /waketimers, /requests in the console next to the window.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' -Ici } }
-    BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
+    BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l''Observateur d''événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
     BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport dans la console qui accompagne la fenêtre, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport in the console next to the window, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Ici } }
-    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
+    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s''affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
     BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
 
     BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Huit résolveurs, une minute au plus. Ne change rien.'; en = 'Eight resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
-    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
+    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu''il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
         $p = $Bagarre.DnsChoix
         if ($p -lt 0) { Log $Bagarre.L.dnsSelection; return }
         $s = if ($Bagarre.DnsSecours -ge 0) { $Bagarre.DnsResultats[$Bagarre.DnsSecours] } else { $Bagarre.DnsResultats[$p] }
         Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$p] $s ([bool]$Ctl.DnsDoh.IsChecked) ([bool]$Ctl.DnsIpv6.IsChecked)
     } }
 
-    BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
-    BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
+    BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, copie le prompt et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, copies the prompt and opens the folder.' }; Action = { Audit-Collecter } }
+    BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText((Audit-Prompt)); Log $Bagarre.L.promptCopie } }
     BtnDossierAudit = @{ T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
 
-    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
+    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n''en crée qu''un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
     BtnVoileSauvegarde = @{ Logo = 'microsoft'; T = @{ fr = 'Sauvegarder mes fichiers'; en = 'Back up my files' }; Tip = @{ fr = 'Paramètres > Sauvegarde Windows.'; en = 'Settings > Windows Backup.' }; Action = { Ouvrir 'ms-settings:backup' } }
     BtnVoileContinuer = @{ T = @{ fr = 'Continuer quand même'; en = 'Continue anyway' }; Tip = @{ fr = 'Ferme cet avertissement.'; en = 'Closes this warning.' }; Action = { $Ctl.Voile.Visibility = 'Collapsed' } }
 }
 
 # Snappy : winget refuse le paquet en admin (le hash du zip ne correspond plus au manifeste), donc on prend l'URL du zip
-# que winget connaît et on le télécharge nous-mêmes, puis on lance l'exe x64 dézippé.
+# que winget connaît et on l'installe nous-mêmes dans Program Files, avec un raccourci. SDIO cherche ses langues dans
+# tools\SDIO\langs relatif au dossier courant : lancé sans -WorkingDirectory il ne les trouve pas et reste en anglais.
+# Avec, il prend la langue du compte (GetUserDefaultLCID).
 function Snappy-Installer {
     $fr = $Bagarre.Langue -eq 'fr'
     $m = @{
-        cherche = if ($fr) { 'Je demande à winget où est le zip de Snappy...' } else { 'Asking winget where the Snappy zip is...' }
-        pasUrl  = if ($fr) { 'Pas trouvé l URL du zip, j ouvre la page de téléchargement à la place.' } else { 'Could not find the zip URL, opening the download page instead.' }
+        cherche = if ($fr) { 'Je demande à winget où est le zip de Snappy.' } else { 'Asking winget where the Snappy zip is.' }
+        pasUrl  = if ($fr) { "Pas trouvé l'URL du zip, j'ouvre la page de téléchargement à la place." } else { 'Could not find the zip URL, opening the download page instead.' }
         telecharge = if ($fr) { 'Téléchargement de' } else { 'Downloading' }
+        installe = if ($fr) { 'Installé dans' } else { 'Installed in' }
         lance   = if ($fr) { 'Je lance' } else { 'Starting' }
-        pasExe  = if ($fr) { 'Pas d exe x64 trouvé dans le zip, j ouvre le dossier.' } else { 'No x64 exe found in the zip, opening the folder.' }
+        pasExe  = if ($fr) { "Pas d'exe x64 trouvé dans le zip, j'ouvre le dossier." } else { 'No x64 exe found in the zip, opening the folder.' }
     }
+    foreach ($k in @($m.Keys)) { $m[$k] = Echapper $m[$k] }
     $cmd = @"
+$RaccourciCode
+`$ProgressPreference = 'SilentlyContinue'
 Write-Host '$($m.cherche)'
 `$fiche = winget show --id GlennDelahoy.SnappyDriverInstallerOrigin -e --accept-source-agreements | Out-String
+`$global:LASTEXITCODE = 0
 `$url = [regex]::Match(`$fiche, 'https?://\S+\.zip').Value
-if (-not `$url) { Write-Host '$($m.pasUrl)' -ForegroundColor Yellow; Start-Process 'https://www.glenn.delahoy.com/snappy-driver-installer-origin/'; return }
-`$zip = Join-Path '$Dossier' 'sdio.zip'
-`$dest = Join-Path '$Dossier' 'sdio'
-Write-Host "$($m.telecharge) `$url"
-Invoke-WebRequest -Uri `$url -OutFile `$zip -UseBasicParsing -ErrorAction Stop
-Expand-Archive -Path `$zip -DestinationPath `$dest -Force -ErrorAction Stop
-`$exe = Get-ChildItem -Path `$dest -Recurse -Filter 'SDIO_x64_*.exe' | Select-Object -First 1
-if (`$exe) { Write-Host "$($m.lance) `$(`$exe.Name)"; Start-Process `$exe.FullName } else { Write-Host '$($m.pasExe)' -ForegroundColor Yellow; Start-Process `$dest }
+if (-not `$url) {
+    Write-Host '$($m.pasUrl)' -ForegroundColor Yellow
+    Start-Process 'https://www.glenn.delahoy.com/snappy-driver-installer-origin/'
+} else {
+    `$zip = Join-Path `$env:TEMP 'sdio.zip'
+    `$dest = Join-Path `$env:ProgramFiles 'Snappy Driver Installer Origin'
+    Write-Host '$($m.telecharge)' `$url
+    Invoke-WebRequest -Uri `$url -OutFile `$zip -UseBasicParsing -ErrorAction Stop
+    Expand-Archive -Path `$zip -DestinationPath `$dest -Force -ErrorAction Stop
+    Remove-Item `$zip -ErrorAction SilentlyContinue
+    Write-Host '$($m.installe)' `$dest
+    `$exe = Get-ChildItem -Path `$dest -Filter 'SDIO_x64_*.exe' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (`$exe) {
+        Raccourci 'Snappy Driver Installer Origin' `$exe.FullName
+        Write-Host '$($m.lance)' `$exe.Name
+        Start-Process -FilePath `$exe.FullName -WorkingDirectory `$dest
+    } else { Write-Host '$($m.pasExe)' -ForegroundColor Yellow; Start-Process `$dest; `$Echec = `$true }
+}
 "@
     Console-Lancer 'Snappy Driver Installer Origin' $cmd -Fermer
+}
+
+# ISLC : winget extrait l'archive dans Program Files (x86)\Wagnardsoft\ISLC\ISLC vX.Y sans poser de raccourci.
+# On en pose un vers l'exe le plus récent (une mise à jour ajoute un dossier de version à côté de l'ancien).
+function Islc-Installer {
+    $pasExe = Echapper $(if ($Bagarre.Langue -eq 'fr') { "ISLC est installé mais je ne trouve pas son exe, pas de raccourci." } else { 'ISLC is installed but its exe was not found, no shortcut.' })
+    $cmd = @"
+$RaccourciCode
+winget install --id 'Wagnardsoft.ISLC' -e --accept-package-agreements --accept-source-agreements
+if (`$LASTEXITCODE -and `$LASTEXITCODE -ne -1978335189) { `$Echec = `$true }
+`$global:LASTEXITCODE = 0
+`$exe = Get-ChildItem -Path "`${env:ProgramFiles(x86)}\Wagnardsoft", "`$env:ProgramFiles\Wagnardsoft" -Recurse -Filter '*ISLC.exe' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if (`$exe) { Raccourci 'ISLC' `$exe.FullName } elseif (-not `$Echec) { Write-Host '$pasExe' -ForegroundColor Yellow; `$Echec = `$true }
+"@
+    Console-Lancer 'ISLC' $cmd -Fermer
 }
 
 # ---------------------------------------------------------------------------
@@ -2122,7 +2141,7 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 $Xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="windows BAGARRE edition" Width="1320" Height="860" MinWidth="1040" MinHeight="700"
+        Title="windows BAGARRE edition" Width="1320" Height="860" MinWidth="960" MinHeight="560"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
         Background="#15121C" Foreground="#ECE8F4" FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
         TextOptions.TextFormattingMode="Display" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -2585,16 +2604,20 @@ $Xaml = @'
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DockPanel Grid.Row="0" LastChildFill="False">
-              <WrapPanel Name="BarreOptis" DockPanel.Dock="Left">
+            <Grid Grid.Row="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <WrapPanel Name="BarreOptis" Grid.Column="0">
                 <TextBlock Name="PresetsLabel" Foreground="{StaticResource Sourd}" VerticalAlignment="Center" Margin="4,0,8,8"/>
                 <ComboBox Name="Presets"/>
               </WrapPanel>
-              <Grid DockPanel.Dock="Right" Width="220" Margin="8,0,0,8">
+              <Grid Grid.Column="1" Width="220" Margin="8,0,0,8" VerticalAlignment="Top">
                 <TextBox Name="Filtre" Style="{StaticResource Champ}"/>
                 <TextBlock Name="FiltreIndice" Foreground="#6E6683" Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
               </Grid>
-            </DockPanel>
+            </Grid>
             <TextBlock Grid.Row="1" Name="Legende" Foreground="#9B93AD" TextWrapping="Wrap" Margin="0,2,0,10" LineHeight="18"/>
             <Grid Grid.Row="2">
               <Grid.ColumnDefinitions>
@@ -2656,6 +2679,12 @@ try {
 $Ctl = @{}
 foreach ($m in [regex]::Matches($Xaml, '(?<!\w)(?:x:)?Name="(\w+)"')) { $n = $m.Groups[1].Value; $Ctl[$n] = $Fenetre.FindName($n) }
 $Ctl.TitreBarre.Text = "windows BAGARRE edition v$Version"
+# Un portable en 1366x768 (ou 1080p à 125 %) n'a pas 860 px de haut : la fenêtre se cale sur la zone de travail.
+if (-not $Capture) {
+    $zone = [Windows.SystemParameters]::WorkArea
+    $Fenetre.Width = [Math]::Min($Fenetre.Width, $zone.Width - 24)
+    $Fenetre.Height = [Math]::Min($Fenetre.Height, $zone.Height - 24)
+}
 $Fenetre.Title = $Ctl.TitreBarre.Text
 $Pinceau = @{}
 foreach ($k in 'Fond', 'Rail', 'Surface', 'Surface2', 'Bordure', 'Texte', 'Sourd', 'Accent', 'AccentClair', 'AccentFond', 'SurAccent', 'Alerte', 'AlerteFond', 'Ok') { $Pinceau[$k] = $Fenetre.FindResource($k) }
@@ -2964,6 +2993,7 @@ function Ligne-Creer($it) {
     [void]$g.Children.Add($pill); [void]$g.Children.Add($titre); [void]$g.Children.Add($statut)
     $cb.Content = $g
     $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })
+    $cb.Add_GotKeyboardFocus({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })   # au clavier (Tab) aussi
     $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
     $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
     $ligne = New-Object Windows.Controls.Border
@@ -3012,10 +3042,11 @@ $Ctl.BarreOptis.Children.Insert(1, $Ctl.PresetsLabel); $Ctl.BarreOptis.Children.
 foreach ($id in 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
 
 # Presets : une liste déroulante à la place de quarante boutons. Recommandé = les cases sûres, Minimal = celles sans
-# contrepartie, Tout décocher, Windows par défaut = restaure ce qui a été appliqué. Toucher une case passe en Personnalisé.
+# contrepartie, Tout décocher. Ce qui est déjà fait reste décoché. Toucher une case passe en Personnalisé.
+# Pas de "Windows par défaut" ici : restaurer est une action, c'est le bouton Tout remettre.
 $Bagarre.PresetEnCours = $false
 $PresetItems = @{}
-foreach ($cle in 'recommande', 'minimal', 'aucun', 'windows', 'perso') {
+foreach ($cle in 'recommande', 'minimal', 'aucun', 'perso') {
     $cbi = New-Object Windows.Controls.ComboBoxItem
     $cbi.Tag = $cle
     if ($cle -eq 'perso') { $cbi.Visibility = 'Collapsed' }
@@ -3031,10 +3062,9 @@ function Preset-Appliquer($cle) {
     $Bagarre.PresetEnCours = $true
     try {
         switch ($cle) {
-            'recommande' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } }
-            'minimal' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and [string]::IsNullOrWhiteSpace($Lignes[$id].Item.Attention) } }
+            'recommande' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and $Etat[$id] -ne $true } }
+            'minimal' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and $Etat[$id] -ne $true -and [string]::IsNullOrWhiteSpace($Lignes[$id].Item.Attention) } }
             'aucun' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
-            'windows' { Restaurer-Demander; foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
         }
     } finally { $Bagarre.PresetEnCours = $false }
 }
@@ -3086,7 +3116,7 @@ $GroupesEn = @{
     'Services Windows' = 'Windows services'; 'Vie privée et pubs' = 'Privacy and ads'; 'Jeu et réactivité' = 'Gaming and responsiveness'
     'Carte réseau (appliqué sur chaque carte physique active)' = 'Network card (applied to every active physical card)'
     'Confort (aucun gain de FPS, juste plus vif)' = 'Comfort (no FPS gain, just snappier)'
-    'Avancé (décoché par défaut, lis l explication avant)' = 'Advanced (unchecked by default, read the explanation first)'
+    'Avancé (décoché par défaut, lis l''explication avant)' = 'Advanced (unchecked by default, read the explanation first)'
     'Processeur Intel' = 'Intel processor'; 'Carte graphique NVIDIA' = 'NVIDIA graphics card'
 }
 
@@ -3166,6 +3196,11 @@ function Dns-Peindre {
         $badge.Bord.Visibility = if ($badge.Texte.Text) { 'Visible' } else { 'Collapsed' }
     }
     $Ctl.BtnDnsAppliquer.IsEnabled = $p -ge 0
+    # Le bouton violet suit l'étape : Tester tant que rien n'est choisi, Utiliser dès qu'un principal l'est.
+    # ClearValue et pas Style = $null : une valeur locale nulle masque le style implicite, le bouton sortait brut.
+    $violet, $gris = if ($p -ge 0) { $Ctl.BtnDnsAppliquer, $Ctl.BtnDnsTester } else { $Ctl.BtnDnsTester, $Ctl.BtnDnsAppliquer }
+    $violet.Style = $Fenetre.FindResource('Principal')
+    $gris.ClearValue([Windows.FrameworkElement]::StyleProperty)
     Dns-Resumer
 }
 # Un clic : pas de principal = principal ; un principal sans secours = secours (la même ligne compte) ; les deux posés = on recommence.
@@ -3203,7 +3238,7 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     [Windows.Controls.Grid]::SetColumn($bloc, 2)
     $nom = New-Object Windows.Controls.TextBlock
     $nom.Text = $r.Nom; $nom.FontWeight = 'SemiBold'
-    if ($plusRapide) { $nom.Text += '  ' + $Bagarre.L.dnsRapide; $nom.Foreground = $Pinceau.AccentClair }
+    if ($plusRapide) { $nom.Text += ' (' + $Bagarre.L.dnsRapide + ')'; $nom.Foreground = $Pinceau.AccentClair }
     $note = New-Object Windows.Controls.TextBlock
     $note.Text = $Bagarre.L.dnsNotes[$r.Cle]; $note.FontSize = 11; $note.Foreground = $Pinceau.Sourd; $note.TextWrapping = 'Wrap'
     [void]$bloc.Children.Add($nom); [void]$bloc.Children.Add($note)
@@ -3230,7 +3265,8 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     if (-not $ok) { $row.Opacity = 0.55; $row.Cursor = 'Arrow' } else { $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) }) }
     $row
 }
-# Redessine la liste : rang par médiane croissante, le plus rapide encadré. Les lignes sans mesure restent à leur place.
+# Redessine la liste : rang par médiane croissante, le plus rapide encadré. Pendant la mesure les lignes gardent leur place
+# (rien ne saute sous la souris), une fois tout mesuré elles passent dans l'ordre des rangs. Le Tag reste l'index du résultat.
 function Dns-Redessiner {
     $Ctl.DnsListe.Children.Clear()
     $Ctl.DnsBadges.Clear()
@@ -3242,7 +3278,9 @@ function Dns-Redessiner {
     for ($k = 0; $k -lt $tries.Count; $k++) { $rangs[$tries[$k].Cle] = $k + 1 }
     $meilleur = if ($tries.Count -gt 0 -and $tries.Count -eq $Bagarre.DnsResultats.Count) { $tries[0].Cle } else { $null }
     $Bagarre.DnsMeilleur = -1
-    for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) {
+    $ordre = @(for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) { $i })
+    if ($meilleur) { $ordre = @($ordre | Sort-Object { [double]$Bagarre.DnsResultats[$_].Mediane }) }
+    foreach ($i in $ordre) {
         $r = $Bagarre.DnsResultats[$i]
         if ($r.Cle -eq $meilleur) { $Bagarre.DnsMeilleur = $i }
         [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $r $max $rangs[$r.Cle] ($r.Cle -eq $meilleur)))
@@ -3282,11 +3320,19 @@ function Dns-Tester {
 # Audit IA
 # ---------------------------------------------------------------------------
 $DossierAudit = Join-Path ([Environment]::GetFolderPath('Desktop')) 'bagarre-audit'
+# Le prompt porte la liste des cases de ce PC, tirée du catalogue : elle ne peut pas diverger du script.
+function Audit-Prompt {
+    $cochees = @($Items | Where-Object { $Defauts[$_.Id] } | ForEach-Object { '  - ' + (Item-Titre $_) })
+    $decochees = @($Items | Where-Object { -not $Defauts[$_.Id] } | ForEach-Object { '  - ' + (Item-Titre $_) })
+    $Textes[$Bagarre.Langue]['audit-prompt'].Replace('{{CASES_COCHEES}}', ($cochees -join "`r`n")).Replace('{{CASES_DECOCHEES}}', ($decochees -join "`r`n"))
+}
 function Audit-Collecter {
     if (-not (Test-Path $DossierAudit)) { New-Item -Path $DossierAudit -ItemType Directory -Force | Out-Null }
-    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $Textes[$Bagarre.Langue]['audit-prompt'], (New-Object Text.UTF8Encoding $true))
+    $prompt = Audit-Prompt
+    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $prompt, (New-Object Text.UTF8Encoding $true))
     Log $Bagarre.L.collecte
     Collecter-Rapport (Join-Path $DossierAudit 'rapport-pc.txt')
+    [Windows.Clipboard]::SetText($prompt); Log $Bagarre.L.promptCopie
     Ouvrir $DossierAudit
 }
 

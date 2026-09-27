@@ -1,4 +1,4 @@
-Pour un PC installé depuis des mois. Sous chaque bouton, une phrase dit ce qu'il ouvre.
+Pour un PC installé depuis des mois.
 
 ## Ce qui se lance tout seul
 @BtnAutoruns

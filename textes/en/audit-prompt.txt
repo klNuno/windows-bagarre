@@ -12,16 +12,11 @@ This PC went through the "windows bagarre edition" pack (repo github.com/klNuno/
   needed (power management, filtering, V-Sync, G-Sync).
   AMD card instead: driver from AMD's site in minimal install, Anti-Lag on, Boost/Chill/AFMF off, instant replay and
   the Adrenalin overlay off, the rest at default.
-- Checkbox script bagarre.ps1, boxes ticked by default: useless services (telemetry, fax, demo, Edge update),
-  telemetry, CEIP and error reports at minimum, Copilot/Recall/Click to Do/Widgets/Notepad and Paint AI off,
-  Game DVR and PresenceWriter off, GlobalTimerResolutionRequests=1, MPO off (OverlayTestMode=5), mouse acceleration
-  off, hibernation and fast startup off, USB suspend, USB3 LPM, PCIe ASPM and wake timers off, drivers excluded from
-  Windows Update, Continuous Innovation declined, F8 menu, AutoRun off, ARSO off, network card (power management,
-  EEE, LLDP/topology unticked, Interrupt Moderation Medium), comfort (classic right-click menu, End task in the
-  taskbar, Edge without Startup Boost, File Explorer, Communications "Do nothing").
-  Boxes unticked by default, to propose only with a reason specific to this PC: SvcHostSplitThreshold,
-  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
-  LLMNR off, clipboard, Dynamic Lighting, NVIDIA P0, core parking, Aggressive boost (Intel only).
+- Checkbox script bagarre.ps1 (list taken from this PC's catalogue). Boxes ticked by default, applied if the user
+  clicked Apply (the bagarre-avant.json section of the report says so):
+{{CASES_COCHEES}}
+  Boxes unticked by default, to propose only with a reason specific to this PC:
+{{CASES_DECOCHEES}}
 - DNS tested from the PC (eight resolvers), the fastest applied if the gap with the router was over 5 ms, with a
   fallback, DNS over HTTPS encryption and IPv6 when the connection has it.
 
@@ -31,7 +26,8 @@ DO NOT PROPOSE, IT IS DECIDED
 - BIOS settings: out of the pack's scope, only point them out.
 - "Ultimate performance" plan, prefetch/superfetch, "unlocking the 20% reserved bandwidth", LargeSystemCache,
   IRQ8Priority, mouse/keyboard data queues, TcpWindowSize, page file off, HPET, TdrLevel, IPv6 off, C-states off,
-  Interrupt Moderation Disabled, a timer resolution tool running in the background.
+  Interrupt Moderation Disabled, a timer resolution tool running in the background, Win32PrioritySeparation (0x26
+  gives the same split as the client default), SvcHostSplitThreshold, RawMouseThrottleDuration.
 - Disabling a service you are not sure about: NvContainer, Windows Audio, Themes, Cryptographic Services,
   Windows Time, Storage Service, Device Install, WMI stay.
 - A global NVIDIA or AMD setting that belongs per game (max performance, filtering, V-Sync, Smooth Motion).

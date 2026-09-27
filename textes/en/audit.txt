@@ -2,12 +2,10 @@ The pack does not know your PC. The audit takes a snapshot of it and hands it to
 
 ## 1. The report
 @BtnCollecter
-30 seconds, changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on your Desktop. No account name, no password, no license key. Open it anyway before sending it.
-
-## 2. The prompt
+Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on your Desktop, then copies the prompt to the clipboard. No account name, no password, no license key. Open the report anyway before sending it.
 @BtnPrompt, BtnDossierAudit
 
-## 3. Your AI
+## 2. Your AI
 - Terminal agent (Claude Code, Codex, Gemini CLI): open it in the bagarre-audit folder and paste the prompt. It reads the report by itself.
 - Web chat (ChatGPT, Claude.ai): paste the prompt, then attach rapport-pc.txt.
 A proposal with no source or no downside, you do not apply. The AI does not touch your PC, you apply.

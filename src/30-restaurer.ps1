@@ -80,5 +80,7 @@ function Appliquer-Items($liste) {
         if ($barre) { $barre.Value = 100 * $n / $liste.Count; Rafraichir }
     }
     if ($barre) { $barre.Visibility = 'Collapsed' }
+    # Un item qui touche l'Explorateur (menu clic droit) demande une relance : une seule, après tous les items.
+    if ($Bagarre.RelancerExplorer) { Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; $Bagarre.RelancerExplorer = $false }
     Log ((Msg 'finApplication') -f $EtatFichier, $LogFichier)
 }

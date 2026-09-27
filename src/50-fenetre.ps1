@@ -12,11 +12,11 @@ if ($Liste) {
 # "## " ouvre une carte, "@Id, Id2" pose des boutons, "! " une mise en garde, "> " une commande, "- " une puce),
 # les items dans le catalogue (français) et $TraductionsEn (anglais).
 # ---------------------------------------------------------------------------
-$PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dur', 'Maintenance', 'Dns', 'Audit'
+$PagesNoms = 'Accueil', 'Installation', 'Facile', 'Optis', 'Nvidia', 'Dns', 'Dur', 'Maintenance', 'Audit'
 $UI = @{
     fr = @{
-        nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'Dur', 'Maintenance', 'DNS', 'Audit IA'
-        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'le résolveur le plus rapide depuis chez toi', 'une IA vérifie ton PC'
+        nav      = 'Accueil', 'Installation', 'Facile', 'Le script à cocher', 'NVIDIA', 'DNS', 'Dur', 'Maintenance', 'Audit IA'
+        resume   = '', 'Windows propre, mises à jour, pilotes', 'débloat en deux clics, librairies, son', 'services, vie privée, jeu, réseau, confort', 'pilote sans NVIDIA App, Panneau de configuration', 'le résolveur le plus rapide depuis chez toi', 'une opti à la fois, mesurée', 'nettoyer et vérifier, des mois après', 'une IA vérifie ton PC'
         titres   = @{
             Accueil = 'Tu viens de réinstaller Windows 11 ?'; Installation = 'Windows propre, mises à jour, pilotes'
             Facile = 'Débloat en deux clics, librairies, son'; Optis = 'Le script à cocher'
@@ -33,14 +33,14 @@ $UI = @{
         confirmRestaurer = 'Remettre les {0} réglages comme avant ?'; restaure = 'Restauré. Redémarre le PC.'
         aucuneCarte = 'Aucune carte réseau active trouvée.'; dnsCarte = 'Carte {0} ({1}). DNS actuel : {2}, souvent ta box.'
         dnsEnCours = 'Test DNS en cours...'; dnsFini = 'Test terminé. Un clic sur une ligne choisit le principal, un deuxième le secours, puis "Utiliser les DNS choisis".'
-        dnsSelection = 'Clique d abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
+        dnsSelection = 'Clique d''abord une ligne de résultat.'; dnsBox = 'box'; dnsRapide = 'le plus rapide'; dnsTest = 'test en cours'
         dnsResume1 = 'Principal {0} ({1}). Un deuxième clic choisit le secours, la même ligne donne sa deuxième adresse.'
         dnsResume2 = 'Principal {0} ({1}), secours {2} ({3}).'; dnsResumeBox = 'La carte repasse en automatique, sur le DNS de ta box.'
         dnsDoh = 'Chiffrer les requêtes (DNS over HTTPS)'; dnsDohTip = 'Windows passe en HTTPS avec ces serveurs et revient en clair si ça échoue. Ta box et ton FAI ne lisent plus les noms que tu demandes.'; dnsDohAbsent = 'Windows 11 seulement.'
-        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d adresse IPv6, la case ne change rien pour lui.'
-        dnsNotes = @{ actuel = 'ce que tu as aujourd hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
-        preset = 'Preset'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetWindows = 'Windows par défaut (tout remettre)'; presetPerso = 'Personnalisé'
-        presetTips = @{ recommande = 'Les cases sûres, cochées à l ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.'; windows = 'Remet chaque réglage déjà appliqué à sa valeur d avant, DNS compris.' }
+        dnsIpv6 = 'Aussi en IPv6'; dnsIpv6Tip = 'Coché d''office quand ta connexion a une adresse IPv6 publique. OpenDNS ne publie pas d''adresse IPv6, la case ne change rien pour lui.'
+        dnsNotes = @{ actuel = 'ce que tu as aujourd''hui, ta box ou ton FAI'; quad9 = 'bloque les sites malveillants, pas de journal'; cloudflare = 'souvent le plus rapide, aucun filtre'; google = 'rapide, garde des journaux'; dns4eu = 'européen, bloque les sites malveillants'; adguard = 'bloque les pubs et les traqueurs'; opendns = 'Cisco, filtre familial en option'; controld = 'bloque les sites malveillants' }
+        preset = 'Sélection'; presetRecommande = 'Recommandé'; presetMinimal = 'Minimal (rien à perdre)'; presetAucun = 'Tout décocher'; presetPerso = 'Personnalisé'
+        presetTips = @{ recommande = 'Les cases sûres, cochées à l''ouverture.'; minimal = 'Seulement les cases dont la contrepartie est vide : rien à perdre.'; aucun = 'Aucune case cochée.' }
         ou = 'ou'
         collecte = 'Collecte en cours, environ 30 secondes...'; promptCopie = 'Prompt copié dans le presse-papiers. Colle-le dans ton IA avec rapport-pc.txt.'
         commandeCopiee = 'Commande copiée. Colle-la dans un Terminal pour rouvrir bagarre.'
@@ -56,8 +56,8 @@ $UI = @{
         an = 'an', 'ans'; mois = 'mois', 'mois'; jour = 'jour', 'jours'; et = 'et'
     }
     en = @{
-        nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'Hard', 'Maintenance', 'DNS', 'AI audit'
-        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'one tweak at a time, measured', 'clean and check, months later', 'the fastest resolver from your place', 'an AI checks your PC'
+        nav      = 'Home', 'Install', 'Easy', 'The checkbox script', 'NVIDIA', 'DNS', 'Hard', 'Maintenance', 'AI audit'
+        resume   = '', 'clean Windows, updates, drivers', 'debloat in two clicks, libraries, sound', 'services, privacy, gaming, network, comfort', 'driver without the NVIDIA App, Control Panel', 'the fastest resolver from your place', 'one tweak at a time, measured', 'clean and check, months later', 'an AI checks your PC'
         titres   = @{
             Accueil = 'Just reinstalled Windows 11?'; Installation = 'Clean Windows, updates, drivers'
             Facile = 'Debloat in two clicks, libraries, sound'; Optis = 'The checkbox script'
@@ -80,8 +80,8 @@ $UI = @{
         dnsDoh = 'Encrypt queries (DNS over HTTPS)'; dnsDohTip = 'Windows switches to HTTPS with these servers and falls back to plain text if that fails. Your router and your ISP no longer read the names you ask for.'; dnsDohAbsent = 'Windows 11 only.'
         dnsIpv6 = 'IPv6 too'; dnsIpv6Tip = 'Ticked by default when your connection has a public IPv6 address. OpenDNS publishes no IPv6 address, the box changes nothing for it.'
         dnsNotes = @{ actuel = 'what you have today, your router or your ISP'; quad9 = 'blocks malicious sites, no logs'; cloudflare = 'often the fastest, no filtering'; google = 'fast, keeps logs'; dns4eu = 'European, blocks malicious sites'; adguard = 'blocks ads and trackers'; opendns = 'Cisco, optional family filter'; controld = 'blocks malicious sites' }
-        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetWindows = 'Windows default (restore everything)'; presetPerso = 'Custom'
-        presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.'; windows = 'Puts every setting already applied back to its previous value, DNS included.' }
+        preset = 'Preset'; presetRecommande = 'Recommended'; presetMinimal = 'Minimal (nothing to lose)'; presetAucun = 'Untick everything'; presetPerso = 'Custom'
+        presetTips = @{ recommande = 'The safe boxes, ticked when the window opens.'; minimal = 'Only the boxes whose tradeoff is empty: nothing to lose.'; aucun = 'No box ticked.' }
         ou = 'or'
         collecte = 'Collecting, about 30 seconds...'; promptCopie = 'Prompt copied to the clipboard. Paste it into your AI along with rapport-pc.txt.'
         commandeCopiee = 'Command copied. Paste it into a Terminal to reopen bagarre.'
@@ -126,14 +126,14 @@ if ($EstAmd) {
 }
 
 $Boutons = @{
-    BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
+    BtnRestaurerAccueil = @{ T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage du script à cocher à sa valeur d''avant. Le DNS aussi.'; en = 'Puts every setting of the checkbox script back to its previous value. DNS too.' }; Action = { Restaurer-Demander } }
     BtnJournalAccueil = @{ T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié sur ce PC.'; en = 'The detail of everything changed on this PC.' }; Action = { Journal-Ouvrir } }
     BtnCommande = @{ T = @{ fr = 'Copier la commande de lancement'; en = 'Copy the launch command' }; Tip = @{ fr = 'La ligne irm ... | iex dans le presse-papiers.'; en = 'The irm ... | iex line to the clipboard.' }; Action = { [Windows.Clipboard]::SetText("irm $Depot | iex"); Log $Bagarre.L.commandeCopiee } }
 
-    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
-    BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu à ce qu il n y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
-    BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
-    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Télécharge le zip officiel (celui que winget connaît) dans le dossier bagarre et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Downloads the official zip (the one winget knows) into the bagarre folder and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
+    BtnFsutil = @{ Logo = 'microsoft'; T = @{ fr = 'Lancer fsutil 8dot3name set 1'; en = 'Run fsutil 8dot3name set 1' }; Tip = @{ fr = 'Coupe la génération des noms courts PROGRA~1 sur les disques neufs, dans la console qui accompagne la fenêtre. Juste après le premier bureau, avant d''installer quoi que ce soit.'; en = 'Stops generating PROGRA~1 short names on new disks, in the console next to the window. Right after the first desktop, before installing anything.' }; Action = { Console-Lancer 'fsutil 8dot3name set 1' 'fsutil 8dot3name set 1; fsutil 8dot3name query' -Ici } }
+    BtnWindowsUpdate = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir Windows Update'; en = 'Open Windows Update' }; Tip = @{ fr = 'Tu cliques jusqu''à ce qu''il n''y ait plus rien, redémarre entre chaque série.'; en = 'Click until nothing is left, reboot between each batch.' }; Action = { Ouvrir 'ms-settings:windowsupdate' } }
+    BtnPeripheriques = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Gestionnaire de périphériques'; en = 'Open Device Manager' }; Tip = @{ fr = 'Un point d''exclamation jaune = un pilote qui manque.'; en = 'A yellow exclamation mark = a missing driver.' }; Action = { Ouvrir 'devmgmt.msc' } }
+    BtnSnappy = @{ Logo = 'snappy'; T = @{ fr = 'Installer Snappy Driver Installer'; en = 'Install Snappy Driver Installer' }; Tip = @{ fr = 'Installe le zip officiel (celui que winget connaît) dans Program Files, pose un raccourci sur le Bureau et lance SDIO. Dernier recours pour un pilote introuvable. Ne coche que ce qui manque.'; en = 'Installs the official zip (the one winget knows) in Program Files, puts a shortcut on the Desktop and starts SDIO. Last resort for a missing driver. Only tick what is missing.' }; Action = { Snappy-Installer } }
 
     BtnDebloat = @{ Logo = 'raphire'; T = @{ fr = 'Lancer Win11Debloat'; en = 'Run Win11Debloat' }; Tip = @{ fr = 'Retire les applis sponsorisées, Copilot, les pubs, la télémétrie. Demande avant chaque groupe. Mode par défaut.'; en = 'Removes sponsored apps, Copilot, ads, telemetry. Asks before each group. Default mode.' }; Action = { Console-Lancer 'Win11Debloat' '& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))' -Fermer } }
     BtnWinUtil = @{ Logo = 'christitus'; T = @{ fr = 'Lancer WinUtil (Chris Titus)'; en = 'Run WinUtil (Chris Titus)' }; Tip = @{ fr = 'Onglet Install pour tes programmes, onglet Tweaks preset Standard seulement.'; en = 'Install tab for your programs, Tweaks tab with the Standard preset only.' }; Action = { Console-Lancer 'WinUtil (Chris Titus)' 'irm https://christitus.com/win | iex' -Fermer } }
@@ -141,75 +141,107 @@ $Boutons = @{
     BtnVcredist = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Visual C++ 2005 à 2022'; en = 'Install Visual C++ 2005 to 2022' }; Tip = @{ fr = 'Installe via winget. Sans elles un jeu plante avec "VCRUNTIME140.dll introuvable".'; en = 'Installs through winget. Without them a game crashes with "VCRUNTIME140.dll not found".' }; Action = { $ids = foreach ($an in '2005', '2008', '2010', '2012', '2013', '2015+') { "Microsoft.VCRedist.$an.x86"; "Microsoft.VCRedist.$an.x64" }; Winget-Installer 'Visual C++ 2005-2022' $ids } }
     BtnSon = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les périphériques de lecture'; en = 'Open playback devices' }; Tip = @{ fr = 'La fenêtre Son de Windows : ton haut-parleur > Propriétés > Améliorations et Avancé.'; en = 'The Windows Sound window: your speaker > Properties > Enhancements and Advanced.' }; Action = { Start-Process control.exe -ArgumentList 'mmsys.cpl' | Out-Null } }
 
-    BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
+    BtnAppliquer = @{ Zone = 'Barre'; Principal = $true; T = @{ fr = 'Appliquer'; en = 'Apply' }; Tip = @{ fr = 'Applique les cases cochées, après confirmation. L état d''avant est sauvé.'; en = 'Applies the checked boxes, after confirmation. The previous state is saved.' }; Action = { Appliquer-Demander } }
     BtnDetecter = @{ Zone = 'Barre'; T = @{ fr = 'Re-détecter ce PC'; en = 'Re-detect this PC' }; Tip = @{ fr = 'Relit le PC : les réglages déjà en place sont décochés et marqués "déjà fait".'; en = 'Reads the PC again: settings already in place get unchecked and marked "already done".' }; Action = { Detecter-Tout } }
-    BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
-    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
+    BtnRestaurer = @{ Zone = 'Barre'; T = @{ fr = 'Tout remettre comme avant'; en = 'Restore everything' }; Tip = @{ fr = 'Remet chaque réglage à sa valeur d''avant, DNS compris.'; en = 'Puts every setting back to its previous value, DNS included.' }; Action = { Restaurer-Demander } }
+    BtnJournal = @{ Zone = 'Volet'; T = @{ fr = 'Ouvrir le journal (bagarre.log)'; en = 'Open the log (bagarre.log)' }; Tip = @{ fr = 'Le détail de tout ce qui a été modifié, avec les valeurs d''avant.'; en = 'The detail of everything changed, with the previous values.' }; Action = { Journal-Ouvrir } }
 
     BtnNvclean = @{ Logo = 'techpowerup'; T = @{ fr = 'Installer NVCleanstall'; en = 'Install NVCleanstall' }; Tip = @{ fr = 'Installe via winget. Le pilote NVIDIA nu, sans NVIDIA App.'; en = 'Installs through winget. The bare NVIDIA driver, without the NVIDIA App.' }; Action = { Winget-Installer 'NVCleanstall' 'TechPowerUp.NVCleanstall' } }
     BtnPanneau = @{ Logo = 'nvidia'; T = @{ fr = 'Installer le Panneau de configuration NVIDIA'; en = 'Install the NVIDIA Control Panel' }; Tip = @{ fr = 'Le Panneau OG, depuis le Store. À refaire après chaque installation propre du pilote.'; en = 'The OG Control Panel, from the Store. Redo it after every clean driver install.' }; Action = { Winget-Installer 'NVIDIA Control Panel' '9NF8H0H7WMLT' 'msstore' } }
-    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
+    BtnAfterburner = @{ Logo = 'msi'; T = @{ fr = 'Installer MSI Afterburner + RivaTuner'; en = 'Install MSI Afterburner + RivaTuner' }; Tip = @{ fr = 'Installe via winget. Pour lire le temps d''image et poser un cap de FPS, pas pour overclocker.'; en = 'Installs through winget. To read frame times and set an FPS cap, not to overclock.' }; Action = { Winget-Installer 'MSI Afterburner + RivaTuner' 'Guru3D.Afterburner', 'Guru3D.RTSS' } }
     BtnImgNvclean = @{ T = @{ fr = 'Voir la capture : quoi cocher'; en = 'See the screenshot: what to tick' }; Tip = @{ fr = 'Les cases à cocher dans NVCleanstall. La ligne MPO reste au script à cocher.'; en = 'The boxes to tick in NVCleanstall. The MPO line stays with the checkbox script.' }; Action = { Image-Ouvrir 'nvcleanstall.png' } }
 
     BtnThreadPilot = @{ Logo = 'threadpilot'; T = @{ fr = 'Installer ThreadPilot'; en = 'Install ThreadPilot' }; Tip = @{ fr = 'Installe via winget. Open source, gratuit. Windows 11 seulement.'; en = 'Installs through winget. Open source, free. Windows 11 only.' }; Action = { Winget-Installer 'ThreadPilot' 'PrimeBuild.ThreadPilot' } }
-    BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
-    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget. 16 GB of RAM and recent games only.' }; Action = { Winget-Installer 'ISLC' 'Wagnardsoft.ISLC' } }
+    BtnLasso = @{ Logo = 'bitsum'; T = @{ fr = 'Installer Process Lasso'; en = 'Install Process Lasso' }; Tip = @{ fr = 'Installe via winget. Gratuit avec un rappel d''achat, version Pro payante.'; en = 'Installs through winget. Free with a purchase reminder, paid Pro edition.' }; Action = { Winget-Installer 'Process Lasso' 'BitSum.ProcessLasso' } }
+    BtnIslc = @{ Logo = 'wagnardsoft'; T = @{ fr = 'Installer ISLC'; en = 'Install ISLC' }; Tip = @{ fr = 'Installe via winget et pose un raccourci sur le Bureau. 16 Go de RAM et des jeux récents seulement.'; en = 'Installs through winget and puts a shortcut on the Desktop. 16 GB of RAM and recent games only.' }; Action = { Islc-Installer } }
     BtnAutoGpu = @{ Logo = 'valleyofdoom'; T = @{ fr = 'Ouvrir le dépôt AutoGpuAffinity'; en = 'Open the AutoGpuAffinity repo' }; Tip = @{ fr = 'Ouvre le dépôt GitHub. Long (1 h), sur un PC déjà stable.'; en = 'Opens the GitHub repo. Long (1 h), on an already stable PC.' }; Action = { Ouvrir 'https://github.com/valleyofdoom/AutoGpuAffinity' } }
     BtnAmd = @{ T = @{ fr = 'Ouvrir la page pilotes AMD'; en = 'Open the AMD drivers page' }; Tip = @{ fr = 'Le site AMD, pilote seul.'; en = 'AMD site, driver only.' }; Action = { Ouvrir 'https://www.amd.com/en/support/download/drivers.html' } }
 
     BtnAutoruns = @{ Logo = 'microsoft'; T = @{ fr = 'Installer Autoruns'; en = 'Install Autoruns' }; Tip = @{ fr = 'Installe via winget. Tout ce qui se lance au démarrage. Décoche, ne supprime pas.'; en = 'Installs through winget. Everything that starts with Windows. Untick, do not delete.' }; Action = { Winget-Installer 'Autoruns' 'Microsoft.Sysinternals.Autoruns' } }
     BtnCleanmgr = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir le Nettoyage de disque'; en = 'Open Disk Cleanup' }; Tip = @{ fr = 'cleanmgr, puis Nettoyer les fichiers système : anciennes mises à jour, corbeille.'; en = 'cleanmgr, then Clean up system files: old updates, recycle bin.' }; Action = { Start-Process cleanmgr | Out-Null; Log 'console   cleanmgr' } }
     BtnDismNettoyer = @{ Logo = 'microsoft'; T = @{ fr = 'Nettoyer les vieilles mises à jour (DISM)'; en = 'Clean old updates (DISM)' }; Tip = @{ fr = 'Dism /StartComponentCleanup dans la console qui accompagne la fenêtre. Jamais /ResetBase : tu perdrais la désinstallation des mises à jour.'; en = 'Dism /StartComponentCleanup in the console next to the window. Never /ResetBase: you would lose update uninstall.' }; Action = { Console-Lancer 'DISM StartComponentCleanup' 'Dism /Online /Cleanup-Image /StartComponentCleanup' -Ici } }
-    BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
+    BtnStockage = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l''Assistant de stockage'; en = 'Open Storage Sense' }; Tip = @{ fr = 'Paramètres > Système > Stockage > Assistant de stockage.'; en = 'Settings > System > Storage > Storage Sense.' }; Action = { Ouvrir 'ms-settings:storagesense' } }
     BtnCrystal = @{ Logo = 'crystaldiskinfo'; T = @{ fr = 'Installer CrystalDiskInfo'; en = 'Install CrystalDiskInfo' }; Tip = @{ fr = 'Installe via winget. Santé et température des disques.'; en = 'Installs through winget. Disk health and temperature.' }; Action = { Winget-Installer 'CrystalDiskInfo' 'CrystalDewWorld.CrystalDiskInfo' } }
     BtnReveil = @{ Logo = 'microsoft'; T = @{ fr = 'Voir ce qui réveille le PC'; en = 'See what wakes the PC' }; Tip = @{ fr = 'powercfg /lastwake, /waketimers, /requests dans la console qui accompagne la fenêtre.'; en = 'powercfg /lastwake, /waketimers, /requests in the console next to the window.' }; Action = { Console-Lancer 'powercfg' 'powercfg /lastwake; Write-Host ""; powercfg /waketimers; Write-Host ""; powercfg /requests' -Ici } }
-    BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l Observateur d événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
+    BtnEvenements = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir l''Observateur d''événements'; en = 'Open Event Viewer' }; Tip = @{ fr = 'Journaux Windows > Système, source WHEA-Logger.'; en = 'Windows Logs > System, source WHEA-Logger.' }; Action = { Ouvrir 'eventvwr.msc' } }
     BtnWlan = @{ Logo = 'microsoft'; T = @{ fr = 'Générer le rapport Wi-Fi'; en = 'Generate the Wi-Fi report' }; Tip = @{ fr = 'netsh wlan show wlanreport dans la console qui accompagne la fenêtre, puis ouvre le rapport HTML.'; en = 'netsh wlan show wlanreport in the console next to the window, then opens the HTML report.' }; Action = { Console-Lancer 'wlanreport' 'netsh wlan show wlanreport; Start-Process "$env:ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html"' -Ici } }
-    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
+    BtnDefenderEnregistrer = @{ Logo = 'microsoft'; T = @{ fr = 'Enregistrer Defender pendant que tu joues'; en = 'Record Defender while you play' }; Tip = @{ fr = 'New-MpPerformanceRecording : joue dix minutes, puis Entrée dans la console. Le rapport des fichiers et dossiers les plus scannés s''affiche à la suite.'; en = 'New-MpPerformanceRecording: play ten minutes, then press Enter in the console. The report of the most scanned files and folders follows.' }; Action = { Console-Lancer 'Defender' 'New-MpPerformanceRecording -RecordTo C:\defender.etl; Get-MpPerformanceReport -Path C:\defender.etl -TopFiles 10 -TopPaths 10' } }
     BtnDefenderExclusions = @{ Logo = 'microsoft'; T = @{ fr = 'Ouvrir les exclusions Defender'; en = 'Open Defender exclusions' }; Tip = @{ fr = 'Sécurité Windows > Protection contre les virus > Paramètres > Exclusions.'; en = 'Windows Security > Virus protection > Settings > Exclusions.' }; Action = { Ouvrir 'windowsdefender://threatsettings' } }
 
     BtnDnsTester = @{ Principal = $true; T = @{ fr = 'Tester les DNS'; en = 'Test the DNS servers' }; Tip = @{ fr = 'Huit résolveurs, une minute au plus. Ne change rien.'; en = 'Eight resolvers, one minute at most. Changes nothing.' }; Action = { Dns-Tester } }
-    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
+    BtnDnsAppliquer = @{ T = @{ fr = 'Utiliser les DNS choisis'; en = 'Use the chosen DNS' }; Tip = @{ fr = 'Principal et secours sur la carte testée, avec les deux cases. Tout remettre rend ce qu''il y avait avant, chiffrement et IPv6 compris.'; en = 'Primary and fallback on the tested card, with the two boxes. Restore puts back what was there before, encryption and IPv6 included.' }; Action = {
         $p = $Bagarre.DnsChoix
         if ($p -lt 0) { Log $Bagarre.L.dnsSelection; return }
         $s = if ($Bagarre.DnsSecours -ge 0) { $Bagarre.DnsResultats[$Bagarre.DnsSecours] } else { $Bagarre.DnsResultats[$p] }
         Dns-Appliquer $Bagarre.DnsAdapt $Bagarre.DnsResultats[$p] $s ([bool]$Ctl.DnsDoh.IsChecked) ([bool]$Ctl.DnsIpv6.IsChecked)
     } }
 
-    BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, and opens the folder.' }; Action = { Audit-Collecter } }
-    BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText($Textes[$Bagarre.Langue]['audit-prompt']); Log $Bagarre.L.promptCopie } }
+    BtnCollecter = @{ T = @{ fr = 'Collecter le rapport (30 s)'; en = 'Collect the report (30 s)' }; Tip = @{ fr = 'Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur le Bureau, copie le prompt et ouvre le dossier.'; en = 'Changes nothing. Writes rapport-pc.txt and AUDIT.txt into bagarre-audit on the Desktop, copies the prompt and opens the folder.' }; Action = { Audit-Collecter } }
+    BtnPrompt = @{ T = @{ fr = "Copier le prompt d'audit"; en = 'Copy the audit prompt' }; Tip = @{ fr = 'Dans le presse-papiers, à coller dans ton IA.'; en = 'To the clipboard, paste it into your AI.' }; Action = { [Windows.Clipboard]::SetText((Audit-Prompt)); Log $Bagarre.L.promptCopie } }
     BtnDossierAudit = @{ T = @{ fr = 'Ouvrir le dossier du rapport'; en = 'Open the report folder' }; Tip = @{ fr = 'bagarre-audit sur le Bureau.'; en = 'bagarre-audit on the Desktop.' }; Action = { if (Test-Path $DossierAudit) { Ouvrir $DossierAudit } else { Log $Bagarre.L.pasRapport } } }
 
-    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n en crée qu un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
+    BtnVoileRestauration = @{ Logo = 'microsoft'; Principal = $true; T = @{ fr = 'Créer un point de restauration'; en = 'Create a restore point' }; Tip = @{ fr = 'Checkpoint-Computer dans la console qui accompagne la fenêtre. Windows n''en crée qu''un par 24 h.'; en = 'Checkpoint-Computer in the console next to the window. Windows creates only one per 24 h.' }; Action = { Console-Lancer 'Point de restauration' "Enable-ComputerRestore -Drive '$($env:SystemDrive)\'; Checkpoint-Computer -Description 'avant bagarre' -RestorePointType MODIFY_SETTINGS; Get-ComputerRestorePoint | Select-Object -Last 3 | Format-Table -AutoSize" -Ici } }
     BtnVoileSauvegarde = @{ Logo = 'microsoft'; T = @{ fr = 'Sauvegarder mes fichiers'; en = 'Back up my files' }; Tip = @{ fr = 'Paramètres > Sauvegarde Windows.'; en = 'Settings > Windows Backup.' }; Action = { Ouvrir 'ms-settings:backup' } }
     BtnVoileContinuer = @{ T = @{ fr = 'Continuer quand même'; en = 'Continue anyway' }; Tip = @{ fr = 'Ferme cet avertissement.'; en = 'Closes this warning.' }; Action = { $Ctl.Voile.Visibility = 'Collapsed' } }
 }
 
 # Snappy : winget refuse le paquet en admin (le hash du zip ne correspond plus au manifeste), donc on prend l'URL du zip
-# que winget connaît et on le télécharge nous-mêmes, puis on lance l'exe x64 dézippé.
+# que winget connaît et on l'installe nous-mêmes dans Program Files, avec un raccourci. SDIO cherche ses langues dans
+# tools\SDIO\langs relatif au dossier courant : lancé sans -WorkingDirectory il ne les trouve pas et reste en anglais.
+# Avec, il prend la langue du compte (GetUserDefaultLCID).
 function Snappy-Installer {
     $fr = $Bagarre.Langue -eq 'fr'
     $m = @{
-        cherche = if ($fr) { 'Je demande à winget où est le zip de Snappy...' } else { 'Asking winget where the Snappy zip is...' }
-        pasUrl  = if ($fr) { 'Pas trouvé l URL du zip, j ouvre la page de téléchargement à la place.' } else { 'Could not find the zip URL, opening the download page instead.' }
+        cherche = if ($fr) { 'Je demande à winget où est le zip de Snappy.' } else { 'Asking winget where the Snappy zip is.' }
+        pasUrl  = if ($fr) { "Pas trouvé l'URL du zip, j'ouvre la page de téléchargement à la place." } else { 'Could not find the zip URL, opening the download page instead.' }
         telecharge = if ($fr) { 'Téléchargement de' } else { 'Downloading' }
+        installe = if ($fr) { 'Installé dans' } else { 'Installed in' }
         lance   = if ($fr) { 'Je lance' } else { 'Starting' }
-        pasExe  = if ($fr) { 'Pas d exe x64 trouvé dans le zip, j ouvre le dossier.' } else { 'No x64 exe found in the zip, opening the folder.' }
+        pasExe  = if ($fr) { "Pas d'exe x64 trouvé dans le zip, j'ouvre le dossier." } else { 'No x64 exe found in the zip, opening the folder.' }
     }
+    foreach ($k in @($m.Keys)) { $m[$k] = Echapper $m[$k] }
     $cmd = @"
+$RaccourciCode
+`$ProgressPreference = 'SilentlyContinue'
 Write-Host '$($m.cherche)'
 `$fiche = winget show --id GlennDelahoy.SnappyDriverInstallerOrigin -e --accept-source-agreements | Out-String
+`$global:LASTEXITCODE = 0
 `$url = [regex]::Match(`$fiche, 'https?://\S+\.zip').Value
-if (-not `$url) { Write-Host '$($m.pasUrl)' -ForegroundColor Yellow; Start-Process 'https://www.glenn.delahoy.com/snappy-driver-installer-origin/'; return }
-`$zip = Join-Path '$Dossier' 'sdio.zip'
-`$dest = Join-Path '$Dossier' 'sdio'
-Write-Host "$($m.telecharge) `$url"
-Invoke-WebRequest -Uri `$url -OutFile `$zip -UseBasicParsing -ErrorAction Stop
-Expand-Archive -Path `$zip -DestinationPath `$dest -Force -ErrorAction Stop
-`$exe = Get-ChildItem -Path `$dest -Recurse -Filter 'SDIO_x64_*.exe' | Select-Object -First 1
-if (`$exe) { Write-Host "$($m.lance) `$(`$exe.Name)"; Start-Process `$exe.FullName } else { Write-Host '$($m.pasExe)' -ForegroundColor Yellow; Start-Process `$dest }
+if (-not `$url) {
+    Write-Host '$($m.pasUrl)' -ForegroundColor Yellow
+    Start-Process 'https://www.glenn.delahoy.com/snappy-driver-installer-origin/'
+} else {
+    `$zip = Join-Path `$env:TEMP 'sdio.zip'
+    `$dest = Join-Path `$env:ProgramFiles 'Snappy Driver Installer Origin'
+    Write-Host '$($m.telecharge)' `$url
+    Invoke-WebRequest -Uri `$url -OutFile `$zip -UseBasicParsing -ErrorAction Stop
+    Expand-Archive -Path `$zip -DestinationPath `$dest -Force -ErrorAction Stop
+    Remove-Item `$zip -ErrorAction SilentlyContinue
+    Write-Host '$($m.installe)' `$dest
+    `$exe = Get-ChildItem -Path `$dest -Filter 'SDIO_x64_*.exe' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (`$exe) {
+        Raccourci 'Snappy Driver Installer Origin' `$exe.FullName
+        Write-Host '$($m.lance)' `$exe.Name
+        Start-Process -FilePath `$exe.FullName -WorkingDirectory `$dest
+    } else { Write-Host '$($m.pasExe)' -ForegroundColor Yellow; Start-Process `$dest; `$Echec = `$true }
+}
 "@
     Console-Lancer 'Snappy Driver Installer Origin' $cmd -Fermer
+}
+
+# ISLC : winget extrait l'archive dans Program Files (x86)\Wagnardsoft\ISLC\ISLC vX.Y sans poser de raccourci.
+# On en pose un vers l'exe le plus récent (une mise à jour ajoute un dossier de version à côté de l'ancien).
+function Islc-Installer {
+    $pasExe = Echapper $(if ($Bagarre.Langue -eq 'fr') { "ISLC est installé mais je ne trouve pas son exe, pas de raccourci." } else { 'ISLC is installed but its exe was not found, no shortcut.' })
+    $cmd = @"
+$RaccourciCode
+winget install --id 'Wagnardsoft.ISLC' -e --accept-package-agreements --accept-source-agreements
+if (`$LASTEXITCODE -and `$LASTEXITCODE -ne -1978335189) { `$Echec = `$true }
+`$global:LASTEXITCODE = 0
+`$exe = Get-ChildItem -Path "`${env:ProgramFiles(x86)}\Wagnardsoft", "`$env:ProgramFiles\Wagnardsoft" -Recurse -Filter '*ISLC.exe' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+if (`$exe) { Raccourci 'ISLC' `$exe.FullName } elseif (-not `$Echec) { Write-Host '$pasExe' -ForegroundColor Yellow; `$Echec = `$true }
+"@
+    Console-Lancer 'ISLC' $cmd -Fermer
 }
 
 # ---------------------------------------------------------------------------
@@ -222,7 +254,7 @@ Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 $Xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="windows BAGARRE edition" Width="1320" Height="860" MinWidth="1040" MinHeight="700"
+        Title="windows BAGARRE edition" Width="1320" Height="860" MinWidth="960" MinHeight="560"
         WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="CanResize"
         Background="#15121C" Foreground="#ECE8F4" FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
         TextOptions.TextFormattingMode="Display" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -685,16 +717,20 @@ $Xaml = @'
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DockPanel Grid.Row="0" LastChildFill="False">
-              <WrapPanel Name="BarreOptis" DockPanel.Dock="Left">
+            <Grid Grid.Row="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <WrapPanel Name="BarreOptis" Grid.Column="0">
                 <TextBlock Name="PresetsLabel" Foreground="{StaticResource Sourd}" VerticalAlignment="Center" Margin="4,0,8,8"/>
                 <ComboBox Name="Presets"/>
               </WrapPanel>
-              <Grid DockPanel.Dock="Right" Width="220" Margin="8,0,0,8">
+              <Grid Grid.Column="1" Width="220" Margin="8,0,0,8" VerticalAlignment="Top">
                 <TextBox Name="Filtre" Style="{StaticResource Champ}"/>
                 <TextBlock Name="FiltreIndice" Foreground="#6E6683" Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
               </Grid>
-            </DockPanel>
+            </Grid>
             <TextBlock Grid.Row="1" Name="Legende" Foreground="#9B93AD" TextWrapping="Wrap" Margin="0,2,0,10" LineHeight="18"/>
             <Grid Grid.Row="2">
               <Grid.ColumnDefinitions>
@@ -756,6 +792,12 @@ try {
 $Ctl = @{}
 foreach ($m in [regex]::Matches($Xaml, '(?<!\w)(?:x:)?Name="(\w+)"')) { $n = $m.Groups[1].Value; $Ctl[$n] = $Fenetre.FindName($n) }
 $Ctl.TitreBarre.Text = "windows BAGARRE edition v$Version"
+# Un portable en 1366x768 (ou 1080p à 125 %) n'a pas 860 px de haut : la fenêtre se cale sur la zone de travail.
+if (-not $Capture) {
+    $zone = [Windows.SystemParameters]::WorkArea
+    $Fenetre.Width = [Math]::Min($Fenetre.Width, $zone.Width - 24)
+    $Fenetre.Height = [Math]::Min($Fenetre.Height, $zone.Height - 24)
+}
 $Fenetre.Title = $Ctl.TitreBarre.Text
 $Pinceau = @{}
 foreach ($k in 'Fond', 'Rail', 'Surface', 'Surface2', 'Bordure', 'Texte', 'Sourd', 'Accent', 'AccentClair', 'AccentFond', 'SurAccent', 'Alerte', 'AlerteFond', 'Ok') { $Pinceau[$k] = $Fenetre.FindResource($k) }
@@ -1064,6 +1106,7 @@ function Ligne-Creer($it) {
     [void]$g.Children.Add($pill); [void]$g.Children.Add($titre); [void]$g.Children.Add($statut)
     $cb.Content = $g
     $cb.Add_MouseEnter({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })
+    $cb.Add_GotKeyboardFocus({ param($s, $e) Opti-Montrer (Item-Titre $s.Tag) (Item-Pourquoi $s.Tag) (Item-Attention $s.Tag) })   # au clavier (Tab) aussi
     $cb.Add_Checked({ param($s, $e) $s.Tag.Coche = $true; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
     $cb.Add_Unchecked({ param($s, $e) $s.Tag.Coche = $false; Ligne-Etat $s.Tag.Id; Compter-Coches; Preset-Perso })
     $ligne = New-Object Windows.Controls.Border
@@ -1112,10 +1155,11 @@ $Ctl.BarreOptis.Children.Insert(1, $Ctl.PresetsLabel); $Ctl.BarreOptis.Children.
 foreach ($id in 'BtnJournal') { $b = Bouton-Obtenir $id; $b.Margin = '0,8,8,0'; $b.Padding = '10,5'; $b.FontSize = 12; [void]$Ctl.VoletOptis.Children.Add($b) }
 
 # Presets : une liste déroulante à la place de quarante boutons. Recommandé = les cases sûres, Minimal = celles sans
-# contrepartie, Tout décocher, Windows par défaut = restaure ce qui a été appliqué. Toucher une case passe en Personnalisé.
+# contrepartie, Tout décocher. Ce qui est déjà fait reste décoché. Toucher une case passe en Personnalisé.
+# Pas de "Windows par défaut" ici : restaurer est une action, c'est le bouton Tout remettre.
 $Bagarre.PresetEnCours = $false
 $PresetItems = @{}
-foreach ($cle in 'recommande', 'minimal', 'aucun', 'windows', 'perso') {
+foreach ($cle in 'recommande', 'minimal', 'aucun', 'perso') {
     $cbi = New-Object Windows.Controls.ComboBoxItem
     $cbi.Tag = $cle
     if ($cle -eq 'perso') { $cbi.Visibility = 'Collapsed' }
@@ -1131,10 +1175,9 @@ function Preset-Appliquer($cle) {
     $Bagarre.PresetEnCours = $true
     try {
         switch ($cle) {
-            'recommande' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] } }
-            'minimal' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and [string]::IsNullOrWhiteSpace($Lignes[$id].Item.Attention) } }
+            'recommande' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and $Etat[$id] -ne $true } }
+            'minimal' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $Defauts[$id] -and $Etat[$id] -ne $true -and [string]::IsNullOrWhiteSpace($Lignes[$id].Item.Attention) } }
             'aucun' { foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
-            'windows' { Restaurer-Demander; foreach ($id in $Lignes.Keys) { $Lignes[$id].Cb.IsChecked = $false } }
         }
     } finally { $Bagarre.PresetEnCours = $false }
 }
@@ -1186,7 +1229,7 @@ $GroupesEn = @{
     'Services Windows' = 'Windows services'; 'Vie privée et pubs' = 'Privacy and ads'; 'Jeu et réactivité' = 'Gaming and responsiveness'
     'Carte réseau (appliqué sur chaque carte physique active)' = 'Network card (applied to every active physical card)'
     'Confort (aucun gain de FPS, juste plus vif)' = 'Comfort (no FPS gain, just snappier)'
-    'Avancé (décoché par défaut, lis l explication avant)' = 'Advanced (unchecked by default, read the explanation first)'
+    'Avancé (décoché par défaut, lis l''explication avant)' = 'Advanced (unchecked by default, read the explanation first)'
     'Processeur Intel' = 'Intel processor'; 'Carte graphique NVIDIA' = 'NVIDIA graphics card'
 }
 
@@ -1266,6 +1309,11 @@ function Dns-Peindre {
         $badge.Bord.Visibility = if ($badge.Texte.Text) { 'Visible' } else { 'Collapsed' }
     }
     $Ctl.BtnDnsAppliquer.IsEnabled = $p -ge 0
+    # Le bouton violet suit l'étape : Tester tant que rien n'est choisi, Utiliser dès qu'un principal l'est.
+    # ClearValue et pas Style = $null : une valeur locale nulle masque le style implicite, le bouton sortait brut.
+    $violet, $gris = if ($p -ge 0) { $Ctl.BtnDnsAppliquer, $Ctl.BtnDnsTester } else { $Ctl.BtnDnsTester, $Ctl.BtnDnsAppliquer }
+    $violet.Style = $Fenetre.FindResource('Principal')
+    $gris.ClearValue([Windows.FrameworkElement]::StyleProperty)
     Dns-Resumer
 }
 # Un clic : pas de principal = principal ; un principal sans secours = secours (la même ligne compte) ; les deux posés = on recommence.
@@ -1303,7 +1351,7 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     [Windows.Controls.Grid]::SetColumn($bloc, 2)
     $nom = New-Object Windows.Controls.TextBlock
     $nom.Text = $r.Nom; $nom.FontWeight = 'SemiBold'
-    if ($plusRapide) { $nom.Text += '  ' + $Bagarre.L.dnsRapide; $nom.Foreground = $Pinceau.AccentClair }
+    if ($plusRapide) { $nom.Text += ' (' + $Bagarre.L.dnsRapide + ')'; $nom.Foreground = $Pinceau.AccentClair }
     $note = New-Object Windows.Controls.TextBlock
     $note.Text = $Bagarre.L.dnsNotes[$r.Cle]; $note.FontSize = 11; $note.Foreground = $Pinceau.Sourd; $note.TextWrapping = 'Wrap'
     [void]$bloc.Children.Add($nom); [void]$bloc.Children.Add($note)
@@ -1330,7 +1378,8 @@ function Dns-Ligne($i, $r, $max, $rang, $plusRapide) {
     if (-not $ok) { $row.Opacity = 0.55; $row.Cursor = 'Arrow' } else { $row.Add_MouseLeftButtonDown({ param($s, $e) Dns-Choisir ([int]$s.Tag) }) }
     $row
 }
-# Redessine la liste : rang par médiane croissante, le plus rapide encadré. Les lignes sans mesure restent à leur place.
+# Redessine la liste : rang par médiane croissante, le plus rapide encadré. Pendant la mesure les lignes gardent leur place
+# (rien ne saute sous la souris), une fois tout mesuré elles passent dans l'ordre des rangs. Le Tag reste l'index du résultat.
 function Dns-Redessiner {
     $Ctl.DnsListe.Children.Clear()
     $Ctl.DnsBadges.Clear()
@@ -1342,7 +1391,9 @@ function Dns-Redessiner {
     for ($k = 0; $k -lt $tries.Count; $k++) { $rangs[$tries[$k].Cle] = $k + 1 }
     $meilleur = if ($tries.Count -gt 0 -and $tries.Count -eq $Bagarre.DnsResultats.Count) { $tries[0].Cle } else { $null }
     $Bagarre.DnsMeilleur = -1
-    for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) {
+    $ordre = @(for ($i = 0; $i -lt $Bagarre.DnsResultats.Count; $i++) { $i })
+    if ($meilleur) { $ordre = @($ordre | Sort-Object { [double]$Bagarre.DnsResultats[$_].Mediane }) }
+    foreach ($i in $ordre) {
         $r = $Bagarre.DnsResultats[$i]
         if ($r.Cle -eq $meilleur) { $Bagarre.DnsMeilleur = $i }
         [void]$Ctl.DnsListe.Children.Add((Dns-Ligne $i $r $max $rangs[$r.Cle] ($r.Cle -eq $meilleur)))
@@ -1382,11 +1433,19 @@ function Dns-Tester {
 # Audit IA
 # ---------------------------------------------------------------------------
 $DossierAudit = Join-Path ([Environment]::GetFolderPath('Desktop')) 'bagarre-audit'
+# Le prompt porte la liste des cases de ce PC, tirée du catalogue : elle ne peut pas diverger du script.
+function Audit-Prompt {
+    $cochees = @($Items | Where-Object { $Defauts[$_.Id] } | ForEach-Object { '  - ' + (Item-Titre $_) })
+    $decochees = @($Items | Where-Object { -not $Defauts[$_.Id] } | ForEach-Object { '  - ' + (Item-Titre $_) })
+    $Textes[$Bagarre.Langue]['audit-prompt'].Replace('{{CASES_COCHEES}}', ($cochees -join "`r`n")).Replace('{{CASES_DECOCHEES}}', ($decochees -join "`r`n"))
+}
 function Audit-Collecter {
     if (-not (Test-Path $DossierAudit)) { New-Item -Path $DossierAudit -ItemType Directory -Force | Out-Null }
-    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $Textes[$Bagarre.Langue]['audit-prompt'], (New-Object Text.UTF8Encoding $true))
+    $prompt = Audit-Prompt
+    [IO.File]::WriteAllText((Join-Path $DossierAudit 'AUDIT.txt'), $prompt, (New-Object Text.UTF8Encoding $true))
     Log $Bagarre.L.collecte
     Collecter-Rapport (Join-Path $DossierAudit 'rapport-pc.txt')
+    [Windows.Clipboard]::SetText($prompt); Log $Bagarre.L.promptCopie
     Ouvrir $DossierAudit
 }
 

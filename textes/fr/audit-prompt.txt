@@ -12,16 +12,11 @@ Ce PC a suivi le pack "windows bagarre edition" (dépôt github.com/klNuno/windo
   réglé jeu par jeu si besoin (gestion de l'alimentation, filtrage, V-Sync, G-Sync).
   Carte AMD à la place : pilote du site AMD en installation minimale, Anti-Lag activé, Boost/Chill/AFMF coupés,
   relecture instantanée et overlay Adrenalin coupés, le reste par défaut.
-- Script à cocher bagarre.ps1, cases cochées par défaut : services inutiles (télémétrie, fax, démo, Edge update),
-  télémétrie, CEIP et rapports d'erreur au minimum, Copilot/Recall/Click to Do/Widgets/IA Bloc-notes et Paint coupés,
-  Game DVR et PresenceWriter coupés, GlobalTimerResolutionRequests=1, MPO coupé (OverlayTestMode=5), accélération
-  souris coupée, veille prolongée et démarrage rapide coupés, suspension USB, USB3 LPM, ASPM PCIe et minuteurs de
-  réveil coupés, pilotes exclus de Windows Update, Continuous Innovation refusé, menu F8, AutoRun coupé, ARSO coupé,
-  carte réseau (alimentation, EEE, LLDP/topologie décochés, Interrupt Moderation Medium), confort (menu clic droit
-  classique, Fin de tâche dans la barre, Edge sans Startup Boost, Explorateur, Communications "Ne rien faire").
-  Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC : SvcHostSplitThreshold,
-  Win32PrioritySeparation 0x26, PowerThrottlingOff, Nagle, disabledynamictick, RawMouseThrottleDuration, FTH off,
-  LLMNR off, presse-papiers, Dynamic Lighting, P0 NVIDIA, core parking, boost Aggressive (Intel seulement).
+- Script à cocher bagarre.ps1 (liste tirée du catalogue de ce PC). Cases cochées par défaut, appliquées si
+  l'utilisateur a cliqué Appliquer (la section bagarre-avant.json du rapport le dit) :
+{{CASES_COCHEES}}
+  Cases décochées par défaut, à proposer seulement avec une raison propre à ce PC :
+{{CASES_DECOCHEES}}
 - DNS testé depuis le PC (huit résolveurs), le plus rapide appliqué si l'écart avec la box dépassait 5 ms, avec un
   secours, le chiffrement DNS over HTTPS et l'IPv6 quand la connexion en a.
 
@@ -31,7 +26,8 @@ NE PROPOSE PAS, C'EST DÉCIDÉ
 - Réglages BIOS : hors de portée du pack, signale seulement.
 - Plan "Ultimate performance", prefetch/superfetch, "débrider les 20 % de bande passante", LargeSystemCache,
   IRQ8Priority, files d'attente souris/clavier, TcpWindowSize, fichier d'échange coupé, HPET, TdrLevel, IPv6 off,
-  C-states off, Interrupt Moderation Disabled, outil de timer resolution en fond.
+  C-states off, Interrupt Moderation Disabled, outil de timer resolution en fond, Win32PrioritySeparation (0x26
+  donne le même découpage que le défaut client), SvcHostSplitThreshold, RawMouseThrottleDuration.
 - Désactiver un service dont tu n'es pas sûr : NvContainer, Windows Audio, Themes, Cryptographic Services,
   Windows Time, Storage Service, Device Install, WMI restent.
 - Un réglage NVIDIA ou AMD en global qui se règle jeu par jeu (performances max, filtrage, V-Sync, Smooth Motion).

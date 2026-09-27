@@ -2,12 +2,10 @@ Le pack ne connaît pas ton PC. L'audit en prend une photo et la donne à une IA
 
 ## 1. Le rapport
 @BtnCollecter
-30 secondes, ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur ton Bureau. Ni nom de compte, ni mot de passe, ni clé de licence. Ouvre-le quand même avant de l'envoyer.
-
-## 2. Le prompt
+Ne modifie rien. Écrit rapport-pc.txt et AUDIT.txt dans bagarre-audit sur ton Bureau, puis copie le prompt dans le presse-papiers. Ni nom de compte, ni mot de passe, ni clé de licence. Ouvre le rapport quand même avant de l'envoyer.
 @BtnPrompt, BtnDossierAudit
 
-## 3. Ton IA
+## 2. Ton IA
 - Agent en terminal (Claude Code, Codex, Gemini CLI) : ouvre-le dans le dossier bagarre-audit et colle le prompt. Il lit le rapport tout seul.
 - Chat web (ChatGPT, Claude.ai) : colle le prompt, puis joins rapport-pc.txt.
 Une proposition sans source ou sans contrepartie, tu ne l'appliques pas. L'IA ne touche pas à ton PC, c'est toi qui appliques.

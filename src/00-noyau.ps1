@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Continue'
 # alors qu'une lecture sans préfixe et une écriture dans cette table marchent dans les trois cas.
 # Simulation : quand $Bagarre.Simulation est vrai, les fonctions d'écriture n'écrivent rien et notent dans $Bagarre.Verif
 # si la valeur en place est déjà celle visée. C'est ainsi que la fenêtre détecte ce qui est déjà fait.
-$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @() }
+$Bagarre = @{ Langue = 'fr'; L = $null; ConsoleN = 0; ConsoleProc = $null; DnsAdapt = $null; DnsResultats = @(); DnsChoix = -1; DnsSecours = -1; DnsMeilleur = -1; Simulation = $false; Verif = $null; Cartes = @(); RelancerExplorer = $false }
 
 # Lancé depuis un clone (powershell -File bagarre.ps1) : les images sont à côté.
 # Lancé par "irm ... | iex" : $Here est vide, elles sont ouvertes depuis $Depot.
@@ -58,7 +58,7 @@ $Messages = @{
         rienRestaurer = 'Rien à restaurer : bagarre-avant.json est vide.'; restauration = 'Restauration de {0} réglages...'
         restaure = 'restauré  {0}'; echecRestauration = 'ÉCHEC restauration {0} : {1}'; finRestauration = 'Terminé. Redémarre pour que tout reprenne effet.'
         rienCoche = 'Rien de coché.'; application = 'Application de {0} réglages...'; echecItem = 'ÉCHEC {0} : {1}'
-        finApplication = 'Terminé. Les valeurs d avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
+        finApplication = 'Terminé. Les valeurs d''avant sont dans {0}, le détail dans {1}. Redémarre le PC.'
         rapportEcrit = 'Rapport écrit : {0} ({1} Ko)'; fenetreFermee = 'fenêtre fermée'
         consoleOk = 'Terminé sans erreur, cette console se ferme.'; consoleErreur = 'Il y a eu une erreur, lis ce qui est au-dessus. Entrée pour fermer.'
         consoleFini = 'Terminé.'; consoleOccupee = 'La console est encore occupée, celle-ci part dans sa propre fenêtre.'
@@ -300,20 +300,24 @@ function Logo-Image($nom) {
 # l'enregistrement Defender qui attend Entrée) gardent leur console à part.
 # La commande passe par un petit .ps1 dans le dossier bagarre, pas par -EncodedCommand (motif suspect pour Defender).
 $Bagarre.ConsoleN = 0
+
+# Un texte posé entre apostrophes dans le script d'une console : l'apostrophe s'y double.
+function Echapper($texte) { ([string]$texte) -replace "'", "''" }
+
 function Console-Lancer($titre, $commande, [switch]$Fermer, [switch]$Ici) {
     $Bagarre.ConsoleN++
     if ($Ici -and $Bagarre.ConsoleProc -and -not $Bagarre.ConsoleProc.HasExited) { Log (Msg 'consoleOccupee'); $Ici = $false }
     $fin = if ($Ici) {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleFini')' -ForegroundColor Green }`r`nWrite-Host ''"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow }`r`nelse { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleFini'))' -ForegroundColor Green }`r`nWrite-Host ''"
     } elseif ($Fermer) {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Msg 'consoleOk')' -ForegroundColor Green; Start-Sleep 2 }"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow; [void](Read-Host) }`r`nelse { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleOk'))' -ForegroundColor Green; Start-Sleep 2 }"
     } else {
-        "if (`$Echec) { Write-Host ''; Write-Host '  $(Msg 'consoleErreur')' -ForegroundColor Yellow }"
+        "if (`$Echec) { Write-Host ''; Write-Host '  $(Echapper (Msg 'consoleErreur'))' -ForegroundColor Yellow }"
     }
-    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $titre'`r`n" }
+    $entete = if ($Ici) { '' } else { "`$Host.UI.RawUI.WindowTitle = 'bagarre : $(Echapper $titre)'`r`n" }
     $texte = @"
 ${entete}Write-Host ''
-Write-Host '  $titre' -ForegroundColor Cyan
+Write-Host '  $(Echapper $titre)' -ForegroundColor Cyan
 Write-Host ''
 `$Echec = `$false
 try {
@@ -340,3 +344,21 @@ function Winget-Installer($titre, [string[]]$ids, $source) {
     $cmd = ($ids | ForEach-Object { "winget install --id '$_' -e$src --accept-package-agreements --accept-source-agreements; if (`$LASTEXITCODE -and `$LASTEXITCODE -ne -1978335189) { `$Echec = `$true }; `$global:LASTEXITCODE = 0" }) -join "`r`n"
     Console-Lancer $titre $cmd -Fermer
 }
+
+# Raccourci sur le Bureau public et dans le menu Démarrer de tous les comptes, pour les outils posés sans raccourci
+# (ISLC par winget, Snappy par zip). Le Bureau public reste visible même si l'élévation s'est faite avec un autre compte.
+# Ce code est collé en tête du script de console, qui tourne dans son propre processus.
+$RaccourciCode = @'
+function Raccourci($nom, $exe) {
+    $shell = New-Object -ComObject WScript.Shell
+    foreach ($dossier in [Environment]::GetFolderPath('CommonDesktopDirectory'), [Environment]::GetFolderPath('CommonPrograms')) {
+        $chemin = Join-Path $dossier "$nom.lnk"
+        $lien = $shell.CreateShortcut($chemin)
+        $lien.TargetPath = $exe
+        $lien.WorkingDirectory = Split-Path -Parent $exe
+        $lien.IconLocation = "$exe,0"
+        $lien.Save()
+        Write-Host "  -> $chemin"
+    }
+}
+'@
