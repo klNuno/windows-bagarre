@@ -16,6 +16,11 @@ $noyau = [IO.File]::ReadAllText((Join-Path $racine 'src\00-noyau.ps1'), [Text.En
 $depot = [regex]::Match($noyau, "(?m)^\`$Depot = '([^']+)'").Groups[1].Value
 if (-not $depot) { throw 'Depot introuvable dans src/00-noyau.ps1' }
 
+# src/00-garde.ps1 juste apres param, avant les textes : il arrete un script colle dans la console des la premiere ligne utile.
+$garde = [IO.File]::ReadAllText((Join-Path $racine 'src\00-garde.ps1'), [Text.Encoding]::UTF8).TrimEnd() -replace '\{\{DEPOT\}\}', $depot
+[void]$sb.AppendLine($garde)
+[void]$sb.AppendLine('')
+
 # textes/<langue>/<nom>.txt -> $Textes[<langue>][<nom>]
 [void]$sb.AppendLine('$Textes = @{}')
 foreach ($d in Get-ChildItem (Join-Path $racine 'textes') -Directory | Sort-Object Name) {
@@ -34,7 +39,7 @@ $images = @(Get-ChildItem (Join-Path $racine 'images\logos') -Filter *.png | Sor
 foreach ($f in $images) {
     [void]$sb.AppendLine("`$Logos['$($f.BaseName)'] = '$([Convert]::ToBase64String([IO.File]::ReadAllBytes($f.FullName)))'")
 }
-foreach ($f in Get-ChildItem (Join-Path $racine 'src') -Filter *.ps1 | Sort-Object Name) {
+foreach ($f in Get-ChildItem (Join-Path $racine 'src') -Filter *.ps1 | Where-Object Name -ne '00-garde.ps1' | Sort-Object Name) {
     [void]$sb.AppendLine('')
     [void]$sb.AppendLine("# ===== $($f.Name) =====")
     [void]$sb.AppendLine([IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8).TrimEnd())
